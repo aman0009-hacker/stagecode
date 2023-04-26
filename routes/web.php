@@ -21,6 +21,26 @@ Route::get('/home', function () {
     return view('home');
 });
 
+Route::get('/booking', function () {
+    return view('components.booking');
+});
+
+Route::get('/payment', function () {
+    return view('components.payment');
+});
+
+Route::get('/category', function () {
+    return view('components.category');
+});
+
+Route::get('/rawMaterial', function () {
+    return view('components.raw-material');
+});
+
+Route::get('/totalPayment', function () {
+    return view('components.total-payment');
+});
+
 
 Route::get('/login', function () {
     return view('auth.login');

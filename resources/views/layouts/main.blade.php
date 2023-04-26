@@ -16,6 +16,11 @@
           href="{{asset('css/font-awesome.min.css')}}"
         />
         <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}" />
+        <link rel="stylesheet" type="text/css" href="{{asset('css/booking.css')}}" />
+        <link rel="stylesheet" type="text/css" href="{{asset('css/payment.css')}}" />
+        <link rel="stylesheet" type="text/css" href="{{asset('css/category.css')}}" />
+        <link rel="stylesheet" type="text/css" href="{{asset('css/raw-material.css')}}" />
+        <link rel="stylesheet" type="text/css" href="{{asset('css/total-payment.css')}}" />
       </head>
 <body>
 <div class="main">
