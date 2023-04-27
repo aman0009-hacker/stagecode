@@ -72,11 +72,7 @@
         <div class="col-md-9">
           <div class="menus">
             <div id="search-bar">
-              <i
-                id="search-icon"
-                class="fa fa-search"
-                aria-hidden="true"
-              ></i>
+              <i id="search-icon" class="fa fa-search" aria-hidden="true"></i>
               <input id="search-input" placeholder="Search" />
             </div>
 
