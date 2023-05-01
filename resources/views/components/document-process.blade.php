@@ -1,5 +1,6 @@
 @extends('layouts.guest')
 @section('content')
+
 <div class="main">
     <div class="container-fluid p-4">
       <div class="sign-up-page">
@@ -72,69 +73,41 @@
                   <h1 class="sign-up-text document-text">Document Process</h1>
                 </div>
               </div>
-              <form class="document-process-form">
-                <div class="mb-3">
-                  <input type="text" class="form-control" id="gstNumber" aria-describedby="gstNumberHelp" placeholder="Enter your GST Number">
-                </div>
-                <div class="mb-3">
-                  <input type="text" class="form-control" id="msmeNumber" aria-describedby="msmeNumberHelp" placeholder="Enter your MSME Number">
-                </div>
-                <div class="mb-3">
-                  <input type="text" class="form-control" id="itrNumber" aria-describedby="itrNumberHelp" placeholder="Enter your ITR Number">
-                </div>
-                <div class="mb-3">
-                  <input type="text" class="form-control" id="adharCardNumber" aria-describedby="adharCardNumberHelp" placeholder="Enter Adhaar Card Number*">
-                </div>
-                <div class="mb-3">
-                  <input type="text" class="form-control" id="panCardNumber" aria-describedby="panCardNumberHelp" placeholder="Enter Pan Card Number*">
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <div class="action">
-                        <a href="./document-process.html"  class="btn continue-btn w-100">
-                      <!-- <button type="submit" class="btn continue-btn w-100"> -->
-                        Continue
-                    <!-- </button> -->
-                    </a>
-                    </div>
-                  </div>
-                </div>
-              </form>
-              <form class="upload-document-form d-none">
+              <form class="upload-document-form">
                 <div class="row mb-4">
-                  <div class="col-4 text-end">
+                  <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center">
                     <div class="mb-3">
                       <input type="file" id="myFile" name="filename" hidden>
                       <label for="myFile" class="upload-files">
                         <div class="row text-center">
                           <div class="col-12">
-                            <img src="./resources/images/login-signup/upload-icon.png" alt="upload file" class="img-fluid upload-icon" width="25" height="18">
+                            <img src="{{asset('images/login-signup/upload-icon.png')}}" alt="upload file" class="img-fluid upload-icon" width="25" height="18">
                             <p class="upload-text">Upload GST No.<br> Certificate</p>
                           </div>
                         </div>
                       </label>
                     </div>
                   </div>
-                  <div class="col-4 text-center">
+                  <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center">
                     <div class="mb-3">
                       <input type="file" id="myFile" name="filename" hidden>
                       <label for="myFile" class="upload-files">
                         <div class="row text-center">
                           <div class="col-12">
-                            <img src="./resources/images/login-signup/upload-icon.png" alt="upload file" class="img-fluid upload-icon" width="25" height="18">
+                            <img src="{{asset('images/login-signup/upload-icon.png')}}" alt="upload file" class="img-fluid upload-icon" width="25" height="18">
                             <p class="upload-text">Upload MSME <br>Certificate</p>
                           </div>
                         </div>
                       </label>
                     </div>
                   </div>
-                  <div class="col-4">
+                  <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center">
                     <div class="mb-3">
                       <input type="file" id="myFile" name="filename" hidden>
                       <label for="myFile" class="upload-files">
                         <div class="row text-center">
                           <div class="col-12">
-                            <img src="./resources/images/login-signup/upload-icon.png" alt="upload file" class="img-fluid upload-icon" width="25" height="18">
+                            <img src="{{asset('images/login-signup/upload-icon.png')}}" alt="upload file" class="img-fluid upload-icon" width="25" height="18">
                             <p class="upload-text">Upload ITR <br> Certificate</p>
                           </div>
                         </div>
@@ -143,39 +116,39 @@
                   </div>
                 </div>
                 <div class="row mb-3">
-                  <div class="col-4 text-end">
+                  <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center">
                     <div class="mb-3">
                       <input type="file" id="myFile" name="filename" hidden>
                       <label for="myFile" class="upload-files">
                         <div class="row text-center">
                           <div class="col-12">
-                            <img src="./resources/images/login-signup/upload-icon.png" alt="upload file" class="img-fluid upload-icon" width="25" height="18">
+                            <img src="{{asset('images/login-signup/upload-icon.png')}}" alt="upload file" class="img-fluid upload-icon" width="25" height="18">
                             <p class="upload-text">Upload Aadhaar<br> Card</p>
                           </div>
                         </div>
                       </label>
                     </div>
                   </div>
-                  <div class="col-4 text-center">
+                  <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center">
                     <div class="mb-3">
                       <input type="file" id="myFile" name="filename" hidden>
                       <label for="myFile" class="upload-files">
                         <div class="row text-center">
                           <div class="col-12">
-                            <img src="./resources/images/login-signup/upload-icon.png" alt="upload file" class="img-fluid upload-icon" width="25" height="18">
+                            <img src="{{asset('images/login-signup/upload-icon.png')}}" alt="upload file" class="img-fluid upload-icon" width="25" height="18">
                             <p class="upload-text">Upload Pan <br>Card</p>
                           </div>
                         </div>
                       </label>
                     </div>
                   </div>
-                  <div class="col-4">
+                  <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center">
                     <div class="mb-3">
                       <input type="file" id="myFile" name="filename" hidden>
                       <label for="myFile" class="upload-files">
                         <div class="row text-center">
                           <div class="col-12">
-                            <img src="./resources/images/login-signup/upload-icon.png" alt="upload file" class="img-fluid upload-icon" width="25" height="18">
+                            <img src="{{asset('images/login-signup/upload-icon.png')}}" alt="upload file" class="img-fluid upload-icon" width="25" height="18">
                             <p class="upload-text">Upload Utility <br> Certificate</p>
                           </div>
                         </div>
@@ -191,15 +164,17 @@
                 <div class="row">
                   <div class="col-12">
                     <div class="action">
-                      <button type="submit" class="btn continue-btn w-100">Continue</button>
+                      <a href="./updated-documents.html" class="btn continue-btn w-100">Continue</a>
+                      <!-- <button type="submit" class="btn continue-btn w-100">Continue</button> -->
                     </div>
                   </div>
                 </div>
               </form>
             </div>
-
+  
         </div>
       </div>
     </div>
   </div>
+
   @endsection

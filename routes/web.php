@@ -48,3 +48,20 @@ Route::get('/login', function () {
 Route::get('/signup', function () {
     return view('auth.signup');
 });
+
+Route::get('signup', function () {
+    return view('auth.signUp');
+});
+Route::get('login', function () {
+    return view('auth.login');
+});
+Route::get('userDocument', function () {
+    return view('components.user-document');
+});
+Route::get('updatedDocument', function () {
+    return view('components.updated-documents');
+});
+Route::get('documentProcess', function () {
+    return view('components.document-process');
+});
+

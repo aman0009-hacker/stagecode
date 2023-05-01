@@ -16,7 +16,7 @@
                             <span class="welcome-text">WELCOME TO
 
                               <span class="welcome-border"></span>
-                            </span> 
+                            </span>
                           </div>
                         </div>
                         <div class="row">
