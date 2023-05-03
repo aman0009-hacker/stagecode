@@ -72,25 +72,29 @@
                   <p class="details-text">Please enter your details to Sign Up</p>
                 </div>
               </div>
-              <form class="sign-up-form">
+              <form class="sign-up-form" id="register-form" action="{{ route('register') }}" method="POST">
+                      @csrf
+                      @if($errors->any())
+    {{ implode('', $errors->all('<div class="error">:message</div>')) }}
+@endif
                 <div class="mb-3">
-                  <input type="text" class="form-control" id="firstName" aria-describedby="firstNameHelp" placeholder="First Name">
+                  <input type="text" class="form-control" id="firstName" name = 'name' aria-describedby="firstNameHelp" placeholder="First Name">
                 </div>
                 <div class="mb-3">
-                  <input type="text" class="form-control" id="lastName" aria-describedby="lastNameHelp" placeholder="Last Name">
+                  <input type="text" class="form-control" id="lastName"  name = 'last_name' aria-describedby="lastNameHelp" placeholder="Last Name">
                 </div>
                 <div class="mb-3">
-                  <input type="text" class="form-control" id="contactNumber" aria-describedby="contactNumberHelp" placeholder="Contact Number">
+                  <input type="text" class="form-control" id="contactNumber"  name = 'contact_number' aria-describedby="contactNumberHelp" placeholder="Contact Number">
                 </div>
                 <div class="mb-3">
-                  <input type="email" class="form-control" id="userEmail" aria-describedby="emailHelp" placeholder="Email">
+                  <input type="email" class="form-control" id="userEmail" name = "email" aria-describedby="emailHelp" placeholder="Email">
                 </div>
                 <div class="mb-3 password">
-                  <input type="password" class="form-control" id="userPassword" aria-describedby="passwordHelp" placeholder="Password">
+                  <input type="password" class="form-control" name = "password" id="userPassword" aria-describedby="passwordHelp" placeholder="Password">
                   <img src="{{asset('images/login-signup/show.png')}}" alt="show password" class="img-fluid eye-icon" width="18" height="12">
                 </div>
                 <div class="mb-3 password">
-                  <input type="password" class="form-control" id="userconfirmPassword" aria-describedby="confirmpasswordHelp" placeholder="Confirm Password">
+                  <input type="password" class="form-control"  name = "confirm_password" id="userconfirmPassword" aria-describedby="confirmpasswordHelp" placeholder="Confirm Password">
                   <img src="{{asset('images/login-signup/hide.png')}}" alt="hide password" class="img-fluid eye-icon" width="18" height="12">
                 </div>
                 <p class="password-hint">
@@ -112,11 +116,12 @@
                 <div class="row">
                   <div class="col-12">
                     <div class="action">
-                      <a href="./user-document.html" class="btn send-otp-btn w-100">
-                        <!-- <button type="submit" class="btn send-otp-btn w-100"> -->
+                    <button type="submit" class="btn continue-btn w-100"> Send OTP</button>
+                      <!-- <a href="javascript:void(0)" class="btn send-otp-btn w-100">
+                        <button type="submit" class="btn send-otp-btn w-100"> 
                           Send OTP
-                        <!-- </button> -->
-                      </a>
+                         </button>
+                      </a> -->
                     </div>
                   </div>
                 </div>

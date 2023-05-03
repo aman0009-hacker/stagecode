@@ -33,7 +33,7 @@
             <div class="carousel-item active">
               <img
                 src="{{asset('images/home-page/homepage.webp')}}"
-                class="d-block carousel-img  "
+                class="d-block carousel-img img-fluid w-100"
                 alt="no-image"
               />
               <div class="carousel-caption  d-md-block">
@@ -49,7 +49,7 @@
             <div class="carousel-item">
               <img
                 src="{{asset('images/home-page/homepage.webp')}}"
-                class="d-block carousel-img"
+                class="d-block carousel-img img-fluid w-100"
                 alt="no-image"
               />
               <div class="carousel-caption  d-md-block">
@@ -65,7 +65,7 @@
             <div class="carousel-item">
               <img
                 src="{{('images/home-page/homepage.webp')}}"
-                class="d-block carousel-img"
+                class="d-block carousel-img img-fluid w-100"
                 alt="no-image"
               />
               <div class="carousel-caption  d-md-block">
