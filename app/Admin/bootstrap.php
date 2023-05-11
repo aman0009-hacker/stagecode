@@ -17,5 +17,10 @@
  * Admin::js('/packages/prettydocs/js/main.js');
  *
  */
-
+Use Encore\Admin\Admin;
 Encore\Admin\Form::forget(['map', 'editor']);
+
+
+Admin::favicon('images/login-signup/admin_logo_img.png');
+// Admin::favicon(public_path().'images/login-signup/admin_logo_img.png');
+

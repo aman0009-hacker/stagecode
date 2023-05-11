@@ -21,6 +21,13 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // if(auth()->check() && auth()->user()->is_verified) {
+        //     //return redirect()->route('home');
+        //     dd(auth()->user()->is_verified);
+        // }
+        // else 
+        // {
+        //     dd("hjkhhkj");
+        // }
     }
 }

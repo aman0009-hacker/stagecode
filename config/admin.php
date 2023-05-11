@@ -11,7 +11,7 @@ return [
     | login page.
     |
     */
-    'name' => 'Laravel-admin',
+    'name' => 'PSIEC Portal',
 
     /*
     |--------------------------------------------------------------------------
@@ -23,6 +23,7 @@ return [
     |
     */
     'logo' => '<b>Laravel</b> admin',
+    // 'logo' => '',
 
     /*
     |--------------------------------------------------------------------------
@@ -35,6 +36,7 @@ return [
     |
     */
     'logo-mini' => '<b>La</b>',
+    // 'logo-mini' => '',
 
     /*
     |--------------------------------------------------------------------------
@@ -310,7 +312,7 @@ return [
     | each page
     |
     */
-    'show_version' => true,
+    'show_version' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -320,7 +322,7 @@ return [
     | Whether to display the environment at the footer of each page
     |
     */
-    'show_environment' => true,
+    'show_environment' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -405,6 +407,8 @@ return [
     |
     */
     'extensions' => [
-
+        'media-manager' => [
+            'disk' => 'admin'   // Points to the disk set in config/filesystem.php
+        ],
     ],
 ];

@@ -7,6 +7,7 @@ use Encore\Admin\Controllers\Dashboard;
 use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
+use Encore\Admin\Widgets\Form;
 
 class HomeController extends Controller
 {
@@ -14,7 +15,7 @@ class HomeController extends Controller
     {
         return $content
             ->title('Dashboard')
-            ->description('Description...')
+            ->description('Admin Portal')
             ->row(Dashboard::title())
             ->row(function (Row $row) {
 
@@ -30,5 +31,22 @@ class HomeController extends Controller
                     $column->append(Dashboard::dependencies());
                 });
             });
+
+
+        // $form = new Form();
+
+        // $form->action('example');
+
+        // $form->email('email')->default('qwe@aweq.com');
+        // $form->password('password');
+        // $form->text('name');
+        // $form->url('url');
+        // $form->color('color');
+        // $form->map('lat', 'lng');
+        // $form->date('date');
+        // $form->json('val');
+        // $form->dateRange('created_at', 'updated_at');
+
+        // echo $form->render();
     }
 }
