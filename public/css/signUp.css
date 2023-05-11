@@ -569,7 +569,7 @@ body {
     padding: 107px 80px;
   }
   .main .sign-up-page .user-signUp .user-signUp-form input, .main .sign-up-page .user-signUp .user-signIn-form input, .main .sign-up-page .user-signIn .user-signUp-form input, .main .sign-up-page .user-signIn .user-signIn-form input {
-    color: #8b8b8b;
+    color: #000000;
     font-weight: 400;
     font-size: 12px;
     height: 40px;
@@ -640,9 +640,6 @@ body {
     min-height: 106px;
     cursor: pointer;
   }
-  /* .main .sign-up-page .user-signUp .user-signUp-form .upload-document-form .upload-files .upload-text {
-    min-height: 54px;
-  } */
   .main .sign-up-page .user-signUp .user-signUp-form .upload-document-form .upload-files .upload-text, .main .sign-up-page .user-signUp .user-signIn-form .upload-document-form .upload-files .upload-text, .main .sign-up-page .user-signIn .user-signUp-form .upload-document-form .upload-files .upload-text, .main .sign-up-page .user-signIn .user-signIn-form .upload-document-form .upload-files .upload-text {
     color: #8B8B8B;
     font-weight: 400;
@@ -691,19 +688,15 @@ body {
     background: #00465F;
     box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
   }
-}/*# sourceMappingURL=signUp.css.map */
-
-
-
+}
 /* new css for floating label start */
-
 .form-label {
   position: absolute;
   color: #8b8b8b;
   font-weight: 400;
   font-size: 12px;
   left: 1rem;
-  top: 0.60rem;
+  top: 0.6rem;
   padding: 0 0.25rem;
   transition: all 0.3s ease;
 }
@@ -726,35 +719,33 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
-
 .form-input::-moz-placeholder {
   opacity: 0;
   visibility: hidden;
   color: transparent;
 }
-.form-input:-ms-input-placeholder {
-  opacity: 0;
-  visibility: hidden;
-  color: transparent;
-}
+
 .form-input::placeholder {
   opacity: 0;
   visibility: hidden;
   color: transparent;
 }
+
 .form-input:focus {
   outline: none;
   border: 2px solid #000;
 }
+
 .form-input:focus ~ .form-label {
   top: -0.75rem;
   left: 1rem;
-  z-index: 5; 
+  z-index: 5;
   color: #8b8b8b;
-    font-weight: 400;
-    font-size: 12px;
+  font-weight: 400;
+  font-size: 12px;
   transition: all 0.2s ease-in-out;
 }
+
 .form-input:not(:-moz-placeholder-shown).form-input:not(:focus) ~ .form-label {
   top: -0.75rem;
   left: 1rem;
@@ -765,16 +756,7 @@ body {
   -moz-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
-.form-input:not(:-ms-input-placeholder).form-input:not(:focus) ~ .form-label {
-  top: -0.75rem;
-  left: 1rem;
-  z-index: 9;
-  color: #8b8b8b;
-    font-weight: 400;
-    font-size: 12px;
-  -ms-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
-}
+
 .form-input:not(:placeholder-shown).form-input:not(:focus) ~ .form-label {
   top: -0.75rem;
   left: 1rem;
@@ -785,15 +767,14 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
-
-.form-control-new{
+.form-control-new {
   position: relative;
   width: 100%;
   margin-bottom: 3px;
   height: 50px;
 }
 
-.eye-icon{
+.eye-icon {
   position: relative;
   z-index: 11;
   cursor: pointer;
@@ -804,7 +785,7 @@ body {
   height: 40px;
 }
 
-.text_ellips{
+.text_ellips {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -813,6 +794,4 @@ body {
   margin-bottom: 0px;
 }
 
-/* new css for floating label end */
-
-
+/* new css for floating label end *//*# sourceMappingURL=signUp.css.map */
