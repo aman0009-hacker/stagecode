@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,7 +14,8 @@ return new class extends Migration
     {
         Schema::create('attachments', function (Blueprint $table) {
             //$table->id();
-            $table->uuid('id')->primary()->default(DB::raw('UUID()'));
+            // $table->uuid('id')->primary()->default(DB::raw('UUID()'));
+            $table->uuid('id')->primary()->default(Str::uuid());
             $table->string('filename')->nullable();
             $table->string('path')->nullable();
             $table->string('mime_type')->nullable();

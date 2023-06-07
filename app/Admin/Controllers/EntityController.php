@@ -10,6 +10,8 @@ use Encore\Admin\Show;
 use App\Models\Product;
 use App\Models\Category;
 use Carbon\Carbon;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Auth\Permission;
 
 class EntityController extends AdminController
 {
@@ -77,6 +79,12 @@ class EntityController extends AdminController
             // });
           });
 
+
+          $grid->actions(function ($actions) {
+            if (Admin::user()->can('create-post')) {
+                Permission::check('create-post');
+            }
+        });
 
         return $grid;
     }
