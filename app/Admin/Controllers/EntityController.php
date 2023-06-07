@@ -60,6 +60,24 @@ class EntityController extends AdminController
         $grid->actions(function ($actions) {
             $actions->disableEdit();
         });
+
+
+        $grid->filter(function ($filter) {
+            // $filter->notIn('id', __('Id'));
+            $filter->disableIdFilter();
+            $filter->like('name', __('Entity Name'));
+            // $filter->column(1 / 2, function ($filter) {
+            //   $filter->like('name', __('First Name'));
+            //   $filter->like('email', __('Email'));
+      
+            // });
+            // $filter->column(1 / 2, function ($filter) {
+            //   $filter->like('last_name', __('Last Name'));
+            //   $filter->like('contact_number', __('Contact'));
+            // });
+          });
+
+
         return $grid;
     }
 
