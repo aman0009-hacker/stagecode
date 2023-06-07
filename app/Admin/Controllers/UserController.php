@@ -121,6 +121,7 @@ class UserController extends AdminController
         $filter->like('contact_number', __('Contact'));
       });
     });
+    $grid->model()->orderBy('created_at', 'desc');
     return $grid;
   }
 
