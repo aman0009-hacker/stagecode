@@ -19,7 +19,7 @@ use App\Models\Comments;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Models\State;
-use App\models\City;
+use App\Models\City;
 
 class CustomPageController extends AdminController
 {
