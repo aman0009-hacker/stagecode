@@ -9,6 +9,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use carbon\Carbon;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Auth\Permission;
 
 
 class CategoryController extends AdminController
@@ -55,6 +57,15 @@ class CategoryController extends AdminController
             //   $filter->like('contact_number', __('Contact'));
             // });
           });
+
+
+          $grid->actions(function ($actions) {
+            if (Admin::user()->can('create-post')) {
+                Permission::check('create-post');
+            }
+        });
+
+
         return $grid;
     }
 
@@ -91,7 +102,7 @@ class CategoryController extends AdminController
 
             return $products;
         });
-        $form->text('name', __('Name'));
+        $form->text('name', __('Category'));
         return $form;
     }
 }
