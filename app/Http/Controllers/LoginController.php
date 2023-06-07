@@ -51,7 +51,7 @@ class LoginController extends Controller
                     // dd("jkljl");
                     return redirect()->route('home');
                 } else if (isset($approvedStatus) && $approvedStatus->approved == 1) {
-                   return redirect()->route('PaymentDetails');
+                   return redirect()->route('PaymentDetailsView');
                 } else if (isset($approvedStatus) && $approvedStatus->approved == 2) {
                    return redirect()->route('chat');
                 }

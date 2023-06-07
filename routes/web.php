@@ -211,10 +211,10 @@ Route::post('chatDataPost',[App\Admin\Controllers\CustomPageController::class,'c
 
 
 
-// Route::get('PaymentDetails', function()
-// {
-//  return view('components.payment-details');
-// })->name('PaymentDetails');  
+Route::get('PaymentDetails', function()
+{
+ return view('components.payment-details');
+})->name('PaymentDetailsView');  
 
 
 Route::get("PaymentDetails/{id}",[App\Admin\Controllers\CustomPageController::class,'PaymentDetails'])->name('PaymentDetails');
