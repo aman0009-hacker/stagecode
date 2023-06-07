@@ -58,7 +58,7 @@ class BatchReplicate extends BatchAction
             $userDataName = $userData->name;
             $zipFileName = $userDataName . '_files_' . rand(10, 1000) . ".zip";
             $zip = new ZipArchive();
-            $zipFilePath = public_path("uploads\\") . $zipFileName;
+            $zipFilePath = public_path("uploads/") . $zipFileName;
             if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
                 foreach ($filePaths as $filePath) {
                     if (File::exists(public_path("uploads/"))) {
