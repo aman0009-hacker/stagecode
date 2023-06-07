@@ -14,7 +14,6 @@
                       <div class="row">
                         <div class="col-12">
                           <span class="welcome-text">WELCOME TO
-
                             <span class="welcome-border"></span>
                           </span>
                         </div>

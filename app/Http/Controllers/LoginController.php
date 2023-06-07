@@ -39,4 +39,25 @@ class LoginController extends Controller
         Auth::logout();
         response()->redirect('/login');
     }
+
+    public function myaccount(Request $request)
+    {
+        //   dd("method  called");
+        if (Auth::check()) {
+            $checkCurrentUserId = Auth::user()->id;
+            if (isset($checkCurrentUserId)) {
+                $approvedStatus=User::where('id',$checkCurrentUserId)->first();
+               if (isset($approvedStatus) && $approvedStatus->approved == 0) {
+                    // dd("jkljl");
+                    return redirect()->route('home');
+                } else if (isset($approvedStatus) && $approvedStatus->approved == 1) {
+                   return redirect()->route('PaymentDetails');
+                } else if (isset($approvedStatus) && $approvedStatus->approved == 2) {
+                   return redirect()->route('chat');
+                }
+            }
+
+        }
+
+    }
 }

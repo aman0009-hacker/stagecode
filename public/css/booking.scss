@@ -235,7 +235,7 @@ height: 30px;
                   font-size: 16px;
                   line-height: 23px;
                   color: #444444;
-                  padding: 32px 10px;
+                  padding: 20px 10px;
                   a{
                     color: #33649A;
                     font-weight: 700;
@@ -504,7 +504,7 @@ height: 30px;
   font-size: 12px;
   line-height: 16px;
   color: #444444;
-  padding: 32px 0;
+  padding: 20px 0;
 }
 .main .booking .orderhistoryOne-section .historyBox h4.orderid, .main .booking .orderhistoryOne-section .historyBox h4.orderplaced {
   color: #222222;
@@ -743,6 +743,13 @@ color: #ffffff;
         height: 70px;
         color:#444444;
         text-align: center;
+        tr{
+          th{
+            font-weight: 500;
+              font-size: 20px;
+              line-height: 16px;
+          }
+        }
     }
     tr{
         background: #F9F9F9;
@@ -767,6 +774,7 @@ color: #ffffff;
             padding: 4px 35px;
         }
         }
+    
     }
     }
     .pagination{

@@ -71,7 +71,7 @@
                   ?>
         @else
         <script>
-          //window.location.href="/signup";
+          window.location.href="/signup";
         </script>
         @endif
         <div class="col-12 col-md-5 user-signUp">
@@ -91,10 +91,9 @@
                   @csrf
                   <div class="action">
                     {{-- <a href="/home" class="btn continue-btn w-100">Continue</a> --}}
-                     <input type="hidden" name="txtCurrentIdValue" value="{{$userCurrentId ?? ''}}">
+                    <input type="hidden" name="txtCurrentIdValue" value="{{$userCurrentId ?? ''}}">
                     <button type="submit" class="btn continue-btn w-100">Continue</button>
-                 </form> 
-              </div>
+                </form>
               </div>
             </div>
           </div>
@@ -103,5 +102,5 @@
     </div>
   </div>
 </div>
-
+</div>
 @endsection

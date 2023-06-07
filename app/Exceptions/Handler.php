@@ -27,4 +27,15 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    //method to protect csrf
+    protected function invalidToken($request, $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'CSRF token mismatch. Please try again.'], 419);
+        }
+
+        return redirect()->back()->withInput()->withErrors(['CSRF token mismatch. Please try again.']);
+    }
+    //method to protect csrf
 }

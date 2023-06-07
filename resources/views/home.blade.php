@@ -69,12 +69,8 @@
 </script>
 @endif
 <?php
-//dd(Auth::user()->email);
    if(Auth::check())
 {
-// Session::flush();
-// Auth::logout();
-//dd(Auth::user()->state);
 if(Auth::user()->state==1)
 {
   header("Location: " . URL::to('/signUpSubmit'), true, 302);
@@ -83,9 +79,7 @@ if(Auth::user()->state==1)
 }
 else if(Auth::user()->state==2)
 {
-  //session(['state' => '2']);
-  //dd(Session::get('state'));
- header("Location: " . URL::to('/userDocument'), true, 302);
+  header("Location: " . URL::to('/userDocument'), true, 302);
   exit();
  
 }
@@ -97,20 +91,16 @@ else if(Auth::user()->state==3  )
 }
 else 
 { 
-  // dd("success");
 ?>
 <script>
   $("#myid").show();
  $("#logoutid").show();
  $("#mySignUp").hide();
-         $("#myLogin").hide();
+ $("#myLogin").hide();
 </script>
 <?php
-// header("Location: " . URL::to('/home'), true, 302);
-// exit();
 }
 }
-//dd(Auth::user());
 ?>
 <!--  About Section -->
 <section class="about-us">

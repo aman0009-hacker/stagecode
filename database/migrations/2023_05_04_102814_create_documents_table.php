@@ -28,7 +28,7 @@ return new class extends Migration
             // $table->string('docpath');
             $table->unsignedBigInteger('userid');
             $table->timestamps();
-            $table->foreign('userid')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreign('userid')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

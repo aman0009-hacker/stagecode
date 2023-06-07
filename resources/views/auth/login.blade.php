@@ -72,16 +72,9 @@
                 <p class="details-text">Please enter your details to Log In</p>
               </div>
             </div>
-            {{-- @php
-            dd(Auth::user()->state);
-            @endphp --}}
-            {{-- new code start --}}
             @php
             if(Auth::check())
             {
-            // Session::flush();
-            // Auth::logout();
-            //dd(Auth::user()->state);
             if(Auth::user()->state==1)
             {
             header("Location: " . URL::to('/signUpSubmit'), true, 302);
@@ -90,11 +83,8 @@
             }
             else if(Auth::user()->state==2)
             {
-            //session(['state' => '2']);
-            //dd(Session::get('state'));
             header("Location: " . URL::to('/userDocument'), true, 302);
             exit();
-
             }
             else if(Auth::user()->state==3 )
             {
@@ -108,19 +98,15 @@
             exit();
             }
             }
-            //dd(Auth::user());
             @endphp
             @if (Session::has('status'))
             <div class="alert alert-success" id="successmsg">
-              <strong>Great!</strong> Reset Password mail has <b>successfully</b> send to
-              the registered <b>email id</b>.
+              {{-- <strong>Great!</strong> Reset Password mail has <b>successfully</b> send to
+              the registered <b>email id</b>. --}}
             </div>
             @endif
-            {{-- new code end --}}
             @if(count($errors))
             <div class="alert alert-danger">
-              {{-- <strong>Whoops!</strong> There were some problems with your input. --}}
-              {{-- <br /> --}}
               <ul>
                 @foreach($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -162,27 +148,24 @@
                     </div>
                   </div>
                 </div>
+                <div class="row mt-1">
+                  <div class="col-8">
+                   
+                     <small> For New User Kindly <a href="{{route('signUp')}}" class="link-success text-small" style="text-decoration: none">Sign Up</a> </small>   
+                    
+                  </div>
+                  <div class="col-4">
+              
+                     
+                     
+                  
+                  </div>
+                </div>
+                
               </form>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <script>
-    $(document).on('click','#passwordimg',function(){
-              var clicks = $(this).data('clicks');
-              if (clicks) {
-                // odd clicks
-                var source = "{!! asset('images/login-signup/show.png') !!}";
-                        $('#passwordimg').prop('src', source);
-                        $('#password').prop('type', 'text');
-              } else {
-              var source = "{!! asset('images/login-signup/hide.png') !!}";
-                        $('#passwordimg').prop('src', source);
-                        $('#password').prop('type', 'password');
-                // even clicks
-              }
-              $(this).data("clicks", !clicks);
-            });
-  </script>
   @endsection

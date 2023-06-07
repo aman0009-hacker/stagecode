@@ -1,0 +1,35 @@
+.chat-wrapper{
+     
+    border: 1px solid #00000026;
+    padding: 38px;
+    border-radius: 5px;
+     
+ 
+    .form-control{
+      width: 83%;
+    }
+    p.note-text {
+      display: flex;
+      flex-direction: row-reverse;
+  }
+  .msg-grp {
+    overflow-y: scroll;
+    height: 100% !important;
+    // height: 56%;
+}
+::-webkit-scrollbar{
+    width: 5px;
+    background-color: rgb(165, 161, 161);
+    border-radius: 12px;
+  }
+  ::-webkit-scrollbar-thumb{
+    background: #837e7e;
+    border-radius: 12px;
+    
+  }
+   .scroll-chat  {
+    display: grid;
+    align-items: center;
+}
+  }
+ 
