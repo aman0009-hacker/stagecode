@@ -7,7 +7,10 @@ use Carbon\Carbon;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Auth\Permission;
 
 
 class ProductController extends AdminController
@@ -53,6 +56,18 @@ class ProductController extends AdminController
             // });
           });
        
+          $grid->actions(function ($actions) {
+            if (Admin::user()->can('create-post')) {
+                Permission::check('create-post');
+            }
+        });
+        
+      
+      
+    
+
+
+
         return $grid;
     }
 
@@ -83,4 +98,12 @@ class ProductController extends AdminController
         $form->text('name', __('Name'));
         return $form;
     }
+
+    // public function create(Content $content)
+    // {
+    //     // check permission, only the roles with permission `create-post` can visit this action
+    //     Permission::check('create-post');
+    //     $content=new Content();
+    //     return $content;
+    // }
 }
