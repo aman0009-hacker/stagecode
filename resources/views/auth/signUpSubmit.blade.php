@@ -120,11 +120,8 @@
             <form class="sign-up-form" id="register-form-submit" action="{{ route('store') }}" method="POST"
               autocomplete="off">
               @csrf
-              {{-- error logic implemented by mohan --}}
               @if(count($errors))
               <div class="alert alert-danger">
-                {{-- <strong>Whoops!</strong> There were some problems with your input. --}}
-                {{-- <br /> --}}
                 <ul>
                   @foreach($errors->all() as $error)
                   <li>{{ $error }}</li>
@@ -135,9 +132,6 @@
               <br>
               <input type="hidden" name="id" id="id" value="{{  $userCurrentId ?? '' }}" />
               <div class="mb-3 position-relative form-control-new">
-                {{-- <span class="ms-2" class="form-label"> Contact Number </span> --}}
-                {{-- <label for="contactNumber" class="form-label">First Name <span style="color:red">★</span></label>
-                --}}
                 <input type="text" class="form-control form-input bg-transparent" id="contactNumber"
                   name='contact_number' title="Contact Number" maxlength="10" minlength="10"
                   onkeypress="return isNumberKey(event)" readonly aria-describedby="contactNumberHelp"
@@ -178,62 +172,6 @@
                 </div>
               </div>
             </form>
-            <script>
-              $("#otpHandleBtn").on("click",function()
-{
- $("#otpHandleBtn").hide();
- $("#msg").show();
-});
-function isNumberKey(evt) {
-  var charCode = (evt.which) ? evt.which : evt.keyCode
-  if (charCode > 31 && (charCode < 48 || charCode > 57))
-    return false;
-  return true;
-}
-                          function onlyNumberKey(evt) {
-                             // Only ASCII character in that range allowed
-                              var ASCIICode = (evt.which) ? evt.which : evt.keyCode
-                              if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
-                                  return true;
-                              return false;
-                          }
-             $(document).on('click','#passwordimg',function(){
-              var clicks = $(this).data('clicks');
-              if (clicks) {
-                // odd clicks
-                var source = "{!! asset('images/login-signup/show.png') !!}";
-                        $('#passwordimg').prop('src', source);
-                        $('#userPassword').prop('type', 'text');
-              } else {
-
-              var source = "{!! asset('images/login-signup/hide.png') !!}";
-                        $('#passwordimg').prop('src', source);
-                        $('#userPassword').prop('type', 'password');
-                // even clicks
-              }
-              $(this).data("clicks", !clicks);
-             });
-             $(document).on('click','#confirmpasswordimg',function(){
-              var clicks = $(this).data('clicks');
-              if (clicks) {
-              var source = "{!! asset('images/login-signup/show.png') !!}";
-                        $('#confirmpasswordimg').prop('src', source);
-                        $('#userconfirmPassword').prop('type', 'text');
-              }
-              else {
-                // even clicks
-                var source = "{!! asset('images/login-signup/hide.png') !!}";
-                        $('#confirmpasswordimg').prop('src', source);
-                        $('#userconfirmPassword').prop('type', 'password');
-              }
-              $(this).data("clicks", !clicks);
-             });
-              $.ajaxSetup({
-                      headers: {
-                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                      }
-                  });
-            </script>
           </div>
         </div>
       </div>

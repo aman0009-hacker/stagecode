@@ -67,9 +67,14 @@
                   </a>
                 </li>
                 <li>
-                  <a href="#" class="btn btn-primary account-btn" id="myid" style="display:none">
-                    My Account
-                  </a>
+                  <form method="post" action="{{route('myaccount')}}">
+                    @csrf
+                    {{-- <a href="#" class="btn btn-primary account-btn" id="myid" style="display:none">
+                      My Account
+                    </a> --}}
+                    <button type="submit" class="btn btn-secondary account-btn" id="myid" style="display:none">My
+                      Account</button>
+                  </form>
                   <h2 style="display: inline;">
                     <a href="/signup" class="btn btn-outline-secondary" id="mySignUp">
                       Register

@@ -20,6 +20,7 @@ use Session;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Crypt;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -49,7 +50,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::authenticateUsing(function (Request $request) 
         {
           
-
+         
             $user = User::where('email', $request->email)
                 // ->orWhere('username', $request->username)
                 ->first();

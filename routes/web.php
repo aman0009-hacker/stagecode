@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OTPHandleController;
 use App\Http\Controllers\DocumentProcessController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ForgotPasswordController;
@@ -54,9 +55,9 @@ Route::get('/totalPayment', function () {
 // Route::get('/login', function () {
 //     return view('auth.login');
 // });
-Route::get('/signup', function () {
-    return view('auth.signup');
-})->name('signUp');
+// Route::get('/signup', function () {
+//     return view('auth.signup');
+// })->name('signUp');
 
 Route::get('signup', function () {
     return view('auth.signUp');
@@ -170,4 +171,61 @@ Route::get("/test",function(){
   return view("components.test");
 });
 
-//new route add
+Route::post('myaccount',[LoginController::class,'myaccount'])->name('myaccount');
+
+Route::get('document-process-update', function()
+{
+    return view('components.document-process-update');
+})->name('documentUpdate');
+Route::post('fileUploadPostUpdate', 'App\Http\Controllers\FileUploadController@fileUploadPostUpdate')->name('file.upload.post.update');
+
+
+Route::get("dashboard",function()
+{
+ return view('dashboard');
+})->name('dashboard');
+
+Route::post('userMsgHandling',[FileUploadController::class,'userMsgHandling'])->name('userMsgHandling');
+Route::post('adminMsgHandling',[App\Admin\Controllers\CustomPageController::class,'adminMsgHandling'])->name('adminMsgHandling');
+
+Route::post('adminReturnMsg',[FileUploadController::class,'adminReturnMsg'])->name('adminReturnMsg');
+
+//Route::post('store',[FileUploadController::class,'store'])->name('store');
+Route::post('dropzone/store', [FileUploadController::class,'store'])->name('dropzone.store');
+Route::post('adminDownload',[App\Admin\Controllers\CustomPageController::class,'adminDownload'])->name('adminDownload');
+
+
+Route::get('/chat',function()
+{
+    return view('components.chat');
+})->name('chat');
+
+// Route::get('/chat',[App\Admin\Controllers\CustomPageController::class,'start'])->name("chat");
+
+
+Route::post('checkurl',[App\Admin\Controllers\CustomPageController::class,'checkurl'])->name('checkurl');
+Route::post('checkurlIndex',[App\Admin\Controllers\CustomPageController::class,'checkurlIndex'])->name('checkurlIndex');
+Route::post('chatData',[App\Admin\Controllers\CustomPageController::class,'chatData'])->name('chatData');
+Route::post('chatDataPost',[App\Admin\Controllers\CustomPageController::class,'chatDataPost'])->name('chatDataPost');
+
+
+
+
+// Route::get('PaymentDetails', function()
+// {
+//  return view('components.payment-details');
+// })->name('PaymentDetails');  
+
+
+Route::get("PaymentDetails/{id}",[App\Admin\Controllers\CustomPageController::class,'PaymentDetails'])->name('PaymentDetails');
+
+
+
+
+Route::any('congratulations', function()
+{
+ return view('components.congratulations');
+})->name('congratulations'); 
+
+
+Route::post("/chartApproveStatus",[App\Admin\Controllers\CustomPageController::class,'chartApproveStatus'])->name('chartApproveStatus');

@@ -2,103 +2,178 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Controllers\AttachmentController;
 use App\Models\User;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
+use Illuminate\Support\Facades\DB;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\HtmlString;
+use Encore\Admin\Widgets\TableEditable;
+use Encore\Admin\Grid\NestedGrid;
+use Encore\Admin\Widgets\Table;
+use App\Admin\Actions\Rejected;
+use App\Admin\Actions\Data;
+use App\Admin\Actions\ShowDocuments;
+use Illuminate\Http\Request;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Auth\Permission;
 
 class UserController extends AdminController
 {
-    /**
-     * Title for current resource.
-     *
-     * @var string
-     */
-    protected $title = 'User';
+  /**
+   * Title for current resource.
+   *
+   * @var string
+   */
+  protected $title = 'User';
 
-    /**
-     * Make a grid builder.
-     *
-     * @return Grid
-     */
-    protected function grid()
-    {
-        $grid = new Grid(new User());
 
-        $grid->column('id', __('Id'));
-        $grid->column('name', __('First Name'));
-        $grid->column('last_name', __('Last name'));
-        $grid->column('email', __('Email'));
-        $grid->column('contact_number', __('Contact number'));
-        //$grid->column('email_verified_at', __('Email verified at'));
-        //$grid->column('password', __('Password'));
-        // $grid->column('otp', __('Otp'));
-        // $grid->column('two_factor_secret', __('Two factor secret'));
-        // $grid->column('otp_generated_at', __('Otp generated at'));
-        // $grid->column('two_factor_recovery_codes', __('Two factor recovery codes'));
-        // $grid->column('two_factor_confirmed_at', __('Two factor confirmed at'));
-        // $grid->column('remember_token', __('Remember token'));
-        // $grid->column('created_at', __('Created at'));
-        // $grid->column('updated_at', __('Updated at'));
-        // $grid->column('state', __('State'));
+  /**
+   * Make a grid builder.
+   *
+   * @return Grid
+   */
+  protected function grid()
+  {
+    $grid = new Grid(new User());
+    // $grid->column('id', __('Id'))->sortable();
+    $grid->column('name', __('First Name'));
+    $grid->column('last_name', __('Last Name'));
+    $grid->column('email', __('Email'));
+    $grid->column('contact_number', __('Contact Number'));
+    $grid->column('attachment', 'Info')->display(function ($comments) {
+      //$count = count($comments);
+      //return "<span class='label label-warning'>{$count}</span>";
+      return "documents";
+    })->expand(function ($model) {
+      $comments = $model->attachment()->take(10)->where('fileno', 'IS NOT', null)->get()->map(function ($comment) {
+        return $comment->only(['id', 'file_type', 'fileno', 'created_at']);
+      });
+      return new Table(['ID', 'Document Type', 'Document No', 'Release Time'], $comments->toArray());
+    });
+    $grid->column("approved", __('Status'))->display(function ($value) {
+      if (isset($value) && $value === 1) {
+        return "Approved";
+      } else if (isset($value) && $value === 0) {
+        return "New";
+      } else if (isset($value) && $value === 2) {
+        return "Rejected";
+      }
+    });
+    // ->expand(function ($model) {
+    //         $query = DB::table('comments')->where('approved', $model->approved)->where('admin_id',Admin::user()->id)->get();
+    //         if ($model->approved == 0) {
+    //             return "                                                                           "."No Status Found!!!!!!!!!";
+    //         } else if (isset($query) && count($query) > 0) {
+    //             $table = '<table class="table ms-4">
+    //             <thead>
+    //                 <tr>
+    //                     <th scope="col">Status</th>
+    //                     <th scope="col">Updated At</th>
+    //                     <!-- Add more table headers as needed -->
+    //                 </tr>
+    //             </thead>
+    //             <tbody>';
+    //             foreach ($query as $query) {
+    //                 $table .= '<tr>
+    //                     <td>' . $query->comment . '</td>
+    //                     <td>' . $query->approved_at . '</td>
+    //                     <!-- Add more table cells as needed -->
+    //                 </tr>';
+    //             }
+    //             $table .= '</tbody></table>';
+    //             return $table;
+    //         }
+    //  });
+    $grid->export(function ($export) {
+      //$export->filename('Filename.csv');
+      $export->except(['approved', 'comments', 'attachment', 'otp']);
+    });
+    $grid->actions(function ($actions) {
+      $actions->add(new ShowDocuments);
+      if ($actions->row->approved == 0) {
+        $actions->add(new Data);
+        $actions->add(new Rejected);
+      } else if ($actions->row->approved == 1) {
+        //$actions->add(new Data);
+        $actions->add(new Rejected);
+      } else if ($actions->row->approved == 2) {
+        $actions->add(new Data);
+        //$actions->add(new Rejected);
+      }
+    });
 
-        return $grid;
-    }
+    $grid->disableCreateButton();
+    // $grid->column('id')->hidden();
+    $grid->filter(function ($filter) {
+      // $filter->notIn('id', __('Id'));
+      $filter->disableIdFilter();
+      $filter->column(1 / 2, function ($filter) {
+        $filter->like('name', __('First Name'));
+        $filter->like('email', __('Email'));
 
-    /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     * @return Show
-     */
-    protected function detail($id)
-    {
-        $show = new Show(User::findOrFail($id));
+      });
+      $filter->column(1 / 2, function ($filter) {
+        $filter->like('last_name', __('Last Name'));
+        $filter->like('contact_number', __('Contact'));
+      });
+    });
+    return $grid;
+  }
 
-        $show->field('id', __('Id'));
-        $show->field('name', __('First Name'));
-        $show->field('last_name', __('Last name'));
-        $show->field('email', __('Email'));
-        $show->field('contact_number', __('Contact number'));
-        $show->field('email_verified_at', __('Email verified at'));
-        // $show->field('password', __('Password'));
-        // $show->field('otp', __('Otp'));
-        // $show->field('two_factor_secret', __('Two factor secret'));
-        // $show->field('otp_generated_at', __('Otp generated at'));
-        // $show->field('two_factor_recovery_codes', __('Two factor recovery codes'));
-        // $show->field('two_factor_confirmed_at', __('Two factor confirmed at'));
-        // $show->field('remember_token', __('Remember token'));
-        // $show->field('created_at', __('Created at'));
-        // $show->field('updated_at', __('Updated at'));
-        // $show->field('state', __('State'));
+  /**
+   * Make a show builder.
+   *
+   * @param mixed $id
+   * @return Show
+   */
+  protected function detail($id)
+  {
+    $show = new Show(User::findOrFail($id));
+    // $show->field('id', __('Id'));
+    $show->field('name', __('Name'));
+    $show->field('last_name', __('Last name'));
+    $show->field('email', __('Email'));
+    $show->field('contact_number', __('Contact number'));
 
-        return $show;
-    }
+    return $show;
+  }
 
-    /**
-     * Make a form builder.
-     *
-     * @return Form
-     */
-    protected function form()
-    {
-        $form = new Form(new User());
+  /**
+   * Make a form builder.
+   *
+   * @return Form
+   */
+  protected function form()
+  {
+    // return $form;
 
-        $form->text('name', __('Name'));
-        $form->text('last_name', __('Last name'));
-        $form->email('email', __('Email'));
-        $form->text('contact_number', __('Contact number'));
-        //$form->datetime('email_verified_at', __('Email verified at'))->default(date('Y-m-d H:i:s'));
-        $form->password('password', __('Password'));
-        // $form->textarea('otp', __('Otp'));
-        // $form->textarea('two_factor_secret', __('Two factor secret'));
-        // $form->datetime('otp_generated_at', __('Otp generated at'))->default(date('Y-m-d H:i:s'));
-        // $form->textarea('two_factor_recovery_codes', __('Two factor recovery codes'));
-        // $form->datetime('two_factor_confirmed_at', __('Two factor confirmed at'))->default(date('Y-m-d H:i:s'));
-        // $form->text('remember_token', __('Remember token'));
-        // $form->number('state', __('State'));
+    $form = new Form(new User());
+    $form->text('name', __('First Name'))->rules('required|max:255|regex:/^[a-zA-Z]+$/');
+    $form->text('last_name', __('Last name'))->rules('required|max:255|regex:/^[a-zA-Z]+$/');
+    $form->email('email', __('Email'))->rules('required|max:255|unique:users|email');
+    $form->text('contact_number', __('Contact number'))->rules('required|max:10|unique:users|min:10');
+    
+    $form->footer(function ($footer) {
+      $footer->disableViewCheck();
 
-        return $form;
-    }
+      // disable `Continue editing` checkbox
+      $footer->disableEditingCheck();
+
+      // disable `Continue Creating` checkbox
+      $footer->disableCreatingCheck();
+
+    });
+
+    
+
+    // $form->footer->class('form-footer'); 
+
+    return $form;
+  }
+
+
 }

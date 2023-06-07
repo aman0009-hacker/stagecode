@@ -73,16 +73,6 @@
                 <h1 class="sign-up-text document-text">Document Process</h1>
               </div>
             </div>
-
-
-            {{-- values data --}}
-             {{-- @if (Session::has('dataDocuments'))
-             @foreach (Session::get('dataDocuments') as $item) --}}
-             {{-- {{$item}} --}}
-             {{-- @endforeach
-             @endif --}}
-            {{-- values data --}}
-
             @if (Auth::check())
             <?php 
               if(isset(Auth::user()->state))
@@ -105,8 +95,6 @@
             @endif
             @if(count($errors))
             <div class="alert alert-danger">
-              {{-- <strong>Whoops!</strong> There were some problems with your input. --}}
-              {{-- <br /> --}}
               <ul>
                 @foreach($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -117,7 +105,8 @@
             <form class="upload-document-form" method="post" enctype="multipart/form-data"
               action="{{route('file.upload.post')}}">
               @csrf
-              {{-- <input type="hidden" name="documents" value="{{json_encode(Session::get('dataDocuments'),TRUE) ?? ''}}"/> --}}
+              {{-- <input type="hidden" name="documents"
+                value="{{json_encode(Session::get('dataDocuments'),TRUE) ?? ''}}" /> --}}
               <div class="row mb-4">
                 <input type="hidden" name="txtIds" id="txtIds" value="{{ $userCurrentId ?? '' }}" />
                 <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="gstDataId">
@@ -166,7 +155,7 @@
               <div class="row mb-3">
                 <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="aadharDataId">
                   <div class="mb-3">
-                    <input type="file" id="aadharFile" name="aadharFile" hidden >
+                    <input type="file" id="aadharFile" name="aadharFile" hidden>
                     <label for="aadharFile" class="upload-files">
                       <div class="row text-center">
                         <div class="col-12">
@@ -180,7 +169,7 @@
                 </div>
                 <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="panDataId">
                   <div class="mb-3">
-                    <input type="file" id="panFile" name="panFile" hidden >
+                    <input type="file" id="panFile" name="panFile" hidden>
                     <label for="panFile" class="upload-files">
                       <div class="row text-center">
                         <div class="col-12">
@@ -209,7 +198,7 @@
               </div>
               <div class="row mb-3">
                 <div class="col-12">
-                  <p class="format-text text-center">Choose any Format (JPG, PNG, PDF max. 50KB)</p>
+                  <p class="format-text text-center">Choose any Format (JPG, PNG, PDF max. 5MB)</p>
                 </div>
               </div>
               <div class="row">
@@ -226,64 +215,4 @@
       </div>
     </div>
   </div>
-  <script>
-    $(document).ready(function(){
-     $("#gstFile").on("change",function(e)
-     {
-      e.preventDefault();
-      $("#gstDataId").wrapInner( "<div class='new'></div>");
-      var fileName=e.target.files[0].name;
-      $("#gstdoc").html(fileName);
-      var source = "{!! asset('images/login-signup/gst.jpg') !!}";
-      $('#gstpic').prop('src', source);
-      // $('#gstpic').css('height', '20%');
-      // $('#gstpic').css('width', '100%');
-     })
-     $("#msmeFile").on("change",function(e)
-     {
-      e.preventDefault();
-      $("#msmeDataId").wrapInner();
-      var fileName=e.target.files[0].name;
-      $("#msmedoc").html(fileName);
-      var source = "{!! asset('images/login-signup/msme.jpg') !!}";
-      $('#msmepic').prop('src', source);
-     })
-     $("#itrFile").on("change",function(e)
-     {
-      e.preventDefault();
-      $("#itrDataId").wrapInner();
-      var fileName=e.target.files[0].name;
-      $("#itrdoc").html(fileName);
-      var source = "{!! asset('images/login-signup/itr.jpg') !!}";
-      $('#itrpic').prop('src', source);
-     })
-     $("#aadharFile").on("change",function(e)
-     {
-      e.preventDefault();
-      $("#aadharDataId").wrapInner();
-      var fileName=e.target.files[0].name;
-      $("#aadhardoc").html(fileName);
-      var source = "{!! asset('images/login-signup/aadhar.jpg') !!}";
-      $('#aadharpic').prop('src', source);
-     })
-     $("#panFile").on("change",function(e)
-     {
-      e.preventDefault();
-      $("#panDataId").wrapInner();
-      var fileName=e.target.files[0].name;
-      $("#pandoc").html(fileName);
-      var source = "{!! asset('images/login-signup/pan.jpg') !!}";
-      $('#panpic').prop('src', source);
-     })
-     $("#utilityFile").on("change",function(e)
-     {
-      e.preventDefault();
-      $("#utilityDataId").wrapInner();
-      var fileName=e.target.files[0].name;
-      $("#utilitydoc").html(fileName);
-      var source = "{!! asset('images/login-signup/utility.jpg') !!}";
-      $('#utilitypic').prop('src', source);
-     })
-   });
-  </script>
   @endsection

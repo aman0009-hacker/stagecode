@@ -19,8 +19,9 @@
  */
 Use Encore\Admin\Admin;
 Encore\Admin\Form::forget(['map', 'editor']);
+Admin::favicon('/uploads/admin_logo_img.png');
+Admin::css('css/adminstyle.css');
+Admin::css('css/chat.css');
+Admin::css('css/booking.css');
 
-
-Admin::favicon('images/login-signup/admin_logo_img.png');
-// Admin::favicon(public_path().'images/login-signup/admin_logo_img.png');
 

@@ -217,7 +217,7 @@ body {
   font-size: 16px;
   line-height: 23px;
   color: #444444;
-  padding: 32px 10px;
+  padding: 20px 10px;
 }
 .main .booking .table tbody td a {
   color: #33649A;
@@ -430,7 +430,7 @@ body {
     font-size: 12px;
     line-height: 16px;
     color: #444444;
-    padding: 32px 0;
+    padding: 20px 0;
   }
   .main .booking .orderhistoryOne-section .historyBox h4.orderid, .main .booking .orderhistoryOne-section .historyBox h4.orderplaced {
     color: #222222;
@@ -650,6 +650,11 @@ body {
     height: 70px;
     color: #444444;
     text-align: center;
+  }
+  .main .product-selling table thead.bg-gray tr th {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 16px;
   }
   .main .product-selling table tr {
     background: #F9F9F9;

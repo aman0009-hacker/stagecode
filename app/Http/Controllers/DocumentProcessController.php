@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\models\Attachment;
+use Carbon\Carbon;
+use App\Models\User;
 
 class DocumentProcessController extends Controller
 {
   public function ajaxRequestPostDocument(Request $request)
   {
-
     $currentId = $request->input('txtID');
     $gstNumber = $request->input('gstNumber');
     $msmeNumber = $request->input('msmeNumber');
@@ -18,71 +20,97 @@ class DocumentProcessController extends Controller
     $adharCardNumber = $request->input('adharCardNumber');
     $panCardNumber = $request->input('panCardNumber');
     $utilityCardNumber = $request->input('utilityCardNumber');
-
     $request->validate([
-      'adharCardNumber'=>"required",
-      'panCardNumber'=>"required"
+      'adharCardNumber' => "required",
+      'panCardNumber' => "required"
     ]);
-
-    // $dataDocuments=array();
-    // if(isset($gstNumber) && !empty($gstNumber))
-    // {
-    // array_push($dataDocuments,"gstNumber");
-    // }
-    // if(isset($msmeNumber) && !empty($msmeNumber))
-    // {
-    // array_push($dataDocuments,"msmeNumber");
-    // }
-    // if(isset($itrNumber) && !empty($itrNumber))
-    // {
-    // array_push($dataDocuments,"itrNumber");
-    // }
-    // if(isset($adharCardNumber) && !empty($adharCardNumber))
-    // {
-    // array_push($dataDocuments,"adharCardNumber");
-    // }
-    // if(isset($panCardNumber) && !empty($panCardNumber))
-    // {
-    // array_push($dataDocuments,"panCardNumber");
-    // }
-    // if(isset($utilityCardNumber) && !empty($utilityCardNumber))
-    // {
-    // array_push($dataDocuments,"utilityCardNumber");
-    // }
-    //dd($dataDocuments);
     if (isset($currentId) && $currentId != "") {
-      $query = DB::table('documents')->insert([
+
+      // $query = DB::table('attachments')->insert([
+      //     ['fileno' => $gstNumber, 'user_id'=>$currentId , 'created_at' => \Carbon\Carbon::now() , 'updated_at'=>\Carbon\Carbon::now() , 'file_type'=>'gstfile'] ,
+      //     ['fileno' => $msmeNumber,  'user_id'=>$currentId, 'created_at' => \Carbon\Carbon::now() , 'updated_at'=>\Carbon\Carbon::now(), 'file_type'=>'msmefile'],
+      //     ['fileno' => $itrNumber,  'user_id'=>$currentId, 'created_at' => \Carbon\Carbon::now() , 'updated_at'=>\Carbon\Carbon::now() , 'file_type'=>'itrfile'],
+      //     ['fileno' => $adharCardNumber,  'user_id'=>$currentId , 'created_at' => \Carbon\Carbon::now() , 'updated_at'=>\Carbon\Carbon::now() , 'file_type'=>'aadharfile'],
+      //     ['fileno' => $panCardNumber, 'user_id'=>$currentId , 'created_at' => \Carbon\Carbon::now() , 'updated_at'=>\Carbon\Carbon::now() , 'file_type'=>'panfile'] ,
+      //     ['fileno' => $utilityCardNumber, 'user_id'=>$currentId , 'created_at' => \Carbon\Carbon::now() , 'updated_at'=>\Carbon\Carbon::now() , 'file_type'=>'utilityfile'],
+      // ]);
+
+      $data = [
         [
-          'gstcard' => $gstNumber,
-          'msmecard' => $msmeNumber,
-          'itrcard' => $itrNumber,
-          'aadharcard' => $adharCardNumber,
-          'pancard' => $panCardNumber,
-          'utilitycard' => $utilityCardNumber,
-          'userid' => $currentId,
-          "created_at" => \Carbon\Carbon::now(),
-          # new \Datetime()
-          "updated_at" => \Carbon\Carbon::now(),
-          # new \Datetime()
+          'fileno' => $gstNumber,
+          'user_id' => $currentId,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+          'file_type' => 'gstfile'
         ],
-      ]);
+        [
+          'fileno' => $msmeNumber,
+          'user_id' => $currentId,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+          'file_type' => 'msmefile'
+        ],
+        [
+          'fileno' => $itrNumber,
+          'user_id' => $currentId,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+          'file_type' => 'itrfile'
+        ],
+        [
+          'fileno' => $adharCardNumber,
+          'user_id' => $currentId,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+          'file_type' => 'aadharfile'
+        ],
+        [
+          'fileno' => $panCardNumber,
+          'user_id' => $currentId,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+          'file_type' => 'panfile'
+        ],
+        [
+          'fileno' => $utilityCardNumber,
+          'user_id' => $currentId,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+          'file_type' => 'utilityfile'
+        ]
+      ];
 
-      if (isset($query) && $query == "true") {
+      $collectionCount = 0;
+      foreach ($data as $entry) {
+        $query = new Attachment;
+        // $query->fileno = $entry['fileno'] ?? null;
+        $query->fileno = ($entry['fileno'] === '' || $entry['fileno'] === null) ? null : $entry['fileno'];
+        $query->user_id = $entry['user_id'];
+        $query->created_at = $entry['created_at'];
+        $query->updated_at = $entry['updated_at'];
+        $query->file_type = $entry['file_type'];
+        $query->save();
+        $collectionCount++;
+      }
 
-        $stateUpdate = DB::table('users')->where('id', $currentId)->update(['state' => 3]);
+
+      if (isset($collectionCount) && $collectionCount > 0) {
+        // $stateUpdate = DB::table('users')->where('id', $currentId)->update(['state' => 3]);
+        $user = User::where('id', $currentId)->first();
+        $user->state = 3;
+        $stateUpdate = $user->save();
         if (isset($stateUpdate)) {
           return redirect()->route('documentProcess')->with(['currentId' => $currentId, "data" => "success"]);
         }
       } else {
         return redirect()->back()->withInput();
       }
-
     }
   }
-
   public function documentOutput(Request $request)
   {
     // dd("jljlkj");
     return redirect()->route('home')->with(['tab' => "myaccount"]);
   }
+
 }

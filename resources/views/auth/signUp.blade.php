@@ -83,11 +83,8 @@
               @csrf
               <input type="hidden" name="userCurrentId" id="userCurrentId"
                 value="<?php echo $userCurrentId ?? ''; ?>" />
-              {{-- error logic implemented by mohan --}}
               @if(count($errors))
               <div class="alert alert-danger">
-                {{-- <strong>Whoops!</strong> There were some problems with your input. --}}
-                {{-- <br /> --}}
                 <ul>
                   @foreach($errors->all() as $error)
                   <li class="mt-2">{{ $error }}</li>
@@ -154,21 +151,6 @@
                   Example : Pass@2016
                 </span>
               </p>
-              {{-- <div class="row g-3 align-items-center mb-3 position-relative  send-otp" id="otp_div"
-                style="display:none">
-                <div class="col-6">
-                  <input type="text" id="userOtp" class="form-control form-input bg-transparent"
-                    aria-describedby="otpHelpInline" placeholder="Enter OTP">
-                </div>
-                <div class="col-6">
-                  <span id="otpHelpInline" class="form-text">
-                    <button type="button" class="btn btn-primary" id="otpHandleBtn">OTP WILL BE SHARED BY
-                      SMS</button>
-                    <span><b>OTP WILL BE SHARED BY SMS</b></span>
-                  </span>
-                </div>
-              </div>
-              --}}
               <div class="row">
                 <div class="col-12">
                   <div class="action">
@@ -178,87 +160,6 @@
                 </div>
               </div>
             </form>
-            <script>
-              function isNumberKey(evt) {
-                    var charCode = (evt.which) ? evt.which : evt.keyCode
-                    if (charCode > 31 && (charCode < 48 || charCode > 57))
-                      return false;
-                    return true;
-                  }
-                          function onlyNumberKey(evt) {
-                            
-                              // Only ASCII character in that range allowed
-                              var ASCIICode = (evt.which) ? evt.which : evt.keyCode
-                              if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
-                                  return true;
-                              return false;
-                          }
-             $(document).on('click','#passwordimg',function(){
-              var clicks = $(this).data('clicks');
-              if (clicks) {
-                // odd clicks
-                var source = "{!! asset('images/login-signup/show.png') !!}";
-                        $('#passwordimg').prop('src', source);
-                        $('#userPassword').prop('type', 'text');
-              } else {
-
-              var source = "{!! asset('images/login-signup/hide.png') !!}";
-                        $('#passwordimg').prop('src', source);
-                        $('#userPassword').prop('type', 'password');
-                // even clicks
-              }
-              $(this).data("clicks", !clicks);
-         });
-              $(document).on('click','#confirmpasswordimg',function(){
-              var clicks = $(this).data('clicks');
-              if (clicks) {
-              var source = "{!! asset('images/login-signup/show.png') !!}";
-                        $('#confirmpasswordimg').prop('src', source);
-                        $('#userconfirmPassword').prop('type', 'text');
-              }
-              else {
-                // even clicks
-                var source = "{!! asset('images/login-signup/hide.png') !!}";
-                        $('#confirmpasswordimg').prop('src', source);
-                        $('#userconfirmPassword').prop('type', 'password');
-              }
-              $(this).data("clicks", !clicks);
-                     
-              });
-              $.ajaxSetup({
-                      headers: {
-                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                      }
-                  });
-
-                  $("#continueBtn").click(function(e)
-                  {
-                    e.preventDefault();
-                    var userOtp=$("#userOtp").val();
-                    if(userOtp=="1234")
-                    {
-
-                      $.ajax({
-                        type:'POST',
-                        url:"{{  route('ajaxRequest.post') }}",
-                        data:{ userOtp:userOtp },
-                        success:function(data)
-                        {
-                          //alert(data.success);
-                          if(data.success=="1234")
-                          {
-                            window.location.href = "/userDocument?id="+$("#userCurrentId").val();
-                          }
-                          else 
-                          {
-                            $('#userOtp').css('border-color', 'red');
-                          }
-                        }
-                      }); 
-                      //window.location.href = "/userDocument";
-                    }
-                  });
-            </script>
           </div>
         </div>
       </div>

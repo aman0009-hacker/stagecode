@@ -84,7 +84,7 @@ body {
 }
 .main .sign-up-page .user-signUp .user-signUp-form, .main .sign-up-page .user-signUp .user-signIn-form, .main .sign-up-page .user-signIn .user-signUp-form, .main .sign-up-page .user-signIn .user-signIn-form {
   height: 100%;
-  background: #F9F9F9;
+  background: #F9F9F9 !important;
   padding: 107px 80px;
 }
 .main .sign-up-page .user-signUp .user-signUp-form input, .main .sign-up-page .user-signUp .user-signIn-form input, .main .sign-up-page .user-signIn .user-signUp-form input, .main .sign-up-page .user-signIn .user-signIn-form input {
@@ -376,7 +376,7 @@ body {
   }
   .main .sign-up-page .user-signUp .user-signUp-form, .main .sign-up-page .user-signUp .user-signIn-form, .main .sign-up-page .user-signIn .user-signUp-form, .main .sign-up-page .user-signIn .user-signIn-form {
     height: 100%;
-    background: #dedede;
+    background: #F9F9F9 !important;
     padding: 107px 80px;
   }
   .main .sign-up-page .user-signUp .user-signUp-form input, .main .sign-up-page .user-signUp .user-signIn-form input, .main .sign-up-page .user-signIn .user-signUp-form input, .main .sign-up-page .user-signIn .user-signIn-form input {

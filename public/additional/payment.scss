@@ -1,0 +1,1158 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter";
+  font-style: normal;
+}
+
+.main {
+  .sign-up-page {
+    .background-image {
+        background-image: url("../../dist/img/customer-panel/sign-up.webp");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      width: 100%;
+      height: 840px;
+
+
+      position: relative;
+
+      .user-welocme {
+        background: rgba(0, 0, 0, 0.65);
+        width: 90%;
+        height: 336px;
+        padding: 32px 28px 32px 67px;
+
+        .welcome-text {
+          font-weight: 400;
+          font-size: 28px;
+          line-height: 63px;
+          color: #ffffff;
+          position: relative;
+        }
+
+        .welcome-border {
+          position: absolute;
+          height: 1px;
+          background: linear-gradient(90deg, #d9d9d9 50%, rgba(217, 217, 217, 0) 89.26%);
+          width: 239px;
+          top: 42px;
+          left: 0;
+        }
+
+        .state-text {
+          font-weight: 400;
+          font-size: 25px;
+          line-height: 70px;
+          color: #ffffff;
+        }
+
+        .industries-export-text {
+          span {
+            font-weight: 400;
+            font-size: 45px;
+            line-height: 70px;
+            color: #ffffff;
+            text-transform: uppercase;
+          }
+        }
+      }
+
+      .sign-up-footer {
+        background: #333333;
+        padding: 20px 34px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        .policy-warranty-link {
+          a {
+            font-weight: 300;
+            font-size: 13px;
+            line-height: 19px;
+            color: #ffffff;
+            text-decoration: none;
+          }
+        }
+
+        .copy-right-section {
+          .copy-right-text {
+            font-weight: 300;
+            font-size: 13px;
+            line-height: 19px;
+            color: #ffffff;
+          }
+
+          .owners-text {
+            p {
+              font-weight: 300;
+              font-size: 10px;
+              line-height: 14px;
+              color: #ffffff;
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+
+    .user-signUp,
+    .user-signIn {
+
+      .user-signUp-form,
+      .user-signIn-form {
+        height: 100%;
+        background: #F9F9F9;
+        padding: 107px 80px;
+ 
+      }
+      .user-signIn-form {
+        padding: 240px 80px;
+
+    
+      }
+    
+    }
+
+    .payment-method {
+      position: relative;
+
+    }
+    select.form-select.form-select-lg.mb-3.category-selection {
+      color: #8b8b8b;
+      font-weight: 400;
+      font-size: 12px;
+      height: 40px;
+      background: #ffffff;
+      border: 1px solid #f5f5f5;
+      box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+      border-radius: 6px;
+  }
+  .select-selected:after {
+    position: absolute;
+    content: "";
+    top: 18px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid #8b8b8b;
+    border-color: #8b8b8b transparent transparent transparent;
+  }
+  .cvv {
+    position: relative;
+  }
+    .eye-icon {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+    }
+    .action {
+      .pay-btn {
+        background: #b4b4b4;
+        box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+        border-radius: 6px;
+        height: 40px;
+        color: #ffffff;
+        text-transform: capitalize;
+        &:hover {
+          background: #00465f;
+          box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .main .sign-up-page .user-signUp .user-signUp-form .sign-up-text {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form,
+  .main .sign-up-page .user-signUp .user-signIn-form,
+  .main .sign-up-page .user-signIn .user-signUp-form,
+  .main .sign-up-page .user-signIn .user-signIn-form {
+    height: 100%;
+    background: #F9F9F9;
+    padding: 20px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .sign-in-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .sign-up-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .sign-in-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .sign-up-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .sign-in-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .sign-up-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .sign-in-text {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 18px;
+    color: #353535;
+  }
+
+  .main .sign-up-page .background-image .user-welocme {
+    padding: 20px;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .welcome-text {
+    font-size: 20px;
+    line-height: 68px;
+    position: relative;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .industries-export-text span {
+    font-size: 22px;
+    line-height: 31px;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .state-text {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 27px;
+    color: #ffffff;
+  }
+
+  .main .sign-up-page .background-image .sign-up-footer {
+    background: #333333;
+    padding: 20px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+/*# sourceMappingURL=signUp.css.map */
+@media (min-width: 766.99px) and (max-width:768px) {
+  .main .sign-up-page .user-signUp .user-signUp-form .sign-up-text {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+
+  }
+
+  .main .sign-up-page .background-image .user-welocme .industries-export-text span {
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 46px;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+}
+
+@media (min-width: 768px) {
+  .main .sign-up-page .user-signUp .user-signUp-form .sign-up-text {
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .sign-in-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .sign-up-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .sign-in-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .sign-up-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .sign-in-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .sign-up-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .sign-in-text {
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 21px;
+    color: #353535;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .industries-export-text span {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .welcome-text {
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 63px;
+    color: #FFFFFE;
+    position: relative;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .state-text {
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 38px;
+    color: #ffffff;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form,
+  .main .sign-up-page .user-signUp .user-signIn-form,
+  .main .sign-up-page .user-signIn .user-signUp-form,
+  .main .sign-up-page .user-signIn .user-signIn-form {
+    padding: 20px;
+  }
+  // radio button
+  .main .sign-up-page .user-signIn .user-signIn-form .profile-input-box h4 {
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 21px;
+    color: #353535;
+    margin-bottom: 0;
+}
+}
+
+@media (min-width: 992px) {
+  .main {
+    .sign-up-page {
+      .background-image {
+        background-image: url("../../dist/img/customer-panel/sign-up.webp");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        width: 100%;
+        height: 840px;
+  
+  
+        position: relative;
+  
+        .user-welocme {
+          background: rgba(0, 0, 0, 0.65);
+          width: 90%;
+          height: 336px;
+          padding: 32px 28px 32px 67px;
+  
+          .welcome-text {
+            font-weight: 400;
+            font-size: 28px;
+            line-height: 63px;
+            color: #ffffff;
+            position: relative;
+          }
+  
+          .welcome-border {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, #d9d9d9 50%, rgba(217, 217, 217, 0) 89.26%);
+            width: 239px;
+            top: 42px;
+            left: 0;
+          }
+  
+          .state-text {
+            font-weight: 400;
+            font-size: 25px;
+            line-height: 70px;
+            color: #ffffff;
+          }
+  
+          .industries-export-text {
+            span {
+              font-weight: 400;
+              font-size: 45px;
+              line-height: 70px;
+              color: #ffffff;
+              text-transform: uppercase;
+            }
+          }
+        }
+  
+        .sign-up-footer {
+          background: #333333;
+          padding: 20px 34px;
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+  
+          .policy-warranty-link {
+            a {
+              font-weight: 300;
+              font-size: 13px;
+              line-height: 19px;
+              color: #ffffff;
+              text-decoration: none;
+            }
+          }
+  
+          .copy-right-section {
+            .copy-right-text {
+              font-weight: 300;
+              font-size: 13px;
+              line-height: 19px;
+              color: #ffffff;
+            }
+  
+            .owners-text {
+              p {
+                font-weight: 300;
+                font-size: 10px;
+                line-height: 14px;
+                color: #ffffff;
+                margin-bottom: 0;
+              }
+            }
+          }
+        }
+      }
+  
+      .user-signUp,
+      .user-signIn {
+  
+        .user-signUp-form,
+        .user-signIn-form {
+          height: 100%;
+          background: #F9F9F9;
+          padding: 107px 80px;
+  
+          input {
+            color: #8b8b8b;
+            font-weight: 400;
+            font-size: 12px;
+            height: 40px;
+            background: #ffffff;
+            border: 1px solid #f5f5f5;
+            box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+            border-radius: 6px;
+          }
+  
+          .password {
+            position: relative;
+  
+            .eye-icon {
+              position: absolute;
+              top: 15px;
+              right: 15px;
+            }
+          }
+  
+          .sign-up-text,
+          .sign-in-text {
+            font-weight: 700;
+            font-size: 37px;
+            line-height: 21px;
+            color: #353535;
+          }
+          .action {
+            .send-otp-btn,
+            .continue-btn {
+              background: #b4b4b4;
+              box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+              border-radius: 6px;
+              height: 40px;
+              color: #ffffff;
+            }
+  
+            :hover {
+              background: #00465f;
+              box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+            }
+          }
+
+          .login-btn {
+            background: #00465F;
+            box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+            border-radius: 6px;
+            height: 40px;
+            color: #FFFFFF;
+          }
+        }
+        .user-signIn-form {
+          padding: 240px 80px;
+
+        }
+
+      }
+    }
+  }
+  
+}
+
+@media (min-width: 1200px) {
+  .main .sign-up-page .user-signUp .user-signUp-form .sign-up-text {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 23px;
+    color: #353535;
+  }
+
+  .main .sign-up-page .background-image .user-welocme {
+    background: rgba(0, 0, 0, 0.65);
+    width: 90%;
+    height: 336px;
+    padding: 32px 28px 32px 67px;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .welcome-text {
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 63px;
+    color: #ffffff;
+    position: relative;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .welcome-border {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, #d9d9d9 50%, rgba(217, 217, 217, 0) 89.26%);
+    width: 239px;
+    top: 42px;
+    left: 0;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .state-text {
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 70px;
+    color: #ffffff;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .industries-export-text span {
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 55px;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+
+  .main .sign-up-page .background-image .sign-up-footer {
+    background: #333333;
+    padding: 20px 34px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .main .sign-up-page .background-image .sign-up-footer .policy-warranty-link a {
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 19px;
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .main .sign-up-page .background-image .sign-up-footer .copy-right-section .copy-right-text {
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 19px;
+    color: #ffffff;
+  }
+
+  .main .sign-up-page .background-image .sign-up-footer .copy-right-section .owners-text p {
+    font-weight: 300;
+    font-size: 10px;
+    line-height: 14px;
+    color: #ffffff;
+    margin-bottom: 0;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form,
+  .main .sign-up-page .user-signUp .user-signIn-form,
+  .main .sign-up-page .user-signIn .user-signUp-form,
+  .main .sign-up-page .user-signIn .user-signIn-form {
+    height: 100%;
+    background: #F9F9F9;
+    padding: 107px 80px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form input,
+  .main .sign-up-page .user-signUp .user-signIn-form input,
+  .main .sign-up-page .user-signIn .user-signUp-form input,
+  .main .sign-up-page .user-signIn .user-signIn-form input {
+    color: #8b8b8b;
+    font-weight: 400;
+    font-size: 12px;
+    height: 40px;
+    background: #ffffff;
+    border: 1px solid #f5f5f5;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .password,
+  .main .sign-up-page .user-signUp .user-signIn-form .password,
+  .main .sign-up-page .user-signIn .user-signUp-form .password,
+  .main .sign-up-page .user-signIn .user-signIn-form .password {
+    position: relative;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .password .eye-icon,
+  .main .sign-up-page .user-signUp .user-signIn-form .password .eye-icon,
+  .main .sign-up-page .user-signIn .user-signUp-form .password .eye-icon,
+  .main .sign-up-page .user-signIn .user-signIn-form .password .eye-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .sign-in-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .sign-up-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .sign-in-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .sign-up-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .sign-in-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .sign-up-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .sign-in-text {
+    font-weight: 700;
+    font-size: 37px;
+    line-height: 21px;
+    color: #353535;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .document-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .document-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .document-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .document-text {
+    margin: 45px 0;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .details-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .details-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .details-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .details-text {
+    margin: 20px 0 35px 0;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 21px;
+    color: #353535;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .password-hint,
+  .main .sign-up-page .user-signUp .user-signIn-form .password-hint,
+  .main .sign-up-page .user-signIn .user-signUp-form .password-hint,
+  .main .sign-up-page .user-signIn .user-signIn-form .password-hint {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .password-hint .sign-up-note,
+  .main .sign-up-page .user-signUp .user-signIn-form .password-hint .sign-up-note,
+  .main .sign-up-page .user-signIn .user-signUp-form .password-hint .sign-up-note,
+  .main .sign-up-page .user-signIn .user-signIn-form .password-hint .sign-up-note {
+    color: #ff0000;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .password-hint .password-hint-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .password-hint .password-hint-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .password-hint .password-hint-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .password-hint .password-hint-text {
+    color: #6c6c6c;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .send-otp #otpHelpInline,
+  .main .sign-up-page .user-signUp .user-signIn-form .send-otp #otpHelpInline,
+  .main .sign-up-page .user-signIn .user-signUp-form .send-otp #otpHelpInline,
+  .main .sign-up-page .user-signIn .user-signIn-form .send-otp #otpHelpInline {
+    color: #353535;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 21px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .action .send-otp-btn,
+  .main .sign-up-page .user-signUp .user-signUp-form .action .continue-btn,
+  .main .sign-up-page .user-signUp .user-signIn-form .action .send-otp-btn,
+  .main .sign-up-page .user-signUp .user-signIn-form .action .continue-btn,
+  .main .sign-up-page .user-signIn .user-signUp-form .action .send-otp-btn,
+  .main .sign-up-page .user-signIn .user-signUp-form .action .continue-btn,
+  .main .sign-up-page .user-signIn .user-signIn-form .action .send-otp-btn,
+  .main .sign-up-page .user-signIn .user-signIn-form .action .continue-btn {
+    background: #b4b4b4;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+    height: 40px;
+    color: #ffffff;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .action :hover,
+  .main .sign-up-page .user-signUp .user-signIn-form .action :hover,
+  .main .sign-up-page .user-signIn .user-signUp-form .action :hover,
+  .main .sign-up-page .user-signIn .user-signIn-form .action :hover {
+    background: #00465f;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .upload-document-form .upload-files,
+  .main .sign-up-page .user-signUp .user-signIn-form .upload-document-form .upload-files,
+  .main .sign-up-page .user-signIn .user-signUp-form .upload-document-form .upload-files,
+  .main .sign-up-page .user-signIn .user-signIn-form .upload-document-form .upload-files {
+    background: #FFFFFF;
+    border: 1px solid #F5F5F5;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+    padding: 10px;
+    width: 80%;
+    min-height: 106px;
+    cursor: pointer;
+  }
+
+
+
+  .main .sign-up-page .user-signUp .user-signUp-form .upload-document-form .continue-btn,
+  .main .sign-up-page .user-signUp .user-signIn-form .upload-document-form .continue-btn,
+  .main .sign-up-page .user-signIn .user-signUp-form .upload-document-form .continue-btn,
+  .main .sign-up-page .user-signIn .user-signIn-form .upload-document-form .continue-btn {
+    background: #00465F;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .login-btn,
+  .main .sign-up-page .user-signUp .user-signIn-form .login-btn,
+  .main .sign-up-page .user-signIn .user-signUp-form .login-btn,
+  .main .sign-up-page .user-signIn .user-signIn-form .login-btn {
+    background: #00465F;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+    height: 40px;
+    color: #FFFFFF;
+  }
+
+  .main .sign-up-page .user-signUp .user-document-form,
+  .main .sign-up-page .user-signIn .user-document-form {
+    padding: 77px 80px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signIn-form,
+  .main .sign-up-page .user-signIn .user-signIn-form {
+    padding: 240px 80px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signIn-form .forgot-password-link a,
+  .main .sign-up-page .user-signIn .user-signIn-form .forgot-password-link a {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: #00465F;
+    text-decoration: none;
+  }
+
+  .main .sign-up-page .user-signUp .process-pending-form .process-pending-text,
+  .main .sign-up-page .user-signIn .process-pending-form .process-pending-text {
+    font-weight: 400;
+    font-size: 24px;
+    color: #8B8B8B;
+    margin-top: 32px;
+    line-height: 35px;
+  }
+
+  .main .sign-up-page .user-signUp .process-pending-form .action .continue-btn,
+  .main .sign-up-page .user-signIn .process-pending-form .action .continue-btn {
+    margin-top: 52px;
+    background: #00465F;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+  }
+}
+
+@media (min-width: 1400px) {
+  .main .sign-up-page .background-image .user-welocme {
+    background: rgba(0, 0, 0, 0.65);
+    width: 90%;
+    height: 336px;
+    padding: 32px 28px 32px 67px;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .welcome-text {
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 63px;
+    color: #ffffff;
+    position: relative;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .welcome-border {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, #d9d9d9 50%, rgba(217, 217, 217, 0) 89.26%);
+    width: 239px;
+    top: 42px;
+    left: 0;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .state-text {
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 70px;
+    color: #ffffff;
+  }
+
+  .main .sign-up-page .background-image .user-welocme .industries-export-text span {
+    font-weight: 400;
+    font-size: 43px;
+    line-height: 68px;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+
+  .main .sign-up-page .background-image .sign-up-footer {
+    background: #333333;
+    padding: 20px 34px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .main .sign-up-page .background-image .sign-up-footer .policy-warranty-link a {
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 19px;
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .main .sign-up-page .background-image .sign-up-footer .copy-right-section .copy-right-text {
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 19px;
+    color: #ffffff;
+  }
+
+  .main .sign-up-page .background-image .sign-up-footer .copy-right-section .owners-text p {
+    font-weight: 300;
+    font-size: 10px;
+    line-height: 14px;
+    color: #ffffff;
+    margin-bottom: 0;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form,
+  .main .sign-up-page .user-signUp .user-signIn-form,
+  .main .sign-up-page .user-signIn .user-signUp-form,
+  .main .sign-up-page .user-signIn .user-signIn-form {
+    height: 100%;
+    background: #F9F9F9;
+    padding: 107px 80px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form input,
+  .main .sign-up-page .user-signUp .user-signIn-form input,
+  .main .sign-up-page .user-signIn .user-signUp-form input,
+  .main .sign-up-page .user-signIn .user-signIn-form input {
+    color: #8b8b8b;
+    font-weight: 400;
+    font-size: 12px;
+    height: 40px;
+    background: #ffffff;
+    border: 1px solid #f5f5f5;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .password,
+  .main .sign-up-page .user-signUp .user-signIn-form .password,
+  .main .sign-up-page .user-signIn .user-signUp-form .password,
+  .main .sign-up-page .user-signIn .user-signIn-form .password {
+    position: relative;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .password .eye-icon,
+  .main .sign-up-page .user-signUp .user-signIn-form .password .eye-icon,
+  .main .sign-up-page .user-signIn .user-signUp-form .password .eye-icon,
+  .main .sign-up-page .user-signIn .user-signIn-form .password .eye-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .sign-up-text,
+  .main .sign-up-page .user-signUp .user-signUp-form .sign-in-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .sign-up-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .sign-in-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .sign-up-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .sign-in-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .sign-up-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .sign-in-text {
+    font-weight: 700;
+    font-size: 37px;
+    line-height: 21px;
+    color: #353535;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .document-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .document-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .document-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .document-text {
+    margin: 45px 0;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .details-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .details-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .details-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .details-text {
+    margin: 20px 0 35px 0;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 21px;
+    color: #353535;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .password-hint,
+  .main .sign-up-page .user-signUp .user-signIn-form .password-hint,
+  .main .sign-up-page .user-signIn .user-signUp-form .password-hint,
+  .main .sign-up-page .user-signIn .user-signIn-form .password-hint {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .password-hint .sign-up-note,
+  .main .sign-up-page .user-signUp .user-signIn-form .password-hint .sign-up-note,
+  .main .sign-up-page .user-signIn .user-signUp-form .password-hint .sign-up-note,
+  .main .sign-up-page .user-signIn .user-signIn-form .password-hint .sign-up-note {
+    color: #ff0000;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .password-hint .password-hint-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .password-hint .password-hint-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .password-hint .password-hint-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .password-hint .password-hint-text {
+    color: #6c6c6c;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .send-otp #otpHelpInline,
+  .main .sign-up-page .user-signUp .user-signIn-form .send-otp #otpHelpInline,
+  .main .sign-up-page .user-signIn .user-signUp-form .send-otp #otpHelpInline,
+  .main .sign-up-page .user-signIn .user-signIn-form .send-otp #otpHelpInline {
+    color: #353535;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 21px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .action .send-otp-btn,
+  .main .sign-up-page .user-signUp .user-signUp-form .action .continue-btn,
+  .main .sign-up-page .user-signUp .user-signIn-form .action .send-otp-btn,
+  .main .sign-up-page .user-signUp .user-signIn-form .action .continue-btn,
+  .main .sign-up-page .user-signIn .user-signUp-form .action .send-otp-btn,
+  .main .sign-up-page .user-signIn .user-signUp-form .action .continue-btn,
+  .main .sign-up-page .user-signIn .user-signIn-form .action .send-otp-btn,
+  .main .sign-up-page .user-signIn .user-signIn-form .action .continue-btn {
+    background: #b4b4b4;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+    height: 40px;
+    color: #ffffff;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .action :hover,
+  .main .sign-up-page .user-signUp .user-signIn-form .action :hover,
+  .main .sign-up-page .user-signIn .user-signUp-form .action :hover,
+  .main .sign-up-page .user-signIn .user-signIn-form .action :hover {
+    background: #00465f;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .upload-document-form .upload-files,
+  .main .sign-up-page .user-signUp .user-signIn-form .upload-document-form .upload-files,
+  .main .sign-up-page .user-signIn .user-signUp-form .upload-document-form .upload-files,
+  .main .sign-up-page .user-signIn .user-signIn-form .upload-document-form .upload-files {
+    background: #FFFFFF;
+    border: 1px solid #F5F5F5;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+    padding: 10px;
+    width: 80%;
+    min-height: 106px;
+    cursor: pointer;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .upload-document-form .upload-files .upload-text {
+    min-height: 54px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .upload-document-form .upload-files .upload-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .upload-document-form .upload-files .upload-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .upload-document-form .upload-files .upload-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .upload-document-form .upload-files .upload-text {
+    color: #8B8B8B;
+    font-weight: 400;
+    font-size: 12px;
+    margin-top: 14px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .upload-document-form .format-text,
+  .main .sign-up-page .user-signUp .user-signIn-form .upload-document-form .format-text,
+  .main .sign-up-page .user-signIn .user-signUp-form .upload-document-form .format-text,
+  .main .sign-up-page .user-signIn .user-signIn-form .upload-document-form .format-text {
+    color: #8B8B8B;
+    font-weight: 400;
+    font-size: 12px;
+    margin-top: 14px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .upload-document-form .continue-btn,
+  .main .sign-up-page .user-signUp .user-signIn-form .upload-document-form .continue-btn,
+  .main .sign-up-page .user-signIn .user-signUp-form .upload-document-form .continue-btn,
+  .main .sign-up-page .user-signIn .user-signIn-form .upload-document-form .continue-btn {
+    background: #00465F;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+  }
+
+  .main .sign-up-page .user-signUp .user-signUp-form .login-btn,
+  .main .sign-up-page .user-signUp .user-signIn-form .login-btn,
+  .main .sign-up-page .user-signIn .user-signUp-form .login-btn,
+  .main .sign-up-page .user-signIn .user-signIn-form .login-btn {
+    background: #00465F;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+    height: 40px;
+    color: #FFFFFF;
+  }
+
+  .main .sign-up-page .user-signUp .user-document-form,
+  .main .sign-up-page .user-signIn .user-document-form {
+    padding: 77px 80px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signIn-form,
+  .main .sign-up-page .user-signIn .user-signIn-form {
+    padding: 240px 80px;
+  }
+
+  .main .sign-up-page .user-signUp .user-signIn-form .forgot-password-link a,
+  .main .sign-up-page .user-signIn .user-signIn-form .forgot-password-link a {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: #00465F;
+    text-decoration: none;
+  }
+
+  .main .sign-up-page .user-signUp .process-pending-form .process-pending-text,
+  .main .sign-up-page .user-signIn .process-pending-form .process-pending-text {
+    font-weight: 400;
+    font-size: 24px;
+    color: #8B8B8B;
+    margin-top: 32px;
+    line-height: 35px;
+  }
+
+  .main .sign-up-page .user-signUp .process-pending-form .action .continue-btn,
+  .main .sign-up-page .user-signIn .process-pending-form .action .continue-btn {
+    margin-top: 52px;
+    background: #00465F;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+  }
+}
+.payment {
+    padding: 62px 0;
+    position: relative;
+    .payment-method {
+      position: relative;
+      select,
+      input {
+        color: #8b8b8b;
+        font-weight: 400;
+        font-size: 12px;
+        height: 40px;
+        background: #ffffff;
+        border: 1px solid #f5f5f5;
+        box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+        border-radius: 6px;
+      }
+      .select-selected:after {
+        position: absolute;
+        content: "";
+        top: 18px;
+        right: 10px;
+        width: 0;
+        height: 0;
+        border: 6px solid #8b8b8b;
+        border-color: #8b8b8b transparent transparent transparent;
+      }
+      .cvv {
+        position: relative;
+        .eye-icon {
+          position: absolute;
+          top: 15px;
+          right: 25px;
+        }
+      }
+      .action {
+        .pay-btn {
+          background: #b4b4b4;
+          box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+          border-radius: 6px;
+          height: 40px;
+          color: #ffffff;
+          text-transform: capitalize;
+          &:hover {
+            background: #00465f;
+            box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+          }
+        }
+      }
+    }
+    .payment-option {
+      position: relative;
+      select {
+        color: #8b8b8b;
+        font-weight: 400;
+        font-size: 12px;
+        height: 40px;
+        background: #ffffff;
+        border: 1px solid #f5f5f5;
+        box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+        border-radius: 6px;
+        position: relative;
+      }
+      .select-selected:after {
+        position: absolute;
+        content: "";
+        top: 18px;
+        right: 10px;
+        width: 0;
+        height: 0;
+        border: 6px solid #8b8b8b;
+        border-color: #8b8b8b transparent transparent transparent;
+      }
+    }
+
+    .payment-form {
+      position: relative;
+      input {
+        color: #8b8b8b;
+        font-weight: 400;
+        font-size: 12px;
+        height: 40px;
+        background: #ffffff;
+        border: 1px solid #f5f5f5;
+        box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+        border-radius: 6px;
+        position: relative;
+        text-indent: 30px;
+        z-index: 1;
+      }
+      .rupee-icon {
+        position: absolute;
+        top: 20%;
+        right: auto;
+        z-index: 2;
+        left: 12px;
+        margin: auto;
+        transform: translate(50%, -50%);
+      }
+      .next-btn {
+        background: #b4b4b4;
+        box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+        border-radius: 6px;
+        height: 40px;
+        color: #ffffff;
+        text-transform: capitalize;
+        &:hover {
+          background: #8a2283;
+          box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.03);
+        }
+      }
+    }
+  }

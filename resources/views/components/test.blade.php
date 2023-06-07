@@ -329,6 +329,7 @@ function readURL(input, obj){
   cursor: pointer;
   opacity: 0.8;
 }
+
 .file-set > input{pointer-events: none;}
 </style>
 </body>

@@ -22,7 +22,7 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo' => '<b>Laravel</b> admin',
+    'logo' => '<b>PSIEC</b> Admin Panel',
     // 'logo' => '',
 
     /*
@@ -35,8 +35,8 @@ return [
     | '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo-mini' => '<b>La</b>',
-    // 'logo-mini' => '',
+    //'logo-mini' => '<b>PSIEC</b>',
+    'logo-mini' => 'PSIEC',
 
     /*
     |--------------------------------------------------------------------------
@@ -159,8 +159,8 @@ return [
 
         // Image and file upload path under the disk above.
         'directory' => [
-            'image' => 'images',
-            'file'  => 'files',
+            // 'image' => 'images',
+            // 'file'  => 'files',
         ],
     ],
 
@@ -252,6 +252,7 @@ return [
     |
     */
     'default_avatar' => '/vendor/laravel-admin/AdminLTE/dist/img/user2-160x160.jpg',
+    // 'default_avatar' => '/2fb3a16d716fae03351ceb5b3a86fd16.png',
 
     /*
     |--------------------------------------------------------------------------
@@ -410,5 +411,25 @@ return [
         'media-manager' => [
             'disk' => 'admin'   // Points to the disk set in config/filesystem.php
         ],
+        'chartjs' => [
+        
+            // Set to `false` if you want to disable this extension
+            'enable' => true,
+        ]
     ],
+
+
+    // 'menu' => [
+    //     [
+    //         'title' => 'New',
+    //         'icon' => 'fa-plus',
+    //         'uri' => 'admin/products/create',
+    //         'permission' => 'create_product', // Permission required to access the button
+    //         'roles' => ['YardCreator'], // Roles that have access to the button
+    //     ],
+    //     // Other menu items
+    // ],
+
+
+
 ];

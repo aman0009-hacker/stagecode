@@ -73,45 +73,44 @@
               </div>
             </div>
             {{-- <form action="{{ route('reset.password.post') }}" method="POST"> --}}
-                <form action="/reset-password" method="POST"> 
-              @csrf
-              <input type="hidden" name="token" value="{{ request()->route('token') }}">
-              <div class="form-group row">
-                <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail</label>
-                <div class="col-md-6">
-                  <input type="email" id="email_address" class="form-control" name="email" required autofocus>
-                  @if ($errors->has('email'))
-                  <span class="text-danger">{{ $errors->first('email') }}</span>
-                  @endif
+              <form action="/reset-password" method="POST">
+                @csrf
+                <input type="hidden" name="token" value="{{ request()->route('token') }}">
+                <div class="form-group row">
+                  <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail</label>
+                  <div class="col-md-6">
+                    <input type="email" id="email_address" class="form-control" name="email" required autofocus>
+                    @if ($errors->has('email'))
+                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                    @endif
+                  </div>
                 </div>
-              </div>
-              <div class="form-group row pt-2">
-                <label for="password" class="col-md-4 col-form-label text-md-right">New Password</label>
-                <div class="col-md-6">
-                  <input type="password" id="password" class="form-control" name="password" 
-                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$"
-                  required autofocus>
-                  @if ($errors->has('password'))
-                  <span class="text-danger">{{ $errors->first('password') }}</span>
-                  @endif
+                <div class="form-group row pt-2">
+                  <label for="password" class="col-md-4 col-form-label text-md-right">New Password</label>
+                  <div class="col-md-6">
+                    <input type="password" id="password" class="form-control" name="password"
+                      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$" required autofocus>
+                    @if ($errors->has('password'))
+                    <span class="text-danger">{{ $errors->first('password') }}</span>
+                    @endif
+                  </div>
                 </div>
-              </div>
-              <div class="form-group row pt-2">
-                <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
-                <div class="col-md-6">
-                  <input type="password" id="password-confirm" class="form-control" name="password_confirmation"
-                    required autofocus>
-                  @if ($errors->has('password_confirmation'))
-                  <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>
-                  @endif
+                <div class="form-group row pt-2">
+                  <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
+                  <div class="col-md-6">
+                    <input type="password" id="password-confirm" class="form-control" name="password_confirmation"
+                      required autofocus>
+                    @if ($errors->has('password_confirmation'))
+                    <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>
+                    @endif
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-6 offset-md-4 pt-2">
-                <button type="submit" class="btn btn-primary">
-                  Reset Password
-                </button>
-              </div>
-            </form>
+                <div class="col-md-6 offset-md-4 pt-2">
+                  <button type="submit" class="btn btn-primary">
+                    Reset Password
+                  </button>
+                </div>
+              </form>
           </div>
         </div>
       </div>

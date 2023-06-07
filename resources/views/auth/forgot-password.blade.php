@@ -77,12 +77,12 @@
               {{ Session::get('message') }}
             </div>
             @endif
-           @if (Session::has('status'))
-           <div class="alert alert-success" id="successmsg">
-            <strong>Great!</strong> Reset Password mail has  <b>successfully</b> send to 
-            the registered <b>email id</b>.
-          </div>
-           @endif
+            @if (Session::has('status'))
+            <div class="alert alert-success" id="successmsg">
+              <strong>Great!</strong> Reset Password mail has <b>successfully</b> send to
+              the registered <b>email id</b>.
+            </div>
+            @endif
             <form action="/forgot-password" method="POST" autocomplete="off">
               @csrf
               <div class="form-group row">
