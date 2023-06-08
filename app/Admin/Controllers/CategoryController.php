@@ -39,9 +39,9 @@ class CategoryController extends AdminController
             return Carbon::parse($value)->format('Y-m-d H:i:s');
         });
         //$grid->column('updated_at', __('Updated at'));
-        $grid->actions(function ($actions) {
-            $actions->disableEdit();
-        });
+        // $grid->actions(function ($actions) {
+        //     $actions->disableEdit();
+        // });
 
         $grid->filter(function ($filter) {
             // $filter->notIn('id', __('Id'));
@@ -60,6 +60,7 @@ class CategoryController extends AdminController
 
 
           $grid->actions(function ($actions) {
+            $actions->disableEdit();
             if (Admin::user()->can('create-post')) {
                 Permission::check('create-post');
             }
@@ -102,7 +103,19 @@ class CategoryController extends AdminController
 
             return $products;
         });
-        $form->text('name', __('Category'));
+
+        
+        // $form->text('name', __('Category'));
+
+
+        $form->text('name', __('Category'))->rules(function($form)
+        {
+         $id=$form->model()->id;
+         // Set the validation rule
+         return 'required|unique:categories,name,' . $id . ',id';
+        });
+
+
         return $form;
     }
 }
