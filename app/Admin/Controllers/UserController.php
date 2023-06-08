@@ -39,7 +39,7 @@ class UserController extends AdminController
   protected function grid()
   {
     $grid = new Grid(new User());
-    // $grid->column('id', __('Id'))->sortable();
+    // $grid->column('id', __('Id'));
     $grid->column('name', __('First Name'));
     $grid->column('last_name', __('Last Name'));
     $grid->column('email', __('Email'));
@@ -111,17 +111,22 @@ class UserController extends AdminController
     $grid->filter(function ($filter) {
       // $filter->notIn('id', __('Id'));
       $filter->disableIdFilter();
-      $filter->column(1 / 2, function ($filter) {
-        $filter->like('name', __('First Name'));
-        $filter->like('email', __('Email'));
+      $filter->like('email', __('Email'));
+      // $filter->column(1 / 2, function ($filter) {
+      //   $filter->like('name', __('First Name'));
+      //   $filter->like('email', __('Email'));
 
-      });
-      $filter->column(1 / 2, function ($filter) {
-        $filter->like('last_name', __('Last Name'));
-        $filter->like('contact_number', __('Contact'));
-      });
+      // });
+      // $filter->column(1 / 2, function ($filter) {
+      //   $filter->like('last_name', __('Last Name'));
+      //   $filter->like('contact_number', __('Contact'));
+      // });
     });
-    $grid->model()->orderBy('created_at', 'desc');
+    //$grid->model()->orderBy('created_at', 'desc');
+   $grid->model()->whereHas('attachment', function ($query) {
+      $query->whereNotNull('filename');
+  })->orderByDesc('created_at');
+
     return $grid;
   }
 
