@@ -37,10 +37,12 @@ class ProductController extends AdminController
         });
         // $grid->column('updated_at', __('Updated at'));
 
-        $grid->actions(function ($actions) {
-            $actions->disableEdit();
-        });
+        // $grid->actions(function ($actions) {
+        //     $actions->disableEdit();
+        // });
 
+      
+     
         $grid->filter(function ($filter) {
             // $filter->notIn('id', __('Id'));
             $filter->disableIdFilter();
@@ -57,17 +59,12 @@ class ProductController extends AdminController
           });
        
           $grid->actions(function ($actions) {
+            $actions->disableEdit();
             if (Admin::user()->can('create-post')) {
                 Permission::check('create-post');
             }
         });
         
-      
-      
-    
-
-
-
         return $grid;
     }
 
