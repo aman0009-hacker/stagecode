@@ -122,23 +122,35 @@ class EntityController extends AdminController
     {
         $form = new Form(new Entity());
 
+        // $form->select('product_id', 'Product')
+        // ->options(function () {
+        //     // Retrieve the products from the database
+        //     $products = Product::pluck('name', 'id');
+
+        //     // Add a placeholder option
+        //     $products->prepend('-- Select Product --', '');
+
+        //     return $products;
+        // })
+        // ->rules('required')->load('category_id', '/admin/load-categories');
+
         $form->select('product_id', 'Product')
         ->options(function () {
             // Retrieve the products from the database
             $products = Product::pluck('name', 'id');
-
+    
             // Add a placeholder option
-            $products->prepend('-- Select Product --', '');
-
+            $products = ['' => '-- Select Product --'] + $products->toArray();
+    
             return $products;
         })
-        ->rules('required')->load('category_id', '/admin/load-categories');
+        ->rules('required')
+        ->default('')
+        ->load('category_id', '/admin/load-categories');
+    
+
         $form->select('category_id', 'Category')->rules('required')->load('entity_id', '/admin/load-entities');
-
         // $form->text('entity_id', 'Entity')->;
-
-
-
         $form->text('name', __('Entity Name'));
         $form->text('description', __('Description'));
         $form->text('size', __('Size'));
@@ -146,9 +158,7 @@ class EntityController extends AdminController
         $form->number('quantity', __('Quantity'));
         $form->number('remaining', __('Remaining'));
         $form->text('measurement', __('Measurement'));
-        $form->text('entity_id', __('Category'));
-
-
+        $form->select('entity_id', __('Category ID'))->rules('required');
         $form->submitted(function (Form $form) {
             $form->ignore('product_id');
             $form->ignore('category_id');
