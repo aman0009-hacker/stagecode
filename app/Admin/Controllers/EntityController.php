@@ -59,9 +59,9 @@ class EntityController extends AdminController
             return Carbon::parse($value)->format('Y-m-d H:i:s');
         });
         // $grid->column('updated_at', __('Updated at'));
-        $grid->actions(function ($actions) {
-            $actions->disableEdit();
-        });
+        // $grid->actions(function ($actions) {
+        //     $actions->disableEdit();
+        // });
 
 
         $grid->filter(function ($filter) {
@@ -81,6 +81,7 @@ class EntityController extends AdminController
 
 
           $grid->actions(function ($actions) {
+            $actions->disableEdit();
             if (Admin::user()->can('create-post')) {
                 Permission::check('create-post');
             }
