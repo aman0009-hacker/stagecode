@@ -39,9 +39,15 @@ class BatchReplicate extends BatchAction
                 array_push($filePaths, $filename);
             }
 
-        }
+        }        if(isset($filePaths) && count($filePaths)>0)
+        {
         $downloadFile = $this->download($model, $filePaths);
         return $this->response()->success('Success!')->download($downloadFile);
+        }
+        else 
+        {
+            return $this->response()->error('Oops! No file or file is corrupt internally');
+        }
 
     }
 
