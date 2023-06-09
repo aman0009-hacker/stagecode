@@ -34,9 +34,7 @@ class CustomPageController extends AdminController
     {
         $stateName = $request->input('q');
         $stateId = State::where('name', $stateName)->first()->id;
-
         $cities = City::where('state_id', $stateId)->pluck('name', 'id');
-
         return $cities;
     }
 

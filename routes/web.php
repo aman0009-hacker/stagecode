@@ -228,4 +228,8 @@ Route::any('congratulations', function()
 })->name('congratulations'); 
 
 
+Route::post("/checkStatus",[LoginController::class,'chartStatus'])->name('checkStatus');
+
 Route::post("/chartApproveStatus",[App\Admin\Controllers\CustomPageController::class,'chartApproveStatus'])->name('chartApproveStatus');
+
+

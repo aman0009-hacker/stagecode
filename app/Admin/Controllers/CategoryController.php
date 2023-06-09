@@ -61,6 +61,7 @@ class CategoryController extends AdminController
 
           $grid->actions(function ($actions) {
             $actions->disableEdit();
+            $actions->disableView(); 
             if (Admin::user()->can('create-post')) {
                 Permission::check('create-post');
             }

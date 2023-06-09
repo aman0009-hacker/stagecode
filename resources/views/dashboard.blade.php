@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title> Dashboard</title>
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
@@ -28,6 +29,10 @@
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
   <!-- sctylesheet -->
   <link rel="stylesheet" href="./dist/css/index.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+  integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="{{asset('js/dashboard.js')}}"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -493,7 +498,7 @@
   </div>
   <!-- ./wrapper -->
   <script>
-    window.onload = function () {
+window.onload = function () {
 var chart = new CanvasJS.Chart("chartContainer", {
 	axisY :{
 
