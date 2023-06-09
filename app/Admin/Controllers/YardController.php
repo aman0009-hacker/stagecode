@@ -76,7 +76,14 @@ class YardController extends AdminController
     {
         $form = new Form(new Yard());
         $form->text('yardcountry', __('Country'))->default('India')->rules('required');
-        $form->select('yardstate', __('State'))->options(State::all()->pluck('name', 'name'))->load('yardcity', '/admin/get-cities')->rules('required');
+        // $form->select('yardstate', __('State'))->options(State::all()->pluck('name', 'name'))->load('yardcity', '/admin/get-cities')->rules('required');
+        // $form->select('yardstate', __('State'))->options(['Punjab' => 'Punjab'])->default('Punjab')->load('yardcity', '/admin/get-cities')->rules('required');
+        $form->select('yardstate', __('State'))->options(['' => 'Select State', 'Punjab' => 'Punjab'])
+            ->default('')
+            ->load('yardcity', '/admin/get-cities')
+            ->rules('required');
+        // $form->select('yardcity', __('City'))->rules('required');
+        // $form->text('yardcountry', __('Country'))->default('India')->rules('required');
         $form->select('yardcity', __('City'))->rules('required');
         $form->text('yardplace', __('Place'))->rules('required');
         // $supervisors = AdminUser::whereHas('roles', function ($query) {

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 
+
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -59,5 +60,22 @@ class LoginController extends Controller
 
         }
 
+    }
+
+
+    public function chartStatus(Request $request)
+    {
+     if(Auth::check())
+     {
+       $currentUserId=Auth::user()->id;
+       if(isset($currentUserId) && !empty($currentUserId) && $currentUserId>0)
+        {
+            $data=User::where('approved',2)->where('id',$currentUserId)->first();
+            if(isset($data))
+            {
+                return response()->json(['hasRecord' => true]);
+            }
+       }
+     }
     }
 }
