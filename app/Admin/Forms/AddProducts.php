@@ -104,12 +104,7 @@ class AddProducts extends Form
         $this->text('entity')->rules('required');
         $this->text('size')->rules('required');
         $this->number('quantity')->rules('required|integer');
-
-       
-       
-
-
-        
+      
     }
 
     /**
