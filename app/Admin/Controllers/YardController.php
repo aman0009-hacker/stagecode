@@ -47,6 +47,7 @@ class YardController extends AdminController
                 $filter->like('yardplace', __('Place'));
             });
         });
+        $grid->model()->orderBy('created_at', 'desc');
         return $grid;
     }
 

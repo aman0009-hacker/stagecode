@@ -100,7 +100,7 @@
                     <div class="select-selected"></div>
                     <div class="mb-3">
                       <input type="text" class="form-control" id="cardnumber" aria-describedby="cardNumbereHelp"
-                        placeholder="Enter Card Number" required>
+                        placeholder="Enter Card Number" minlength="16" maxlength="16" required>
                     </div>
                     <div class="mb-3">
                       <input type="text" class="form-control" id="name" aria-describedby="nameHelp"
@@ -109,12 +109,12 @@
                     <div class="mb-3">
                       <div class="row">
                         <div class="col-md-6">
-                          <input type="text" class="form-control" id="date" aria-describedby="dateHelp"
+                          <input type="date" class="form-control" id="date" aria-describedby="dateHelp"
                             placeholder="Expiration Date" required>
                         </div>
                         <div class="col-md-6 cvv">
                           <input type="text" class="form-control" id="cvv" aria-describedby="passwordHelp"
-                            placeholder="CVV" required>
+                            placeholder="CVV" minlength="3" maxlength="3"   required>
 
 
                           <img src="{{asset('images/login-signup/show.png')}}" alt="show password"
