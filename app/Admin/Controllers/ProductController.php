@@ -65,7 +65,7 @@ class ProductController extends AdminController
                 Permission::check('create-post');
             }
         });
-        
+        $grid->model()->orderBy('created_at', 'desc');
         return $grid;
     }
 

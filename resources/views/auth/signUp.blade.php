@@ -125,7 +125,7 @@
                 <label for="email" class="form-label">Email <span style="color:red">★</span></label>
               </div>
               <div class="mb-3 position-relative form-control-new password">
-                <input type="password" class="form-control form-input bg-transparent" name="password" id="userPassword"
+                <input type="password" class="form-control form-input bg-transparent" name="password" id="userPassword" maxlength="12"
                   value="{{old('password')}}" aria-describedby="passwordHelp" placeholder="Password ★" required
                   oninvalid="this.setCustomValidity('Enter Password Here')" title="Password"
                   oninput="setCustomValidity('')">
@@ -134,7 +134,7 @@
                   width="18" height="12" id="passwordimg">
               </div>
               <div class="mb-3 position-relative form-control-new password">
-                <input type="password" class="form-control form-input bg-transparent" name="password_confirmation"
+                <input type="password" class="form-control form-input bg-transparent" name="password_confirmation" maxlength="12"
                   id="userconfirmPassword" value="{{old('password_confirmation')}}"
                   aria-describedby="confirmpasswordHelp" placeholder="Confirm Password ★" required
                   oninvalid="this.setCustomValidity('Enter Confirm Password Here')" title="Confirm password"
@@ -146,7 +146,7 @@
               </div>
               <p class="password-hint">
                 <span class="sign-up-note">Note :</span><span class="password-hint-text">
-                  <i>Password must be 6 or more Characters long with one Number, one Upperone lower case letter and a
+                  <i>Password must be 6 or more Characters ( maximum - 12 Charcaters ) long with one Number, one Upperone lower case letter and a
                     special character(@#$%^&).</i>
                   Example : Pass@2016
                 </span>
