@@ -79,6 +79,7 @@ class EntityController extends AdminController
             }
         });
 
+        $grid->model()->orderBy('created_at', 'desc');
         return $grid;
     }
 
