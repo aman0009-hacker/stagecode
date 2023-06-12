@@ -20,6 +20,7 @@ use App\Admin\Actions\ShowDocuments;
 use Illuminate\Http\Request;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Auth\Permission;
+use Illuminate\Validation\Rule;
 
 class UserController extends AdminController
 {
@@ -160,9 +161,8 @@ class UserController extends AdminController
     $form = new Form(new User());
     $form->text('name', __('First Name'))->rules('required|max:255|regex:/^[a-zA-Z]+$/');
     $form->text('last_name', __('Last name'))->rules('required|max:255|regex:/^[a-zA-Z]+$/');
-    $form->email('email', __('Email'))->rules('required|max:255|unique:users|email');
+    $form->email('email', __('Email'))->rules('required|max:255|email');
     $form->text('contact_number', __('Contact number'))->rules('required|max:10|unique:users|min:10');
-    
     $form->footer(function ($footer) {
       $footer->disableViewCheck();
 

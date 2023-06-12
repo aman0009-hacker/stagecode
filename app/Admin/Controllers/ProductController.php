@@ -93,7 +93,12 @@ class ProductController extends AdminController
     protected function form()
     {
         $form = new Form(new Product());
-        $form->text('name', __('Name'));
+        $form->text('name', __('Name'))->rules(function($form)
+        {
+         $id=$form->model()->id;
+         // Set the validation rule
+         return 'required|unique:products,name,' . $id . ',id';
+        });
         return $form;
     }
 
