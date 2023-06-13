@@ -14,7 +14,7 @@ class PdfDisplayer extends AbstractDisplayer
         $url = "";
         $baseNameFile = basename(asset($this->value));
         $ExtensionInfoName = pathinfo($baseNameFile, PATHINFO_EXTENSION);
-        if (isset($ExtensionInfoName) && !empty($ExtensionInfoName) && ($ExtensionInfoName == "png" || $ExtensionInfoName == "jpg")) {
+        if (isset($ExtensionInfoName) && !empty($ExtensionInfoName) && ($ExtensionInfoName == "png" || $ExtensionInfoName == "pdf" || $ExtensionInfoName == "jpg")) {
            // $url = "http://localhost:8000/" . "uploads/" . basename(asset($this->value));
            $url = Config::get('app.url') . "uploads/" . basename(asset($this->value));
             $label = trans('admin.view');
