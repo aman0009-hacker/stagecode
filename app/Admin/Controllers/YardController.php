@@ -32,10 +32,23 @@ class YardController extends AdminController
         $grid = new Grid(new Yard());
         // $grid->model()->groupBy('yards.yardstate, yards.yardcity, yards.yardplace, COUNT(*)');
         // $grid->column('id', __('Id'));   
-        $grid->column('yardcountry', __('Country'));
+        // $grid->column('yardcountry', __('Country'));
         $grid->column('yardstate', __('State'));
         $grid->column('yardcity', __('City'));
         $grid->column('yardplace', __('Place'));
+
+        $grid->column('supervisorid',__('Yard Supervisor'))->display(function($supervisorid){
+          if($supervisorid===0 || $supervisorid===null)
+          {
+           return "Not Available";
+          } 
+          else 
+          { 
+          $supervisorName=AdminUser::where('id',$supervisorid)->first()->name;
+          return $supervisorName ?? "Not Available";
+          }
+        });
+
         $grid->filter(function ($filter) {
             $filter->disableIdFilter();
             $filter->column(1 / 2, function ($filter) {
@@ -47,6 +60,7 @@ class YardController extends AdminController
                 $filter->like('yardplace', __('Place'));
             });
         });
+        
         $grid->model()->orderBy('created_at', 'desc');
         return $grid;
     }
@@ -61,7 +75,7 @@ class YardController extends AdminController
     {
         $show = new Show(Yard::findOrFail($id));
         // $show->field('id', __('Id'));
-        $show->field('yardcountry', __('Yardcountry'));
+        // $show->field('yardcountry', __('Yardcountry'));
         $show->field('yardstate', __('Yardstate'));
         $show->field('yardcity', __('Yardcity'));
         $show->field('yardplace', __('Yardplace'));
@@ -76,21 +90,48 @@ class YardController extends AdminController
     protected function form()
     {
         $form = new Form(new Yard());
-        $form->text('yardcountry', __('Country'))->default('India')->rules('required');
-        // $form->select('yardstate', __('State'))->options(State::all()->pluck('name', 'name'))->load('yardcity', '/admin/get-cities')->rules('required');
-        // $form->select('yardstate', __('State'))->options(['Punjab' => 'Punjab'])->default('Punjab')->load('yardcity', '/admin/get-cities')->rules('required');
-        $form->select('yardstate', __('State'))->options(['' => 'Select State', 'Punjab' => 'Punjab'])
-            ->default('')
-            ->load('yardcity', '/admin/get-cities')
-            ->rules('required');
-        // $form->select('yardcity', __('City'))->rules('required');
         // $form->text('yardcountry', __('Country'))->default('India')->rules('required');
-        $form->select('yardcity', __('City'))->rules('required');
+        $form->text('yardstate', __('State'))->default('Punjab')->rules('required');
+        // $form->select('yardstate', __('State'))->options(['' => 'Select State', 'Punjab' => 'Punjab'])
+        //     ->default('')
+        //     ->load('yardcity', '/admin/get-cities')
+        //     ->rules('required');
+        $punjabCities = [
+            'Ludhiana' => 'Ludhiana',
+            'Amritsar' => 'Amritsar',
+            'Jalandhar' => 'Jalandhar',
+            'Patiala' => 'Patiala',
+            'Bathinda' => 'Bathinda',
+            'Mohali' => 'Mohali',
+            'Pathankot' => 'Pathankot',
+            'Hoshiarpur' => 'Hoshiarpur',
+            'Batala' => 'Batala',
+            'Moga' => 'Moga',
+            'Khanna' => 'Khanna',
+            'Phagwara' => 'Phagwara',
+            'Rajpura' => 'Rajpura',
+            'Firozpur' => 'Firozpur',
+            'Kapurthala' => 'Kapurthala',
+            'Faridkot' => 'Faridkot',
+            'Sangrur' => 'Sangrur',
+            'Fatehgarh Sahib' => 'Fatehgarh Sahib',
+            'Gurdaspur' => 'Gurdaspur',
+            'Muktsar' => 'Muktsar'
+        ];
+        $form->select('yardcity', __('City'))->options($punjabCities)->default('Mohali')->rules('required');
         $form->text('yardplace', __('Place'))->rules('required');
         // $supervisors = AdminUser::whereHas('roles', function ($query) {
         //     $query->where('name', 'YardCreator');
-        // })->pluck('username', 'id');
-        // $form->select('supervisorid', "__Supervisor UserName")->options($supervisors);
+        // })->pluck('name', 'id');
+        $supervisors = AdminUser::whereHas('roles', function ($query) {
+            $query->where('name', 'YardCreator');
+        })
+        ->whereNotIn('id', function ($query) {
+            $query->select('supervisorid')
+                  ->from('yards');
+        })
+        ->pluck('name', 'id');
+        $form->select('supervisorid', "__Supervisor UserName")->options($supervisors);
         $form->footer(function ($footer) {
             $footer->disableViewCheck();
             $footer->disableEditingCheck();

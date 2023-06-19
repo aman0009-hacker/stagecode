@@ -1,5 +1,26 @@
-@extends('layouts.main')
+@extends('layouts.main_account')
 @section('content')
+
+ {{-- custom logic --}}
+ <?php
+ if(Auth::check())
+ {
+    ?>
+     <script>
+         $("#mySignUp").hide();
+        $("#myLogin").hide();
+        $("#myid").show();
+        $("#logoutid").show();
+        $("#myOrder").show();
+        
+     </script>
+   <?php
+ }
+?>
+
+{{-- custom logic --}}
+
+
 <!-- Booking Section -->
 <section class="payment">
   <div class="container">
@@ -14,7 +35,8 @@
       <div class="col-md-4">
         <form class="payment-option">
           <select class="form-select form-select-lg mb-3 category-selection" aria-label="form-select-lg">
-            <option selected class="p-5">Select Payment Option</option>
+            {{-- <option selected class="p-5">Select Payment Option</option> --}}
+            {{-- <option value="1">Debit Card</option> --}}
             <option value="1">Debit Card</option>
             <option value="1">Credit Card</option>
             <option value="1">Mobile Payment</option>
@@ -40,7 +62,7 @@
       <div class="col-md-4 ">
         <form class="payment-method">
           <select class="form-select form-select-lg mb-3 category-selection" aria-label="form-select-lg">
-            <option selected>Select Payment Option</option>
+            {{-- <option selected>Select Payment Option</option> --}}
             <option value="1">Debit Card</option>
             <option value="1">Credit Card</option>
             <option value="1">Mobile Payment</option>
@@ -51,19 +73,20 @@
           <div class="select-selected"></div>
           <div class="mb-3">
             <input type="text" class="form-control" id="cardnumber" aria-describedby="cardNumbereHelp"
-              placeholder="Enter Card Number">
+              placeholder="Enter Card Number" value="4242424242424242">
           </div>
           <div class="mb-3">
-            <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter your Name">
+            <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter your Name"
+            value="Mohit">
           </div>
           <div class="mb-3">
             <div class="row">
               <div class="col-md-6">
                 <input type="text" class="form-control" id="date" aria-describedby="dateHelp"
-                  placeholder="Expiration Date">
+                  placeholder="Expiration Date" value="21-06-2023">
               </div>
               <div class="col-md-6 cvv">
-                <input type="text" class="form-control" id="cvv" aria-describedby="passwordHelp" placeholder="CVV">
+                <input type="text" class="form-control" id="cvv" aria-describedby="passwordHelp" placeholder="CVV" value="123">
                 <img src="{{asset('images/login-signup/show.png')}}" alt="show password" class="img-fluid eye-icon"
                   width="18" height="12">
               </div>

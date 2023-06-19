@@ -54,6 +54,26 @@ body {
   color: #333333;
 }
 
+.main .primary-menu .menus .navbar-nav ul li .account-btn {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 30px;
+  color: #333333;
+  background: #bbf5ff;
+  border-radius: 22.5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 27px;
+  width: auto;
+  min-width: 147px;
+  border: none;
+}
+
+.main .primary-menu .menus .navbar-nav ul li ul li .dropdown-item img {
+  padding-left: 4% !important;
+}
+
 .main .language-header nav {
   height: 55px;
   background: #BBF5FF;

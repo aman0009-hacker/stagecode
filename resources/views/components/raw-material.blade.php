@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main_account')
 @section('content')
 <!-- tOGGLER sECTION -->
 <section class="raw-material-box">

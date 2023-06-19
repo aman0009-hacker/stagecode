@@ -70,7 +70,8 @@ class AttachmentController extends AdminController
         })->displayUsing(PdfDisplayer::class);
         $grid->column('file_type', __('Document type'));
         $grid->column('updated_at', __('Updated at'))->display(function ($value) {
-            return Carbon::parse($value)->format('Y-m-d H:i:s');
+            //return Carbon::parse($value)->format('Y-m-d H:i:s');
+            return Carbon::parse($value)->format('d-m-Y');
         });
         // $grid->column('fileno', __('Document No'));
         $grid->column('fileno', __('Document No'))->display(function ($value) {
