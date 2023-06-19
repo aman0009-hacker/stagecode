@@ -43,7 +43,7 @@ $(function () {
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ["Total","New","Approved","Rejected"],
+                labels: ["New","Approved","Rejected"],
                 datasets: [{
                     label: '# of Votes',
                     // data: [12, 19, 3, 5, 2, 3],

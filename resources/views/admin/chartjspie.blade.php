@@ -43,7 +43,7 @@ $(function () {
         var myChart1 = new Chart(ctx1, {
             type: 'pie',
             data: {
-                labels: ["Total","New","Approved","Rejected"],
+                labels: ["New","Approved","Rejected"],
                 datasets: [{
                     label: '# of Votes',
                     // data: [12, 19, 3, 5, 2, 3],

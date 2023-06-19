@@ -35,8 +35,8 @@
           </li>
         </ul>
         {{-- <button class="btn btn-outline-success  account-btn ms-1" type="submit" id="btnSubmit">Logout</button> --}}
-        <a href="/logout" class="btn btn-outline-secondary  account-btn ms-1" style="display:none"
-          id="logoutid">Logout</a>
+        {{-- <a href="/logout" class="btn btn-outline-secondary  account-btn ms-1" style="display:none"
+          id="logoutid">Logout</a> --}}
       </div>
     </div>
   </div>
@@ -67,21 +67,27 @@
                   </a>
                 </li>
                 <li>
-                  <form method="post" action="{{route('myaccount')}}">
+                  {{-- <form method="post" action="{{route('myaccount')}}">
+           
                     @csrf
                     {{-- <a href="#" class="btn btn-primary account-btn" id="myid" style="display:none">
                       My Account
                     </a> --}}
-                    <button type="submit" class="btn btn-secondary account-btn" id="myid" style="display:none">My
-                      Account</button>
-                  </form>
-                  <h2 style="display: inline;">
+                    {{-- <button type="submit" class="btn btn-secondary account-btn" id="myid" style="display:none">My
+                      Account</button> --}}
+
+                      {{-- <a href="/order" class="btn btn-outline-secondary ms-4" id="myOrder" style="display:none">
+                        My Order
+                      </a>
+                  </form> --}}
+                  {{-- <h2 style="display: inline;">
                     <a href="/signup" class="btn btn-outline-secondary" id="mySignUp">
                       Register
                     </a> <a href="/login" class="btn btn-outline-secondary ms-4" id="myLogin">
                       Login
                     </a>
-                  </h2>
+               
+                  </h2> --}}
                 </li>
               </ul>
             </div>
@@ -121,3 +127,5 @@
     </nav>
   </div>
 </section>
+
+

@@ -36,7 +36,8 @@ class CategoryController extends AdminController
         // $grid->column('id', __('Id'));
         $grid->column('name', __('Category Name'));
         $grid->column('created_at', __('Created at'))->display(function ($value) {
-            return Carbon::parse($value)->format('Y-m-d H:i:s');
+            //return Carbon::parse($value)->format('Y-m-d H:i:s');
+            return Carbon::parse($value)->format('d-m-Y');
         });
         //$grid->column('updated_at', __('Updated at'));
         // $grid->actions(function ($actions) {
@@ -115,6 +116,17 @@ class CategoryController extends AdminController
          // Set the validation rule
          return 'required|unique:categories,name,' . $id . ',id';
         });
+
+        $form->footer(function ($footer) {
+            $footer->disableViewCheck();
+      
+            // disable `Continue editing` checkbox
+            $footer->disableEditingCheck();
+      
+            // disable `Continue Creating` checkbox
+            $footer->disableCreatingCheck();
+      
+          });
 
 
         return $form;
