@@ -51,9 +51,9 @@ class UserController extends AdminController
       return "documents";
     })->expand(function ($model) {
       $comments = $model->attachment()->take(10)->where('fileno', 'IS NOT', null)->get()->map(function ($comment) {
-        return $comment->only(['id', 'file_type', 'fileno', 'created_at']);
+        return $comment->only(['file_type', 'fileno', 'created_at']);
       });
-      return new Table(['ID', 'Document Type', 'Document No', 'Release Time'], $comments->toArray());
+      return new Table(['Document Type', 'Document No', 'Release Time'], $comments->toArray());
     });
     $grid->column("approved", __('Status'))->display(function ($value) {
       if (isset($value) && $value === 1) {

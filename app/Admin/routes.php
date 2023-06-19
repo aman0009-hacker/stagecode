@@ -27,4 +27,6 @@ Route::group([
     $router->resource('products', ProductController::class);
     $router->resource('categories', CategoryController::class);
     $router->resource('entities', EntityController::class);
+    $router->resource('orders', OrderController::class);
+    $router->resource('records', YardSupervisorManagementController::class);
 });

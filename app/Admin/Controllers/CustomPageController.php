@@ -98,7 +98,7 @@ class CustomPageController extends AdminController
 
             $data = [];
 
-            $data[] = $totalCount;
+            //$data[] = $totalCount;
             $data[] = $newCount;
             $data[] = $approveCount;
             $data[] = $rejectCount;

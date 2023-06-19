@@ -4,7 +4,7 @@
   border-radius: 5px;
 }
 .chat-wrapper .form-control {
-  width: 100%;
+  width: 83%;
 }
 .chat-wrapper p.note-text {
   display: flex;
@@ -27,12 +27,3 @@
   display: grid;
   align-items: center;
 }/*# sourceMappingURL=chat.css.map */
-
-.dropzone {
-   
-  border-right:  2px solid rgb(0 0 0 / 6%) !important;
-  border-left: none !important;
-  border-bottom: none !important;
-  border-top: none !important;
-   
-}

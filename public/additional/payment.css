@@ -12,7 +12,7 @@ body {
 }
 
 .main .sign-up-page .background-image {
-  background-image: url("../images/login-signup/sign-up.webp");
+  background-image: url("../../dist/img/customer-panel/sign-up.webp");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -260,7 +260,7 @@ body {
 }
 @media (min-width: 992px) {
   .main .sign-up-page .background-image {
-    background-image: url("../images/login-signup/sign-up.webp");
+    background-image: url("../../dist/img/customer-panel/sign-up.webp");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

@@ -88,7 +88,7 @@
               <div class="row">
                 <div class="col-12">
                   <div class="action">
-                    <a href="/dashboard"  class="btn continue-btn w-100">Continue</a>
+                    <a href="/category"  class="btn continue-btn w-100">Continue</a>
                     <!-- <button type="submit" class="btn continue-btn w-100">Continue</button> -->
                   </div>
                 </div>

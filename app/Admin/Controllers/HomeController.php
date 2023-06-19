@@ -32,24 +32,6 @@ class HomeController extends Controller
                 $row->column(3, function (Column $column) {
                     $column->append(new Box('Status For User', view('admin.chartjsscatter')));
                 });
-
             });
-        // ->row(function (Row $row) {
-        //     $row->class('justify-content-center align-items-center h-100');
-        //     $row->column(3, function (Column $column) {
-        //         $column->append(new Box('Status For User', view('admin.chartjsscatter')));
-
-        //     });
-        //     $row->column(3, function (Column $column) {
-        //         $column->append(new Box('Status For User', view('admin.chartjsline')));
-
-        //     });
-        //     $row->column(3, function (Column $column) {
-        //         $column->append(new Box('Status For User1', view('admin.chartjspie')));
-        //     });
-        //     $row->column(3, function (Column $column) {
-        //         $column->append(new Box('Status For User', view('admin.chartjs')));
-        //     });
-        // });
     }
 }

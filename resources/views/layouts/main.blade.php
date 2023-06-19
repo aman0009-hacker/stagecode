@@ -29,6 +29,9 @@
         @yield('content')
         @include('includes.footer')
     </div>
+    <script src="{{asset('js/productcategory.js')}}"></script>
+    <script src="{{asset('js/booking.js')}}"></script>
+    <script src="{{asset('js/order.js')}}"></script>
 </body>
 
 </html>

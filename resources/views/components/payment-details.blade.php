@@ -86,35 +86,35 @@
               </div>
               <div class="row mt-3 mt-md-5">
                 <div class="col-md-12">
-                  <form class="payment-method" method="post" action="/congratulations">
+                  <form class="payment-method" method="post" action="/payment_info_store">
                     @csrf
-                    <select class="form-select form-select-lg mb-3 category-selection" aria-label="form-select-lg" required>
-                      <option value="">Select Payment Option</option>
-                      <option value="1">Debit Card</option>
-                      <option value="1">Credit Card</option>
-                      <option value="1">Mobile Payment</option>
-                      <option value="1">RTGs</option>
-                      <option value="1">DD</option>
-                      <option value="1">Check</option>
+                    <select class="form-select form-select-lg mb-3 category-selection" aria-label="form-select-lg" name="dropDownPayment" required>
+                      {{-- <option value="">Select Payment Option</option> --}}
+                      <option value="Debit Card">Debit Card</option>
+                      <option value="Credit Card">Credit Card</option>
+                      <option value="Mobile Payment">Mobile Payment</option>
+                      <option value="RTGS">RTGS</option>
+                      <option value="DD">DD</option>
+                      <option value="Check">Check</option>
                     </select>
                     <div class="select-selected"></div>
                     <div class="mb-3">
-                      <input type="text" class="form-control" id="cardnumber" aria-describedby="cardNumbereHelp"
-                        placeholder="Enter Card Number" minlength="16" maxlength="16" required>
+                      <input type="text" class="form-control" id="cardnumber" aria-describedby="cardNumbereHelp" name="card"
+                        placeholder="Enter Card Number" minlength="16" maxlength="16" value="4242424242424242" required>
                     </div>
                     <div class="mb-3">
-                      <input type="text" class="form-control" id="name" aria-describedby="nameHelp"
-                        placeholder="Enter your Name" required>
+                      <input type="text" class="form-control" id="name" aria-describedby="nameHelp" name="name"
+                        placeholder="Enter your Name" value="Mohit" required>
                     </div>
                     <div class="mb-3">
                       <div class="row">
                         <div class="col-md-6">
-                          <input type="date" class="form-control" id="date" aria-describedby="dateHelp"
-                            placeholder="Expiration Date" required>
+                          <input type="text" class="form-control" id="date" aria-describedby="dateHelp" name="date_value"
+       placeholder="Expiration Date" value="21-06-2023" required>
                         </div>
                         <div class="col-md-6 cvv">
-                          <input type="text" class="form-control" id="cvv" aria-describedby="passwordHelp"
-                            placeholder="CVV" minlength="3" maxlength="3"   required>
+                          <input type="text" class="form-control" id="cvv" aria-describedby="passwordHelp" name="cvv"
+                            placeholder="CVV" minlength="3" maxlength="3" value="123"  required>
 
 
                           <img src="{{asset('images/login-signup/show.png')}}" alt="show password"

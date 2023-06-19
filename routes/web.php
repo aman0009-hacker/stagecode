@@ -7,6 +7,9 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Models\UserPayment;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,21 +34,19 @@ Route::get('/home', function () {
     return view('home');
 })->name('/home');
 
-Route::get('/booking', function () {
-    return view('components.booking');
-});
+// Route::get('/booking', function () {
+//     return view('components.booking');
+// });
 
 Route::get('/payment', function () {
     return view('components.payment');
 });
 
-Route::get('/category', function () {
-    return view('components.category');
-});
+// Route::get('/category', function () {
+//     return view('components.category');
+// });
 
-Route::get('/rawMaterial', function () {
-    return view('components.raw-material');
-});
+
 
 Route::get('/totalPayment', function () {
     return view('components.total-payment');
@@ -158,7 +159,18 @@ else if(Auth::user()->state==3  )
 }
 else 
 {
-    redirect()->route('home');
+    //redirect()->route('home');
+    $userId = Auth::id();
+    $userPayment = UserPayment::where('user_id', $userId)
+        ->where('payment_status', 'Success')
+        ->first();
+
+    if ($userPayment) {
+        //return redirect()->route('category');
+        return redirect()->route('RawMaterial');
+    } else {
+        return redirect()->route('PaymentDetailsView');
+    }
 }
 }
 
@@ -232,4 +244,53 @@ Route::post("/checkStatus",[LoginController::class,'chartStatus'])->name('checkS
 
 Route::post("/chartApproveStatus",[App\Admin\Controllers\CustomPageController::class,'chartApproveStatus'])->name('chartApproveStatus');
 
+Route::post('/entities/{categoryId}',[ProductCategoryController::class,'entity'])->name('category.entities');
 
+
+
+
+//Route::get('/category',[ProductCategoryController::class,'index'])->name('category');
+Route::get('/RawMaterial',[ProductCategoryController::class,'index'])->name('RawMaterial');
+// Route::get('/rawMaterial', function () {
+//     return view('components.raw-material');
+// });
+
+
+
+
+Route::post('/entityData',[ProductCategoryController::class,'entityData'])->name('entityData');
+Route::post('/storeOrder',[ProductCategoryController::class,'storeOrder'])->name('storeOrder');
+
+Route::get("/booking",[ProductCategoryController::class,'booking'])->name('booking');
+Route::get("/order",[ProductCategoryController::class,'order'])->name('order');
+
+
+
+Route::get('/supervisor_records',function()
+{
+ return view('supervisor_records');
+});
+
+Route::post("/records",[ProductCategoryController::class,'records'])->name('records');
+
+
+// Route::get('/supervisor',function(){
+//    return view('supervisor');
+// });
+
+Route::get("admin/records/create",[ProductCategoryController::class,'supervisor']);
+
+Route::post('storeSupervisor',[ProductCategoryController::class,'storeSupervisor'])->name('storeSupervisor');
+
+Route::post('verifyAdminStatus',[ProductCategoryController::class,'verifyAdminStatus'])->name('verifyAdminStatus');
+Route::post('verifyAdminStatusOrder',[ProductCategoryController::class,'verifyAdminStatusOrder'])->name('verifyAdminStatusOrder');
+
+
+Route::post('/storing',[ProductCategoryController::class,'storing'])->name('storing');
+
+
+
+Route::post('/storeOrderBulk',[ProductCategoryController::class,'storeOrderBulk'])->name('storeOrderBulk');
+
+
+Route::post('/payment_info_store',[ProductCategoryController::class,'payment_info_store'])->name('payment_info_store');
