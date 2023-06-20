@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Models\State;
 use App\Models\City;
+use App\Models\Order;
+
 
 class CustomPageController extends AdminController
 {
@@ -54,6 +56,30 @@ class CustomPageController extends AdminController
                 }
                 if ($count == 1) {
                     return view('components.payment-details');
+                }
+            }
+        } catch (\Exception $ex) {
+            return view('auth.login');
+        }
+    }
+
+
+    public function PaymentDetailsOrder(Request $request, $id, $status)
+    {
+        try {
+            $id = (Crypt::decryptString($id));
+            //   dd($id);
+            $count = 0;
+            if (isset($id) && !empty($id)) {
+                $query = Order::all();
+                foreach ($query as $data) {
+                    if ($data->id == ($id)) {
+                        $count++;
+                        break;
+                    }
+                }
+                if ($count == 1) {
+                    return view('components.payment');
                 }
             }
         } catch (\Exception $ex) {
