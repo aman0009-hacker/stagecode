@@ -161,8 +161,8 @@ class EntityController extends AdminController
         // $form->number('quantity', __('Quantity'));
         // $form->number('remaining', __('Remaining'));
         // $form->text('measurement', __('Measurement'));
-        //$form->select('entity_id', __('Category ID'));
         $form->select('entity_id', __('Category ID'));
+        //$form->select('entity_id', __('Category ID'))->attribute('style', 'display: none;');
         $form->submitted(function (Form $form) {
             $form->ignore('product_id');
             $form->ignore('category_id');
