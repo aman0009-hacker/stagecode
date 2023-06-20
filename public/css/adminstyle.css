@@ -23,3 +23,7 @@ a.download-btn::before {
     margin-left: 2rem !important;
 }
 
+
+.hidden {
+    display: none;
+}
