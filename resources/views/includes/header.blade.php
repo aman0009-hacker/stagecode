@@ -80,14 +80,14 @@
                         My Order
                       </a>
                   </form> --}}
-                  {{-- <h2 style="display: inline;">
+                  <h2 style="display: inline;">
                     <a href="/signup" class="btn btn-outline-secondary" id="mySignUp">
                       Register
                     </a> <a href="/login" class="btn btn-outline-secondary ms-4" id="myLogin">
                       Login
                     </a>
                
-                  </h2> --}}
+                  </h2>
                 </li>
               </ul>
             </div>
