@@ -35,7 +35,7 @@ class OrderPayment extends RowAction
                     $emailDataName = $emailData->email;
                     //het current user emailid end
                     $details = [
-                        'email' => 'PSIEC ADMIN PANEL',
+                        'email' => 'PSIEC ADMIN PANEL (Payment Link)',
                         'body' => 'Congratulations!!! Your order no '. $model->id . ' payment has successfully received. Orders has delivered soon.',
                         'encryptedID' => $encryptedID,
                         'status'=>'OrderPayment'

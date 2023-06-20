@@ -48,7 +48,7 @@ class Data extends RowAction
                         $emailDataName = $emailData->email;
                         //het current user emailid end
                         $details = [
-                            'email' => 'Mail from PSIEC Admin Panel',
+                            'email' => 'Mail from PSIEC Admin Panel (Payment Link)',
                             'body' => 'Congratulations!!! Your account has successfully verified.',
                             'encryptedID' => $encryptedID,
 
