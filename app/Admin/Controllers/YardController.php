@@ -52,13 +52,22 @@ class YardController extends AdminController
         $grid->filter(function ($filter) {
             $filter->disableIdFilter();
             $filter->column(1 / 2, function ($filter) {
-                $filter->like('yardcountry', __('Country'));
-                $filter->like('yardcity', __('City'));
+                $filter->like('yardstate', __('State'));
+                //$filter->like('yardcountry', __('Country'));
+                //$filter->like('yardcity', __('City'));
             });
             $filter->column(1 / 2, function ($filter) {
-                $filter->like('yardstate', __('State'));
-                $filter->like('yardplace', __('Place'));
+                $filter->like('yardcity', __('City'));
+                //$filter->like('yardplace', __('Place'));
             });
+        });
+
+        $grid->actions(function ($actions) {
+           $actions->disableEdit();
+            //$actions->disableView();
+        //    if (Admin::user()->can('create-post')) {
+        //         Permission::check('create-post');
+        //     }
         });
         
         $grid->model()->orderBy('created_at', 'desc');
