@@ -147,6 +147,10 @@ class OrderController extends AdminController
             //$export->filename('Filename.csv');
             $export->except(['id']);
           });
+
+          $grid->disableCreateButton();
+
+          $grid->model()->orderBy('created_at', 'desc');
       
         return $grid;
     }
