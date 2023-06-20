@@ -53,24 +53,24 @@ class EntityController extends AdminController
         // $grid->column('remaining', __('Remaining'));
         // $grid->column('measurement', __('Measurement'));
         $grid->column('created_at', __('Created At'))->display(function ($value) {
-           // return Carbon::parse($value)->format('Y-m-d H:i:s');
-           return Carbon::parse($value)->format('d-m-Y');
+            // return Carbon::parse($value)->format('Y-m-d H:i:s');
+            return Carbon::parse($value)->format('d-m-Y');
         });
         // $grid->column('updated_at', __('Updated at'));
         // $grid->actions(function ($actions) {
         //     $actions->disableEdit();
         // });
         $grid->filter(function ($filter) {
-        $filter->disableIdFilter();
-        $filter->like('name', __('Entity Name'));
-        // $filter->column(1 / 2, function ($filter) {
-        //      $filter->like('name', __('Entity Name'));
-        //     // $filter->like('id', __('Product Name'));
-        //  });
-        //    $filter->column(1 / 2, function ($filter) {
-        //     $filter->like('created_at', __('Created At'));
-        //     // $filter->like('entity_id', __('Category Name'));
-        //  });
+            $filter->disableIdFilter();
+            $filter->like('name', __('Entity Name'));
+            // $filter->column(1 / 2, function ($filter) {
+            //      $filter->like('name', __('Entity Name'));
+            //     // $filter->like('id', __('Product Name'));
+            //  });
+            //    $filter->column(1 / 2, function ($filter) {
+            //     $filter->like('created_at', __('Created At'));
+            //     // $filter->like('entity_id', __('Category Name'));
+            //  });
         });
 
         $grid->actions(function ($actions) {
@@ -89,7 +89,7 @@ class EntityController extends AdminController
             // Otherwise, show only records where supervisorid matches the login ID
             $grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
         }
-        
+
         return $grid;
     }
 
@@ -163,12 +163,6 @@ class EntityController extends AdminController
         // $form->text('measurement', __('Measurement'));
         //$form->select('entity_id', __('Category ID'));
         $form->select('entity_id', __('Category ID'));
-
-        // $form->select('entity_id', __('Category ID'))->attribute('style', 'display: none !important;');
-
-
-
-
         $form->submitted(function (Form $form) {
             $form->ignore('product_id');
             $form->ignore('category_id');
@@ -177,14 +171,14 @@ class EntityController extends AdminController
 
         $form->footer(function ($footer) {
             $footer->disableViewCheck();
-      
+
             // disable `Continue editing` checkbox
             $footer->disableEditingCheck();
-      
+
             // disable `Continue Creating` checkbox
             $footer->disableCreatingCheck();
-      
-          });
+
+        });
 
 
         return $form;
