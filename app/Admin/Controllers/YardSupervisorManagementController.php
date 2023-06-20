@@ -78,7 +78,7 @@ class YardSupervisorManagementController extends AdminController
             $grid->model()->orderBy('created_at', 'desc');
         } else {
             // Otherwise, show only records where supervisorid matches the login ID
-            $grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
+            $grid->model()->where('supervisor_id', Admin::user()->id)->orderBy('created_at', 'desc');
         }
         //new code
 

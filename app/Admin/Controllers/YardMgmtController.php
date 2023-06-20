@@ -38,6 +38,8 @@ class YardMgmtController extends AdminController
     }
 
 
+
+
     public function loadEntities(Request $request)
     {
         //$category_id = $request->input('category_id');
@@ -51,6 +53,9 @@ class YardMgmtController extends AdminController
         return response()->json($category_id);
         }
     }
+
+
+
 
     public function saveData(Request $request)
     {
