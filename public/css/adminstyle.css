@@ -24,6 +24,17 @@ a.download-btn::before {
 }
 
 
-.hidden {
-    display: none;
+.main-footer a {
+    color: white !important;
+    font-weight: bold !important;
+    /* Add any other desired styles */
 }
+.main-footer strong {
+    color: white !important;
+    font-weight: bold !important;
+    /* Add any other desired styles */
+}
+
+
+
+
