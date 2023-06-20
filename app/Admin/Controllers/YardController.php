@@ -137,7 +137,7 @@ class YardController extends AdminController
         })
         ->whereNotIn('id', function ($query) {
             $query->select('supervisorid')
-                  ->from('yards');
+                  ->from('yards')->whereNotNull('supervisorid');
         })
         ->pluck('name', 'id');
         $form->select('supervisorid', "__Supervisor UserName")->options($supervisors);
