@@ -72,13 +72,13 @@
                                             </h1>
                                             <h1>{{ $details['email'] }}</h1>
                                             <p>{{ $details['body'] }}</p>
-                                            @if ($details['body'] =="Congratulations!!! Your account has successfully verified.")
+                                            @if (  isset($details['body']) && $details['body'] =="Congratulations!!! Your account has successfully verified.")
                                             <a href="{{ env('APP_URL') }}PaymentDetails/{{$details['encryptedID']}}">click here</a>
                                             @endif
-                                            @if ($details['status']=="OrderApprove")
+                                            @if ( isset($details['status']) && $details['status']=="OrderApprove")
                                             <a href="{{ env('APP_URL') }}PaymentDetailsOrder/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>  
                                             @endif
-                                            @if ($details['status']=="OrderPayment")
+                                            @if ( isset($details['status']) && $details['status']=="OrderPayment")
                                             <a href="{{ env('APP_URL') }}PaymentDetailsOrder/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>  
                                             @endif
                                             <p>Thank you</p>
