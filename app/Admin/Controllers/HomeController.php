@@ -21,16 +21,16 @@ class HomeController extends Controller
             ->row(function (Row $row) {
                 $row->class('justify-content-center align-items-center h-100');
                 $row->column(3, function (Column $column) {
-                    $column->append(new Box('Status For User', view('admin.chartjs')));
+                    $column->append(new Box('User Document Verification (BAR)', view('admin.chartjs')));
                 });
                 $row->column(3, function (Column $column) {
-                    $column->append(new Box('Status For User', view('admin.chartjspie')));
+                    $column->append(new Box('User Document Verification (PIE)', view('admin.chartjspie')));
                 });
                 $row->column(3, function (Column $column) {
-                    $column->append(new Box('Status For User', view('admin.chartjsline')));
+                    $column->append(new Box('User Document Verification (LINE)', view('admin.chartjsline')));
                 });
                 $row->column(3, function (Column $column) {
-                    $column->append(new Box('Status For User', view('admin.chartjsscatter')));
+                    $column->append(new Box('User Document Verification (DOUGHNUT)', view('admin.chartjsscatter')));
                 });
             });
     }

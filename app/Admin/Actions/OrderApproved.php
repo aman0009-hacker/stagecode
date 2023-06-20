@@ -5,6 +5,7 @@ namespace App\Admin\Actions;
 use Encore\Admin\Actions\RowAction;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Crypt;
 use App\Models\Order;
 use App\Models\User;
 
@@ -17,6 +18,7 @@ class OrderApproved extends RowAction
     {
         try {
             $id = $model->id;
+            $encryptedID = Crypt::encryptString($model->id);
             if (isset($id) && !empty($id)) {
                 $data = Order::find($id);
                 $data->status = "Approved";
@@ -36,7 +38,8 @@ class OrderApproved extends RowAction
                     $details = [
                         'email' => 'PSIEC ADMIN PANEL',
                         'body' => 'Congratulations!!! Your order no '. $model->id . ' has successfully approved. Kindly wait till dispatching of order.',
-                        //'encryptedID' => $encryptedID,
+                        'encryptedID' => $encryptedID,
+                         'status'=>'OrderApprove'
 
 
                     ];

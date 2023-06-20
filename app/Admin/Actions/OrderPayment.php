@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Order;
 use App\Models\User;
+use Illuminate\Support\Facades\Crypt;
 
 class OrderPayment extends RowAction
 {
@@ -16,6 +17,7 @@ class OrderPayment extends RowAction
     {
         try {
             $id = $model->id;
+            $encryptedID = Crypt::encryptString($model->id);
             if (isset($id) && !empty($id)) {
                 $data = Order::find($id);
                 $data->status = "Payment_Done";
@@ -35,7 +37,8 @@ class OrderPayment extends RowAction
                     $details = [
                         'email' => 'PSIEC ADMIN PANEL',
                         'body' => 'Congratulations!!! Your order no '. $model->id . ' payment has successfully received. Orders has delivered soon.',
-                        //'encryptedID' => $encryptedID,
+                        'encryptedID' => $encryptedID,
+                        'status'=>'OrderPayment'
 
 
                     ];

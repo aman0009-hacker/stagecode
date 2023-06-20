@@ -75,6 +75,12 @@
                                             @if ($details['body'] =="Congratulations!!! Your account has successfully verified.")
                                             <a href="{{ env('APP_URL') }}PaymentDetails/{{$details['encryptedID']}}">click here</a>
                                             @endif
+                                            @if ($details['status']=="OrderApprove")
+                                            <a href="{{ env('APP_URL') }}PaymentDetailsOrder/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>  
+                                            @endif
+                                            @if ($details['status']=="OrderPayment")
+                                            <a href="{{ env('APP_URL') }}PaymentDetailsOrder/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>  
+                                            @endif
                                             <p>Thank you</p>
                                         {{-- <span
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"></span> --}}

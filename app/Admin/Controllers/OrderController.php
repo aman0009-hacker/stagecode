@@ -104,17 +104,25 @@ class OrderController extends AdminController
             $actions->disableEdit();
             $actions->disableView();
             $actions->disableDelete();
-            $actions->add(new OrderPayment);
+            
             if ($actions->row->status == "Approved") {
                 $actions->add(new OrderDispatched);
                 $actions->add(new OrderRejected);
+                $actions->add(new OrderPayment);
             } else if ($actions->row->status == "Rejected") {
                 $actions->add(new OrderApproved);
                 $actions->add(new OrderDispatched);
+                $actions->add(new OrderPayment);
             } else if ($actions->row->status == "Dispatched") {
                 $actions->add(new OrderApproved);
                 $actions->add(new OrderRejected);
+                $actions->add(new OrderPayment);
             } else if ($actions->row->status == "New") {
+                $actions->add(new OrderApproved);
+                $actions->add(new OrderDispatched);
+                $actions->add(new OrderRejected);
+                $actions->add(new OrderPayment);
+            }else if ($actions->row->status == "Payment_Done") {
                 $actions->add(new OrderApproved);
                 $actions->add(new OrderDispatched);
                 $actions->add(new OrderRejected);
@@ -139,6 +147,10 @@ class OrderController extends AdminController
             //$export->filename('Filename.csv');
             $export->except(['id']);
           });
+
+          $grid->disableCreateButton();
+
+          $grid->model()->orderBy('created_at', 'desc');
       
         return $grid;
     }
