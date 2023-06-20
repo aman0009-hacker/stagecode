@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Encore\Admin\Show;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Auth\Permission;
 
 
 class YardSupervisorManagementController extends AdminController
@@ -53,7 +55,7 @@ class YardSupervisorManagementController extends AdminController
             });
             $filter->column(1 / 2, function ($filter) {
               $filter->like('quantity', __('Quantity'));
-              $filter->like('created_at', __('Created at'));
+              // $filter->like('created_at', __('Created at'));
             });
           });
 
@@ -62,7 +64,25 @@ class YardSupervisorManagementController extends AdminController
           $actions->disableEdit();
           // $actions->disableView();
           // $actions->disableDelete();
+          //new code
+          if (Admin::user()->can('create-post')) {
+            Permission::check('create-post');
+           }
+          //new code
         });
+
+          //new code
+          //$grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
+          if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
+            // If user has one of the specified roles, show all records
+            $grid->model()->orderBy('created_at', 'desc');
+        } else {
+            // Otherwise, show only records where supervisorid matches the login ID
+            $grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
+        }
+        //new code
+
+        $grid->model()->orderBy('created_at', 'desc');
 
         return $grid;
     }

@@ -230,7 +230,7 @@ Route::get('PaymentDetails', function()
 
 
 Route::get("PaymentDetails/{id}",[App\Admin\Controllers\CustomPageController::class,'PaymentDetails'])->name('PaymentDetails');
-
+Route::get("PaymentDetailsOrder/{id}/{status}",[App\Admin\Controllers\CustomPageController::class,'PaymentDetailsOrder'])->name('PaymentDetailsOrder');
 
 
 
