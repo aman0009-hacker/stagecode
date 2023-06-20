@@ -70,9 +70,9 @@
                   <form method="post" action="{{route('myaccount')}}">
            
                     @csrf
-                     <a href="#" class="btn btn-primary account-btn" id="myid" style="display:none">
+                     {{-- <a href="#" class="btn btn-primary account-btn" id="myid" style="display:none">
                       My Account
-                    </a> 
+                    </a>  --}}
                     <button type="submit" class="btn btn-secondary account-btn" id="myid" style="display:none">My
                       Account</button>
 

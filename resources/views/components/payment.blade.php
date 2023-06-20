@@ -126,7 +126,8 @@
         </div>
       </div>
       <div class="modal-footer mb-4">
-        <a href="./total-payment.html" class="btn ok-btn">Ok</a>
+        {{-- <a href="./total-payment.html" class="btn ok-btn">Ok</a> --}}
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
       </div>
     </div>
   </div>
