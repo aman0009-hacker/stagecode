@@ -73,13 +73,13 @@ class YardSupervisorManagementController extends AdminController
 
           //new code
           //$grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
-          if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
-            // If user has one of the specified roles, show all records
-            $grid->model()->orderBy('created_at', 'desc');
-        } else {
-            // Otherwise, show only records where supervisorid matches the login ID
-            $grid->model()->where('supervisor_id', Admin::user()->id)->orderBy('created_at', 'desc');
-        }
+        //   if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
+        //     // If user has one of the specified roles, show all records
+        //     $grid->model()->orderBy('created_at', 'desc');
+        // } else {
+        //     // Otherwise, show only records where supervisorid matches the login ID
+        //     $grid->model()->where('supervisor_id', Admin::user()->id)->orderBy('created_at', 'desc');
+        // }
         //new code
 
         $grid->model()->orderBy('created_at', 'desc');
