@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Order;
+
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -12,6 +12,7 @@ use App\Admin\Actions\OrderRejected;
 use Encore\Admin\Show;
 use App\Models\User;
 use Carbon\Carbon;
+use App\Models\Order;
 use App\Admin\Actions\OrderDispatched;
 use App\Admin\Actions\OrderPayment;
 use App\Admin\Actions\OrderApproved;
@@ -80,7 +81,8 @@ class OrderController extends AdminController
         // $grid->column('firm', __('Firm'));
         $grid->column('created_at', __('Created at'))->display(function ($value) {
           //  return Carbon::parse($value)->format('Y-m-d H:i:s');
-          return Carbon::parse($value)->format('d-m-Y');
+        //   return Carbon::parse($value)->format('d-m-Y');
+        return Carbon::parse($value)->format('Y-m-d H:i');
         });
         // $grid->column('updated_at', __('Updated at'));
 
@@ -132,15 +134,20 @@ class OrderController extends AdminController
         $grid->filter(function ($filter) {
             // $filter->notIn('id', __('Id'));
             $filter->disableIdFilter();
-            $filter->like('status', __('Status'));
-            // $filter->column(1 / 2, function ($filter) {
-            //     $filter->like('status', __('Status'));
+       
+
+          
+            $filter->column(1 / 2, function ($filter) {
+                $userIds = Order::pluck('user_id')->toArray();
+                $userNames = User::whereIn('id', $userIds)->pluck('name', 'id')->toArray();
+                $filter->equal('user_id', __('User'))->select($userNames);
+                //$filter->equal('user_id', __('User'))->select(User::pluck('name', 'id')->toArray());
+            });
+            $filter->column(1 / 2, function ($filter) {
+                $filter->like('status', __('Status'));
             
       
-            // });
-            // $filter->column(1 / 2, function ($filter) {
-            //     $filter->like('created_at', __('Created at'));
-            // });
+            });
           });
 
           $grid->export(function ($export) {

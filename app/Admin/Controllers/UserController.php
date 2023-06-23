@@ -21,6 +21,9 @@ use Illuminate\Http\Request;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Auth\Permission;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends AdminController
 {
@@ -30,6 +33,7 @@ class UserController extends AdminController
    * @var string
    */
   protected $title = 'User';
+
 
 
   /**
@@ -94,6 +98,9 @@ class UserController extends AdminController
       $export->except(['approved', 'comments', 'attachment', 'otp']);
     });
     $grid->actions(function ($actions) {
+      $actions->disableEdit();
+      $actions->disableView();
+      $actions->disableDelete();
       $actions->add(new ShowDocuments);
       if ($actions->row->approved == 0) {
         $actions->add(new Data);
@@ -109,21 +116,38 @@ class UserController extends AdminController
 
     $grid->disableCreateButton();
     // $grid->column('id')->hidden();
-    $grid->filter(function ($filter) {
-      // $filter->notIn('id', __('Id'));
-      $filter->disableIdFilter();
-      $filter->like('email', __('Email'));
-      // $filter->column(1 / 2, function ($filter) {
-      //   $filter->like('name', __('First Name'));
-      //   $filter->like('email', __('Email'));
-
-      // });
-      // $filter->column(1 / 2, function ($filter) {
-      //   $filter->like('last_name', __('Last Name'));
-      //   $filter->like('contact_number', __('Contact'));
-      // });
-    });
+  
     //$grid->model()->orderBy('created_at', 'desc');
+
+    $grid->column('created_at', __('Created At'))->display(function ($value) {
+      //return Carbon::parse($value)->format('d-m-Y H:i:s');
+      return Carbon::parse($value)->format('Y-m-d H:i');
+      //return Carbon::parse($value)->format('d-m-Y');
+   });
+
+
+   $grid->filter(function ($filter) {
+    $filter->disableIdFilter();
+    $filter->column(1 / 2, function ($filter) {
+      //$filter->equal('name', __('Select Name'))->select(User::pluck('name', 'name')->toArray());
+      $filter->like('name', __('First Name'));
+      $filter->like('email', __('Email'));
+    });
+    $filter->column(1 / 2, function ($filter) {
+      $filter->equal('approved', __('Status'))->select([
+        0 => 'New',
+        1 => 'Approved',
+        2 => 'Rejected',
+    ]);
+      $filter->like('contact_number', __('Contact'));
+    });
+  });
+
+
+   
+   
+
+
    $grid->model()->whereHas('attachment', function ($query) {
       $query->whereNotNull('filename');
   })->orderByDesc('created_at');

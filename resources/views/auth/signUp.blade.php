@@ -144,6 +144,13 @@
                 <img src="{{asset('images/login-signup/hide.png')}}" alt="hide password" class="img-fluid eye-icon"
                   width="18" height="12" id="confirmpasswordimg">
               </div>
+
+
+            
+
+
+
+
               <p class="password-hint">
                 <span class="sign-up-note">Note :</span><span class="password-hint-text">
                   <i>Password must be 6 or more Characters ( maximum - 12 Charcaters ) long with one Number, one Upperone lower case letter and a
@@ -151,6 +158,26 @@
                   Example : Pass@2016
                 </span>
               </p>
+
+
+                     {{-- new code for terms and conditions --}}
+                     <div class="row justify-content-center">
+                      <div class="col-12">
+                       
+                        <div class="mb-3 form-check d-flex justify-content-center align-items-center">
+                          <input type="checkbox"  id="acceptTerms" name="accept_terms" required>
+                          <label class="form-check-label ms-2" for="acceptTerms">I accept the <a href="{{asset('filename')}}" target="_blank">Terms and Conditions</a></label>
+                        </div>
+                    
+                      </div>
+                    </div>
+                                
+                    
+                    
+                    
+                    
+                    {{-- new code for terms and conditions --}}
+         
               <div class="row">
                 <div class="col-12">
                   <div class="action">

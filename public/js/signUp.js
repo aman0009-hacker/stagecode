@@ -76,3 +76,19 @@ $("#continueBtn").click(function (e) {
         //window.location.href = "/userDocument";
     }
 });
+
+
+$(document).ready(function() {
+    $('#registerBtn').prop('disabled', true);
+    // Listen for change event on the checkbox
+    $('#acceptTerms').change(function() {
+      // Check if the checkbox is checked
+      if ($(this).is(':checked')) {
+        // Enable the "Register" button
+        $('#registerBtn').prop('disabled', false);
+      } else {
+        // Disable the "Register" button
+        $('#registerBtn').prop('disabled', true);
+      }
+    });
+  });

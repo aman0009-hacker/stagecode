@@ -131,7 +131,7 @@
                         <div class="col-12">
                           <img src="{{asset('images/login-signup/upload-icon.png')}}" alt="upload file"
                             class="img-fluid upload-icon gsi-icon-up" id="msmepic">
-                          <p class="upload-text text_ellips" id="msmedoc">Upload MSME <br>Certificate</p>
+                          <p class="upload-text text_ellips" id="msmedoc">Upload MSME/Udyam <br>Certificate</p>
                         </div>
                       </div>
                     </label>
@@ -189,7 +189,7 @@
                         <div class="col-12">
                           <img src="{{asset('images/login-signup/upload-icon.png')}}" alt="upload file"
                             class="img-fluid upload-icon gsi-icon-up" id="utilitypic">
-                          <p class="upload-text text_ellips" id="utilitydoc">Upload Utility <br> Certificate</p>
+                          <p class="upload-text text_ellips" id="utilitydoc">Upload Capacity <br> Certificate</p>
                         </div>
                       </div>
                     </label>
