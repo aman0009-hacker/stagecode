@@ -79,9 +79,15 @@ class AttachmentController extends AdminController
         });
         $grid->model()->where('user_id', $currentRowId);
         $grid->disableCreateButton();
-        $grid->actions(function ($actions) {
-            $actions->disableView();
-        });
+        // $grid->actions(function ($actions) {
+        //     $actions->disableView();
+        //     $actions->disableEdit();
+        //     $actions->disableDelete();
+        //     // $actions->setActionClassHeader('hidden');
+        // });
+        $grid->disableActions();
+      
+      
         $grid->tools(function ($tools) {
             $tools->append('<a class="btn btn-default" href="/admin/auth/user"><i class="fa fa-arrow-left"></i> Back</a>');
             $tools->append(new BatchReplicate());

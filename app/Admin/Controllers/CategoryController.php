@@ -37,7 +37,8 @@ class CategoryController extends AdminController
         $grid->column('name', __('Category Name'));
         $grid->column('created_at', __('Created at'))->display(function ($value) {
             //return Carbon::parse($value)->format('Y-m-d H:i:s');
-            return Carbon::parse($value)->format('d-m-Y');
+            //return Carbon::parse($value)->format('d-m-Y');
+            return Carbon::parse($value)->format('Y-m-d H:i');
         });
         //$grid->column('updated_at', __('Updated at'));
         // $grid->actions(function ($actions) {
@@ -67,6 +68,8 @@ class CategoryController extends AdminController
                 Permission::check('create-post');
             }
         });
+        $grid->disableActions();
+        $grid->disableRowSelector();
 
         $grid->model()->orderBy('created_at', 'desc');
         return $grid;

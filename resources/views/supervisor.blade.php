@@ -16,6 +16,9 @@
 .quantity-result {
     margin-left: 3px;
 }
+.amount-result{
+    margin-left:5px;
+}
    .pr-qu {
     display: flex;
    
@@ -79,19 +82,19 @@ span.icon {
 label {
     margin-right: 30px;
 }
-.prodatt,.quaatt{
+.prodatt,.quaatt,.amoatt{
     margin-top: 20px;
 }
 .allpro
 {
-    flex:0 0 46%;
+    flex:0 0 30%;
 }
 .widthchange
 {
     width:50%;
 }
-.product-result,.quantity-result {
-    flex: 0 0 46%;
+.product-result,.quantity-result,.amount-result {
+    flex: 0 0 30%;
 }
 .float-btn
 {
@@ -132,10 +135,10 @@ display: flex;
 </style>
 <body>
 
-    <div class="table-name">
+    {{-- <div class="table-name">
             <h1>Supervisor Record </h1>
             <small>Create</small>
-    </div>
+    </div> --}}
     <div class="background">
         <h3 class="box-header">Create</h3>
         <form action="{{route('storing')}}"method="post" id="data"class="border-form">
@@ -148,6 +151,7 @@ display: flex;
                     <label for="products">Product </label>
                   
                    <select id="products" class="productName widthchange quanchange" name="product[]">
+                   {{-- <option></option> --}}
                     @foreach ($data as $values )
                     <option value="{{$values->name}}">{{$values->name}}</option>
                     
@@ -159,6 +163,13 @@ display: flex;
                     <label for="quantities">Quantity</label>
                     <span class="icon"> <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"/></svg></span> <input type="number" name="quantity[]" id="quantities" class="quanchange widthchange" required>
                 </div>
+
+                <div class="allpro">
+                    <label for="amount">Amount</label>
+                    <span class="icon"> <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"/></svg></span><input type="number"name="amount[]"id="quantities"class="quanchange widthchange" required>
+                </div>
+
+               
                
               
                
@@ -176,6 +187,9 @@ display: flex;
                 </div>
                 <div class="quantity-result">
         
+                </div>
+                <div class="amount-result">
+
                 </div>
             </div>
             <div class="des">
@@ -208,10 +222,11 @@ display: flex;
 num++;
         let presult=document.getElementsByClassName('product-result');
         let qresult=document.getElementsByClassName('quantity-result');
+        let aresult=document.getElementsByClassName('amount-result');
         let prod=document.createElement('div');
         prod.setAttribute('class','prodatt');
         prod.innerHTML=`<label for="product${num}">Product </label>
-        <select id="products" class="productName widthchange quanchange" name="product[]">
+        <select id="products" class="productName widthchange quanchange"name="product[]">
                     @foreach ($data as $values )
                     <option value="{{$values->name}}">{{$values->name}}</option>
                     
@@ -223,9 +238,19 @@ num++;
             quan.setAttribute('class','quaatt');
         quan.innerHTML=`<label for="quantity${num}">Quantity </label>
         <span class="icon"> <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"/></svg></span><input type="number" name="quantity[]"id="quantity${num}" required class="widthchange">`
+
+
+            let amou=document.createElement('div');
+            amou.setAttribute('class','amoatt');
+        amou.innerHTML=`<label for="amount${num}">Amount </label>
+        <span class="icon"> <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"/></svg></span><input type="number" name="amount[]"id="amount${num}" required class="widthchange">`
+
+
            
             presult[0].append(prod);  
             qresult[0].append(quan); 
+            aresult[0].append(amou); 
+
             document.getElementById('hidden').value=num; 
     }
     function subtract()
@@ -238,11 +263,13 @@ num++;
         }
         let pattr=document.getElementsByClassName('quaatt');
         let qattr=document.getElementsByClassName('prodatt');
-        if(pattr.length>0 && qattr.length>0)
+        let aattr=document.getElementsByClassName('amoatt');
+        if(pattr.length>0 && qattr.length>0 && aattr.length>0)
         {
             
         pattr[num-1].remove();
         qattr[num-1].remove();
+        aattr[num-1].remove();
         }
         document.getElementById('hidden').value=num;
     }

@@ -25,6 +25,7 @@
   <script src="{{asset('js/login.js')}}"></script>
   <script src="{{asset('js/document-process-update.js')}}"></script>
   <script src="{{asset('js/document-process.js')}}"></script>
+  <script src='https://www.google.com/recaptcha/api.js'></script>
   {{-- <script src='https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js' type='text/javascript'></script> --}}
 </body>
 

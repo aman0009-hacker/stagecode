@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use App\Models\UserPayment;
 
 
 
@@ -52,7 +53,20 @@ class LoginController extends Controller
                     // dd("jkljl");
                     return redirect()->route('home');
                 } else if (isset($approvedStatus) && $approvedStatus->approved == 1) {
-                   return redirect()->route('PaymentDetailsView');
+
+                    $userPayment = UserPayment::where('user_id', $checkCurrentUserId)
+                    ->where('payment_status', 'Success')
+                    ->first();
+
+                if ($userPayment) {
+                    //return redirect()->route('category');
+                    return redirect()->route('RawMaterial');
+                } else {
+                    return redirect()->route('PaymentDetailsView');
+                }
+
+
+                   
                 } else if (isset($approvedStatus) && $approvedStatus->approved == 2) {
                    return redirect()->route('chat');
                 }

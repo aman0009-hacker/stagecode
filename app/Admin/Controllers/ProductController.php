@@ -32,9 +32,11 @@ class ProductController extends AdminController
         $grid = new Grid(new Product());
         // $grid->column('id', __('Id'));
         $grid->column('name', __('Name'));
-        $grid->column('created_at', __('Created at'))->display(function ($value) {
+        $grid->column('created_at', __('Created At'))->display(function ($value) {
            // return Carbon::parse($value)->format('Y-m-d H:i:s');
-           return Carbon::parse($value)->format('d-m-Y');
+           //return Carbon::parse($value)->format('Y-m-d H:i:s');
+           //return Carbon::parse($value)->format('d-m-Y');
+           return Carbon::parse($value)->format('Y-m-d H:i');
         });
         // $grid->column('updated_at', __('Updated at'));
 
@@ -45,27 +47,30 @@ class ProductController extends AdminController
       
      
         $grid->filter(function ($filter) {
-            // $filter->notIn('id', __('Id'));
+          
             $filter->disableIdFilter();
-            $filter->like('name', __('Name'));
-            // $filter->column(1 / 2, function ($filter) {
-            //   $filter->like('name', __('First Name'));
-            //   $filter->like('email', __('Email'));
+     
+            $filter->column(1 / 2, function ($filter) {
+              $filter->like('name', __('First Name'));
+              $filter->like('email', __('Email'));
       
-            // });
-            // $filter->column(1 / 2, function ($filter) {
-            //   $filter->like('last_name', __('Last Name'));
-            //   $filter->like('contact_number', __('Contact'));
-            // });
+            });
+            $filter->column(1 / 2, function ($filter) {
+              $filter->like('last_name', __('Last Name'));
+              $filter->like('contact_number', __('Contact'));
+            });
           });
        
-          $grid->actions(function ($actions) {
-            $actions->disableEdit();
-            $actions->disableView();
-           if (Admin::user()->can('create-post')) {
-                Permission::check('create-post');
-            }
-        });
+        //   $grid->actions(function ($actions) {
+        //     $actions->disableEdit();
+        //     $actions->disableView();
+        //    if (Admin::user()->can('create-post')) {
+        //         Permission::check('create-post');
+        //     }
+        // });
+        $grid->disableActions();
+        $grid->disableFilter();
+        $grid->disableRowSelector();
         $grid->model()->orderBy('created_at', 'desc');
         return $grid;
     }

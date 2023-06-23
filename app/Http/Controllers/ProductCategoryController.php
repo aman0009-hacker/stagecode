@@ -9,9 +9,11 @@ use App\Models\Records;
 use App\Models\Entity;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use App\Models\UserPayment;
 use Encore\Admin\Layout\Content;
+use Encore\Admin\Facades\Admin;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -276,17 +278,30 @@ class ProductCategoryController extends Controller
 
     public function storing(Request $request)
     {
-        $hide = $request->hide;
-        $product = $request->product;
-        $quantity = $request->quantity;
+        $adminID=Admin::user()->id;
+        $hide=$request->hide;
+        $product=$request->product;
+        $quantity=$request->quantity;
+        $amount=$request->amount;
 
+        $this->validate($request, [
+            'product' => 'required',
+            'quantity' => 'required',
+            'amount' => 'required'
+         ]); 
+
+         if(isset($adminID) && !empty($adminID))
+         {
         for ($a = 0; $a < $hide; $a++) {
             $data = new Records();
             $data->product = $product[$a];
             $data->quantity = $quantity[$a];
+            $data->amount=$amount[$a];
             $data->description = $request->description;
+            $data->supervisor_id=$adminID;
             $data->save();
 
+        }
         }
         return redirect('/admin/records');
     }
@@ -393,5 +408,10 @@ class ProductCategoryController extends Controller
         $data = Entity::all();
         return $content->body(view('supervisor',compact('data')));
         
+    }
+
+    public function refreshCaptcha()
+    {
+        return response()->json(['captcha'=> captcha_img()]);
     }
 }

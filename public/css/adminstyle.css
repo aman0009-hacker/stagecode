@@ -35,6 +35,8 @@ a.download-btn::before {
     /* Add any other desired styles */
 }
 
-
+.hidden {
+    display: none;
+}
 
 

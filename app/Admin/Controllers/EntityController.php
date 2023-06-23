@@ -54,7 +54,9 @@ class EntityController extends AdminController
         // $grid->column('measurement', __('Measurement'));
         $grid->column('created_at', __('Created At'))->display(function ($value) {
             // return Carbon::parse($value)->format('Y-m-d H:i:s');
-            return Carbon::parse($value)->format('d-m-Y');
+            //return Carbon::parse($value)->format('d-m-Y');
+            //return Carbon::parse($value)->format('Y-m-d H:i');
+            return Carbon::parse($value)->format('Y-m-d H:i');
         });
         // $grid->column('updated_at', __('Updated at'));
         // $grid->actions(function ($actions) {
@@ -63,6 +65,7 @@ class EntityController extends AdminController
         $grid->filter(function ($filter) {
             $filter->disableIdFilter();
             $filter->like('name', __('Entity Name'));
+            // $filter->like('id', __('Product Name'));
             // $filter->column(1 / 2, function ($filter) {
             //      $filter->like('name', __('Entity Name'));
             //     // $filter->like('id', __('Product Name'));
@@ -81,14 +84,17 @@ class EntityController extends AdminController
             }
         });
 
+        $grid->disableActions();
+        $grid->disableRowSelector();
+
         //$grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
-        if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
-            // If user has one of the specified roles, show all records
-            $grid->model()->orderBy('created_at', 'desc');
-        } else {
-            // Otherwise, show only records where supervisorid matches the login ID
-            $grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
-        }
+        // if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
+        //     // If user has one of the specified roles, show all records
+        //     $grid->model()->orderBy('created_at', 'desc');
+        // } else {
+        //     // Otherwise, show only records where supervisorid matches the login ID
+        //     $grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
+        // }
 
         return $grid;
     }

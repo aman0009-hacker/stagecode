@@ -124,7 +124,7 @@
                     oninvalid="this.setCustomValidity('Enter Email Here')" oninput="setCustomValidity('')">
                   <label for="email" class="form-label">Email <span style="color:red">★</span></label>
                 </div>
-                <div class="mb-3 password position-relative form-control-new">
+                <div class="mb-1 password position-relative form-control-new">
                   <input type="password" class="form-control form-input bg-transparent" id="password"
                     aria-describedby="passwordHelp" placeholder="Password" name="password" required
                     oninvalid="this.setCustomValidity('Enter Password Here')" oninput="setCustomValidity('')"
@@ -134,7 +134,18 @@
                   <label for="email" class="form-label">Password <span style="color:red">★</span></label>
                 </div>
                 <div class="row mb-3">
-                  <div class="col-12">
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <strong>ReCaptcha:</strong>
+                          <div class="g-recaptcha" data-sitekey="{{ env('GOOGLE_RECAPTCHA_KEY') }}"></div>
+                          @if ($errors->has('g-recaptcha-response'))
+                              <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
+                          @endif
+                      </div>  
+                  </div>
+              </div>
+                  <div class="col-12 mt-3">
                     <div class="forgot-password-link">
                       <a href="/forgot-password">Forgot Password?</a>
                     </div>
@@ -150,18 +161,12 @@
                 </div>
                 <div class="row mt-1">
                   <div class="col-8">
-                   
-                     <small> For New User Kindly <a href="{{route('signUp')}}" class="link-success text-small" style="text-decoration: none">Sign Up</a> </small>   
-                    
+                    <small> For New User Kindly <a href="{{route('signUp')}}" class="link-success text-small"
+                        style="text-decoration: none">Sign Up</a> </small>
                   </div>
                   <div class="col-4">
-              
-                     
-                     
-                  
                   </div>
                 </div>
-                
               </form>
           </div>
         </div>
