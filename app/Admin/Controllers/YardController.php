@@ -12,6 +12,7 @@ use Encore\Admin\Show;
 use App\Models\AdminUser;
 use App\Models\Role;
 use App\Models\RoleUser;
+use Carbon\Carbon;
 
 class YardController extends AdminController
 {
@@ -49,6 +50,12 @@ class YardController extends AdminController
           }
         });
 
+        $grid->column('created_at', __('Created at'))->display(function ($value) {
+            //  return Carbon::parse($value)->format('Y-m-d H:i:s');
+          //   return Carbon::parse($value)->format('d-m-Y');
+          return Carbon::parse($value)->format('Y-m-d H:i');
+          });
+
         $grid->filter(function ($filter) {
             $filter->disableIdFilter();
             $filter->column(1 / 2, function ($filter) {
@@ -62,13 +69,16 @@ class YardController extends AdminController
             });
         });
 
-        $grid->actions(function ($actions) {
-           $actions->disableEdit();
-            //$actions->disableView();
-        //    if (Admin::user()->can('create-post')) {
-        //         Permission::check('create-post');
-        //     }
-        });
+        // $grid->actions(function ($actions) {
+        //    $actions->disableEdit();
+        //    $actions->disableDelete();
+        //     //$actions->disableView();
+        // //    if (Admin::user()->can('create-post')) {
+        // //         Permission::check('create-post');
+        // //     }
+        // });
+        $grid->disableActions();
+        $grid->disableRowSelector();
         
         $grid->model()->orderBy('created_at', 'desc');
         return $grid;

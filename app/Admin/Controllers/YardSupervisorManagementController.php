@@ -6,6 +6,7 @@ use App\Models\Records;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Encore\Admin\Show;
 use Carbon\Carbon;
@@ -14,8 +15,10 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Auth\Permission;
 
 
+
 class YardSupervisorManagementController extends AdminController
 {
+  private $supervisorIdAdmin; 
     /**
      * Title for current resource.
      *
@@ -36,10 +39,16 @@ class YardSupervisorManagementController extends AdminController
         // $grid->column('supervisor_id', __('Supervisor id'));
         $grid->column('product', __('Product'));
         $grid->column('quantity', __('Quantity'));
+        $grid->column('amount', __('Amount'));
+        $grid->column('Total')->display(function () {
+            return $this->quantity * $this->amount;
+        });
         $grid->column('description', __('Description'));
         $grid->column('created_at', __('Created at'))->display(function ($value) {
            // return Carbon::parse($value)->format('Y-m-d H:i:s');
-           return Carbon::parse($value)->format('d-m-Y');
+           //return Carbon::parse($value)->format('d-m-Y');
+          //  return Carbon::parse($value)->format('Y-m-d H:i');
+           return Carbon::parse($value)->format('Y-m-d');
         });
         // $grid->column('updated_at', __('Updated at'));
 
@@ -47,39 +56,47 @@ class YardSupervisorManagementController extends AdminController
         $grid->filter(function ($filter) {
             // $filter->notIn('id', __('Id'));
             $filter->disableIdFilter();
+            // $filter->between('created_at', 'Select Date')->date('Y-m-d');
+            $filter->between('created_at', 'Select Date')->date();
+
+         
+              
             //$filter->like('email', __('Email'));
-            $filter->column(1 / 2, function ($filter) {
-              $filter->like('product', __('Product'));
-              $filter->like('description', __('Description'));
+            // $filter->column(1 / 2, function ($filter) {
+            //   $filter->like('product', __('Product'));
+            //  // $filter->like('description', __('Description'));
       
-            });
-            $filter->column(1 / 2, function ($filter) {
-              $filter->like('quantity', __('Quantity'));
-              // $filter->like('created_at', __('Created at'));
-            });
+            // });
+            // $filter->column(1 / 2, function ($filter) {
+            //   $filter->like('quantity', __('Quantity'));
+            //   // $filter->like('created_at', __('Created at'));
+            //   $filter->between('created_at', 'Choose Date')->date();
+            // });
+
+            
           });
 
           
         $grid->actions(function ($actions) {
           $actions->disableEdit();
           // $actions->disableView();
-          // $actions->disableDelete();
+          $actions->disableDelete();
           //new code
           if (Admin::user()->can('create-post')) {
             Permission::check('create-post');
            }
           //new code
         });
-
+        $grid->disableRowSelector();
           //new code
           //$grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
-        //   if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
-        //     // If user has one of the specified roles, show all records
-        //     $grid->model()->orderBy('created_at', 'desc');
-        // } else {
-        //     // Otherwise, show only records where supervisorid matches the login ID
-        //     $grid->model()->where('supervisor_id', Admin::user()->id)->orderBy('created_at', 'desc');
-        // }
+          if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
+            // If user has one of the specified roles, show all records
+            $grid->model()->orderBy('created_at', 'desc');
+        } else {
+            // Otherwise, show only records where supervisorid matches the login ID
+            $grid->model()->where('supervisor_id', Admin::user()->id)->orderBy('created_at', 'desc');
+        }
         //new code
 
         $grid->model()->orderBy('created_at', 'desc');
@@ -116,9 +133,11 @@ class YardSupervisorManagementController extends AdminController
     //protected function form():\Illuminate\Contracts\View\View
     protected function form()
     {
+    
         $form = new Form(new Records());
+       
 
-        // $form->number('supervisor_id', __('Supervisor id'));
+        //$form->number('supervisor_id', __('Supervisor id'));
         // $form->text('product', __('Product'));
         // $form->text('quantity', __('Quantity'));
         // $form->text('description', __('Description'));

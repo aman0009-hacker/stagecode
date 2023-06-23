@@ -57,3 +57,14 @@ $(document).on('click', '#confirmpasswordimg', function () {
   }
   $(this).data("clicks", !clicks);
 });
+
+$(".btn-refresh").click(function(){
+  $.ajax({
+     type:'GET',
+     url:'/refresh_captcha',
+     success:function(data){
+        $(".captcha span").html(data.captcha);
+        //$(".captcha").load(window.location.href + " .captcha");
+     }
+  });
+});

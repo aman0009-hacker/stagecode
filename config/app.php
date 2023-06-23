@@ -169,6 +169,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
+      
+       
     ])->toArray(),
 
     /*
@@ -184,6 +186,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'Uuid' => Webpatser\Uuid\Uuid::class,
+       
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
