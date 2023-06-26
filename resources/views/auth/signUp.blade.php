@@ -182,7 +182,7 @@
                 <div class="col-12">
                   <div class="action">
                     {{-- <button type="submit" class="btn continue-btn w-100"> Send OTP</button> --}}
-                    <button type="submit" class="btn continue-btn w-100" id="registerBtn">Register</button>
+                    <button type="submit" class="btn continue-btn w-100 registerBtnSignUp" id="registerBtn">Register</button>
                   </div>
                 </div>
               </div>

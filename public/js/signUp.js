@@ -79,16 +79,16 @@ $("#continueBtn").click(function (e) {
 
 
 $(document).ready(function() {
-    $('#registerBtn').prop('disabled', true);
+    $('.registerBtnSignUp').prop('disabled', true);
     // Listen for change event on the checkbox
     $('#acceptTerms').change(function() {
       // Check if the checkbox is checked
       if ($(this).is(':checked')) {
         // Enable the "Register" button
-        $('#registerBtn').prop('disabled', false);
+        $('.registerBtnSignUp').prop('disabled', false);
       } else {
         // Disable the "Register" button
-        $('#registerBtn').prop('disabled', true);
+        $('.registerBtnSignUp').prop('disabled', true);
       }
     });
   });
