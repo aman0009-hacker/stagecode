@@ -35,6 +35,10 @@ $(document).ready(function()
                 {
                     $('#makepaymentnModal').modal('show');
                 }
+                else if(data.orderStatus == "Rejected")
+                {
+                    $('#makepaymentnModalRejection').modal('show');
+                }
                 // else if(data.orderStatus=="Dispatched")
                 // {
                 //     $('#makepaymentnModals').modal('show');
