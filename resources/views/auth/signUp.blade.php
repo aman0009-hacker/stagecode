@@ -166,7 +166,7 @@
                        
                         <div class="mb-3 form-check d-flex justify-content-center align-items-center">
                           <input type="checkbox"  id="acceptTerms" name="accept_terms" required>
-                          <label class="form-check-label ms-2" for="acceptTerms">I accept the <a href="{{asset('filename')}}" target="_blank">Terms and Conditions</a></label>
+                          <label class="form-check-label ms-2" for="acceptTerms">I accept the <a href="{{asset('policy.pdf')}}" target="_blank">Terms and Conditions</a></label>
                         </div>
                     
                       </div>
