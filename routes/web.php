@@ -157,17 +157,17 @@ Route::get("/redirect", function (Request $request) {
             $userStatus = User::find($userId)->approved;
             if (isset($userStatus) && $userStatus === 1) 
             {
-                // $userPayment = UserPayment::where('user_id', $userId)
-                //     ->where('payment_status', 'Success')
-                //     ->first();
+                $userPayment = UserPayment::where('user_id', $userId)
+                    ->where('payment_status', 'Success')
+                    ->first();
 
-                // if ($userPayment) {
-                //     //return redirect()->route('category');
-                //     return redirect()->route('RawMaterial');
-                // } else {
-                //     return redirect()->route('PaymentDetailsView');
-                // }
-                return redirect()->route('RawMaterial');
+                if ($userPayment) {
+                    //return redirect()->route('category');
+                    return redirect()->route('RawMaterial');
+                } else {
+                    return redirect()->route('PaymentDetailsView');
+                }
+                //return redirect()->route('RawMaterial');
             }
             else if(isset($userStatus) && $userStatus === 2)
             {
