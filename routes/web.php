@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Models\UserPayment;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -298,3 +299,7 @@ Route::post('/payment_info_store', [ProductCategoryController::class, 'payment_i
 
 
 Route::get('refresh_captcha', [ProductCategoryController::class, 'refreshCaptcha'])->name('refresh_captcha');
+
+Route::any('/payment/response',[PaymentController::class,'paymentResponse'])->name("payment.response");
+
+Route::post('/payment',[PaymentController::class,'paymentData'])->name("payment");
