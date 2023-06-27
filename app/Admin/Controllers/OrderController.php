@@ -155,6 +155,8 @@ class OrderController extends AdminController
             $export->except(['id']);
           });
 
+
+          $grid->disableRowSelector();
           $grid->disableCreateButton();
 
           $grid->model()->orderBy('created_at', 'desc');
