@@ -77,7 +77,14 @@ class YardController extends AdminController
         // //         Permission::check('create-post');
         // //     }
         // });
-        $grid->disableActions();
+
+          $grid->actions(function ($actions) {
+           $actions->disableView();
+           //$actions->disableEdit();
+           //$actions->disableDelete();
+        });
+
+        //$grid->disableActions();
         $grid->disableRowSelector();
         
         $grid->model()->orderBy('created_at', 'desc');

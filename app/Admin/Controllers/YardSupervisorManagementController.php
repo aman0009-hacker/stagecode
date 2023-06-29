@@ -37,19 +37,20 @@ class YardSupervisorManagementController extends AdminController
 
         // $grid->column('id', __('Id'));
         // $grid->column('supervisor_id', __('Supervisor id'));
+        $grid->column('date', __('Date'));
         $grid->column('product', __('Product'));
         $grid->column('quantity', __('Quantity'));
         $grid->column('amount', __('Amount'));
         $grid->column('Total')->display(function () {
-            return $this->quantity * $this->amount *270;
+            return $this->quantity * $this->amount;
         });
         $grid->column('description', __('Description'));
-        $grid->column('created_at', __('Created at'))->display(function ($value) {
-           // return Carbon::parse($value)->format('Y-m-d H:i:s');
-           //return Carbon::parse($value)->format('d-m-Y');
-          //  return Carbon::parse($value)->format('Y-m-d H:i');
-           return Carbon::parse($value)->format('Y-m-d');
-        });
+        // $grid->column('created_at', __('Created at'))->display(function ($value) {
+        //    // return Carbon::parse($value)->format('Y-m-d H:i:s');
+        //    //return Carbon::parse($value)->format('d-m-Y');
+        //   //  return Carbon::parse($value)->format('Y-m-d H:i');
+        //    return Carbon::parse($value)->format('Y-m-d');
+        // });
         // $grid->column('updated_at', __('Updated at'));
 
 

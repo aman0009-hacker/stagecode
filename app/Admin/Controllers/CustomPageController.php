@@ -207,7 +207,8 @@ class CustomPageController extends AdminController
         $query = User::find($userid);
         if ($query) {
             $approvedStatus = $query->approved;
-            if ($approvedStatus == 2 || $approvedStatus == 0) {
+            // if ($approvedStatus == 2 || $approvedStatus == 0) {
+                if ($approvedStatus == 2 || $approvedStatus == 0 || $approvedStatus == 1) {
                 if (isset($textAreaMsg) && isset($adminid) && isset($userid)) {
                     $data = new Comments;
                     $data->admin_id = $adminid;
@@ -250,7 +251,8 @@ class CustomPageController extends AdminController
         $query = User::find($userid);
         if ($query) {
             $status = $query->approved;
-            if ($status == 2 || $status == 0) {
+            //if ($status == 2 || $status == 0) {
+                if ($status == 2 || $status == 0 || $status == 1) {
                 if (isset($adminid) && isset($userid)) { {
                         $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->take(5)->get();
                         //$latestData=Comments::where('id',$lastInsertedId->id)->first();

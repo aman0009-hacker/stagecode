@@ -161,12 +161,12 @@ class ProductCategoryController extends Controller
         if (Auth::check()) {
             //$orders = Order::where('user_id', Auth::user()->id)->where('status', 'Dispatched')->orderBy('created_at', 'desc')->get();
             $orders = Order::where('user_id', Auth::user()->id)
-    ->where(function ($query) {
-        $query->where('status', 'Dispatched')
-            ->orWhere('status', 'Payment_Done');
-    })
-    ->orderBy('created_at', 'desc')
-    ->get();
+                ->where(function ($query) {
+                    $query->where('status', 'Dispatched')
+                        ->orWhere('status', 'Payment_Done');
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
 
             foreach ($orders as $order) {
                 $order->orderItems = OrderItem::where('order_id', $order->id)->get();
@@ -180,19 +180,17 @@ class ProductCategoryController extends Controller
     public function records(Request $request)
     {
         //return response()->json(["msg" => "success"]);
-        $product=$request->input('product');
-        $quantity=$request->input('quantity');
-        $description=$request->input('description');
-        if(isset($product) && !empty($product) && isset($quantity) && !empty($quantity))
-        {
-            $query=new Records;
-            $query->product=$product;
-            $query->quantity=$quantity;
-            $query->description=$description;
+        $product = $request->input('product');
+        $quantity = $request->input('quantity');
+        $description = $request->input('description');
+        if (isset($product) && !empty($product) && isset($quantity) && !empty($quantity)) {
+            $query = new Records;
+            $query->product = $product;
+            $query->quantity = $quantity;
+            $query->description = $description;
             $query->save();
-            if($query->save())
-            {
-                return response()->json(["status"=>"success", "statusCode"=>200]);
+            if ($query->save()) {
+                return response()->json(["status" => "success", "statusCode" => 200]);
             }
         }
     }
@@ -278,30 +276,30 @@ class ProductCategoryController extends Controller
 
     public function storing(Request $request)
     {
-        $adminID=Admin::user()->id;
-        $hide=$request->hide;
-        $product=$request->product;
-        $quantity=$request->quantity;
-        $amount=$request->amount;
-
+        $adminID = Admin::user()->id;
         $this->validate($request, [
             'product' => 'required',
             'quantity' => 'required',
             'amount' => 'required'
-         ]); 
+        ]);
+        $hide = $request->hide;
+        $date = $request->date;
 
-         if(isset($adminID) && !empty($adminID))
-         {
+
+        $product = $request->product;
+        $quantity = $request->quantity;
+        $amount = $request->amount;
+
+
         for ($a = 0; $a < $hide; $a++) {
             $data = new Records();
+            $data->date = $date[$a];
             $data->product = $product[$a];
             $data->quantity = $quantity[$a];
-            $data->amount=$amount[$a];
+            $data->amount = $amount[$a];
             $data->description = $request->description;
-            $data->supervisor_id=$adminID;
             $data->save();
 
-        }
         }
         return redirect('/admin/records');
     }
@@ -370,48 +368,43 @@ class ProductCategoryController extends Controller
 
     public function payment_info_store(Request $request)
     {
-      try
-      {
-        $dropDownPayment=$request->input('dropDownPayment');
-        $name=$request->input('name');
-        $date_value=$request->input('date_value');
-        $cvv=$request->input('cvv');
-        $transaction_no=rand(1000,100000);
-        $order_id=rand(10,1000);
-        $transaction_date=Carbon::now();
+        try {
+            $dropDownPayment = $request->input('dropDownPayment');
+            $name = $request->input('name');
+            $date_value = $request->input('date_value');
+            $cvv = $request->input('cvv');
+            $transaction_no = rand(1000, 100000);
+            $order_id = rand(10, 1000);
+            $transaction_date = Carbon::now();
 
-        if(isset($dropDownPayment) && isset($name) && isset($date_value) && isset($cvv) && isset($transaction_no)  && isset($order_id) && isset($transaction_date))
-        {
-            $UserPayment=new UserPayment();
-            $UserPayment->source=$dropDownPayment;
-            $UserPayment->transaction_date=$transaction_date;
-            $UserPayment->transaction_id= $transaction_no;
-            $UserPayment->user_id=Auth::user()->id;
-            $UserPayment->orderno=$order_id;
-            $UserPayment->payment_status="Success";
-            // $UserPayment->save();
-            if($UserPayment->save())
-            {
-                return redirect()->route('congratulations');
+            if (isset($dropDownPayment) && isset($name) && isset($date_value) && isset($cvv) && isset($transaction_no) && isset($order_id) && isset($transaction_date)) {
+                $UserPayment = new UserPayment();
+                $UserPayment->source = $dropDownPayment;
+                $UserPayment->transaction_date = $transaction_date;
+                $UserPayment->transaction_id = $transaction_no;
+                $UserPayment->user_id = Auth::user()->id;
+                $UserPayment->orderno = $order_id;
+                $UserPayment->payment_status = "Success";
+                // $UserPayment->save();
+                if ($UserPayment->save()) {
+                    return redirect()->route('congratulations');
+                }
+
             }
-           
-        }
-      }
-      catch(\Exception $ex)
-      {
+        } catch (\Exception $ex) {
 
-      }
+        }
     }
 
     public function supervisor(Content $content)
     {
         $data = Entity::all();
-        return $content->body(view('supervisor',compact('data')));
-        
+        return $content->body(view('supervisor', compact('data')));
+
     }
 
     public function refreshCaptcha()
     {
-        return response()->json(['captcha'=> captcha_img()]);
+        return response()->json(['captcha' => captcha_img()]);
     }
 }
