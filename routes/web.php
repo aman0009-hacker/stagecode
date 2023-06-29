@@ -302,4 +302,12 @@ Route::get('refresh_captcha', [ProductCategoryController::class, 'refreshCaptcha
 
 Route::any('/payment/response',[PaymentController::class,'paymentResponse'])->name("payment.response");
 
+
+
 Route::post('/payment',[PaymentController::class,'paymentData'])->name("payment");
+
+
+Route::post("/payment/process",[PaymentController::class,'paymentProcess'])->name('payment.process');
+Route::get("/payment/process",[PaymentController::class,'index'])->name('payment.process');
+
+
