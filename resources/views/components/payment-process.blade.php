@@ -92,7 +92,7 @@
 
 
                         <div class="user-signUp-form process-pending-form d-block">
-                            <form method="post" action="/payment/process">
+                            <form method="post" action="/payment/process/data">
                                 @csrf
                                 <div class="row text-center">
                                     <div class="col-12">

@@ -304,7 +304,11 @@ Route::post('/payment/response',[PaymentController::class,'paymentResponse'])->n
 Route::post('/payment',[PaymentController::class,'paymentData'])->name("payment");
 
 
-Route::post("/payment/process",[PaymentController::class,'paymentProcess'])->name('payment.process');
+Route::post("/payment/process/data",[PaymentController::class,'paymentProcess'])->name('payment.process.data');
 Route::get("/payment/process",[PaymentController::class,'index'])->name('payment.process');
+
+
+
+
 
 
