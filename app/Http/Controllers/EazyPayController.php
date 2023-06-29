@@ -45,7 +45,7 @@ class EazyPayController extends Controller
         return $encryptedUrl;
 
 
-    
+
     }
 
     protected function getMandatoryField($amount, $reference_no)
@@ -117,16 +117,21 @@ class EazyPayController extends Controller
         // return $encryptedValue;
 
 
-        $cipher = 'aes-128-ecb'; // AES-128 in ECB mode
-        $encryptionKey = openssl_digest($this->encryption_key, 'SHA256', true); // Generate a 256-bit key
-        $encryptedValue = openssl_encrypt($str, $cipher, $encryptionKey, OPENSSL_RAW_DATA);
-        $encryptedValue = base64_encode($encryptedValue);
-        return $encryptedValue;
+        // $cipher = 'aes-128-ecb'; // AES-128 in ECB mode
+        // $encryptionKey = openssl_digest($this->encryption_key, 'SHA256', true); // Generate a 256-bit key
+        // $encryptedValue = openssl_encrypt($str, $cipher, $encryptionKey, OPENSSL_RAW_DATA);
+        // $encryptedValue = base64_encode($encryptedValue);
+        // return $encryptedValue;
+
+        // Generate an initialization vector
+        // $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+        // Encrypt the data using AES 128 encryption in ecb mode using our encryption key and initialization vector.
+        $encrypted = openssl_encrypt($str, 'aes-128-ecb', $this->encryption_key, OPENSSL_RAW_DATA);
+        // The $iv is just as important as the key for decrypting, so save it with our encrypted data using a unique separator (::)
+        return base64_encode($encrypted);
     }
 
 
-    // // call The method
-// $base=new EazyPayController();
-// $url=$base->getPaymentUrl($amount, $reference_no, $optionalField=null);
+   
 
 }
