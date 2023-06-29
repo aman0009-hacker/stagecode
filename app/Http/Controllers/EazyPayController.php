@@ -43,6 +43,9 @@ class EazyPayController extends Controller
     {
         $encryptedUrl = $this->EAZYPAY_BASE_URL . "merchantid=" . $this->merchant_id . "&mandatory fields=" . $mandatoryField . "&optional fields=" . $optionalField . "&returnurl=" . $this->getReturnUrl() . "&Reference No=" . $reference_no . "&submerchantid=" . $this->getSubMerchantId() . "&transaction amount=" . $amount . "&paymode=" . $this->getPaymode();
         return $encryptedUrl;
+
+
+    
     }
 
     protected function getMandatoryField($amount, $reference_no)
