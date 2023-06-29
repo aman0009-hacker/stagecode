@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\EazyPayController;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
     public $encryption_key;
-    const EAZYPAY_BASE_URL = env('EAZYPAY_BASE_URL', '');
+    public $EAZYPAY_BASE_URL;
 
     public function __construct()
     {
         $this->encryption_key = config('eazypay.encryption_key');
+        $this->EAZYPAY_BASE_URL=env('EAZYPAY_BASE_URL', '');
     }
 
     public function paymentResponse(Request $request)
     {
+        dd($request);
         try {
             if (isset($request) && !empty($request)) {
                 $data = array(
@@ -172,6 +175,34 @@ class PaymentController extends Controller
     {
 
     }
+
+
+    public function paymentProcess(Request $request)
+    {
+     // Instantiate the EazyPayController
+     $base = new EazyPayController();
+
+     // Call the getPaymentUrl method
+     $amount = $request->input('amount'); // Example amount
+     //dd($amount);
+     $reference_no =rand(1111, 9999);
+     //$reference_no = 'ABC123'; // Example reference number
+     $optionalField = null; // Example optional field (can be null)
+     $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
+
+     // Do something with the generated URL
+     // For example, you can redirect the user to the payment URL
+     return redirect()->to($url);
+    //  $value=$url;
+    }
+
+    public function index(Request $request)
+    {
+        return view('components.payment-process');
+    }
+
+
+
 
 
 }
