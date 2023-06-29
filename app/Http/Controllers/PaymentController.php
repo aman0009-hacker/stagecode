@@ -190,6 +190,8 @@ class PaymentController extends Controller
      $optionalField = null; // Example optional field (can be null)
      $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
 
+     dd($url);
+
      // Do something with the generated URL
      // For example, you can redirect the user to the payment URL
      return redirect()->to($url);
