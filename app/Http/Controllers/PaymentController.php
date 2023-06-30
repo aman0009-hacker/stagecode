@@ -149,6 +149,8 @@ class PaymentController extends Controller
             }
         } catch (\Exception $ex) {
 
+            dd($ex->getMessage());
+
         }
     }
 
