@@ -6,6 +6,7 @@ use App\Http\Controllers\EazyPayController;
 use Illuminate\Http\Request;
 use illuminate\Support\Facades\Auth;
 use App\Models\PaymentHandling;
+use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
@@ -78,7 +79,8 @@ class PaymentController extends Controller
                 $paymentHandling->eazy_pay_base_url = env('EAZYPAY_BASE_URL', '') ?? '';
                 $paymentHandling->transaction_id = $request['Unique_Ref_Number'] ?? '';
                 $paymentHandling->transaction_amount = $request['Transaction_Amount'] ?? '';
-                $paymentHandling->transaction_date = $request['Transaction_Date'] ?? '';
+                //$paymentHandling->transaction_date = $request['Transaction_Date'] ?? '';
+                $paymentHandling->transaction_date =Carbon::createFromFormat('d-m-Y H:i:s', $request['Transaction_Date'])->format('Y-m-d H:i:s');
                 $paymentHandling->amount = $request['Total_Amount'] ?? '';
                 $paymentHandling->user_id = Auth::user()->id ?? '';
                 $paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
@@ -135,7 +137,8 @@ class PaymentController extends Controller
                 $paymentHandling->eazy_pay_base_url = env('EAZYPAY_BASE_URL', '') ?? '';
                 $paymentHandling->transaction_id = $request['Unique_Ref_Number'] ?? '';
                 $paymentHandling->transaction_amount = $request['Transaction_Amount'] ?? '';
-                $paymentHandling->transaction_date = $request['Transaction_Date'] ?? '';
+                $paymentHandling->transaction_date =Carbon::createFromFormat('d-m-Y H:i:s', $request['Transaction_Date'])->format('Y-m-d H:i:s');
+                // $paymentHandling->transaction_date = $request['Transaction_Date'] ?? '';
                 $paymentHandling->amount = $request['Total_Amount'] ?? '';
                 $paymentHandling->user_id = Auth::user()->id ?? '';
                 $paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
