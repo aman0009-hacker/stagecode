@@ -20,9 +20,9 @@ class PaymentController extends Controller
 
     public function paymentResponse(Request $request)
     {
-        dd($request);
+        //dd($request);
         try {
-            if (isset($request) && !empty($request) && isset($request['Total_Amount']) && isset($request['Response_Code']) && $request['Response_Code']=="E000") {
+            if (isset($request) && !empty($request) && isset($request['Total_Amount']) && isset($request['Response_Code']) && $request['Response_Code'] == "E000") {
                 $data = array(
                     'Response_Code' => $request['Response_Code'],
                     'Unique_Ref_Number' => $request['Unique_Ref_Number'],
@@ -62,35 +62,38 @@ class PaymentController extends Controller
                     "mandatory_fields" => "3281|45|10000",
                     "optional_fields" => "null",
                     "RSV" => "c5036cc5258a0f066c3260b7316eb285f91bec128047a49bacb094c7030c5a49708eac460d3d4801db57d17cca7cb35778e31e5dc64d73f4e84ec281fb07f5d3",
-                    */ 
+                    */
 
-               );
- 
+                );
 
-               //code to send info to DB
-               $paymentHandling=new PaymentHandling();
-               $paymentHandling->merchant_id=$request['ID'] ??  '';
-               $paymentHandling->encryption_key=config('eazypay.encryption_key') ?? '';
-               $paymentHandling->sub_merchant_id=$request['SubMerchantId'] ?? '';
-               $paymentHandling->reference_no=$request['ReferenceNo'] ?? '';
-               $paymentHandling->paymode=$request['Payment_Mode'] ?? '';
-               $paymentHandling->return_url=config('eazypay.return_url') ?? '';
-               $paymentHandling->eazy_pay_base_url=env('EAZYPAY_BASE_URL', '') ?? '';
-               $paymentHandling->transaction_id=$request['Unique_Ref_Number'] ?? '';
-               $paymentHandling->transaction_amount=$request['Transaction_Amount'] ?? '';
-               $paymentHandling->transaction_date=$request['Transaction_Date'] ?? '';
-               $paymentHandling->amount=$request['Total_Amount'] ?? '';
-               $paymentHandling->user_id=Auth::user()->id;
-               $paymentHandling->payment_status=$this->response_code($request['Response_Code']) ?? '';
-               $paymentHandling->payment_status_code=$request['Response_Code'] ?? '';
-               $paymentHandling->save();
-               //code to send info to DB
+
+                //code to send info to DB
+                $paymentHandling = new PaymentHandling();
+                $paymentHandling->merchant_id = $request['ID'] ?? '';
+                $paymentHandling->encryption_key = config('eazypay.encryption_key') ?? '';
+                $paymentHandling->sub_merchant_id = $request['SubMerchantId'] ?? '';
+                $paymentHandling->reference_no = $request['ReferenceNo'] ?? '';
+                $paymentHandling->paymode = $request['Payment_Mode'] ?? '';
+                $paymentHandling->return_url = config('eazypay.return_url') ?? '';
+                $paymentHandling->eazy_pay_base_url = env('EAZYPAY_BASE_URL', '') ?? '';
+                $paymentHandling->transaction_id = $request['Unique_Ref_Number'] ?? '';
+                $paymentHandling->transaction_amount = $request['Transaction_Amount'] ?? '';
+                $paymentHandling->transaction_date = $request['Transaction_Date'] ?? '';
+                $paymentHandling->amount = $request['Total_Amount'] ?? '';
+                $paymentHandling->user_id = Auth::user()->id;
+                $paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
+                $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
+                $dbResponse = $paymentHandling->save();
+                if ($dbResponse) {
+
+                }
+                //code to send info to DB
 
                 $verification_key = $data['ID'] . '|' . $data['Response_Code'] . '|' . $data['Unique_Ref_Number'] . '|' .
-                    $data['Service_Tax_Amount'] . '|' . $data['Processing_Fee_Amount'] . '|' . $data['Total_Amount'] . '|' .
-                    $data['Transaction_Amount'] . '|' . $data['Transaction_Date'] . '|' . $data['Interchange_Value'] . '|' .
-                    $data['TDR'] . '|' . $data['Payment_Mode'] . '|' . $data['SubMerchantId'] . '|' . $data['ReferenceNo'] . '|' .
-                    $data['TPS'] . '|' . $this->encryption_key;
+                $data['Service_Tax_Amount'] . '|' . $data['Processing_Fee_Amount'] . '|' . $data['Total_Amount'] . '|' .
+                $data['Transaction_Amount'] . '|' . $data['Transaction_Date'] . '|' . $data['Interchange_Value'] . '|' .
+                $data['TDR'] . '|' . $data['Payment_Mode'] . '|' . $data['SubMerchantId'] . '|' . $data['ReferenceNo'] . '|' .
+                $data['TPS'] . '|' . $this->encryption_key;
                 $encrypted_message = hash('sha512', $verification_key);
                 if ($encrypted_message == $data['RS']) {
                     echo $data['RS'];
@@ -100,9 +103,7 @@ class PaymentController extends Controller
                 } else {
                     return false;
                 }
-            }
-            else if(isset($request) && !empty($request))
-            {
+            } else if (isset($request) && !empty($request)) {
                 $data = array(
                     'Response_Code' => $request['Response_Code'],
                     'Unique_Ref_Number' => $request['Unique_Ref_Number'],
@@ -123,6 +124,27 @@ class PaymentController extends Controller
                     'optional_fields' => $request['optional_fields'],
                     'RSV' => $request['RSV']
                 );
+                //code to send info to DB
+                $paymentHandling = new PaymentHandling();
+                $paymentHandling->merchant_id = $request['ID'] ?? '';
+                $paymentHandling->encryption_key = config('eazypay.encryption_key') ?? '';
+                $paymentHandling->sub_merchant_id = $request['SubMerchantId'] ?? '';
+                $paymentHandling->reference_no = $request['ReferenceNo'] ?? '';
+                $paymentHandling->paymode = $request['Payment_Mode'] ?? '';
+                $paymentHandling->return_url = config('eazypay.return_url') ?? '';
+                $paymentHandling->eazy_pay_base_url = env('EAZYPAY_BASE_URL', '') ?? '';
+                $paymentHandling->transaction_id = $request['Unique_Ref_Number'] ?? '';
+                $paymentHandling->transaction_amount = $request['Transaction_Amount'] ?? '';
+                $paymentHandling->transaction_date = $request['Transaction_Date'] ?? '';
+                $paymentHandling->amount = $request['Total_Amount'] ?? '';
+                $paymentHandling->user_id = Auth::user()->id;
+                $paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
+                $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
+                $dbResponse = $paymentHandling->save();
+                if ($dbResponse) {
+
+                }
+                //code to send info to DB
 
             }
         } catch (\Exception $ex) {
