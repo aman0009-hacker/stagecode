@@ -300,7 +300,7 @@ Route::post('/payment_info_store', [ProductCategoryController::class, 'payment_i
 
 Route::get('refresh_captcha', [ProductCategoryController::class, 'refreshCaptcha'])->name('refresh_captcha');
 
-Route::post('/payment/response',[PaymentController::class,'paymentResponse'])->name("payment.response");
+// Route::post('/payment/response',[PaymentController::class,'paymentResponse'])->name("payment.response");
 Route::post('/payment',[PaymentController::class,'paymentData'])->name("payment");
 
 

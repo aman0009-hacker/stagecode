@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Support\Facades\Auth;
 
 class Handler extends ExceptionHandler
 {
@@ -29,13 +30,27 @@ class Handler extends ExceptionHandler
     }
 
     //method to protect csrf
-    protected function invalidToken($request, $exception)
-    {
-        if ($request->expectsJson()) {
-            return response()->json(['message' => 'CSRF token mismatch. Please try again.'], 419);
-        }
+    // protected function invalidToken($request, $exception)
+    // {
+    //     // if ($request->expectsJson()) {
+    //     //     return response()->json(['message' => 'CSRF token mismatch. Please try again.'], 419);
+    //     // }
 
-        return redirect()->back()->withInput()->withErrors(['CSRF token mismatch. Please try again.']);
-    }
+    //     // return redirect()->back()->withInput()->withErrors(['CSRF token mismatch. Please try again.']);
+    // }
     //method to protect csrf
+
+    //code for handle csrf token
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof TokenMismatchException) {
+            if (Auth::user()->id) {
+                return redirect()->route('login')->with('error', 'Your session has expired. Please login again.');
+            } else {
+                return redirect()->route('admin.login')->with('error', 'Your session has expired. Please login again.');
+            }
+        }
+        return parent::render($request, $exception);
+    }
+    //code for handle csrf token
 }
