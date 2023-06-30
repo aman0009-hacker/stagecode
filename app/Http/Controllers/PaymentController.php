@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\EazyPayController;
 use Illuminate\Http\Request;
+use illuminate\Support\Facades\Auth;
+use App\Models\PaymentHandling;
 
 class PaymentController extends Controller
 {
@@ -18,8 +20,9 @@ class PaymentController extends Controller
 
     public function paymentResponse(Request $request)
     {
+        dd($request);
         try {
-            if (isset($request) && !empty($request)) {
+            if (isset($request) && !empty($request) && isset($request['Total_Amount']) && isset($request['Response_Code']) && $request['Response_Code']=="E000") {
                 $data = array(
                     'Response_Code' => $request['Response_Code'],
                     'Unique_Ref_Number' => $request['Unique_Ref_Number'],
@@ -62,6 +65,27 @@ class PaymentController extends Controller
                     */ 
 
                );
+ 
+
+               //code to send info to DB
+               $paymentHandling=new PaymentHandling();
+               $paymentHandling->merchant_id=$request['ID'] ??  '';
+               $paymentHandling->encryption_key=config('eazypay.encryption_key') ?? '';
+               $paymentHandling->sub_merchant_id=$request['SubMerchantId'] ?? '';
+               $paymentHandling->reference_no=$request['ReferenceNo'] ?? '';
+               $paymentHandling->paymode=$request['Payment_Mode'] ?? '';
+               $paymentHandling->return_url=config('eazypay.return_url') ?? '';
+               $paymentHandling->eazy_pay_base_url=env('EAZYPAY_BASE_URL', '') ?? '';
+               $paymentHandling->transaction_id=$request['Unique_Ref_Number'] ?? '';
+               $paymentHandling->transaction_amount=$request['Transaction_Amount'] ?? '';
+               $paymentHandling->transaction_date=$request['Transaction_Date'] ?? '';
+               $paymentHandling->amount=$request['Total_Amount'] ?? '';
+               $paymentHandling->user_id=Auth::user()->id;
+               $paymentHandling->payment_status=$this->response_code($request['Response_Code']) ?? '';
+               $paymentHandling->payment_status_code=$request['Response_Code'] ?? '';
+               $paymentHandling->save();
+               //code to send info to DB
+
                 $verification_key = $data['ID'] . '|' . $data['Response_Code'] . '|' . $data['Unique_Ref_Number'] . '|' .
                     $data['Service_Tax_Amount'] . '|' . $data['Processing_Fee_Amount'] . '|' . $data['Total_Amount'] . '|' .
                     $data['Transaction_Amount'] . '|' . $data['Transaction_Date'] . '|' . $data['Interchange_Value'] . '|' .
@@ -76,6 +100,30 @@ class PaymentController extends Controller
                 } else {
                     return false;
                 }
+            }
+            else if(isset($request) && !empty($request))
+            {
+                $data = array(
+                    'Response_Code' => $request['Response_Code'],
+                    'Unique_Ref_Number' => $request['Unique_Ref_Number'],
+                    'Service_Tax_Amount' => $request['Service_Tax_Amount'],
+                    'Processing_Fee_Amount' => $request['Processing_Fee_Amount'],
+                    'Total_Amount' => $request['Total_Amount'],
+                    'Transaction_Amount' => $request['Transaction_Amount'],
+                    'Transaction_Date' => $request['Transaction_Date'],
+                    'Interchange_Value' => $request['Interchange_Value'],
+                    'TDR' => $request['TDR'],
+                    'Payment_Mode' => $request['Payment_Mode'],
+                    'SubMerchantId' => $request['SubMerchantId'],
+                    'ReferenceNo' => $request['ReferenceNo'],
+                    'ID' => $request['ID'],
+                    'RS' => $request['RS'],
+                    'TPS' => $request['TPS'],
+                    'mandatory_fields' => $request['mandatory_fields'],
+                    'optional_fields' => $request['optional_fields'],
+                    'RSV' => $request['RSV']
+                );
+
             }
         } catch (\Exception $ex) {
 
