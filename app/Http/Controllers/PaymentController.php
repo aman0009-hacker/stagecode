@@ -80,7 +80,7 @@ class PaymentController extends Controller
                 $paymentHandling->transaction_amount = $request['Transaction_Amount'] ?? '';
                 $paymentHandling->transaction_date = $request['Transaction_Date'] ?? '';
                 $paymentHandling->amount = $request['Total_Amount'] ?? '';
-                $paymentHandling->user_id = Auth::user()->id;
+                $paymentHandling->user_id = Auth::user()->id ?? '';
                 $paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
                 $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
                 $dbResponse = $paymentHandling->save();
@@ -137,7 +137,7 @@ class PaymentController extends Controller
                 $paymentHandling->transaction_amount = $request['Transaction_Amount'] ?? '';
                 $paymentHandling->transaction_date = $request['Transaction_Date'] ?? '';
                 $paymentHandling->amount = $request['Total_Amount'] ?? '';
-                $paymentHandling->user_id = Auth::user()->id;
+                $paymentHandling->user_id = Auth::user()->id ?? '';
                 $paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
                 $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
                 $dbResponse = $paymentHandling->save();
