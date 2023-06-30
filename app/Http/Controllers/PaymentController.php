@@ -6,6 +6,7 @@ use App\Http\Controllers\EazyPayController;
 use Illuminate\Http\Request;
 use illuminate\Support\Facades\Auth;
 use App\Models\PaymentHandling;
+use App\Models\PaymentDataHandling;
 use Carbon\Carbon;
 
 class PaymentController extends Controller
@@ -69,7 +70,7 @@ class PaymentController extends Controller
 
 
                 //code to send info to DB
-                $paymentHandling = new PaymentHandling();
+                $paymentHandling = new PaymentDataHandling();
                 $paymentHandling->merchant_id = $request['ID'] ?? '';
                 $paymentHandling->encryption_key = config('eazypay.encryption_key') ?? '';
                 $paymentHandling->sub_merchant_id = $request['SubMerchantId'] ?? '';
@@ -127,7 +128,7 @@ class PaymentController extends Controller
                     'RSV' => $request['RSV']
                 );
                 //code to send info to DB
-                $paymentHandling = new PaymentHandling();
+                $paymentHandling = new PaymentDataHandling();
                 $paymentHandling->merchant_id = $request['ID'] ?? '';
                 $paymentHandling->encryption_key = config('eazypay.encryption_key') ?? '';
                 $paymentHandling->sub_merchant_id = $request['SubMerchantId'] ?? '';
