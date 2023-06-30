@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+use App\Http\Controllers\PaymentController;
+Route::post('/payment/response',[PaymentController::class,'paymentResponse'])->name("payment.response");
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
