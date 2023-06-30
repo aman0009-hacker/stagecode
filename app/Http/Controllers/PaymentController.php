@@ -18,7 +18,6 @@ class PaymentController extends Controller
 
     public function paymentResponse(Request $request)
     {
-        dd($request);
         try {
             if (isset($request) && !empty($request)) {
                 $data = array(
@@ -37,18 +36,43 @@ class PaymentController extends Controller
                     'ID' => $request['ID'],
                     'RS' => $request['RS'],
                     'TPS' => $request['TPS'],
-                );
+                    'mandatory_fields' => $request['mandatory_fields'],
+                    'optional_fields' => $request['optional_fields'],
+                    'RSV' => $request['RSV'],
+
+                    /*
+                    "Response_Code" => "E000",
+                    "Unique_Ref_Number" => "2306301647032",
+                    "Service_Tax_Amount" => "0.00",
+                    "Processing_Fee_Amount" => "0.00",
+                    "Total_Amount" => "10000.00",
+                    "Transaction_Amount" => "10000",
+                    "Transaction_Date" => "30-06-2023 14:24:34",
+                    "Interchange_Value" => null,
+                    "TDR" => null,
+                    "Payment_Mode" => "NET_BANKING",
+                    "SubMerchantId" => "45",
+                    "ReferenceNo" => "3281",
+                    "ID" => "600477",
+                    "RS" => "ddf30156e88e88b7e45007af65c3aecd74e0e8315ffb2c115e81928607d3fe004df35c8887a479a5951df51e39527e5be0103af921786974e1965a4e321d977a",
+                    "TPS" => "N",
+                    "mandatory_fields" => "3281|45|10000",
+                    "optional_fields" => "null",
+                    "RSV" => "c5036cc5258a0f066c3260b7316eb285f91bec128047a49bacb094c7030c5a49708eac460d3d4801db57d17cca7cb35778e31e5dc64d73f4e84ec281fb07f5d3",
+                    */ 
+
+               );
                 $verification_key = $data['ID'] . '|' . $data['Response_Code'] . '|' . $data['Unique_Ref_Number'] . '|' .
                     $data['Service_Tax_Amount'] . '|' . $data['Processing_Fee_Amount'] . '|' . $data['Total_Amount'] . '|' .
                     $data['Transaction_Amount'] . '|' . $data['Transaction_Date'] . '|' . $data['Interchange_Value'] . '|' .
                     $data['TDR'] . '|' . $data['Payment_Mode'] . '|' . $data['SubMerchantId'] . '|' . $data['ReferenceNo'] . '|' .
                     $data['TPS'] . '|' . $this->encryption_key;
-                // $encrypted_message = hash('sha512', $verification_key);
-                // if ($encrypted_message == $data['RS']) {
-                //     return true;
-                // } else {
-                //     return false;
-                // }
+                $encrypted_message = hash('sha512', $verification_key);
+                if ($encrypted_message == $data['RS']) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         } catch (\Exception $ex) {
 
