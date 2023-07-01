@@ -302,7 +302,15 @@ class PaymentController extends Controller
                 {
                     $this->EAZYPAY_BASE_URL_VERIFY= $this->EAZYPAY_BASE_URL_VERIFY.'ezpaytranid=&amount=&paymentmode=&merchantid='. $merchantId.'&trandate=&pgreferenceno='.$referenceNo;
                     //return $this->EAZYPAY_BASE_URL_VERIFY;
-                    $response=Http::get($this->EAZYPAY_BASE_URL_VERIFY);
+                    // $response=Http::get($this->EAZYPAY_BASE_URL_VERIFY);
+                    $response = Http::post($this->EAZYPAY_BASE_URL_VERIFY, [
+                        'ezpaytranid' => '',
+                        'amount' => '',
+                        'paymentmode' => '',
+                        'merchantid' => $merchantId,
+                        'trandate' => '',
+                        'pgreferenceno' => $referenceNo
+                    ]);
                     //dd($response->successful());
                     if($response->successful())
                     {
