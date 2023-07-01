@@ -280,7 +280,7 @@ class PaymentController extends Controller
     public function paymentData(Request $request)
     { 
 
-     dd($request["Status"]);
+     dd($request);
 
     }
 
