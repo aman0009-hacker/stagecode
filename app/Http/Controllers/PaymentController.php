@@ -145,6 +145,7 @@ class PaymentController extends Controller
                 if ($dbResponse) {
 
                 }
+                return $request['Response_Code'];
                 //code to send info to DB
 
             }
