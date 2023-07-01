@@ -302,23 +302,32 @@ class PaymentController extends Controller
                 {
                     $this->EAZYPAY_BASE_URL_VERIFY= $this->EAZYPAY_BASE_URL_VERIFY.'ezpaytranid=&amount=&paymentmode=&merchantid='. $merchantId.'&trandate=&pgreferenceno='.$referenceNo;
                     //return $this->EAZYPAY_BASE_URL_VERIFY;
-                    // $response=Http::get($this->EAZYPAY_BASE_URL_VERIFY);
-                    $response = Http::post($this->EAZYPAY_BASE_URL_VERIFY, [
-                        'ezpaytranid' => '',
-                        'amount' => '',
-                        'paymentmode' => '',
-                        'merchantid' => $merchantId,
-                        'trandate' => '',
-                        'pgreferenceno' => $referenceNo
-                    ]);
+                    $response=Http::get($this->EAZYPAY_BASE_URL_VERIFY);
+                    // $response = Http::post($this->EAZYPAY_BASE_URL_VERIFY, [
+                    //     'ezpaytranid' => '',
+                    //     'amount' => '',
+                    //     'paymentmode' => '',
+                    //     'merchantid' => $merchantId,
+                    //     'trandate' => '',
+                    //     'pgreferenceno' => $referenceNo
+                    // ]);
                     //dd($response->successful());
-                    if($response->successful())
+                    if($response->successful()) 
                     {
-                        $responseData = $response->json();
-                        dd($response);
-                        $status = $responseData['status'];
-                        echo $responseData;
-                        echo $status;
+                        // $responseData = $response->json();
+                        // dd($response);
+                        // $status = $responseData['status'];
+                        // echo $responseData;
+                        // echo $status;
+                        $responseData = $response->body();
+
+                        // Extract the status from the response
+                        $status = '';
+                        parse_str($responseData, $parsedResponse);
+                        if (isset($parsedResponse['status'])) {
+                            $status = $parsedResponse['status'];
+                        }
+                        echo "Status: " . $status;
                     }
                     else 
                     {
