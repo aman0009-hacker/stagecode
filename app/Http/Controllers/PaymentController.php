@@ -280,7 +280,7 @@ class PaymentController extends Controller
     public function paymentData(Request $request)
     { 
 
-     //dd($request["Status"]);
+     dd($request["Status"]);
 
     }
 
@@ -340,13 +340,18 @@ class PaymentController extends Controller
                     $this->EAZYPAY_BASE_URL_VERIFY= $this->EAZYPAY_BASE_URL_VERIFY.'ezpaytranid='.$transactionId.'&amount=&paymentmode=&merchantid='.$merchantId.'&trandate=&pgreferenceno=';
                     //echo $this->EAZYPAY_BASE_URL_VERIFY;
                     $response=Http::get($this->EAZYPAY_BASE_URL_VERIFY);
-                    dd($response->successful());
+                    //dd($response->successful());
                     if($response->successful())
                     {
-                        $responseData = $response->json();
-                        $status = $responseData['status'];
-                        echo $responseData;
-                        echo $status;
+                        $responseData = $response->body();
+
+                        // Extract the status from the response
+                        $status = '';
+                        parse_str($responseData, $parsedResponse);
+                        if (isset($parsedResponse['status'])) {
+                            $status = $parsedResponse['status'];
+                        }
+                        echo "Status: " . $status;
                     }
                 }
             }
