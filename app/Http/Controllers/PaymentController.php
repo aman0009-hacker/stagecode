@@ -86,6 +86,7 @@ class PaymentController extends Controller
                 $paymentHandling->user_id = Auth::user()->id ?? '';
                 $paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
                 $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
+                $paymentHandling->data = 'Registration_Amount' ?? '';
                 $dbResponse = $paymentHandling->save();
                 if ($dbResponse) {
 
@@ -141,6 +142,7 @@ class PaymentController extends Controller
                 $paymentHandling->user_id = Auth::user()->id ?? '';
                 $paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
                 $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
+                $paymentHandling->data = 'Registration_Amount' ?? '';
                 $dbResponse = $paymentHandling->save();
                 if ($dbResponse) {
 
@@ -274,7 +276,7 @@ class PaymentController extends Controller
 
     public function paymentData(Request $request)
     {
-
+     dd($request);
     }
 
 
