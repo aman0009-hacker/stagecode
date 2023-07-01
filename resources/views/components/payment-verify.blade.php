@@ -92,7 +92,7 @@
 
 
                         <div class="user-signUp-form process-pending-form d-block">
-                            <form method="get" action="{{route('payment.process.verify')}}">
+                            <form method="post" action="{{route('payment.process.verify')}}">
                                 @csrf
                                 <div class="row text-center">
                                     <div class="col-12">
