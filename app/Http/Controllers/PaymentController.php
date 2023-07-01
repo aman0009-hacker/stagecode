@@ -301,15 +301,19 @@ class PaymentController extends Controller
                 if(isset($referenceNo) && !empty($referenceNo))
                 {
                     $this->EAZYPAY_BASE_URL_VERIFY= $this->EAZYPAY_BASE_URL_VERIFY.'ezpaytranid=&amount=&paymentmode=&merchantid='.$merchantId.'&trandate=&pgreferenceno='.$referenceNo;
-                    return $this->EAZYPAY_BASE_URL_VERIFY;
-                    // $response=Http::get($this->EAZYPAY_BASE_URL_VERIFY);
-                    // if($response->successful())
-                    // {
-                    //     $responseData = $response->json();
-                    //     $status = $responseData['status'];
-                    //     echo $responseData;
-                    //     echo $status;
-                    // }
+                    //return $this->EAZYPAY_BASE_URL_VERIFY;
+                    $response=Http::get($this->EAZYPAY_BASE_URL_VERIFY);
+                    if($response->successful())
+                    {
+                        $responseData = $response->json();
+                        $status = $responseData['status'];
+                        echo $responseData;
+                        echo $status;
+                    }
+                    else 
+                    {
+                        return "not success";
+                    }
                   
                 }
                 else if(isset($transactionId) && !empty($transactionId))
