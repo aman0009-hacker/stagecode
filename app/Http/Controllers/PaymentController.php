@@ -303,7 +303,7 @@ class PaymentController extends Controller
                     $this->EAZYPAY_BASE_URL_VERIFY= $this->EAZYPAY_BASE_URL_VERIFY.'ezpaytranid=&amount=&paymentmode=&merchantid='.$merchantId.'&trandate=&pgreferenceno='.$referenceNo;
                     //return $this->EAZYPAY_BASE_URL_VERIFY;
                     $response=Http::get($this->EAZYPAY_BASE_URL_VERIFY);
-                    dd($response);
+                    dd($response->successful());
                     if($response->successful())
                     {
                         $responseData = $response->json();
@@ -322,7 +322,7 @@ class PaymentController extends Controller
                     $this->EAZYPAY_BASE_URL_VERIFY= $this->EAZYPAY_BASE_URL_VERIFY.'ezpaytranid='.$transactionId.'&amount=&paymentmode=&merchantid='.$merchantId.'&trandate=&pgreferenceno=';
                     //echo $this->EAZYPAY_BASE_URL_VERIFY;
                     $response=Http::get($this->EAZYPAY_BASE_URL_VERIFY);
-                    dd($response);
+                    dd($response->successful());
                     if($response->successful())
                     {
                         $responseData = $response->json();
