@@ -307,7 +307,7 @@ class PaymentController extends Controller
                     if($response->successful())
                     {
                         $responseData = $response->json();
-                        dd($responseData);
+                        dd($response);
                         $status = $responseData['status'];
                         echo $responseData;
                         echo $status;
