@@ -8,16 +8,19 @@ use illuminate\Support\Facades\Auth;
 use App\Models\PaymentHandling;
 use App\Models\PaymentDataHandling;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class PaymentController extends Controller
 {
     public $encryption_key;
     public $EAZYPAY_BASE_URL;
+    public $EAZYPAY_BASE_URL_VERIFY;
 
     public function __construct()
     {
         $this->encryption_key = config('eazypay.encryption_key');
         $this->EAZYPAY_BASE_URL = env('EAZYPAY_BASE_URL', '');
+        $this->EAZYPAY_BASE_URL_VERIFY= env('EAZYPAY_BASE_URL_VERIFY','');
     }
 
     public function paymentResponse(Request $request)
@@ -277,9 +280,65 @@ class PaymentController extends Controller
     public function paymentData(Request $request)
     { 
 
-     dd($request["Status"]);
+     //dd($request["Status"]);
 
     }
+
+    public function paymentProcessVerify(Request $request)
+    {
+        // $response = Http::post($this->EAZYPAY_BASE_URL_VERIFY, [
+        //     'name' => 'Steve',
+        //     'role' => 'Network Administrator',
+        // ]);
+        try
+        {
+            $merchantId=$request->input('merchantId');
+            $referenceNo=$request->input('referenceNo');
+            $transactionId=$request->input('transactionId');
+
+            if(isset($merchantId) && !empty($merchantId))
+            {
+                if(isset($referenceNo) && !empty($referenceNo))
+                {
+                    $this->EAZYPAY_BASE_URL_VERIFY= $this->EAZYPAY_BASE_URL_VERIFY.'ezpaytranid=&amount=&paymentmode=&merchantid='.$merchantId.'&trandate=&pgreferenceno='.$referenceNo;
+                    //echo $this->EAZYPAY_BASE_URL_VERIFY;
+                    $response=Http::get($this->EAZYPAY_BASE_URL_VERIFY);
+                    if($response->successful())
+                    {
+                        $responseData = $response->json();
+                        $status = $responseData['status'];
+                        echo $responseData;
+                        echo $status;
+                    }
+                  
+                }
+                else if(isset($transactionId) && !empty($transactionId))
+                {
+                    $this->EAZYPAY_BASE_URL_VERIFY= $this->EAZYPAY_BASE_URL_VERIFY.'ezpaytranid='.$transactionId.'&amount=&paymentmode=&merchantid='.$merchantId.'&trandate=&pgreferenceno=';
+                    //echo $this->EAZYPAY_BASE_URL_VERIFY;
+                    $response=Http::get($this->EAZYPAY_BASE_URL_VERIFY);
+                    if($response->successful())
+                    {
+                        $responseData = $response->json();
+                        $status = $responseData['status'];
+                        echo $responseData;
+                        echo $status;
+                    }
+                }
+            }
+        }
+        catch(\Exception $ex)
+        {
+
+        }
+    }
+
+    public function paymentVerify(Request $request)
+    {
+     return view('components.payment-verify');
+    }
+
+    
 
 
     public function paymentProcess(Request $request)
@@ -304,6 +363,9 @@ class PaymentController extends Controller
     {
         return view('components.payment-process');
     }
+
+
+
 
 
 
