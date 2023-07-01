@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 use App\Http\Controllers\PaymentController;
 Route::post('/payment/response',[PaymentController::class,'paymentResponse'])->name("payment.response");
+Route::post('/payment/payment',[PaymentController::class,'paymentData'])->name("payment.push");
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
