@@ -31,7 +31,7 @@ class EntityController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Entity());
-        $grid->column('id', __('Product Name'))->display(function ($id) {
+        $grid->column('id', __('Product_Type'))->display(function ($id) {
             $categoryId = Entity::where('id', $id)->first()->entity_id;
             if (isset($categoryId)) {
                 $productId = Category::where('id', $categoryId)->first()->category_id;
