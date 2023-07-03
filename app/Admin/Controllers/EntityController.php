@@ -89,7 +89,7 @@ class EntityController extends AdminController
         $grid->tools(function ($tools) {
             $tools->append(new excelfile());
         });
-        $grid->disableActions();
+        //$grid->disableActions();
         //$grid->disableRowSelector();
 
       
