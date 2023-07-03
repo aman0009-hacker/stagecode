@@ -146,7 +146,7 @@ class UserController extends AdminController
 
    
    
-  $grid->disableRowSelector();
+  //$grid->disableRowSelector();
 
    $grid->model()->whereHas('attachment', function ($query) {
       $query->whereNotNull('filename');
