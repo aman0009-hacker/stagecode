@@ -20,7 +20,7 @@ class PaymentController extends Controller
     {
         $this->encryption_key = config('eazypay.encryption_key');
         $this->EAZYPAY_BASE_URL = env('EAZYPAY_BASE_URL', '');
-        $this->EAZYPAY_BASE_URL_VERIFY= env('EAZYPAY_BASE_URL_VERIFY','');
+        $this->EAZYPAY_BASE_URL_VERIFY = env('EAZYPAY_BASE_URL_VERIFY', '');
     }
 
     public function paymentResponse(Request $request)
@@ -84,10 +84,10 @@ class PaymentController extends Controller
                 $paymentHandling->transaction_id = $request['Unique_Ref_Number'] ?? '';
                 $paymentHandling->transaction_amount = $request['Transaction_Amount'] ?? '';
                 //$paymentHandling->transaction_date = $request['Transaction_Date'] ?? '';
-                $paymentHandling->transaction_date =Carbon::createFromFormat('d-m-Y H:i:s', $request['Transaction_Date'])->format('Y-m-d H:i:s');
+                $paymentHandling->transaction_date = Carbon::createFromFormat('d-m-Y H:i:s', $request['Transaction_Date'])->format('Y-m-d H:i:s');
                 $paymentHandling->amount = $request['Total_Amount'] ?? '';
                 $paymentHandling->user_id = Auth::user()->id ?? '';
-                $paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
+                //$paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
                 $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
                 $paymentHandling->data = 'Registration_Amount' ?? '';
                 $dbResponse = $paymentHandling->save();
@@ -97,17 +97,17 @@ class PaymentController extends Controller
                 //code to send info to DB
 
                 $verification_key = $data['ID'] . '|' . $data['Response_Code'] . '|' . $data['Unique_Ref_Number'] . '|' .
-                $data['Service_Tax_Amount'] . '|' . $data['Processing_Fee_Amount'] . '|' . $data['Total_Amount'] . '|' .
-                $data['Transaction_Amount'] . '|' . $data['Transaction_Date'] . '|' . $data['Interchange_Value'] . '|' .
-                $data['TDR'] . '|' . $data['Payment_Mode'] . '|' . $data['SubMerchantId'] . '|' . $data['ReferenceNo'] . '|' .
-                $data['TPS'] . '|' . $this->encryption_key;
+                    $data['Service_Tax_Amount'] . '|' . $data['Processing_Fee_Amount'] . '|' . $data['Total_Amount'] . '|' .
+                    $data['Transaction_Amount'] . '|' . $data['Transaction_Date'] . '|' . $data['Interchange_Value'] . '|' .
+                    $data['TDR'] . '|' . $data['Payment_Mode'] . '|' . $data['SubMerchantId'] . '|' . $data['ReferenceNo'] . '|' .
+                    $data['TPS'] . '|' . $this->encryption_key;
                 $encrypted_message = hash('sha512', $verification_key);
                 if ($encrypted_message == $data['RS']) {
                     return "success";
                 } else {
                     return "failure";
                 }
-            } else if (isset($request) && !empty($request)) {
+            } else if (isset($request) && !empty($request) && isset($request['Response_Code'])) {
                 $data = array(
                     'Response_Code' => $request['Response_Code'],
                     'Unique_Ref_Number' => $request['Unique_Ref_Number'],
@@ -139,11 +139,11 @@ class PaymentController extends Controller
                 $paymentHandling->eazy_pay_base_url = env('EAZYPAY_BASE_URL', '') ?? '';
                 $paymentHandling->transaction_id = $request['Unique_Ref_Number'] ?? '';
                 $paymentHandling->transaction_amount = $request['Transaction_Amount'] ?? '';
-                $paymentHandling->transaction_date =Carbon::createFromFormat('d-m-Y H:i:s', $request['Transaction_Date'])->format('Y-m-d H:i:s');
+                $paymentHandling->transaction_date = Carbon::createFromFormat('d-m-Y H:i:s', $request['Transaction_Date'])->format('Y-m-d H:i:s');
                 // $paymentHandling->transaction_date = $request['Transaction_Date'] ?? '';
                 $paymentHandling->amount = $request['Total_Amount'] ?? '';
                 $paymentHandling->user_id = Auth::user()->id ?? '';
-                $paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
+                //$paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
                 $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
                 $paymentHandling->data = 'Registration_Amount' ?? '';
                 $dbResponse = $paymentHandling->save();
@@ -278,9 +278,9 @@ class PaymentController extends Controller
     }
 
     public function paymentData(Request $request)
-    { 
+    {
 
-     dd($request);
+        dd($request);
 
     }
 
@@ -290,19 +290,16 @@ class PaymentController extends Controller
         //     'name' => 'Steve',
         //     'role' => 'Network Administrator',
         // ]);
-        try
-        {
-            $merchantId=$request->input('merchantId');
-            $referenceNo=$request->input('referenceNo');
-            $transactionId=$request->input('transactionId');
+        try {
+            $merchantId = $request->input('merchantId');
+            $referenceNo = $request->input('referenceNo');
+            $transactionId = $request->input('transactionId');
 
-            if(isset($merchantId) && !empty($merchantId))
-            {
-                if(isset($referenceNo) && !empty($referenceNo))
-                {
-                    $this->EAZYPAY_BASE_URL_VERIFY= $this->EAZYPAY_BASE_URL_VERIFY.'ezpaytranid=&amount=&paymentmode=&merchantid='. $merchantId.'&trandate=&pgreferenceno='.$referenceNo;
+            if (isset($merchantId) && !empty($merchantId)) {
+                if (isset($referenceNo) && !empty($referenceNo)) {
+                    $this->EAZYPAY_BASE_URL_VERIFY = $this->EAZYPAY_BASE_URL_VERIFY . 'ezpaytranid=&amount=&paymentmode=&merchantid=' . $merchantId . '&trandate=&pgreferenceno=' . $referenceNo;
                     //return $this->EAZYPAY_BASE_URL_VERIFY;
-                    $response=Http::get($this->EAZYPAY_BASE_URL_VERIFY);
+                    $response = Http::get($this->EAZYPAY_BASE_URL_VERIFY);
                     // $response = Http::post($this->EAZYPAY_BASE_URL_VERIFY, [
                     //     'ezpaytranid' => '',
                     //     'amount' => '',
@@ -312,8 +309,7 @@ class PaymentController extends Controller
                     //     'pgreferenceno' => $referenceNo
                     // ]);
                     //dd($response->successful());
-                    if($response->successful()) 
-                    {
+                    if ($response->successful()) {
                         // $responseData = $response->json();
                         // dd($response);
                         // $status = $responseData['status'];
@@ -326,23 +322,24 @@ class PaymentController extends Controller
                         parse_str($responseData, $parsedResponse);
                         if (isset($parsedResponse['status'])) {
                             $status = $parsedResponse['status'];
+
+                            //set status of payment in DB
+                            $paymentHandling=PaymentDataHandling::where('reference_no',$referenceNo)->first();
+                            $paymentHandling->payment_status = $status ?? '';
+                            $paymentHandling->save();
+                            //set status of payment in DB
                         }
                         echo "Status: " . $status;
-                    }
-                    else 
-                    {
+                    } else {
                         return "not success";
                     }
-                  
-                }
-                else if(isset($transactionId) && !empty($transactionId))
-                {
-                    $this->EAZYPAY_BASE_URL_VERIFY= $this->EAZYPAY_BASE_URL_VERIFY.'ezpaytranid='.$transactionId.'&amount=&paymentmode=&merchantid='.$merchantId.'&trandate=&pgreferenceno=';
+
+                } else if (isset($transactionId) && !empty($transactionId)) {
+                    $this->EAZYPAY_BASE_URL_VERIFY = $this->EAZYPAY_BASE_URL_VERIFY . 'ezpaytranid=' . $transactionId . '&amount=&paymentmode=&merchantid=' . $merchantId . '&trandate=&pgreferenceno=';
                     //echo $this->EAZYPAY_BASE_URL_VERIFY;
-                    $response=Http::get($this->EAZYPAY_BASE_URL_VERIFY);
+                    $response = Http::get($this->EAZYPAY_BASE_URL_VERIFY);
                     //dd($response->successful());
-                    if($response->successful())
-                    {
+                    if ($response->successful()) {
                         $responseData = $response->body();
 
                         // Extract the status from the response
@@ -350,24 +347,27 @@ class PaymentController extends Controller
                         parse_str($responseData, $parsedResponse);
                         if (isset($parsedResponse['status'])) {
                             $status = $parsedResponse['status'];
+                            //set status of payment in DB
+                            $paymentHandling=PaymentDataHandling::where('transaction_id',$transactionId)->first();
+                            $paymentHandling->payment_status = $status ?? '';
+                            $paymentHandling->save();
+                            //set status of payment in DB
                         }
                         echo "Status: " . $status;
                     }
                 }
             }
-        }
-        catch(\Exception $ex)
-        {
+        } catch (\Exception $ex) {
 
         }
     }
 
     public function paymentVerify(Request $request)
     {
-     return view('components.payment-verify');
+        return view('components.payment-verify');
     }
 
-    
+
 
 
     public function paymentProcess(Request $request)
