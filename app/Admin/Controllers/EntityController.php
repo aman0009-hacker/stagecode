@@ -78,7 +78,7 @@ class EntityController extends AdminController
         });
 
         $grid->actions(function ($actions) {
-            //$actions->disableEdit();
+            $actions->disableEdit();
             $actions->disableView();
             if (Admin::user()->can('create-post')) {
                 Permission::check('create-post');
@@ -89,8 +89,8 @@ class EntityController extends AdminController
         $grid->tools(function ($tools) {
             $tools->append(new excelfile());
         });
-        //$grid->disableActions();
-        //$grid->disableRowSelector();
+        $grid->disableActions();
+        $grid->disableRowSelector();
 
       
 
