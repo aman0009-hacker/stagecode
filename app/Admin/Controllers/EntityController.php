@@ -9,6 +9,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use App\Models\Product;
 use App\Models\Category;
+use App\Admin\Actions\excelfile;
 use Carbon\Carbon;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Auth\Permission;
@@ -84,8 +85,14 @@ class EntityController extends AdminController
             }
         });
 
+
+        $grid->tools(function (Grid\Tools $tools) {
+            $tools->append(new excelfile());
+        });
         $grid->disableActions();
         $grid->disableRowSelector();
+
+      
 
         //$grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
         // if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {

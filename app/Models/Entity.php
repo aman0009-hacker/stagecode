@@ -17,7 +17,8 @@ class Entity extends Model
 
     protected $table = 'entities';
 
-    protected $fillable = ['name', 'description', 'size', 'diameter', 'quantity', 'remaining', 'measurement'];
+    // protected $fillable = ['name', 'description', 'size', 'diameter', 'quantity', 'remaining', 'measurement'];
+    protected $fillable = ['name', 'description', 'size', 'diameter', 'quantity', 'remaining', 'measurement','entity_id'];
 
     public function category()
     {
