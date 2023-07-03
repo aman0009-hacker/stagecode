@@ -4,9 +4,9 @@ namespace App\Admin\Actions;
 
 use Encore\Admin\Actions\Action;
 use Illuminate\Http\Request;
-use App\Models\category;
-use App\Models\product;
-use App\Models\entity;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Entity;
 
 class excelfile extends Action
 {
