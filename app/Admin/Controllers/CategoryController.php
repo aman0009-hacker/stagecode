@@ -30,7 +30,7 @@ class CategoryController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Category());
-        $grid->column('category_id', __('Product Name'))->display(function($category_id){
+        $grid->column('category_id', __('Type'))->display(function($category_id){
           return Product::where('id',$category_id)->firstOrFail()->name ?? '';
         });
         // $grid->column('id', __('Id'));
