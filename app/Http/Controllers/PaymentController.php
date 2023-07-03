@@ -9,6 +9,7 @@ use App\Models\PaymentHandling;
 use App\Models\PaymentDataHandling;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 
 class PaymentController extends Controller
 {
@@ -291,6 +292,13 @@ class PaymentController extends Controller
         //     'role' => 'Network Administrator',
         // ]);
         try {
+
+            $validatedData = $request->validate([
+                'merchantId' => 'required',
+                'referenceNo' => 'sometimes|required_without:transactionId',
+                'transactionId' => 'sometimes|required_without:referenceNo',
+            ]);
+
             $merchantId = $request->input('merchantId');
             $referenceNo = $request->input('referenceNo');
             $transactionId = $request->input('transactionId');
