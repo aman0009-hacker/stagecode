@@ -48,7 +48,7 @@ class EntityController extends AdminController
         });
         $grid->column('name', __('Entity Name'));
         $grid->column('description', __('Description'));
-        $grid->column('size', __('Size'));
+        // $grid->column('size', __('Size'));
         $grid->column('diameter', __('Diameter'));
         // $grid->column('quantity', __('Quantity'));
         // $grid->column('remaining', __('Remaining'));
