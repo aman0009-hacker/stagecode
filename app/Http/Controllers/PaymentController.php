@@ -356,7 +356,7 @@ class PaymentController extends Controller
                             $queryResponse=$paymentHandling->save();
                             if(isset($queryResponse) && isset($status) && (  $status=="RIP" || $status=="SIP" || $status=="SUCCESS"))
                             {
-                                dd(Auth::user()->id);
+                                dd(Auth::user()->id."jjlkjl");
                                 //return $gjhgjh;
                                 //dd("kjllkjlkjl");
                                 //return redirect('/RawMaterial');
