@@ -110,7 +110,15 @@ class PaymentController extends Controller
                         'referenceNo' => $request['ReferenceNo'],
                         'transactionId' => $request['Unique_Ref_Number'],
                     ]);
-                    $this->paymentProcessVerify($request);
+                    $returnVal=$this->paymentProcessVerify($request);
+                    if(isset($returnVal) && $returnVal=="SUCCESS")
+                    {
+                        return redirect()->route('RawMaterial');
+                    }
+                    else 
+                    {
+                        return redirect('/login');
+                    }
                     // new code to verify
                 } else {
                     //return "failure";
@@ -344,16 +352,18 @@ class PaymentController extends Controller
                             $queryResponse=$paymentHandling->save();
                             if(isset($queryResponse) && isset($status) && (  $status=="RIP" || $status=="SIP" || $status=="SUCCESS"))
                             {
+                                return "SUCCESS";
                                 //dd("kjllkjlkjl");
-                                return redirect('/RawMaterial');
+                                //return redirect('/RawMaterial');
                                 // echo "redirect()->route('RawMaterial')";
                                 // return redirect()->route('RawMaterial');
                             }
                             else 
                             {
+                                return "OTHER";
                                 //dd("jkljljlk");
-                                echo "redirect()->route('login')";
-                                return redirect()->route('login'); 
+                                //echo "redirect()->route('login')";
+                                //return redirect()->route('login'); 
                             }
                             //set status of payment in DB
                         }
