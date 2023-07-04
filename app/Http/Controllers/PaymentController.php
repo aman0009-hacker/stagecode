@@ -111,7 +111,8 @@ class PaymentController extends Controller
                         'transactionId' => $request['Unique_Ref_Number'],
                     ]);
                     $returnVal=$this->paymentProcessVerify($request);
-                    if(isset($returnVal) && $returnVal=="SUCCESS")
+                    //if(isset($returnVal) && $returnVal=="SUCCESS")
+                    if(isset($returnVal))
                     {
                         return $returnVal; 
                         //return Auth::user()->id;
