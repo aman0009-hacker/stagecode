@@ -101,10 +101,18 @@ class PaymentController extends Controller
                     $data['TPS'] . '|' . $this->encryption_key;
                 $encrypted_message = hash('sha512', $verification_key);
                 if ($encrypted_message == $data['RS']) {
-                    return Auth::user()->id;
-                    //return "success";
+                    //return Auth::user()->id;
+                    return "success";
+                    //new code to verify
+                    // $request = new Request([
+                    //     'merchantId' => $request['ID'],
+                    //     'referenceNo' => $request['ReferenceNo'],
+                    //     'transactionId' => $request['Unique_Ref_Number'],
+                    // ]);
+                    // $this->paymentProcessVerify($request);
+                    //new code to verify
                 } else {
-                    return "failure";
+                    //return "failure";
                 }
             } else if (isset($request) && !empty($request) && isset($request['Response_Code'])) {
                 $data = array(
@@ -147,8 +155,14 @@ class PaymentController extends Controller
                 $paymentHandling->data = 'Registration_Amount' ?? '';
                 $dbResponse = $paymentHandling->save();
                 if ($dbResponse) {
+                    $request = new Request([
+                        'merchantId' => $request['ID'],
+                        'referenceNo' => $request['ReferenceNo'],
+                        'transactionId' => $request['Unique_Ref_Number'],
+                    ]);
+                    $this->paymentProcessVerify($request);
                 }
-                return $request['Response_Code'];
+                //return $request['Response_Code'];
                 //code to send info to DB
 
             }
