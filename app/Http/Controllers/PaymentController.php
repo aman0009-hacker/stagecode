@@ -111,7 +111,9 @@ class PaymentController extends Controller
                         'transactionId' => $request['Unique_Ref_Number'],
                     ]);
                     $returnVal=$this->paymentProcessVerify($request);
+                    return $returnVal;
                     //if(isset($returnVal) && $returnVal=="SUCCESS")
+                  
                     if(isset($returnVal))
                     {
                         return $returnVal; 
@@ -356,7 +358,7 @@ class PaymentController extends Controller
                             $queryResponse=$paymentHandling->save();
                             if(isset($queryResponse) && isset($status) && (  $status=="RIP" || $status=="SIP" || $status=="SUCCESS"))
                             {
-                                dd(Auth::user()->id."jjlkjl");
+                                return(Auth::user()->id."jjlkjl");
                                 //return $gjhgjh;
                                 //dd("kjllkjlkjl");
                                 //return redirect('/RawMaterial');
