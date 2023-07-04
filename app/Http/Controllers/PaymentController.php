@@ -101,7 +101,8 @@ class PaymentController extends Controller
                     $data['TPS'] . '|' . $this->encryption_key;
                 $encrypted_message = hash('sha512', $verification_key);
                 if ($encrypted_message == $data['RS']) {
-                    return "success";
+                    return Auth::user()->id;
+                    //return "success";
                 } else {
                     return "failure";
                 }
