@@ -102,14 +102,14 @@ class PaymentController extends Controller
                 $encrypted_message = hash('sha512', $verification_key);
                 if ($encrypted_message == $data['RS']) {
                     //return Auth::user()->id;
-                    //return "success";
+                    return "success";
                     //new code to verify
-                    $request = new Request([
-                        'merchantId' => $request['ID'],
-                        'referenceNo' => $request['ReferenceNo'],
-                        'transactionId' => $request['Unique_Ref_Number'],
-                    ]);
-                    $this->paymentProcessVerify($request);
+                    // $request = new Request([
+                    //     'merchantId' => $request['ID'],
+                    //     'referenceNo' => $request['ReferenceNo'],
+                    //     'transactionId' => $request['Unique_Ref_Number'],
+                    // ]);
+                    // $this->paymentProcessVerify($request);
                     //new code to verify
                 } else {
                     //return "failure";
