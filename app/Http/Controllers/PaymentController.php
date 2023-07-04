@@ -295,6 +295,7 @@ class PaymentController extends Controller
 
     public function paymentProcessVerify(Request $request)
     {
+        dd(Auth::user()->id);
         // $response = Http::post($this->EAZYPAY_BASE_URL_VERIFY, [
         //     'name' => 'Steve',
         //     'role' => 'Network Administrator',
