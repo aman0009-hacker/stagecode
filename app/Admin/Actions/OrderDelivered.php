@@ -8,14 +8,11 @@ use Illuminate\Http\Request;
 class OrderDelivered extends RowAction
 {
     protected $selector = '.order-delivered';
-
     public function handle(Request $request)
     {
         // $request ...
-
         return $this->response()->success('Success message...')->refresh();
     }
-
     public function html()
     {
         return <<<HTML

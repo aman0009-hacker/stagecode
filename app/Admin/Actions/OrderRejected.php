@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Order;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class OrderRejected extends RowAction
 {
@@ -48,8 +49,8 @@ class OrderRejected extends RowAction
                 }
                 return $this->response()->success('Oops!!! Your order no '. $model->id . ' has rejected due to following cause '. $request->get('reason') ?? ''.'.')->refresh();
             }
-        } catch (\Exception $ex) {
-
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
         }
     }
 

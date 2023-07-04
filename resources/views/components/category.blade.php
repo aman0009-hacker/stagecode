@@ -1,29 +1,24 @@
 @extends('layouts.main_account')
 @section('content')
-
-
 <!-- tOGGLER sECTION -->
 <section class="raw-material-box">
-
     {{-- custom logic --}}
-     <?php
+    <?php
          if(Auth::check())
          {
             ?>
-             <script>
-                 $("#mySignUp").hide();
+    <script>
+        $("#mySignUp").hide();
                 $("#myLogin").hide();
                 $("#myid").show();
                 $("#logoutid").show();
                 $("#myOrder").show();
                 
-             </script>
-           <?php
+    </script>
+    <?php
          }
      ?>
-
     {{-- custom logic --}}
-
     <div class="container">
         <div class="row">
             <div class="col-md-2">
@@ -63,7 +58,6 @@
                                                     @endforeach
                                                     @endif
                                                 </select>
-
                                                 {{-- <select class="form-select form-select-lg mb-3"
                                                     aria-label="form-select-lg" name="category" id="category">
                                                     <option selected>Select Category</option>
@@ -87,10 +81,8 @@
                                                 aria-label="form-select-lg" name="entity" id="entity">
                                                 <option value="">Select</option>
                                             </select>
-
                                             <button type="button" value="Submit" class="btn btn-info mt-4"
                                                 id="showEntity">Submit</button>
-
                                         </div>
                                     </div>
                                 </div>
@@ -105,7 +97,6 @@
                                                 <option value="2">Two</option>
                                                 <option value="3">Three</option>
                                             </select>
-
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -123,14 +114,12 @@
                         </div>
                     </div>
                 </form>
-
             </div>
             {{-- <div class="col-md-2">
             </div> --}}
         </div>
     </div>
 </section>
-
 <!-- Hot Product Selling -->
 <section class="product-selling">
     <div class="container-fluid">
@@ -151,166 +140,105 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- <tr>
-                                <td><input class="form-check-input" type="checkbox"></td>
-                                <td>ERW Pipes</td>
-                                <td>Its welded longitudinally, manufactured from Strip / Coil and can be manufactured
-                                    upto 24” OD.</td>
-                                <td>8 5/8</td>
-                                <td>3 mm</td>
-                                <td><a href="" class="btn btn-secondary book-now" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">Book Now</a></td>
-                            </tr> --}}
-                            {{-- <tr>
-                                <td><input class="form-check-input" type="checkbox"></td>
-                                <td>ERW Pipes</td>
-                                <td>Its welded longitudinally, manufactured from Strip / Coil and can be manufactured
-                                    upto 24” OD.</td>
-                                <td>8 5/8</td>
-                                <td>4 mm</td>
-                                <td><a href="" class="btn btn-secondary book-now" data-bs-toggle="modal"
-                                        data-bs-target="#bookingDetailsModal">Book Now</a></td>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input " type="checkbox"></td>
-                                <td>ERW Pipes</td>
-                                <td>Its welded longitudinally, manufactured from Strip / Coil and can be manufactured
-                                    upto 24” OD.</td>
-                                <td>8 5/8</td>
-                                <td>6 mm</td>
-                                <td><a href="" class="btn btn-secondary book-now">Book Now</a></td>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input " type="checkbox"></td>
-                                <td>ERW Pipes</td>
-                                <td>Its welded longitudinally, manufactured from Strip / Coil and can be manufactured
-                                    upto 24” OD.</td>
-                                <td>8 5/8</td>
-                                <td>6.5 mm</td>
-                                <td><a href="" class="btn btn-secondary book-now">Book Now</a></td>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input " type="checkbox"></td>
-                                <td>ERW Pipes</td>
-                                <td>Its welded longitudinally, manufactured from Strip / Coil and can be manufactured
-                                    upto 24” OD.</td>
-                                <td>8 5/8</td>
-                                <td>4 mm</td>
-                                <td><a href="" class="btn btn-secondary book-now">Book Now</a></td>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input " type="checkbox"></td>
-                                <td>ERW Pipes</td>
-                                <td>Its welded longitudinally, manufactured from Strip / Coil and can be manufactured
-                                    upto 24” OD.</td>
-                                <td>8 5/8</td>
-                                <td>6 mm</td>
-                                <td><a href="" class="btn btn-secondary book-now">Book Now</a></td>
-                            </tr> --}}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-
     </div>
 </section>
-
-
-
 <!-- Market Place -->
 <section class="raw-market">
     <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-12 text-center my-5">
-              <h3>India's Best Raw Material <span>Marketplace</span></h3>
-            </div>
-            <div class="col-lg-3 col-xl-3 col-md-6">
-              <div class="white-box">
-                <h3>9,45,668<span>+</span></h3>
-                <p>Import Products</p>
-                <div class="circle">
-                  <img src="{{asset('images/home-page/import.png')}}" class="img-fluid" alt="no-image">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 text-center my-5">
+                        <h3>India's Best Raw Material <span>Marketplace</span></h3>
+                    </div>
+                    <div class="col-lg-3 col-xl-3 col-md-6">
+                        <div class="white-box">
+                            <h3>9,45,668<span>+</span></h3>
+                            <p>Import Products</p>
+                            <div class="circle">
+                                <img src="{{asset('images/home-page/import.png')}}" class="img-fluid" alt="no-image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-xl-3 col-md-6">
+                        <div class="white-box">
+                            <h3>30<span>+</span></h3>
+                            <p>Product Categories</p>
+                            <div class="circle">
+                                <img src="{{asset('images/home-page/category.png')}}" class="img-fluid" alt="no-image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-xl-3 col-md-6">
+                        <div class="white-box">
+                            <h3>500<span>+</span></h3>
+                            <p>Register Users</p>
+                            <div class="circle">
+                                <img src="{{asset('images/home-page/register-user.png')}}" class="img-fluid"
+                                    alt="no-image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-xl-3 col-md-6">
+                        <div class="white-box">
+                            <h3>40<span>+</span></h3>
+                            <p>Big Industries</p>
+                            <div class="circle">
+                                <img src="{{asset('images/home-page/industries.png')}}" class="img-fluid"
+                                    alt="no-image">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-            <div class="col-lg-3 col-xl-3 col-md-6">
-              <div class="white-box">
-                <h3>30<span>+</span></h3>
-                <p>Product Categories</p>
-                <div class="circle">
-                  <img src="{{asset('images/home-page/category.png')}}" class="img-fluid" alt="no-image">
+            <div class="col-md-12 mt-5">
+                <div class="text-center">
+                    <a href="#" class="btn btn-secondary text-center">
+                        Book Now
+                    </a>
                 </div>
-              </div>
             </div>
-            <div class="col-lg-3 col-xl-3 col-md-6">
-              <div class="white-box">
-                <h3>500<span>+</span></h3>
-                <p>Register Users</p>
-                <div class="circle">
-                  <img src="{{asset('images/home-page/register-user.png')}}" class="img-fluid" alt="no-image">
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-xl-3 col-md-6">
-              <div class="white-box">
-                <h3>40<span>+</span></h3>
-                <p>Big Industries</p>
-                <div class="circle">
-                  <img src="{{asset('images/home-page/industries.png')}}" class="img-fluid" alt="no-image">
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-        <div class="col-md-12 mt-5">
-          <div class="text-center">
-            <a href="#" class="btn btn-secondary text-center">
-              Book Now
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
-  </section>
-
-  <!-- Contact Us  -->
+</section>
+<!-- Contact Us  -->
 <section class="contact-us">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-2 "></div>
-        <div class="col-lg-8 col-md-12 text-center py-5">
-          <h3>
-            Contact
-            <span>Us At</span>
-          </h3>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="white-box-one">
-                <div class="content">
-                  <h4>Helpdesk</h4>
-                  <a href="tel:+91-6284999031-32">+91-6284999031-32</a>
+        <div class="row">
+            <div class="col-lg-2 "></div>
+            <div class="col-lg-8 col-md-12 text-center py-5">
+                <h3>
+                    Contact
+                    <span>Us At</span>
+                </h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="white-box-one">
+                            <div class="content">
+                                <h4>Helpdesk</h4>
+                                <a href="tel:+91-6284999031-32">+91-6284999031-32</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="white-box-two">
+                            <div class="content">
+                                <h4>Mail</h4>
+                                <a href="mailto:eauctions.psiec@gmail.com">eauctions.psiec@gmail.com</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-            <div class="col-md-6">
-              <div class="white-box-two">
-                <div class="content">
-                  <h4>Mail</h4>
-                  <a href="mailto:eauctions.psiec@gmail.com">eauctions.psiec@gmail.com</a>
-                </div>
-              </div>
-            </div>
-          </div>
+            <div class="col-lg-2"></div>
         </div>
-        <div class="col-lg-2"></div>
-      </div>
     </div>
-  </section>
-
-
+</section>
 <!-- Booking Modal  -->
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -352,18 +280,16 @@
                         </div>
                     </div>
                     <div class="col-md-6"></div>
-
-
-
                     <div class="col-md-6">
-                         <form>
-                            @csrf 
+                        <form>
+                            @csrf
                             <div class="mb-3">
                                 <div class="qty">
                                     <label for="qty" class="form-label">Quantity*</label>
                                     <div id="number">
                                         {{-- <button class="qtyminus" aria-hidden="true">&minus;</button> --}}
-                                        {{-- <input type="number" name="qty" id="qty" min="1" max="10" step="1" value="1"> --}}
+                                        {{-- <input type="number" name="qty" id="qty" min="1" max="10" step="1"
+                                            value="1"> --}}
                                         {{-- <button class="qtyplus" aria-hidden="true">&plus;</button> --}}
 
                                     </div>
@@ -373,12 +299,13 @@
                     </div>
                     <div class="col-md-6">
                         <form>
-                            @csrf 
+                            @csrf
                             <label class="form-label measurement">Measurement*</label>
                             <div class="mb-3 " id="measurement">
-                                {{-- <label for="formGroupExampleInput" class="form-label measurement">Measurement*</label> --}}
+                                {{-- <label for="formGroupExampleInput"
+                                    class="form-label measurement">Measurement*</label> --}}
                                 {{-- <select class="form-select" aria-label="Default select example">
-                                     <option value="1">1</option>
+                                    <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                     <option value="4">4</option>
@@ -387,7 +314,7 @@
                                     <option value="7">7</option>
                                     <option value="8">8</option>
                                     <option value="9">9</option>
-                                    <option value="10">10</option> 
+                                    <option value="10">10</option>
                                 </select> --}}
                             </div>
                         </form>
@@ -396,7 +323,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary cancel-btn" data-bs-dismiss="modal">Cancel</button>
-                {{-- <button type="button" class="btn btn-primary order-btn" data-bs-toggle="modal">Order Submit</button> --}}
+                {{-- <button type="button" class="btn btn-primary order-btn" data-bs-toggle="modal">Order
+                    Submit</button> --}}
                 <button type="button" class="btn btn-primary order-btn order-show" data-bs-toggle="modal"
                     data-bs-target="#orderModal">Order Submit</button>
             </div>
@@ -428,17 +356,12 @@
             <div class="modal-footer">
                 {{-- <button type="button" class="btn btn-primary continue-btn">Continue</button> --}}
                 <a href="/booking" class="btn btn-primary continue-btn">Continue</a>
-
             </div>
         </div>
     </div>
 </div>
 <!-- Booking Details Modal -->
 <!-- Modal -->
-
-
-
-
 <div class="modal fade" id="bookingDetailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -460,131 +383,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- <tr>
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <td style="width:40%">
-                                                <img src="{{asset('images/raw-material/Delete.png')}}" class="img-fluid"
-                                                    alt="no-img">
-                                            </td>
-                                            <td style="width:60%" class="pipe">ERW Pipes
-                                            </td>
-                                            <td>3 mm</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td>Its welded longitudinally, manufactured from Strip / Coil and can be...</td>
-                                <td>8 5/8</td>
-                                <td>3 mm</td>
-                                <td>
-                                    <form>
-                                        <div class="mb-3">
-                                            <div class="qty">
-                                                <div>
-                                                    <button class="qtyminus" aria-hidden="true">&minus;</button>
-                                                    <input type="number" name="qty" id="qty" min="1" max="10" step="1"
-                                                        value="1">
-                                                    <button class="qtyplus" aria-hidden="true">&plus;</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </td>
-                                <td>
-                                    <form>
-                                        <div class="mb-3 ">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <!-- <option selected>Open this select menu</option> -->
-                                                <option value="1">Tons</option>
-                                            </select>
-                                        </div>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <td style="width:40%">
-                                                <img src="{{asset('images/raw-material/Delete.png')}}" class="img-fluid"
-                                                    alt="no-img">
-                                            </td>
-                                            <td style="width:60%" class="pipe">Cold Rolled
-                                                Stainless Steel</td>
-                                            <td>3 mm</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td>Its welded longitudinally, manufactured from Strip / Coil and can be...</td>
-                                <td>8 5/8</td>
-                                <td>3 mm</td>
-                                <td>
-                                    <form>
-                                        <div class="mb-3">
-                                            <div class="qty">
-                                                <div>
-                                                    <button class="qtyminus" aria-hidden="true">&minus;</button>
-                                                    <input type="number" name="qty" id="qty" min="1" max="10" step="1"
-                                                        value="1">
-                                                    <button class="qtyplus" aria-hidden="true">&plus;</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </td>
-                                <td>
-                                    <form>
-                                        <div class="mb-3 ">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <!-- <option selected>Open this select menu</option> -->
-                                                <option value="1">Tons</option>
-                                            </select>
-                                        </div>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <td style="width:40%">
-                                                <img src="{{asset('images/raw-material/Delete.png')}}" class="img-fluid"
-                                                    alt="no-img">
-                                            </td>
-                                            <td style="width:60%" class="pipe">PM Plates Steel</td>
-                                            <td>3 mm</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td>Its welded longitudinally, manufactured from Strip / Coil and can be...</td>
-                                <td>8 5/8</td>
-                                <td>3 mm</td>
-                                <td>
-                                    <form>
-                                        <div class="mb-3">
-                                            <div class="qty">
-                                                <div>
-                                                    <button class="qtyminus" aria-hidden="true">&minus;</button>
-                                                    <input type="number" name="qty" id="qty" min="1" max="10" step="1"
-                                                        value="1">
-                                                    <button class="qtyplus" aria-hidden="true">&plus;</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </td>
-                                <td>
-                                    <form>
-                                        <div class="mb-3 ">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <!-- <option selected>Open this select menu</option> -->
-                                                <option value="1">Tons</option>
-                                            </select>
-                                        </div>
-                                    </form>
-                                </td>
-                            </tr> --}}
                         </tbody>
                     </table>
                 </div>
@@ -593,15 +391,11 @@
                 <button type="button" class="btn btn-secondary cancel-btn" data-bs-dismiss="modal">Cancel</button>
                 {{-- <button type="button" class="btn btn-primary order-btn" data-bs-toggle="modal"
                     data-bs-target="#orderSubmitModal">Order Submit</button> --}}
-                    <button type="button" class="btn btn-primary order-btn order-bulk">Order Submit</button>
+                <button type="button" class="btn btn-primary order-btn order-bulk">Order Submit</button>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
 <!-- Modal -->
 <div class="modal fade" id="orderSubmitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -623,16 +417,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-
                 {{-- <a href="/booking" class="btn btn-primary continue-btn">Continue</a> --}}
-
                 {{-- <button type="button" class="btn btn-primary continue-btn">Continue</button> --}}
                 <a href="/booking" class="btn btn-primary continue-btn">Continue</a>
-                
+
             </div>
         </div>
     </div>
 </div>
-
 @endsection
-

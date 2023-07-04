@@ -9,14 +9,8 @@ use Encore\Admin\Layout\Content;
 class DownloadAttachment extends RowAction
 {
     public $name = 'Documents Info';
-
     public function handle(Model $model)
     {
-       
-        return $this->response()->success('User request has already approved.')->refresh();
-  
+         return $this->response()->success('User request has already approved.')->refresh();
     }
-
-
-
 }

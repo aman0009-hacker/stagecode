@@ -81,16 +81,7 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="col-12 col-md-5 user-signUp">
-
-
-
-
-
-
-
                         <div class="user-signUp-form process-pending-form d-block">
                             <form method="post" action="{{route('payment.process.verify')}}">
                                 @csrf
@@ -104,37 +95,34 @@
                                             has
                                             been <br />
                                             Successfully created</p> --}}
-
-                                            <div class="mb-3">
-                                                <label for="merchantId" class="form-label">Merchant ID</label>
-                                                <input type="text" class="form-control" id="merchantId" name="merchantId" placeholder="Enter Merchant ID" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="referenceNo" class="form-label">Reference Number</label>
-                                                <input type="text" class="form-control" id="referenceNo" name="referenceNo" placeholder="Enter Reference Number">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="transactionId" class="form-label"> Or Transaction ID</label>
-                                                <input type="text" class="form-control" id="transactionId" name="transactionId" placeholder="Enter Transaction ID">
-                                            </div>
+                                        <div class="mb-3">
+                                            <label for="merchantId" class="form-label">Merchant ID</label>
+                                            <input type="text" class="form-control" id="merchantId" name="merchantId"
+                                                placeholder="Enter Merchant ID" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="referenceNo" class="form-label">Reference Number</label>
+                                            <input type="text" class="form-control" id="referenceNo" name="referenceNo"
+                                                placeholder="Enter Reference Number">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="transactionId" class="form-label"> Or Transaction ID</label>
+                                            <input type="text" class="form-control" id="transactionId"
+                                                name="transactionId" placeholder="Enter Transaction ID">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="action">
-                                            {{-- //<a href="/RawMaterial" class="btn continue-btn w-100">Continue</a> --}}
+                                            {{-- //<a href="/RawMaterial" class="btn continue-btn w-100">Continue</a>
+                                            --}}
                                             <button type="submit" class="btn continue-btn w-100">Continue</button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
-
-
-
-
-
-
                         <div class="row d-block d-md-none">
                             <div class="col-12">
                                 <div class="sign-up-footer">

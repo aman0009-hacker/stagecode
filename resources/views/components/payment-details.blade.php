@@ -9,7 +9,6 @@
   <link href="{{asset('additional/payment.css')}}" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="icon" type="image/png" sizes="32x32" href="{{asset('images/login-signup/admin_logo_img.png')}}">
-
 </head>
 
 <body>
@@ -88,7 +87,8 @@
                 <div class="col-md-12">
                   <form class="payment-method" method="post" action="/payment_info_store">
                     @csrf
-                    <select class="form-select form-select-lg mb-3 category-selection" aria-label="form-select-lg" name="dropDownPayment" required>
+                    <select class="form-select form-select-lg mb-3 category-selection" aria-label="form-select-lg"
+                      name="dropDownPayment" required>
                       {{-- <option value="">Select Payment Option</option> --}}
                       <option value="Debit Card">Debit Card</option>
                       <option value="Credit Card">Credit Card</option>
@@ -99,8 +99,9 @@
                     </select>
                     <div class="select-selected"></div>
                     <div class="mb-3">
-                      <input type="text" class="form-control" id="cardnumber" aria-describedby="cardNumbereHelp" name="card"
-                        placeholder="Enter Card Number" minlength="16" maxlength="16" value="4242424242424242" required>
+                      <input type="text" class="form-control" id="cardnumber" aria-describedby="cardNumbereHelp"
+                        name="card" placeholder="Enter Card Number" minlength="16" maxlength="16"
+                        value="4242424242424242" required>
                     </div>
                     <div class="mb-3">
                       <input type="text" class="form-control" id="name" aria-describedby="nameHelp" name="name"
@@ -109,36 +110,27 @@
                     <div class="mb-3">
                       <div class="row">
                         <div class="col-md-6">
-                          <input type="text" class="form-control" id="date" aria-describedby="dateHelp" name="date_value"
-       placeholder="Expiration Date" value="21-06-2023" required>
+                          <input type="text" class="form-control" id="date" aria-describedby="dateHelp"
+                            name="date_value" placeholder="Expiration Date" value="21-06-2023" required>
                         </div>
                         <div class="col-md-6 cvv">
                           <input type="text" class="form-control" id="cvv" aria-describedby="passwordHelp" name="cvv"
-                            placeholder="CVV" minlength="3" maxlength="3" value="123"  required>
-
-
+                            placeholder="CVV" minlength="3" maxlength="3" value="123" required>
                           <img src="{{asset('images/login-signup/show.png')}}" alt="show password"
                             class="img-fluid eye-icon" width="18" height="12">
-
-
-                        </div>  
-
+                        </div>
                       </div>
                     </div>
                     <div class="mb-3">
                       <div class="action">
-
                         {{-- <a href="congratulations-page.html" class="btn pay-btn w-100">pay</a> --}}
                         <button type="submit" value="pay" class="btn pay-btn w-100">pay</button>
-
                       </div>
                     </div>
                   </form>
                 </div>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>

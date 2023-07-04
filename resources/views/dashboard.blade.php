@@ -34,7 +34,6 @@
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="{{asset('js/dashboard.js')}}"></script>
 </head>
-
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
     <!-- Preloader -->

@@ -11,7 +11,6 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/congratulations.css')}}" />
     <link rel="icon" type="image/png" sizes="32x32" href="{{asset('images/login-signup/admin_logo_img.png')}}">
 </head>
-
 <body>
     <div class="main">
         <div class="container-fluid p-4">
@@ -27,7 +26,6 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <span class="welcome-text">WELCOME TO
-
                                                             <span class="welcome-border"></span>
                                                         </span>
                                                     </div>
@@ -81,16 +79,7 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="col-12 col-md-5 user-signUp">
-
-
-
-
-
-
-
                         <div class="user-signUp-form process-pending-form d-block">
                             <form method="post" action="{{route('payment.process.data')}}">
                                 @csrf
@@ -104,12 +93,12 @@
                                             has
                                             been <br />
                                             Successfully created</p> --}}
-
                                         <div class="input-group">
                                             <span class="input-group-text">₹</span>
                                             <input type="number" class="form-control" placeholder="Enter amount"
                                                 aria-label="Amount" readonly value="10000" name="amount" id="amount">
                                             <span class="input-group-text">.00</span>
+                                            <input type="hidden" name="amountValue" value="10000">
                                         </div>
                                     </div>
                                 </div>
@@ -123,12 +112,6 @@
                                 </div>
                             </form>
                         </div>
-
-
-
-
-
-
                         <div class="row d-block d-md-none">
                             <div class="col-12">
                                 <div class="sign-up-footer">

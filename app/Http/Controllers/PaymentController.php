@@ -10,6 +10,9 @@ use App\Models\PaymentDataHandling;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+
+
 
 class PaymentController extends Controller
 {
@@ -48,7 +51,6 @@ class PaymentController extends Controller
                     'mandatory_fields' => $request['mandatory_fields'],
                     'optional_fields' => $request['optional_fields'],
                     'RSV' => $request['RSV'],
-
                     /*
                     "Response_Code" => "E000",
                     "Unique_Ref_Number" => "2306301647032",
@@ -69,10 +71,7 @@ class PaymentController extends Controller
                     "optional_fields" => "null",
                     "RSV" => "c5036cc5258a0f066c3260b7316eb285f91bec128047a49bacb094c7030c5a49708eac460d3d4801db57d17cca7cb35778e31e5dc64d73f4e84ec281fb07f5d3",
                     */
-
                 );
-
-
                 //code to send info to DB
                 $paymentHandling = new PaymentDataHandling();
                 $paymentHandling->merchant_id = $request['ID'] ?? '';
@@ -93,10 +92,8 @@ class PaymentController extends Controller
                 $paymentHandling->data = 'Registration_Amount' ?? '';
                 $dbResponse = $paymentHandling->save();
                 if ($dbResponse) {
-
                 }
                 //code to send info to DB
-
                 $verification_key = $data['ID'] . '|' . $data['Response_Code'] . '|' . $data['Unique_Ref_Number'] . '|' .
                     $data['Service_Tax_Amount'] . '|' . $data['Processing_Fee_Amount'] . '|' . $data['Total_Amount'] . '|' .
                     $data['Transaction_Amount'] . '|' . $data['Transaction_Date'] . '|' . $data['Interchange_Value'] . '|' .
@@ -149,16 +146,14 @@ class PaymentController extends Controller
                 $paymentHandling->data = 'Registration_Amount' ?? '';
                 $dbResponse = $paymentHandling->save();
                 if ($dbResponse) {
-
                 }
                 return $request['Response_Code'];
                 //code to send info to DB
 
             }
-        } catch (\Exception $ex) {
-
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
             dd($ex->getMessage());
-
         }
     }
 
@@ -280,9 +275,7 @@ class PaymentController extends Controller
 
     public function paymentData(Request $request)
     {
-
         dd($request);
-
     }
 
     public function paymentProcessVerify(Request $request)
@@ -292,17 +285,14 @@ class PaymentController extends Controller
         //     'role' => 'Network Administrator',
         // ]);
         try {
-
             $validatedData = $request->validate([
                 'merchantId' => 'required',
                 'referenceNo' => 'sometimes|required_without:transactionId',
                 'transactionId' => 'sometimes|required_without:referenceNo',
             ]);
-
             $merchantId = $request->input('merchantId');
             $referenceNo = $request->input('referenceNo');
             $transactionId = $request->input('transactionId');
-
             if (isset($merchantId) && !empty($merchantId)) {
                 if (isset($referenceNo) && !empty($referenceNo)) {
                     $this->EAZYPAY_BASE_URL_VERIFY = $this->EAZYPAY_BASE_URL_VERIFY . 'ezpaytranid=&amount=&paymentmode=&merchantid=' . $merchantId . '&trandate=&pgreferenceno=' . $referenceNo;
@@ -332,7 +322,7 @@ class PaymentController extends Controller
                             $status = $parsedResponse['status'];
 
                             //set status of payment in DB
-                            $paymentHandling=PaymentDataHandling::where('reference_no',$referenceNo)->first();
+                            $paymentHandling = PaymentDataHandling::where('reference_no', $referenceNo)->first();
                             $paymentHandling->payment_status = $status ?? '';
                             $paymentHandling->save();
                             //set status of payment in DB
@@ -341,7 +331,6 @@ class PaymentController extends Controller
                     } else {
                         return "not success";
                     }
-
                 } else if (isset($transactionId) && !empty($transactionId)) {
                     $this->EAZYPAY_BASE_URL_VERIFY = $this->EAZYPAY_BASE_URL_VERIFY . 'ezpaytranid=' . $transactionId . '&amount=&paymentmode=&merchantid=' . $merchantId . '&trandate=&pgreferenceno=';
                     //echo $this->EAZYPAY_BASE_URL_VERIFY;
@@ -356,7 +345,7 @@ class PaymentController extends Controller
                         if (isset($parsedResponse['status'])) {
                             $status = $parsedResponse['status'];
                             //set status of payment in DB
-                            $paymentHandling=PaymentDataHandling::where('transaction_id',$transactionId)->first();
+                            $paymentHandling = PaymentDataHandling::where('transaction_id', $transactionId)->first();
                             $paymentHandling->payment_status = $status ?? '';
                             $paymentHandling->save();
                             //set status of payment in DB
@@ -365,8 +354,8 @@ class PaymentController extends Controller
                     }
                 }
             }
-        } catch (\Exception $ex) {
-
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
         }
     }
 
@@ -375,39 +364,42 @@ class PaymentController extends Controller
         return view('components.payment-verify');
     }
 
-
-
-
     public function paymentProcess(Request $request)
     {
-        // Call the getPaymentUrl method
-        $amount = $request->input('amount'); // Example amount
-        $reference_no = rand(1111, 9999);
-        //$reference_no = 'ABC123'; // Example reference number
-        $optionalField = null; // Example optional field (can be null)
-        //Instantiate the EazyPayController
-
-        $base = new EazyPayController();
-        $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
-        //dd($url);
-        // Do something with the generated URL
-        // For example, you can redirect the user to the payment URL
-        return redirect()->to($url);
-        //  $value=$url;
+        try {
+            $validator = Validator::make($request->all(), [
+                'amountValue' => ['required', 'in:10000'],
+            ]);
+            if ($validator->fails()) {
+                // Value validation failed
+                // Handle the error and redirect back with an error message
+                $amount = 10000;
+            } else {
+                $amount = $request->input('amountValue');
+               //$amount = 10000;
+           }
+            // Call the getPaymentUrl method
+            //$amount = $request->input('amount'); // Example amount amountValue
+            //$amount = $request->input('amountValue');
+            $reference_no = rand(1111, 9999);
+            //$reference_no = 'ABC123'; // Example reference number
+            $optionalField = null; // Example optional field (can be null)
+            //Instantiate the EazyPayController
+            $base = new EazyPayController();
+            $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
+            //dd($url);
+            // Do something with the generated URL
+            // For example, you can redirect the user to the payment URL
+            return redirect()->to($url);
+            //  $value=$url;
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+        }
     }
 
     public function index(Request $request)
     {
         return view('components.payment-process');
     }
-
-
-
-
-
-
-
-
-
 
 }

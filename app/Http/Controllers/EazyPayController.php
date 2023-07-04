@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class EazyPayController extends Controller
@@ -29,6 +29,7 @@ class EazyPayController extends Controller
 
     public function getPaymentUrl($amount, $reference_no, $optionalField = null)
     {
+        try {
         $mandatoryField = $this->getMandatoryField($amount, $reference_no);
         $optionalField = $this->getOptionalField($optionalField);
         $amount = $this->getAmount($amount);
@@ -36,6 +37,10 @@ class EazyPayController extends Controller
         $paymentUrl = $this->generatePaymentUrl($mandatoryField, $optionalField, $amount, $reference_no);
         return $paymentUrl;
         // return redirect()->to($paymentUrl);
+    } catch (\Throwable $ex) {
+        Log::info($ex->getMessage());
+   
+    }
     }
 
 
@@ -43,7 +48,6 @@ class EazyPayController extends Controller
     {
         $encryptedUrl = $this->EAZYPAY_BASE_URL . "merchantid=" . $this->merchant_id . "&mandatory fields=" . $mandatoryField . "&optional fields=" . $optionalField . "&returnurl=" . $this->getReturnUrl() . "&Reference No=" . $reference_no . "&submerchantid=" . $this->getSubMerchantId() . "&transaction amount=" . $amount . "&paymode=" . $this->getPaymode();
         return $encryptedUrl;
-
    }
 
     protected function getMandatoryField($amount, $reference_no)
@@ -89,42 +93,7 @@ class EazyPayController extends Controller
     // use @ to avoid php warning php throw warning while using mcrypt functions
     protected function getEncryptValue($str)
     {
-        //Code provided by icici
-        // $block = @mcrypt_get_block_size('rijndael_128', 'ecb');
-        // $pad = $block - (strlen($str) % $block);
-        // $str .= str_repeat(chr($pad), $pad);
-        // return base64_encode(@mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $this->encryption_key, $str, MCRYPT_MODE_ECB));
-        // Result :- Function 'mcrypt_get_block_size' has been removed and is available up to PHP 7.2
-        //code provided by ICICI
-
-        //other code for practice
-        // $cipher = 'aes-128-ecb'; // AES-128 in ECB mode
-        // $blockSize = openssl_cipher_iv_length($cipher);
-        // //dd($blockSize);
-        // $pad = $blockSize - (strlen($str) % $blockSize);
-        // $str .= str_repeat(chr($pad), $pad);
-        // $encryptedValue = openssl_encrypt($str, $cipher, $this->encryption_key, OPENSSL_RAW_DATA);
-        // $encryptedValue = base64_encode($encryptedValue);
-        // return $encryptedValue;
-        //other code for practice
-
-
-        // $cipher = 'aes-128-ecb'; // AES-128 in ECB mode
-        // $encryptedValue = openssl_encrypt($str, $cipher, $this->encryption_key, OPENSSL_ZERO_PADDING);
-        // $encryptedValue = base64_encode($encryptedValue);
-        // return $encryptedValue;
-
-
-        // $cipher = 'aes-128-ecb'; // AES-128 in ECB mode
-        // $encryptionKey = openssl_digest($this->encryption_key, 'SHA256', true); // Generate a 256-bit key
-        // $encryptedValue = openssl_encrypt($str, $cipher, $encryptionKey, OPENSSL_RAW_DATA);
-        // $encryptedValue = base64_encode($encryptedValue);
-        // return $encryptedValue;
-
-        // Generate an initialization vector
-        // $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
-        // Encrypt the data using AES 128 encryption in ecb mode using our encryption key and initialization vector.
-        $encrypted = openssl_encrypt($str, 'aes-128-ecb', $this->encryption_key, OPENSSL_RAW_DATA);
+       $encrypted = openssl_encrypt($str, 'aes-128-ecb', $this->encryption_key, OPENSSL_RAW_DATA);
         // The $iv is just as important as the key for decrypting, so save it with our encrypted data using a unique separator (::)
         return base64_encode($encrypted);
     }

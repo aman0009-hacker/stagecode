@@ -11,6 +11,7 @@ use Encore\Admin\Show;
 use carbon\Carbon;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Auth\Permission;
+use Illuminate\Support\Facades\Log;
 
 
 class CategoryController extends AdminController
@@ -29,50 +30,52 @@ class CategoryController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Category());
-        $grid->column('category_id', __('Type'))->display(function($category_id){
-          return Product::where('id',$category_id)->firstOrFail()->name ?? '';
-        });
-        // $grid->column('id', __('Id'));
-        $grid->column('name', __('Category Name'));
-        $grid->column('created_at', __('Created at'))->display(function ($value) {
-            //return Carbon::parse($value)->format('Y-m-d H:i:s');
-            //return Carbon::parse($value)->format('d-m-Y');
-            return Carbon::parse($value)->format('Y-m-d H:i');
-        });
-        //$grid->column('updated_at', __('Updated at'));
-        // $grid->actions(function ($actions) {
-        //     $actions->disableEdit();
-        // });
-
-        $grid->filter(function ($filter) {
-            // $filter->notIn('id', __('Id'));
-            $filter->disableIdFilter();
-            $filter->like('name', __('Category Name'));
-            // $filter->column(1 / 2, function ($filter) {
-            //   $filter->like('name', __('First Name'));
-            //   $filter->like('email', __('Email'));
-      
+        try {
+            $grid = new Grid(new Category());
+            $grid->column('category_id', __('Type'))->display(function ($category_id) {
+                return Product::where('id', $category_id)->firstOrFail()->name ?? '';
+            });
+            // $grid->column('id', __('Id'));
+            $grid->column('name', __('Category Name'));
+            $grid->column('created_at', __('Created at'))->display(function ($value) {
+                //return Carbon::parse($value)->format('Y-m-d H:i:s');
+                //return Carbon::parse($value)->format('d-m-Y');
+                return Carbon::parse($value)->format('Y-m-d H:i');
+            });
+            //$grid->column('updated_at', __('Updated at'));
+            // $grid->actions(function ($actions) {
+            //     $actions->disableEdit();
             // });
-            // $filter->column(1 / 2, function ($filter) {
-            //   $filter->like('last_name', __('Last Name'));
-            //   $filter->like('contact_number', __('Contact'));
-            // });
-          });
+            $grid->filter(function ($filter) {
+                // $filter->notIn('id', __('Id'));
+                $filter->disableIdFilter();
+                $filter->like('name', __('Category Name'));
+                // $filter->column(1 / 2, function ($filter) {
+                //   $filter->like('name', __('First Name'));
+                //   $filter->like('email', __('Email'));
 
-
-          $grid->actions(function ($actions) {
-            $actions->disableEdit();
-            $actions->disableView(); 
-            if (Admin::user()->can('create-post')) {
-                Permission::check('create-post');
-            }
-        });
-        $grid->disableActions();
-        $grid->disableRowSelector();
-
-        $grid->model()->orderBy('created_at', 'desc');
-        return $grid;
+                // });
+                // $filter->column(1 / 2, function ($filter) {
+                //   $filter->like('last_name', __('Last Name'));
+                //   $filter->like('contact_number', __('Contact'));
+                // });
+            });
+            $grid->actions(function ($actions) {
+                $actions->disableEdit();
+                $actions->disableView();
+                if (Admin::user()->can('create-post')) {
+                    Permission::check('create-post');
+                }
+            });
+            $grid->disableActions();
+            $grid->disableRowSelector();
+            $grid->model()->orderBy('created_at', 'desc');
+            return $grid;
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+            return $grid;
+        }
+        
     }
 
     /**
@@ -98,40 +101,28 @@ class CategoryController extends AdminController
      * @return Form
      */
     protected function form()
-    {        $form = new Form(new Category());
+    {
+        $form = new Form(new Category());
         $form->select('category_id', __('Product'))->options(function () {
             // Retrieve the products from the database
             $products = Product::pluck('name', 'id');
-
             // Add a placeholder option
             $products->prepend('-- Select Product --', '');
-
             return $products;
         });
-
-        
         // $form->text('name', __('Category'));
-
-
-        $form->text('name', __('Category'))->rules(function($form)
-        {
-         $id=$form->model()->id;
-         // Set the validation rule
-         return 'required|unique:categories,name,' . $id . ',id';
+        $form->text('name', __('Category'))->rules(function ($form) {
+            $id = $form->model()->id;
+            // Set the validation rule
+            return 'required|unique:categories,name,' . $id . ',id';
         });
-
         $form->footer(function ($footer) {
             $footer->disableViewCheck();
-      
             // disable `Continue editing` checkbox
             $footer->disableEditingCheck();
-      
             // disable `Continue Creating` checkbox
             $footer->disableCreatingCheck();
-      
-          });
-
-
+        });
         return $form;
     }
 }

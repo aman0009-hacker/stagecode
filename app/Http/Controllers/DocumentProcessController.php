@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Attachment;
 use Carbon\Carbon;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class DocumentProcessController extends Controller
 {
   public function ajaxRequestPostDocument(Request $request)
   {
+    try {
     $currentId = $request->input('txtID');
     $gstNumber = $request->input('gstNumber');
     $msmeNumber = $request->input('msmeNumber');
@@ -92,8 +94,6 @@ class DocumentProcessController extends Controller
         $query->save();
         $collectionCount++;
       }
-
-
       if (isset($collectionCount) && $collectionCount > 0) {
         // $stateUpdate = DB::table('users')->where('id', $currentId)->update(['state' => 3]);
         $user = User::where('id', $currentId)->first();
@@ -106,11 +106,13 @@ class DocumentProcessController extends Controller
         return redirect()->back()->withInput();
       }
     }
+  } catch (\Throwable $ex) {
+    Log::info($ex->getMessage());
+}
   }
   public function documentOutput(Request $request)
   {
-    // dd("jljlkj");
-    return redirect()->route('home')->with(['tab' => "myaccount"]);
+   return redirect()->route('home')->with(['tab' => "myaccount"]);
   }
 
 }

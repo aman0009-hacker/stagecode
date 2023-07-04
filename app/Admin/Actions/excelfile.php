@@ -7,165 +7,85 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Entity;
+use Illuminate\Support\Facades\Log;
 
 class excelfile extends Action
 {
     protected $selector = '.excelfile';
-
     public function handle(Request $request)
     {
-
-        $excelfile=$request->file('file');
-        if(!$excelfile)
-        {
-            return $this->response()->error('Please select any file')->refresh();
-        }
-      $ext=$excelfile->getClientOriginalExtension();
-  
-      if($ext==='csv')
-      {
-
-      
-      
-      $data=fopen($excelfile,'r');
-      $array=array();
-      
-     
-      $transRow = true;
-    
-  
-      while (($content = fgetcsv($data,2000,',')) !== false) 
-      {
-               if(!$transRow)
-                 {
-              
-              $array[]=$content;
-  
-  
-  
-         }
-        //  $transRow=false;
-
-
-
-         elseif(strtoupper($content[0])==strtoupper('Product') && strtoupper($content[1])==strtoupper('category') &&   strtoupper($content[2])==strtoupper('subcategory') && strtoupper($content[3])==strtoupper('dimension'))
-         {
-
-             $transRow=false;
-         }
-
-         else
-         {
-           
-            return $this->response()->error('Please give the coloumns in following way: Product,category,subcategory,dimension')->refresh();
-         }
-
-
-  
-      }
-      fclose($data);
-  
-  
-  
-      foreach($array as $value)
-      {
-      
-          $catego=category::where('name',$value[1])->exists();
-  
-          if($catego)
-          {
-              continue;
-          }
-          else
-          {
-             
-              $catall=product::all();
-            
-                    foreach($catall as $single)
-                    {
-                     
-                      if(strtoupper($single->name) == strtoupper($value[0]))
-                      {
-                      //   
-                                             
-                          category::create([
-                              "name"=>$value[1],
-                              "category_id"=>$single->id
-                          ]);
-                      }
-                  }
-  
-          }
-  
-  
-   }
-      foreach($array as $sub)
-      {
-      
-          $catego=entity::where('name',$sub[2])->where('diameter',$sub[3])->exists();
-  
-          if($catego)
-          {
-              continue;
-          }
-          else
-          {
-             
-              $catall=category::all();
-             
-  
-                    foreach($catall as $subid)
-                    {
-                  
-                      if(strtoupper($subid->name) == strtoupper($sub[1]))
-                      {
-                        
-                                   
-                                  entity::create([
-                                      "name"=>$sub[2],
-                                      "diameter"=>$sub[3],
-                                      "entity_id"=>$subid->id,
-                                      
-                                      
-                                  ]);
-                              
-                            
-
-                          
-                          
-                      }
+        try {
+            $excelfile = $request->file('file');
+            if (!$excelfile) {
+                return $this->response()->error('Please select any file')->refresh();
+            }
+            $ext = $excelfile->getClientOriginalExtension();
+            if ($ext === 'csv') {
+                $data = fopen($excelfile, 'r');
+                $array = array();
+                $transRow = true;
+                while (($content = fgetcsv($data, 2000, ',')) !== false) {
+                    if (!$transRow) {
+                        $array[] = $content;
                     }
-  
-  
-  
-            
-                   
-  
-  
-          }
-  
-  
-  
-  
-  
-  
-      }
-  
+                    //  $transRow=false;
+                    elseif (strtoupper($content[0]) == strtoupper('Product') && strtoupper($content[1]) == strtoupper('category') && strtoupper($content[2]) == strtoupper('subcategory') && strtoupper($content[3]) == strtoupper('dimension')) {
+                        $transRow = false;
+                    } else {
+                        return $this->response()->error('Please give the coloumns in following way: Product,category,subcategory,dimension')->refresh();
+                    }
+                }
+                fclose($data);
+                foreach ($array as $value) {
+                    $catego = Category::where('name', $value[1])->exists();
 
-      return $this->response()->success('Success message...')->refresh();
+                    if ($catego) {
+                        continue;
+                    } else {
+
+                        $catall = Product::all();
+                        foreach ($catall as $single) {
+
+                            if (strtoupper($single->name) == strtoupper($value[0])) {
+                                Category::create([
+                                    "name" => $value[1],
+                                    "category_id" => $single->id
+                                ]);
+                            }
+                        }
+
+                    }
+
+                }
+                foreach ($array as $sub) {
+                    $catego = Entity::where('name', $sub[2])->where('diameter', $sub[3])->exists();
+                    if ($catego) {
+                        continue;
+                    } else {
+                        $catall = Category::all();
+                        foreach ($catall as $subid) {
+                            if (strtoupper($subid->name) == strtoupper($sub[1])) {
+                                Entity::create([
+                                    "name" => $sub[2],
+                                    "diameter" => $sub[3],
+                                    "entity_id" => $subid->id,
+                                ]);
+                            }
+                        }
+                    }
+                }
+                return $this->response()->success('Success message...')->refresh();
+            } else {
+                return $this->response()->error('Only support csv files')->refresh();
+            }
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+        }
     }
- 
-    
-    else
+    public function form()
     {
-        return $this->response()->error('Only support csv files')->refresh();
+        $this->file('file', 'Select the file');
     }
-    }
-public function form()
-
-{
-    $this->file('file','Select the file');
-}
     public function html()
     {
         return <<<HTML

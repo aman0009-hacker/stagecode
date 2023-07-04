@@ -56,9 +56,6 @@ class DocumentsController extends AdminController
         $grid->column('aadharcardpath', __('AadharFile'))->displayUsing(PdfDisplayer::class);
         $grid->column('pancardpath', __('PanFile'))->displayUsing(PdfDisplayer::class);
         $grid->column('utilitycardpath', __('UtilityFile'))->displayUsing(PdfDisplayer::class);
-
-
-
         $grid->column('approved', __('Status'))->display(function ($data) {
             if (isset($data) && $data === 1) {
                 return "Approved";

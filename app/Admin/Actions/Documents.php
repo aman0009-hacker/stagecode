@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Redirect;
 class Documents extends RowAction
 {
     public $name = 'Documents';
-
     public function handle(Model $model)
     {
         return redirect()->route('admin.auth.attachments.index');
