@@ -113,12 +113,13 @@ class PaymentController extends Controller
                     $returnVal=$this->paymentProcessVerify($request);
                     if(isset($returnVal) && $returnVal=="SUCCESS")
                     {
-                        return Auth::user()->id;
+                        return $returnVal; 
+                        //return Auth::user()->id;
                         //return redirect()->route('RawMaterial');
                     }
                     else 
                     {
-                        return Auth::user()->id;
+                        //return Auth::user()->id;
                         //return redirect('/login');
                     }
                     // new code to verify
@@ -355,7 +356,7 @@ class PaymentController extends Controller
                             if(isset($queryResponse) && isset($status) && (  $status=="RIP" || $status=="SIP" || $status=="SUCCESS"))
                             {
                                 $gjhgjh=Auth::user()->id;
-                                return "SUCCESS";
+                                return $gjhgjh;
                                 //dd("kjllkjlkjl");
                                 //return redirect('/RawMaterial');
                                 // echo "redirect()->route('RawMaterial')";
