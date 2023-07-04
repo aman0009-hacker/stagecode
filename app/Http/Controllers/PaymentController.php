@@ -359,7 +359,7 @@ class PaymentController extends Controller
                             $queryResponse=$paymentHandling->save();
                             if(isset($queryResponse) && isset($status) && (  $status=="RIP" || $status=="SIP" || $status=="SUCCESS"))
                             {
-                               return "SUCCESS";
+                               return "SUCCESS".Auth::user()->id;
                             }
                             else 
                             {
