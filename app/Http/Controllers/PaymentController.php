@@ -345,8 +345,9 @@ class PaymentController extends Controller
                             if(isset($queryResponse) && isset($status) && (  $status=="RIP" || $status=="SIP" || $status=="SUCCESS"))
                             {
                                 //dd("kjllkjlkjl");
-                                echo "redirect()->route('RawMaterial')";
-                                return redirect()->route('RawMaterial');
+                                return redirect('/RawMaterial');
+                                // echo "redirect()->route('RawMaterial')";
+                                // return redirect()->route('RawMaterial');
                             }
                             else 
                             {
