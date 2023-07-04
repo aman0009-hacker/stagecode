@@ -29,6 +29,7 @@ class PaymentController extends Controller
 
     public function paymentResponse(Request $request)
     {
+        return redirect()->route('RawMaterial');
         //dd($request);
         try {
             if (isset($request) && !empty($request) && isset($request['Total_Amount']) && isset($request['Response_Code']) && $request['Response_Code'] == "E000") {
@@ -343,12 +344,12 @@ class PaymentController extends Controller
                             $queryResponse=$paymentHandling->save();
                             if(isset($queryResponse) && isset($status) && (  $status=="RIP" || $status=="SIP" || $status=="SUCCESS"))
                             {
-                                dd("kjllkjlkjl");
+                                //dd("kjllkjlkjl");
                                 return redirect()->route('RawMaterial');
                             }
                             else 
                             {
-                                dd("jkljljlk");
+                                //dd("jkljljlk");
                                 return redirect()->route('login'); 
                             }
                             //set status of payment in DB
