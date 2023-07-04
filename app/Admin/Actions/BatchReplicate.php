@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class BatchReplicate extends BatchAction
 {
@@ -23,65 +24,58 @@ class BatchReplicate extends BatchAction
     public $selector = '.download-btn';
     public function handle(Collection $collection)
     {
-        $filePaths = [];
-        foreach ($collection as $model) {
-            // $user_id=$model->user_id;
-            // $id=$model->id;
-            // $data = DB::table('attachments')->where('user_id', $model->user_id)->where('id', $model->id)->whereNotNull('fileno')->select('filename')->get();
-            $data = Attachment::where('user_id', $model->user_id)
-                ->where('id', $model->id)
-                ->whereNotNull('fileno')
-                ->select('filename')
-                ->get();
-            //return $this->response()->success('Success!');
-
-            foreach ($data as $filename) {
-                array_push($filePaths, $filename);
+        try {
+            $filePaths = [];
+            foreach ($collection as $model) {
+                $data = Attachment::where('user_id', $model->user_id)
+                    ->where('id', $model->id)
+                    ->whereNotNull('fileno')
+                    ->select('filename')
+                    ->get();
+                foreach ($data as $filename) {
+                    array_push($filePaths, $filename);
+                }
             }
-
-        }        if(isset($filePaths) && count($filePaths)>0)
-        {
-        $downloadFile = $this->download($model, $filePaths);
-        return $this->response()->success('Success!')->download($downloadFile);
+            if (isset($filePaths) && count($filePaths) > 0) {
+                $downloadFile = $this->download($model, $filePaths);
+                return $this->response()->success('Success!')->download($downloadFile);
+            } else {
+                return $this->response()->error('Oops! No file or file is corrupt internally');
+            }
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
         }
-        else 
-        {
-            return $this->response()->error('Oops! No file or file is corrupt internally');
-        }
-
     }
 
 
     public function download(Model $model, $filePaths)
     {
-        $zipFileName = "";
-        if (isset($filePaths) && count($filePaths) > 0) {
-            // $userData = DB::table('users')->join('attachments', 'users.id', '=', 'attachments.user_id')->where('attachments.user_id', $model->user_id)->select('users.name')->first();
-            $userData = User::join('attachments', 'users.id', '=', 'attachments.user_id')
-                ->where('attachments.user_id', $model->user_id)
-                ->select('users.name')
-                ->first();
-            $userDataName = $userData->name;
-            $zipFileName = $userDataName . '_files_' . rand(10, 1000) . ".zip";
-            $zip = new ZipArchive();
-            $zipFilePath = public_path("uploads/") . $zipFileName;
-            if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
-                foreach ($filePaths as $filePath) {
-                    if (File::exists(public_path("uploads/"))) {
-                        $fileContent = Storage::disk('admin')->get($filePath->filename);
-                        $fileName = basename($filePath->filename);
-                        $zip->addFromString($fileName, $fileContent);
+        try {
+            $zipFileName = "";
+            if (isset($filePaths) && count($filePaths) > 0) {
+                $userData = User::join('attachments', 'users.id', '=', 'attachments.user_id')
+                    ->where('attachments.user_id', $model->user_id)
+                    ->select('users.name')
+                    ->first();
+                $userDataName = $userData->name;
+                $zipFileName = $userDataName . '_files_' . rand(10, 1000) . ".zip";
+                $zip = new ZipArchive();
+                $zipFilePath = public_path("uploads/") . $zipFileName;
+                if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
+                    foreach ($filePaths as $filePath) {
+                        if (File::exists(public_path("uploads/"))) {
+                            $fileContent = Storage::disk('admin')->get($filePath->filename);
+                            $fileName = basename($filePath->filename);
+                            $zip->addFromString($fileName, $fileContent);
+                        }
                     }
+                    $zip->close();
+                    return Config::get('app.url') . "uploads/" . $zipFileName;
                 }
-                $zip->close();
-
-                return Config::get('app.url') . "uploads/" . $zipFileName;
-                //return $this->response()->html('<a href="'.$downloadUrl.'" class="btn btn-primary">Download</a>');
-
             }
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
         }
+        
     }
-
-
-
 }

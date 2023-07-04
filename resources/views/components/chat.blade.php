@@ -57,15 +57,12 @@
               <li class="language-links">
                 <a class="language-text pe-2" href="#">English</a>|
                 <a class="language-text ps-2" href="#">Hindi</a>
-
               </li>
-
             </ul>
             <a href="/logout" class="btn btn-outline-secondary  account-btn ms-1" id="logoutid">Logout</a>
           </div>
         </div>
       </div>
-
       <div class="primary-menu">
         <div class="container">
           <div class="row my-3">
@@ -80,7 +77,6 @@
                   <i id="search-icon" class="fa fa-search" aria-hidden="true"></i>
                   <input id="search-input" placeholder="Search" />
                 </div>
-
                 <div class="navbar-nav ms-auto">
                   <ul>
                     <li>
@@ -97,7 +93,6 @@
                       <a href="" class="btn btn-primary account-btn">
                         My Account
                       </a>
-
                     </li>
                   </ul>
                 </div>
@@ -138,77 +133,61 @@
         </nav>
       </div>
     </section>
-
-
     <div class="alert alert-warning text-center">
       <strong>Note!</strong> Kindly submit the required documents for <b>approval</b>. If already submitted then please
       wait for
       <b>approval confirmation.</b>
     </div>
-
-
     {{-- Message Section --}}
-    
-      <section>
-        <div class="container px-5 my-5">
-          <div class="chat-wrapper">
-            <div class="row">
-              <div class="col-12 border-bottom">
-                <h3>Reply</h3>
-              </div>
-              <div class=" col-md-4 mt-2 border-bottom">
-                <form action="{{ route('dropzone.store') }}" method="post" enctype="multipart/form-data"
-                  id="image-upload" class="dropzone">
+    <section>
+      <div class="container px-5 my-5">
+        <div class="chat-wrapper">
+          <div class="row">
+            <div class="col-12 border-bottom">
+              <h3>Reply</h3>
+            </div>
+            <div class=" col-md-4 mt-2 border-bottom">
+              <form action="{{ route('dropzone.store') }}" method="post" enctype="multipart/form-data" id="image-upload"
+                class="dropzone">
+                @csrf
+                <div>
+                  <h4>Upload </h4>
+                </div>
+              </form>
+            </div>
+            <div class="col-12 col-md-8  border-bottom">
+              <div class="my-4 row">
+                <form id="chatForm">
                   @csrf
-                  <div>
-                    <h4>Upload </h4>
-                  </div>
-                </form>
-              </div>
-              
-              <div class="col-12 col-md-8  border-bottom">
-                <div class="my-4 row">
-                  <form id="chatForm">
-                    @csrf
                   <label for="textAreaMsg" class="col-sm-2 col-form-label">Message</label>
                   <textarea class="col-sm-9 form-control" name="textAreaMsg" id="textAreaMsg" rows="3"
                     required></textarea>
-                </div>
               </div>
-              
-              <div class=" mt-4">
-                <div class="justify-content-end d-flex">
-                  <button type="button" class="btn btn-outline-secondary me-3" id="btnClear">Clear</button>
-                  <input class="btn btn-primary" type="submit" value="Submit" id="btnSubmit">
-
-                </div>
+            </div>
+            <div class=" mt-4">
+              <div class="justify-content-end d-flex">
+                <button type="button" class="btn btn-outline-secondary me-3" id="btnClear">Clear</button>
+                <input class="btn btn-primary" type="submit" value="Submit" id="btnSubmit">
               </div>
-              <div class="col-12 scroll-chat mt-4 ">
-
-                <p class="note-text">Note:Username will not appear on the app.</p>
-                <div class="msg-grp">
-
-                  <p>
-
-                  <div id="submitDiv"></div>
-                  </p>
-                </div>
-
+            </div>
+            <div class="col-12 scroll-chat mt-4 ">
+              <p class="note-text">Note:Username will not appear on the app.</p>
+              <div class="msg-grp">
+                <p>
+                <div id="submitDiv"></div>
+                </p>
               </div>
             </div>
           </div>
-
         </div>
-      </section>
+      </div>
+    </section>
     </form>
-
     {{-- <div class="container"> --}}
       <div class="row">
-
       </div>
       {{--
     </div> --}}
-
     <!--  Footer -->
     <footer id="footer">
       <div class="footer-top">
@@ -344,7 +323,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
       <div class="footer-bottom w-100">
@@ -361,11 +339,8 @@
             </div>
           </div>
         </div>
-
       </div>
-
     </footer>
-  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js' type='text/javascript'></script>
     <script src="{{asset('js/chat.js')}}"></script>

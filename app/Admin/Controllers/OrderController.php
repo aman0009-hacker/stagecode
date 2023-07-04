@@ -16,6 +16,7 @@ use App\Models\Order;
 use App\Admin\Actions\OrderDispatched;
 use App\Admin\Actions\OrderPayment;
 use App\Admin\Actions\OrderApproved;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends AdminController
 {
@@ -33,135 +34,119 @@ class OrderController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Order());
-
-        // $grid->column('id', __('Id'));
-        // $grid->column('amount', __('Amount'));
-
-        // $grid->column('transaction_date', __('Transaction date'));
-        // $grid->column('transaction_id', __('Transaction id'));
-
-        // $grid->column('person', __('Person'));
-        // $grid->column('category_name', __('Category name'));
-        // $grid->column('description', __('Description'));
-        // $grid->column('diameter', __('Diameter'));
-        // $grid->column('size', __('Size'));
-        // $grid->column('quantity', __('Quantity'));
-        // $grid->column('measurement', __('Measurement'));
-        $grid->column('user_id', __('User'))->display(function ($user_id) {
-            return User::find($user_id)->name;
-        });
-        $grid->column('id', __('Order Items'))->display(function ($id) {
-            //$count = count($comments);
-            //return "<span class='label label-warning'>{$count}</span>";
-            return "items ( ".OrderItem::where('order_id', $id)->count() . " )";
-        })->expand(function ($model) {
-            $orderId = $model->id;
-            $orderItems = OrderItem::where('order_id', $orderId)->get();
-
-            $tableData = $orderItems->map(function ($item) {
-                return [
-                    'Item' => $item->category_name,
-                    'Description' => $item->description,
-                    'Diameter' => $item->diameter,
-                    'Size' => $item->size,
-                    'Quantity' => $item->quantity,
-                    'Measurement (Ton) ' => $item->measurement,
-                ];
+        try {
+            $grid = new Grid(new Order());
+            // $grid->column('id', __('Id'));
+            // $grid->column('amount', __('Amount'));
+            // $grid->column('transaction_date', __('Transaction date'));
+            // $grid->column('transaction_id', __('Transaction id'));
+            // $grid->column('person', __('Person'));
+            // $grid->column('category_name', __('Category name'));
+            // $grid->column('description', __('Description'));
+            // $grid->column('diameter', __('Diameter'));
+            // $grid->column('size', __('Size'));
+            // $grid->column('quantity', __('Quantity'));
+            // $grid->column('measurement', __('Measurement'));
+            $grid->column('user_id', __('User'))->display(function ($user_id) {
+                return User::find($user_id)->name;
             });
-
-            return new Table(['Item', 'Description', 'Diameter', 'Size', 'Quantity', 'Measurement'], $tableData->toArray());
-        });
-        // $grid->column('user_id', __('User'))->display(function($user_id)
-        // {
-
-        // });
-        $grid->column('status', __('Status'));
-
-        // $grid->column('firm', __('Firm'));
-        $grid->column('created_at', __('Created at'))->display(function ($value) {
-          //  return Carbon::parse($value)->format('Y-m-d H:i:s');
-        //   return Carbon::parse($value)->format('d-m-Y');
-        return Carbon::parse($value)->format('Y-m-d H:i');
-        });
-        // $grid->column('updated_at', __('Updated at'));
-
-        // $grid->actions(function ($actions) {
-        //     $actions->add(new OrderApproved);
-        //     $actions->add(new OrderDispatched);
-        //     $actions->add(new OrderRejected);
-        //     // if ($actions->row->approved == 0) {
-        //     //   $actions->add(new Data);
-        //     //   $actions->add(new Rejected);
-        //     // } else if ($actions->row->approved == 1) {
-        //     //   //$actions->add(new Data);
-        //     //   $actions->add(new Rejected);
-        //     // } else if ($actions->row->approved == 2) {
-        //     //   $actions->add(new Data);
-        //     //   //$actions->add(new Rejected);
-        //     // }
-        // });
-
-        $grid->actions(function ($actions) {
-            $actions->disableEdit();
-            $actions->disableView();
-            $actions->disableDelete();
-            
-            if ($actions->row->status == "Approved") {
-                $actions->add(new OrderDispatched);
-                $actions->add(new OrderRejected);
-                $actions->add(new OrderPayment);
-            } else if ($actions->row->status == "Rejected") {
-                $actions->add(new OrderApproved);
-                $actions->add(new OrderDispatched);
-                $actions->add(new OrderPayment);
-            } else if ($actions->row->status == "Dispatched") {
-                $actions->add(new OrderApproved);
-                $actions->add(new OrderRejected);
-                $actions->add(new OrderPayment);
-            } else if ($actions->row->status == "New") {
-                $actions->add(new OrderApproved);
-                $actions->add(new OrderDispatched);
-                $actions->add(new OrderRejected);
-                $actions->add(new OrderPayment);
-            }else if ($actions->row->status == "Payment_Done") {
-                $actions->add(new OrderApproved);
-                $actions->add(new OrderDispatched);
-                $actions->add(new OrderRejected);
-            }
-        });
-
-        $grid->filter(function ($filter) {
-            // $filter->notIn('id', __('Id'));
-            $filter->disableIdFilter();
-       
-
-          
-            $filter->column(1 / 2, function ($filter) {
-                $userIds = Order::pluck('user_id')->toArray();
-                $userNames = User::whereIn('id', $userIds)->pluck('name', 'id')->toArray();
-                $filter->equal('user_id', __('User'))->select($userNames);
-                //$filter->equal('user_id', __('User'))->select(User::pluck('name', 'id')->toArray());
+            $grid->column('id', __('Order Items'))->display(function ($id) {
+                //$count = count($comments);
+                //return "<span class='label label-warning'>{$count}</span>";
+                return "items ( " . OrderItem::where('order_id', $id)->count() . " )";
+            })->expand(function ($model) {
+                $orderId = $model->id;
+                $orderItems = OrderItem::where('order_id', $orderId)->get();
+                $tableData = $orderItems->map(function ($item) {
+                    return [
+                        'Item' => $item->category_name,
+                        'Description' => $item->description,
+                        'Diameter' => $item->diameter,
+                        'Size' => $item->size,
+                        'Quantity' => $item->quantity,
+                        'Measurement (Ton) ' => $item->measurement,
+                    ];
+                });
+                return new Table(['Item', 'Description', 'Diameter', 'Size', 'Quantity', 'Measurement'], $tableData->toArray());
             });
-            $filter->column(1 / 2, function ($filter) {
-                $filter->like('status', __('Status'));
-            
-      
+            // $grid->column('user_id', __('User'))->display(function($user_id)
+            // {
+            // });
+            $grid->column('status', __('Status'));
+            // $grid->column('firm', __('Firm'));
+            $grid->column('created_at', __('Created at'))->display(function ($value) {
+                //  return Carbon::parse($value)->format('Y-m-d H:i:s');
+                //   return Carbon::parse($value)->format('d-m-Y');
+                return Carbon::parse($value)->format('Y-m-d H:i');
             });
-          });
-
-          $grid->export(function ($export) {
-            //$export->filename('Filename.csv');
-            $export->except(['id']);
-          });
-
-
-          $grid->disableRowSelector();
-          $grid->disableCreateButton();
-
-          $grid->model()->orderBy('created_at', 'desc');
-      
-        return $grid;
+            // $grid->column('updated_at', __('Updated at'));
+            // $grid->actions(function ($actions) {
+            //     $actions->add(new OrderApproved);
+            //     $actions->add(new OrderDispatched);
+            //     $actions->add(new OrderRejected);
+            //     // if ($actions->row->approved == 0) {
+            //     //   $actions->add(new Data);
+            //     //   $actions->add(new Rejected);
+            //     // } else if ($actions->row->approved == 1) {
+            //     //   //$actions->add(new Data);
+            //     //   $actions->add(new Rejected);
+            //     // } else if ($actions->row->approved == 2) {
+            //     //   $actions->add(new Data);
+            //     //   //$actions->add(new Rejected);
+            //     // }
+            // });
+            $grid->actions(function ($actions) {
+                $actions->disableEdit();
+                $actions->disableView();
+                $actions->disableDelete();
+                if ($actions->row->status == "Approved") {
+                    $actions->add(new OrderDispatched);
+                    $actions->add(new OrderRejected);
+                    $actions->add(new OrderPayment);
+                } else if ($actions->row->status == "Rejected") {
+                    $actions->add(new OrderApproved);
+                    $actions->add(new OrderDispatched);
+                    $actions->add(new OrderPayment);
+                } else if ($actions->row->status == "Dispatched") {
+                    $actions->add(new OrderApproved);
+                    $actions->add(new OrderRejected);
+                    $actions->add(new OrderPayment);
+                } else if ($actions->row->status == "New") {
+                    $actions->add(new OrderApproved);
+                    $actions->add(new OrderDispatched);
+                    $actions->add(new OrderRejected);
+                    $actions->add(new OrderPayment);
+                } else if ($actions->row->status == "Payment_Done") {
+                    $actions->add(new OrderApproved);
+                    $actions->add(new OrderDispatched);
+                    $actions->add(new OrderRejected);
+                }
+            });
+            $grid->filter(function ($filter) {
+                // $filter->notIn('id', __('Id'));
+                $filter->disableIdFilter();
+                $filter->column(1 / 2, function ($filter) {
+                    $userIds = Order::pluck('user_id')->toArray();
+                    $userNames = User::whereIn('id', $userIds)->pluck('name', 'id')->toArray();
+                    $filter->equal('user_id', __('User'))->select($userNames);
+                    //$filter->equal('user_id', __('User'))->select(User::pluck('name', 'id')->toArray());
+                });
+                $filter->column(1 / 2, function ($filter) {
+                    $filter->like('status', __('Status'));
+                });
+            });
+            $grid->export(function ($export) {
+                //$export->filename('Filename.csv');
+                $export->except(['id']);
+            });
+            $grid->disableRowSelector();
+            $grid->disableCreateButton();
+            $grid->model()->orderBy('created_at', 'desc');
+            return $grid;
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+            return $grid;
+        }
     }
 
     /**
@@ -173,7 +158,6 @@ class OrderController extends AdminController
     protected function detail($id)
     {
         $show = new Show(Order::findOrFail($id));
-
         // $show->field('id', __('Id'));
         // $show->field('amount', __('Amount'));
         // $show->field('transaction_date', __('Transaction date'));
@@ -190,7 +174,6 @@ class OrderController extends AdminController
         // $show->field('firm', __('Firm'));
         $show->field('created_at', __('Created at'));
         // $show->field('updated_at', __('Updated at'));
-
         return $show;
     }
 
@@ -202,7 +185,6 @@ class OrderController extends AdminController
     protected function form()
     {
         $form = new Form(new Order());
-
         // $form->decimal('amount', __('Amount'));
         // $form->date('transaction_date', __('Transaction date'))->default(date('Y-m-d'));
         // $form->number('transaction_id', __('Transaction id'));
@@ -216,7 +198,6 @@ class OrderController extends AdminController
         // $form->text('measurement', __('Measurement'));
         // $form->text('user_id', __('User id'));
         // $form->text('firm', __('Firm'));
-
         return $form;
     }
 }

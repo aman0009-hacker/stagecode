@@ -11,23 +11,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 
 class Data extends RowAction
 {
     public $name = 'Approved';
-
     public function dialog()
     {
         $this->confirm('Are you sure for approval?');
     }
-
     public function handle(Model $model)
     {
         try {
             $approvedStatus = $model->approved;
             $encryptedID = Crypt::encryptString($model->id);
-
             //check documents are present or not
             if (isset($approvedStatus) && ($approvedStatus == 0 || $approvedStatus == 2)) {
                 // send values in model "documents" start
@@ -65,8 +63,8 @@ class Data extends RowAction
             } else if (isset($approvedStatus) && $approvedStatus == 1) {
                 return $this->response()->success('User request has already approved.')->refresh();
             }
-        } catch (\Exception $ex) {
-            //return $this->response()->error('Oops! Sending mail has encountered some internal problem');
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
         }
     }
 

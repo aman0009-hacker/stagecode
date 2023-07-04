@@ -8,16 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderAllocated extends RowAction
 {
-    
-    public $name = 'Allocate';
-
+     public $name = 'Allocate';
     public function handle(Model $model, Request $request)
     {
         // $request ...
         $requestData = $request->all();
-
         return $this->response()->success('Success message...')->refresh();
     }
-
-  
 }

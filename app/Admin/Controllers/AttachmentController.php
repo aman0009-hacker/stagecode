@@ -19,6 +19,7 @@ use App\Admin\Button\CustomButton;
 use Encore\Admin\Grid\Tools as GridTools;
 use Encore\Admin\Grid\Displayers\AbstractDisplayer;
 use Encore\Admin\Admin;
+use Illuminate\Support\Facades\Log;
 
 // use App\Admin\Actions\ReportPost;
 
@@ -32,14 +33,18 @@ class AttachmentController extends AdminController
      */
     public function index(Content $content)
     {
-        $currentRowId = session('current_row_id');
-        $name = User::find($currentRowId)->name;
-        $lastname = User::find($currentRowId)->last_name;
-        $fullname = $name . " " . $lastname . " " ?? '';
-        return $content
-            ->header($fullname . 'Document Information')
-            ->body($this->grid());
-        //->view('admin.custom-page');
+        try {
+            $currentRowId = session('current_row_id');
+            $name = User::find($currentRowId)->name;
+            $lastname = User::find($currentRowId)->last_name;
+            $fullname = $name . " " . $lastname . " " ?? '';
+            return $content
+                ->header($fullname . 'Document Information')
+                ->body($this->grid());
+            //->view('admin.custom-page');
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+        }
     }
 
     protected function renderForm()
@@ -57,45 +62,46 @@ class AttachmentController extends AdminController
      */
     protected function grid()
     {
-        $currentAdminId = \Encore\Admin\Facades\Admin::user()->id;
-        // $currentAdminRole=\Encore\Admin\Facades\Admin::user()->roles;
-        $currentAdminRole = "admin";
-        $currentAdminUserName = \Encore\Admin\Facades\Admin::user()->username;
-        $currentRowId = session('current_row_id');
-        $grid = new Grid(new Attachment());
-        $grid->column('user.name', __('User Name'));
-        // $grid->column('filename', __('Filename'))->displayUsing(PdfDisplayer::class);
-        $grid->column('filename', __('Filename'))->display(function ($value) {
-            return $this->getFileNameAttribute($value);
-        })->displayUsing(PdfDisplayer::class);
-        $grid->column('file_type', __('Document type'));
-        $grid->column('updated_at', __('Updated at'))->display(function ($value) {
-            //return Carbon::parse($value)->format('Y-m-d H:i:s');
-            return Carbon::parse($value)->format('d-m-Y');
-        });
-        // $grid->column('fileno', __('Document No'));
-        $grid->column('fileno', __('Document No'))->display(function ($value) {
-            return $this->getFileNoAttribute($value);
-        });
-        $grid->model()->where('user_id', $currentRowId);
-        $grid->disableCreateButton();
-        // $grid->actions(function ($actions) {
-        //     $actions->disableView();
-        //     $actions->disableEdit();
-        //     $actions->disableDelete();
-        //     // $actions->setActionClassHeader('hidden');
-        // });
-        $grid->disableActions();
-      
-      
-        $grid->tools(function ($tools) {
-            $tools->append('<a class="btn btn-default" href="/admin/auth/user"><i class="fa fa-arrow-left"></i> Back</a>');
-            $tools->append(new BatchReplicate());
+        try {
+            $currentAdminId = \Encore\Admin\Facades\Admin::user()->id;
+            // $currentAdminRole=\Encore\Admin\Facades\Admin::user()->roles;
+            $currentAdminRole = "admin";
+            $currentAdminUserName = \Encore\Admin\Facades\Admin::user()->username;
+            $currentRowId = session('current_row_id');
+            $grid = new Grid(new Attachment());
+            $grid->column('user.name', __('User Name'));
+            // $grid->column('filename', __('Filename'))->displayUsing(PdfDisplayer::class);
+            $grid->column('filename', __('Filename'))->display(function ($value) {
+                return $this->getFileNameAttribute($value);
+            })->displayUsing(PdfDisplayer::class);
+            $grid->column('file_type', __('Document type'));
+            $grid->column('updated_at', __('Updated at'))->display(function ($value) {
+                //return Carbon::parse($value)->format('Y-m-d H:i:s');
+                return Carbon::parse($value)->format('d-m-Y');
+            });
+            // $grid->column('fileno', __('Document No'));
+            $grid->column('fileno', __('Document No'))->display(function ($value) {
+                return $this->getFileNoAttribute($value);
+            });
+            $grid->model()->where('user_id', $currentRowId);
+            $grid->disableCreateButton();
+            // $grid->actions(function ($actions) {
+            //     $actions->disableView();
+            //     $actions->disableEdit();
+            //     $actions->disableDelete();
+            //     // $actions->setActionClassHeader('hidden');
+            // });
+            $grid->disableActions();
 
-        });
-        $grid->disableFilter();
 
-        $html = <<<HTML
+            $grid->tools(function ($tools) {
+                $tools->append('<a class="btn btn-default" href="/admin/auth/user"><i class="fa fa-arrow-left"></i> Back</a>');
+                $tools->append(new BatchReplicate());
+
+            });
+            $grid->disableFilter();
+
+            $html = <<<HTML
         <head>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- <meta http-equiv="refresh" content="7"> -->
@@ -155,13 +161,17 @@ class AttachmentController extends AdminController
      </section> 
  
      HTML;
-        Admin::html($html);
-        $jsFilePath = public_path('js/chatReply.js');
-        $jsContent = file_get_contents($jsFilePath);
-        Admin::script($jsContent);
-        //$grid->refresh();
-        $grid->disableExport();
-        return $grid;
+            Admin::html($html);
+            $jsFilePath = public_path('js/chatReply.js');
+            $jsContent = file_get_contents($jsFilePath);
+            Admin::script($jsContent);
+            //$grid->refresh();
+            $grid->disableExport();
+            return $grid;
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+            return $grid;
+        }
     }
 
     /**
@@ -201,13 +211,10 @@ class AttachmentController extends AdminController
         $form->text('fileno', __('Fileno'));
         $form->footer(function ($footer) {
             $footer->disableViewCheck();
-
             // disable `Continue editing` checkbox
             $footer->disableEditingCheck();
-
             // disable `Continue Creating` checkbox
             $footer->disableCreatingCheck();
-
         });
         return $form;
     }

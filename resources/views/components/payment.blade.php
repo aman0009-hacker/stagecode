@@ -1,6 +1,5 @@
 @extends('layouts.main_account')
 @section('content')
-
  {{-- custom logic --}}
  <?php
  if(Auth::check())
@@ -17,10 +16,7 @@
    <?php
  }
 ?>
-
 {{-- custom logic --}}
-
-
 <!-- Booking Section -->
 <section class="payment">
   <div class="container">
@@ -100,7 +96,6 @@
         </form>
       </div>
     </div>
-
   </div>
 </section>
 @endsection

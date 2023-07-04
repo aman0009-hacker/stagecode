@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 class OrderPayment extends RowAction
 {
     public $name = 'Payment Done';
-
     public function handle(Model $model)
     {
         try {
@@ -39,8 +39,6 @@ class OrderPayment extends RowAction
                         'body' => 'Congratulations!!! Your order no '. $model->id . ' payment has successfully received. Orders has delivered soon.',
                         'encryptedID' => $encryptedID,
                         'status'=>'OrderPayment'
-
-
                     ];
                     \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
                     //\Mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
@@ -51,8 +49,8 @@ class OrderPayment extends RowAction
                 }
                 return $this->response()->success('Congratulations!!! Your order no '. $model->id . ' payment has successfully received. Orders has delivered soon.')->refresh();
             }
-        } catch (\Exception $ex) {
-
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
         }
     }
 

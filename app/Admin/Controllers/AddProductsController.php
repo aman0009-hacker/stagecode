@@ -23,9 +23,7 @@ class AddProductsController extends AdminController
             // }
             return $content;
     }
-
-   
-    public function saveData(Request $request)
+   public function saveData(Request $request)
     {
      echo "success";
     }

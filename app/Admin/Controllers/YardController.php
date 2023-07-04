@@ -13,6 +13,7 @@ use App\Models\AdminUser;
 use App\Models\Role;
 use App\Models\RoleUser;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class YardController extends AdminController
 {
@@ -30,65 +31,60 @@ class YardController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Yard());
-        // $grid->model()->groupBy('yards.yardstate, yards.yardcity, yards.yardplace, COUNT(*)');
-        // $grid->column('id', __('Id'));   
-        // $grid->column('yardcountry', __('Country'));
-        $grid->column('yardstate', __('State'));
-        $grid->column('yardcity', __('City'));
-        $grid->column('yardplace', __('Place'));
-
-        $grid->column('supervisorid',__('Yard Supervisor'))->display(function($supervisorid){
-          if($supervisorid===0 || $supervisorid===null)
-          {
-           return "Not Available";
-          } 
-          else 
-          { 
-          $supervisorName=AdminUser::where('id',$supervisorid)->first()->name;
-          return $supervisorName ?? "Not Available";
-          }
-        });
-
-        $grid->column('created_at', __('Created at'))->display(function ($value) {
-            //  return Carbon::parse($value)->format('Y-m-d H:i:s');
-          //   return Carbon::parse($value)->format('d-m-Y');
-          return Carbon::parse($value)->format('Y-m-d H:i');
-          });
-
-        $grid->filter(function ($filter) {
-            $filter->disableIdFilter();
-            $filter->column(1 / 2, function ($filter) {
-                $filter->like('yardstate', __('State'));
-                //$filter->like('yardcountry', __('Country'));
-                //$filter->like('yardcity', __('City'));
+        try {
+            $grid = new Grid(new Yard());
+            // $grid->model()->groupBy('yards.yardstate, yards.yardcity, yards.yardplace, COUNT(*)');
+            // $grid->column('id', __('Id'));   
+            // $grid->column('yardcountry', __('Country'));
+            $grid->column('yardstate', __('State'));
+            $grid->column('yardcity', __('City'));
+            $grid->column('yardplace', __('Place'));
+            $grid->column('supervisorid', __('Yard Supervisor'))->display(function ($supervisorid) {
+                if ($supervisorid === 0 || $supervisorid === null) {
+                    return "Not Available";
+                } else {
+                    $supervisorName = AdminUser::where('id', $supervisorid)->first()->name;
+                    return $supervisorName ?? "Not Available";
+                }
             });
-            $filter->column(1 / 2, function ($filter) {
-                $filter->like('yardcity', __('City'));
-                //$filter->like('yardplace', __('Place'));
+            $grid->column('created_at', __('Created at'))->display(function ($value) {
+                //  return Carbon::parse($value)->format('Y-m-d H:i:s');
+                //   return Carbon::parse($value)->format('d-m-Y');
+                return Carbon::parse($value)->format('Y-m-d H:i');
             });
-        });
-
-        // $grid->actions(function ($actions) {
-        //    $actions->disableEdit();
-        //    $actions->disableDelete();
-        //     //$actions->disableView();
-        // //    if (Admin::user()->can('create-post')) {
-        // //         Permission::check('create-post');
-        // //     }
-        // });
-
-          $grid->actions(function ($actions) {
-           $actions->disableView();
-           //$actions->disableEdit();
-           //$actions->disableDelete();
-        });
-
-        //$grid->disableActions();
-        $grid->disableRowSelector();
-        
-        $grid->model()->orderBy('created_at', 'desc');
-        return $grid;
+            $grid->filter(function ($filter) {
+                $filter->disableIdFilter();
+                $filter->column(1 / 2, function ($filter) {
+                    $filter->like('yardstate', __('State'));
+                    //$filter->like('yardcountry', __('Country'));
+                    //$filter->like('yardcity', __('City'));
+                });
+                $filter->column(1 / 2, function ($filter) {
+                    $filter->like('yardcity', __('City'));
+                    //$filter->like('yardplace', __('Place'));
+                });
+            });
+            // $grid->actions(function ($actions) {
+            //    $actions->disableEdit();
+            //    $actions->disableDelete();
+            //     //$actions->disableView();
+            // //    if (Admin::user()->can('create-post')) {
+            // //         Permission::check('create-post');
+            // //     }
+            // });
+            $grid->actions(function ($actions) {
+                $actions->disableView();
+                //$actions->disableEdit();
+                //$actions->disableDelete();
+            });
+            //$grid->disableActions();
+            $grid->disableRowSelector();
+            $grid->model()->orderBy('created_at', 'desc');
+            return $grid;
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+            return $grid;
+        }
     }
 
     /**
@@ -152,11 +148,11 @@ class YardController extends AdminController
         $supervisors = AdminUser::whereHas('roles', function ($query) {
             $query->where('name', 'YardCreator');
         })
-        ->whereNotIn('id', function ($query) {
-            $query->select('supervisorid')
-                  ->from('yards')->whereNotNull('supervisorid');
-        })
-        ->pluck('name', 'id');
+            ->whereNotIn('id', function ($query) {
+                $query->select('supervisorid')
+                    ->from('yards')->whereNotNull('supervisorid');
+            })
+            ->pluck('name', 'id');
         $form->select('supervisorid', "__Supervisor UserName")->options($supervisors);
         $form->footer(function ($footer) {
             $footer->disableViewCheck();

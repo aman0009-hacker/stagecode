@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Order;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class OrderDispatched extends RowAction
 {
@@ -21,7 +22,6 @@ class OrderDispatched extends RowAction
                 $data = Order::find($id);
                 $data->status = "Dispatched";
                 $data->save();
-
                 if($data->save()==true)
                 {
                     $user_id=Order::find($model->id)->user_id;
@@ -36,8 +36,6 @@ class OrderDispatched extends RowAction
                         'email' => 'PSIEC ADMIN PANEL',
                         'body' => 'Congratulations!!! Your order no '. $model->id . ' is ready for dispatch. kindly make a full payment against invoice',
                         //'encryptedID' => $encryptedID,
-
-
                     ];
                     \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
                     //\Mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
@@ -48,17 +46,14 @@ class OrderDispatched extends RowAction
                 }
                 return $this->response()->success('Congratulations!!! Your order no '. $model->id . ' is ready for dispatch. kindly make a full payment against invoice')->refresh();
             }
-        } catch (\Exception $ex) {
-
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
         }
     }
-
 
     public function dialog()
     {
         $this->confirm('Are you sure for order dispatch?');
     }
-
-   
-   
+  
 }
