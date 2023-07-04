@@ -118,7 +118,8 @@ class PaymentController extends Controller
                     }
                     else 
                     {
-                        return redirect('/login');
+                        return Auth::user()->id;
+                        //return redirect('/login');
                     }
                     // new code to verify
                 } else {
