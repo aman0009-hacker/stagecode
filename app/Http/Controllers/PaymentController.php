@@ -341,12 +341,14 @@ class PaymentController extends Controller
                             $paymentHandling = PaymentDataHandling::where('reference_no', $referenceNo)->first();
                             $paymentHandling->payment_status = $status ?? '';
                             $queryResponse=$paymentHandling->save();
-                            if(isset($queryResponse) && (  $queryResponse=="RIP" || $queryResponse=="SIP" || $queryResponse=="SUCCESS"))
+                            if(isset($queryResponse) && isset($status) && (  $status=="RIP" || $status=="SIP" || $status=="SUCCESS"))
                             {
+                                dd("kjllkjlkjl");
                                 return redirect()->route('RawMaterial');
                             }
                             else 
                             {
+                                dd("jkljljlk");
                                 return redirect()->route('login'); 
                             }
                             //set status of payment in DB
