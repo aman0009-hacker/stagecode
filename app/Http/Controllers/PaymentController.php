@@ -295,7 +295,7 @@ class PaymentController extends Controller
 
     public function paymentProcessVerify(Request $request)
     {
-        dd(Auth::user()->id);
+        //dd(Auth::user()->id);
         // $response = Http::post($this->EAZYPAY_BASE_URL_VERIFY, [
         //     'name' => 'Steve',
         //     'role' => 'Network Administrator',
@@ -340,10 +340,19 @@ class PaymentController extends Controller
                             //set status of payment in DB
                             $paymentHandling = PaymentDataHandling::where('reference_no', $referenceNo)->first();
                             $paymentHandling->payment_status = $status ?? '';
-                            $paymentHandling->save();
+                            $queryResponse=$paymentHandling->save();
+                            if(isset($queryResponse) && (  $queryResponse=="RIP" || $queryResponse=="SIP" || $queryResponse=="SUCCESS"))
+                            {
+                                return redirect()->route('RawMaterial');
+                            }
+                            else 
+                            {
+                                return redirect()->route('login'); 
+                            }
                             //set status of payment in DB
                         }
-                        echo "Status: " . $status;
+                        //echo "Status: " . $status;
+                        
                     } else {
                         return "not success";
                     }
