@@ -111,10 +111,10 @@ class PaymentController extends Controller
                         'transactionId' => $request['Unique_Ref_Number'],
                     ]);
                     $returnVal=$this->paymentProcessVerify($request);
-                    return $returnVal;
-                    //if(isset($returnVal) && $returnVal=="SUCCESS")
+                    //return $returnVal;
+                    if(isset($returnVal) && $returnVal=="SUCCESS")
                   
-                    if(isset($returnVal))
+                    //if(isset($returnVal))
                     {
                         return $returnVal; 
                         //return Auth::user()->id;
@@ -122,6 +122,7 @@ class PaymentController extends Controller
                     }
                     else 
                     {
+                        return $returnVal; 
                         //return Auth::user()->id;
                         //return redirect('/login');
                     }
@@ -358,19 +359,12 @@ class PaymentController extends Controller
                             $queryResponse=$paymentHandling->save();
                             if(isset($queryResponse) && isset($status) && (  $status=="RIP" || $status=="SIP" || $status=="SUCCESS"))
                             {
-                                return(Auth::user()->id."jjlkjl");
-                                //return $gjhgjh;
-                                //dd("kjllkjlkjl");
-                                //return redirect('/RawMaterial');
-                                // echo "redirect()->route('RawMaterial')";
-                                // return redirect()->route('RawMaterial');
+                               return "SUCCESS";
                             }
                             else 
                             {
                                 return "OTHER";
-                                //dd("jkljljlk");
-                                //echo "redirect()->route('login')";
-                                //return redirect()->route('login'); 
+                                
                             }
                             //set status of payment in DB
                         }
