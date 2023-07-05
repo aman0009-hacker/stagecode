@@ -86,7 +86,7 @@
                             {{-- paymentStatus reterived from payment Page --}}
                             <?php
                                echo($paymentResponse ?? "jklkjkl");
-                               echo $request->session()->get('paymentResponse');
+                               
                                if(isset($paymentResponse) && $paymentResponse=="SUCCESS")
                                {
                                 ?>
