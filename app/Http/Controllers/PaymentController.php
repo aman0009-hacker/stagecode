@@ -122,7 +122,7 @@ class PaymentController extends Controller
                     {
                         //return $returnVal; 
                         //return Auth::user()->id;
-                        return redirect()->route('payment.process')->with('paymentResponse','SUCCESS');
+                        return redirect()->route('payment.process',['paymentResponse'=>'SUCCESS']);
                     } else {
                         //return $returnVal; 
                         //return Auth::user()->id;
