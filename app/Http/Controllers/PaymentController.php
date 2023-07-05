@@ -29,6 +29,7 @@ class PaymentController extends Controller
         $this->EAZYPAY_BASE_URL = env('EAZYPAY_BASE_URL', '');
         $this->EAZYPAY_BASE_URL_VERIFY = env('EAZYPAY_BASE_URL_VERIFY', '');
         //$this->UserID= Auth::user()->id;
+        $this->middleware('auth');
     }
 
     public function paymentResponse(Request $request)
