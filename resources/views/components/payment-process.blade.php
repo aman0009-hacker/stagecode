@@ -85,8 +85,9 @@
 
                             {{-- paymentStatus reterived from payment Page --}}
                             <?php
-                               echo($data);
-                               if(isset($data['paymentResponse']) && $data['paymentResponse']=="SUCCESS")
+                               echo($paymentResponse ?? "jklkjkl");
+                               echo $request->session()->get('paymentResponse');
+                               if(isset($paymentResponse) && $paymentResponse=="SUCCESS")
                                {
                                 ?>
                             <div class="alert alert-success" role="alert">
