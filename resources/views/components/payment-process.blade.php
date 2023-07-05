@@ -85,6 +85,7 @@
 
                             {{-- paymentStatus reterived from payment Page --}}
                             <?php
+                               dd($data['paymentResponse'] ?? 'hkkjhjkhkj');
                                if(isset($data['paymentResponse']) && $data['paymentResponse']=="SUCCESS")
                                {
                                 ?>
@@ -98,11 +99,11 @@
                                else 
                                {
                                 ?>
-                            <div class="alert alert-warning" role="alert">
-                                <p>Success message goes here.</p>
+                            {{-- <div class="alert alert-warning" role="alert">
+                                <p>Success message goes here.</p> --}}
                                 {{-- <a href="#" class="alert-link">Click here</a> to visit the
                                 link. --}}
-                            </div>
+                            {{-- </div> --}}
                             <?php
                                }
                            ?>
