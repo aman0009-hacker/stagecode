@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\EazyPayController;
 use Illuminate\Http\Request;
-use illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Models\PaymentHandling;
 use App\Models\PaymentDataHandling;
 use Carbon\Carbon;
@@ -116,15 +116,15 @@ class PaymentController extends Controller
                   
                     //if(isset($returnVal))
                     {
-                        return $returnVal; 
+                        //return $returnVal; 
                         //return Auth::user()->id;
-                        //return redirect()->route('RawMaterial');
+                        return redirect()->route('RawMaterial');
                     }
                     else 
                     {
-                        return $returnVal; 
+                        //return $returnVal; 
                         //return Auth::user()->id;
-                        //return redirect('/login');
+                        return redirect('/login');
                     }
                     // new code to verify
                 } else {
@@ -359,7 +359,7 @@ class PaymentController extends Controller
                             $queryResponse=$paymentHandling->save();
                             if(isset($queryResponse) && isset($status) && (  $status=="RIP" || $status=="SIP" || $status=="SUCCESS"))
                             {
-                                dd(Auth::user()->id);
+                                //dd(Auth::user()->id);
                                return "SUCCESS";
                             }
                             else 
