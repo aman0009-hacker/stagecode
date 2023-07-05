@@ -117,8 +117,8 @@ class PaymentController extends Controller
                     //if(isset($returnVal))
                     {
                         //return $returnVal; 
-                        //return Auth::user()->id;
-                        return redirect()->route('RawMaterial');
+                        return Auth::user()->id;
+                        //return redirect()->route('RawMaterial');
                     }
                     else 
                     {
