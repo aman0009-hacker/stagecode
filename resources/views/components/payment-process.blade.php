@@ -92,7 +92,7 @@
                              
                                <?php
                                
-                               if(isset(request('paymentResponse')) && request('paymentResponse')=="SUCCESS")
+                               if( request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="SUCCESS")
                                {
                                 ?>
                             <div class="alert alert-success" role="alert">
