@@ -434,7 +434,7 @@ class PaymentController extends Controller
             //$amount = $request->input('amountValue');
             $reference_no = rand(1111, 9999);
             //$reference_no = 'ABC123'; // Example reference number
-            $optionalField = "9999988888"; // Example optional field (can be null)
+            $optionalField = null; // Example optional field (can be null)
             //Instantiate the EazyPayController
             $base = new EazyPayController();
             $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
