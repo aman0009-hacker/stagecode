@@ -449,15 +449,7 @@ class PaymentController extends Controller
 
     public function index(Request $request)
     {
-        $userID=Auth::user()->id;
-        if(isset($userID) && !empty($userID))
-        {
-            $latestId = PaymentHandling::latest()->value('id');
-            $paymentHandling=PaymentHandling::find($latestId);
-            $paymentHandling->user_id=$userID;
-            $paymentHandling->save();
-        }
-        return view('components.payment-process');
+      return view('components.payment-process');
     }
 
     public function getUserId()
