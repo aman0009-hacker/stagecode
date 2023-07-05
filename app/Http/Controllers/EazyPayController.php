@@ -57,7 +57,7 @@ class EazyPayController extends Controller
     }
 
     // optional field must be seperated with | eg. (20|20|20|20)
-    protected function getOptionalField($optionalField='20|20|20|20')
+    protected function getOptionalField($optionalField)
     {
         if (!is_null($optionalField)) {
             return $this->getEncryptValue($optionalField);
