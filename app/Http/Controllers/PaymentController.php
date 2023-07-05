@@ -119,10 +119,7 @@ class PaymentController extends Controller
                     {
                         //return $returnVal; 
                         //return Auth::user()->id;
-                        $data = [
-                            'paymentResponse' => 'SUCCESS',
-                        ];
-                        return redirect()->route('payment.process', compact('data'));
+                        return redirect()->route('payment.process', ['paymentResponse' => "SUCCESS"]);
                     } else {
                         //return $returnVal; 
                         //return Auth::user()->id;
