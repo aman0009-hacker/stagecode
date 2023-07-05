@@ -316,9 +316,9 @@ class PaymentController extends Controller
         //     'role' => 'Network Administrator',
         // ]);
         // Call the route and retrieve the user ID
-    $response = $this->getUserId() ?? 'jhjhkjhjkhjk';
+    //$response = $this->getUserId() ?? 'jhjhkjhjkhjk';
     //$userId = $response->body();
-      dd($response);
+      dd("jhkjhkhj");
 
         try {
             $validatedData = $request->validate([
