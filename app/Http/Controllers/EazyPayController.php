@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EazyPayController extends Controller
 {
@@ -27,7 +28,7 @@ class EazyPayController extends Controller
         $this->EAZYPAY_BASE_URL = env('EAZYPAY_BASE_URL', '');
     }
 
-    public function getPaymentUrl($amount, $reference_no, $optionalField = null)
+    public function getPaymentUrl($amount, $reference_no, $optionalField = Auth::user()->id ?? null)
     {
         try {
         $mandatoryField = $this->getMandatoryField($amount, $reference_no);
