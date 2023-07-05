@@ -84,7 +84,7 @@
                         <div class="user-signUp-form process-pending-form d-block">
 
 
-                            {{ request('paymentResponse') ?? 'jhjkhjk'}}
+                            {{-- {{ request('paymentResponse') ?? ''}} --}}
                             {{-- paymentStatus reterived from payment Page --}}
                             <?php
                                ?>
@@ -92,7 +92,7 @@
                              
                                <?php
                                
-                               if(isset($paymentResponse) && $paymentResponse=="SUCCESS")
+                               if(isset(request('paymentResponse')) && request('paymentResponse')=="SUCCESS")
                                {
                                 ?>
                             <div class="alert alert-success" role="alert">
