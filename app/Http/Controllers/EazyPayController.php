@@ -28,7 +28,7 @@ class EazyPayController extends Controller
         $this->EAZYPAY_BASE_URL = env('EAZYPAY_BASE_URL', '');
     }
 
-    public function getPaymentUrl($amount, $reference_no, $optionalField = 98765)
+    public function getPaymentUrl($amount, $reference_no, $optionalField = "20")
     {
         try {
         $mandatoryField = $this->getMandatoryField($amount, $reference_no);
@@ -57,7 +57,7 @@ class EazyPayController extends Controller
     }
 
     // optional field must be seperated with | eg. (20|20|20|20)
-    protected function getOptionalField($optionalField = 98765)
+    protected function getOptionalField($optionalField = "20")
     {
         if (!is_null($optionalField)) {
             return $this->getEncryptValue($optionalField);
