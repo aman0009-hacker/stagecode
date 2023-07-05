@@ -91,14 +91,14 @@
                             <?php
                              if( request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="SUCCESS")
                                {
-                                $userID=Auth::user()->id;
-        if(isset($userID) && !empty($userID))
-        {
-            $latestId = PaymentHandling::latest()->value('id');
-            $paymentHandling=PaymentHandling::find($latestId);
-            $paymentHandling->user_id=$userID;
-            $paymentHandling->save();
-        }
+        //                         $userID=Auth::user()->id;
+        // if(isset($userID) && !empty($userID))
+        // {
+        //     $latestId = PaymentHandling::latest()->value('id');
+        //     $paymentHandling=PaymentHandling::find($latestId);
+        //     $paymentHandling->user_id=$userID;
+        //     $paymentHandling->save();
+        // }
                                 ?>
                             {{-- <div class="alert alert-success" role="alert">
                                 <p>Payment has successfully done.</p>
