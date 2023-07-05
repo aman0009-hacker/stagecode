@@ -115,7 +115,12 @@
                                     </div>
                                 </div>
                             </div>
-                            
+                            <script>
+                                window.addEventListener('DOMContentLoaded', function() {
+                                    var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                                    successModal.show();
+                                });
+                            </script>
                             <?php
                                }
                                else 
