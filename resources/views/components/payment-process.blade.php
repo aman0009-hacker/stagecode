@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/congratulations.css')}}" />
     <link rel="icon" type="image/png" sizes="32x32" href="{{asset('images/login-signup/admin_logo_img.png')}}">
 </head>
+
 <body>
     <div class="main">
         <div class="container-fluid p-4">
@@ -81,6 +82,34 @@
                     </div>
                     <div class="col-12 col-md-5 user-signUp">
                         <div class="user-signUp-form process-pending-form d-block">
+
+                            {{-- paymentStatus reterived from payment Page --}}
+                            <?php
+                               if(isset($data['paymentResponse']) && $data['paymentResponse']=="SUCCESS")
+                               {
+                                ?>
+                            <div class="alert alert-success" role="alert">
+                                <p>Payment has successfully done.</p>
+                                <a href="{{ route('RawMaterial') }}" class="alert-link">Click here</a> to visit the
+                                Raw Material Booking Section.
+                            </div>
+                            <?php
+                               }
+                               else 
+                               {
+                                ?>
+                            <div class="alert alert-warning" role="alert">
+                                <p>Success message goes here.</p>
+                                {{-- <a href="#" class="alert-link">Click here</a> to visit the
+                                link. --}}
+                            </div>
+                            <?php
+                               }
+                           ?>
+                            {{-- paymentStatus reterived from payment Page --}}
+
+
+
                             <form method="post" action="{{route('payment.process.data')}}">
                                 @csrf
                                 <div class="row text-center">
@@ -105,7 +134,8 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="action">
-                                            {{-- //<a href="/RawMaterial" class="btn continue-btn w-100">Continue</a> --}}
+                                            {{-- //<a href="/RawMaterial" class="btn continue-btn w-100">Continue</a>
+                                            --}}
                                             <button type="submit" class="btn continue-btn w-100">Continue</button>
                                         </div>
                                     </div>
