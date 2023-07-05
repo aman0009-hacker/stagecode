@@ -122,6 +122,7 @@ Route::get("/redirect", function (Request $request) {
                 // ->whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
                 // ->first();
                 $userPayment = PaymentDataHandling::whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
+                ->where('data', 'Registration_Amount')
                 ->first();
                 if ($userPayment && isset($userPayment)) {
                     //return redirect()->route('category');
