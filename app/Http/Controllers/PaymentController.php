@@ -315,10 +315,10 @@ class PaymentController extends Controller
         //     'name' => 'Steve',
         //     'role' => 'Network Administrator',
         // ]);
-        // Call the route and retrieve the user ID
-    //$response = $this->getUserId() ?? 'jhjhkjhjkhjk';
-    //$userId = $response->body();
-      dd("jhkjhkhj");
+        //Call the route and retrieve the user ID
+    $response = $this->getUserId();
+    $userId = $response->body();
+      dd($userId);
 
         try {
             $validatedData = $request->validate([
@@ -450,6 +450,7 @@ class PaymentController extends Controller
     public function getUserId()
     {
         $userId = Auth::user()->id;
+        dd($userId);
         // Use the $userId value as needed
         // For example, you can call another method or return the value directly
         // ...
