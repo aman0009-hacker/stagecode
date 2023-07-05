@@ -202,5 +202,5 @@ Route::get('refresh_captcha', [ProductCategoryController::class, 'refreshCaptcha
 Route::post("/payment/process/data", [PaymentController::class, 'paymentProcess'])->name('payment.process.data');
 Route::get("/payment/process", [PaymentController::class, 'index'])->name('payment.process');
 Route::get("/payment/verify", [PaymentController::class, 'paymentVerify'])->name('payment.verify');
-Route::post("/payment/process/verify", [PaymentController::class, 'paymentProcessVerify'])->name('payment.process.verify');
+Route::get("/payment/process/verify", [PaymentController::class, 'paymentProcessVerify'])->name('payment.process.verify');
 Route::get("/payment/user-id", [PaymentController::class, 'getUserId'])->name('payment.get-user-id');
