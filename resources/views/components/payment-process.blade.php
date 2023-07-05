@@ -83,11 +83,13 @@
                     <div class="col-12 col-md-5 user-signUp">
                         <div class="user-signUp-form process-pending-form d-block">
 
+
+                            {{ request('paymentResponse') ?? 'jhjkhjk'}}
                             {{-- paymentStatus reterived from payment Page --}}
                             <?php
                                ?>
 
-                                 {{ Session::get('paymentResponse') ??  'hkjhkhkj'}}
+                             
                                <?php
                                
                                if(isset($paymentResponse) && $paymentResponse=="SUCCESS")
