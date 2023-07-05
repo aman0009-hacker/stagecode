@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 
 
 
+
 class PaymentController extends Controller
 {
     public $encryption_key;
@@ -110,18 +111,16 @@ class PaymentController extends Controller
                         'referenceNo' => $request['ReferenceNo'],
                         'transactionId' => $request['Unique_Ref_Number'],
                     ]);
-                    $returnVal=$this->paymentProcessVerify($request);
+                    $returnVal = $this->paymentProcessVerify($request);
                     //return $returnVal;
-                    if(isset($returnVal) && $returnVal=="SUCCESS")
-                  
+                    if (isset($returnVal) && $returnVal == "SUCCESS")
+
                     //if(isset($returnVal))
                     {
                         //return $returnVal; 
                         //return Auth::user()->id;
                         return redirect()->route('RawMaterial');
-                    }
-                    else 
-                    {
+                    } else {
                         //return $returnVal; 
                         //return Auth::user()->id;
                         return redirect('/login');
@@ -316,6 +315,11 @@ class PaymentController extends Controller
         //     'name' => 'Steve',
         //     'role' => 'Network Administrator',
         // ]);
+        // Call the route and retrieve the user ID
+    $response = Http::get(route('payment.get-user-id'));
+    $userId = $response->body();
+      dd($userId);
+
         try {
             $validatedData = $request->validate([
                 'merchantId' => 'required',
@@ -356,21 +360,18 @@ class PaymentController extends Controller
                             //set status of payment in DB
                             $paymentHandling = PaymentDataHandling::where('reference_no', $referenceNo)->first();
                             $paymentHandling->payment_status = $status ?? '';
-                            $queryResponse=$paymentHandling->save();
-                            if(isset($queryResponse) && isset($status) && (  $status=="RIP" || $status=="SIP" || $status=="SUCCESS"))
-                            {
+                            $queryResponse = $paymentHandling->save();
+                            if (isset($queryResponse) && isset($status) && ($status == "RIP" || $status == "SIP" || $status == "SUCCESS")) {
                                 //dd(Auth::user()->id);
-                               return "SUCCESS";
-                            }
-                            else 
-                            {
+                                return "SUCCESS";
+                            } else {
                                 return "OTHER";
-                                
+
                             }
                             //set status of payment in DB
                         }
                         //echo "Status: " . $status;
-                        
+
                     } else {
                         return "not success";
                     }
@@ -409,7 +410,7 @@ class PaymentController extends Controller
 
     public function paymentProcess(Request $request)
     {
-        dd(Auth::user()->id);
+        //dd(Auth::user()->id);
         try {
             $validator = Validator::make($request->all(), [
                 'amountValue' => ['required', 'in:10000'],
@@ -420,8 +421,8 @@ class PaymentController extends Controller
                 $amount = 10000;
             } else {
                 $amount = $request->input('amountValue');
-               //$amount = 10000;
-           }
+                //$amount = 10000;
+            }
             // Call the getPaymentUrl method
             //$amount = $request->input('amount'); // Example amount amountValue
             //$amount = $request->input('amountValue');
@@ -444,6 +445,15 @@ class PaymentController extends Controller
     public function index(Request $request)
     {
         return view('components.payment-process');
+    }
+
+    public function getUserId()
+    {
+        $userId = Auth::user()->id;
+        // Use the $userId value as needed
+        // For example, you can call another method or return the value directly
+        // ...
+        return $userId;
     }
 
 }
