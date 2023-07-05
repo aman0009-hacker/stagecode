@@ -437,7 +437,7 @@ class PaymentController extends Controller
             $optionalField = null; // Example optional field (can be null)
             //Instantiate the EazyPayController
             $base = new EazyPayController();
-            $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
+            $url = $base->getPaymentUrl($amount, $reference_no, $optionalField). '?user_id=' . Auth::user()->id;
             //dd($url);
             // Do something with the generated URL
             // For example, you can redirect the user to the payment URL
