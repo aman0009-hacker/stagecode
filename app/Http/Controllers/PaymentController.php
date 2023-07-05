@@ -311,7 +311,7 @@ class PaymentController extends Controller
 
     public function paymentProcessVerify(Request $request)
     {
-        dd(Auth::user()->id);
+        //dd(Auth::user()->id);
         // $response = Http::post($this->EAZYPAY_BASE_URL_VERIFY, [
         //     'name' => 'Steve',
         //     'role' => 'Network Administrator',
@@ -409,6 +409,7 @@ class PaymentController extends Controller
 
     public function paymentProcess(Request $request)
     {
+        dd(Auth::user()->id);
         try {
             $validator = Validator::make($request->all(), [
                 'amountValue' => ['required', 'in:10000'],
