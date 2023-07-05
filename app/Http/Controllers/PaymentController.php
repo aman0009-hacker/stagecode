@@ -450,7 +450,7 @@ class PaymentController extends Controller
     public function getUserId()
     {
         $userId = Auth::user()->id;
-        dd($userId);
+        //dd($userId);
         // Use the $userId value as needed
         // For example, you can call another method or return the value directly
         // ...
