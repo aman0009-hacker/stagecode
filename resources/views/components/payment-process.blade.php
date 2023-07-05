@@ -85,7 +85,10 @@
 
                             {{-- paymentStatus reterived from payment Page --}}
                             <?php
-                               echo($paymentResponse ?? "jklkjkl");
+                               ?>
+
+                                 {{ Session::get('paymentResponse') ??  'hkjhkhkj'}}
+                               <?php
                                
                                if(isset($paymentResponse) && $paymentResponse=="SUCCESS")
                                {
