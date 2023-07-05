@@ -119,7 +119,10 @@ class PaymentController extends Controller
                     {
                         //return $returnVal; 
                         //return Auth::user()->id;
-                        return redirect()->route('RawMaterial');
+                        $data = [
+                            'paymentResponse' => 'SUCCESS',
+                        ];
+                        return redirect()->route('payment.process', compact('data'));
                     } else {
                         //return $returnVal; 
                         //return Auth::user()->id;
@@ -316,9 +319,9 @@ class PaymentController extends Controller
         //     'role' => 'Network Administrator',
         // ]);
         //Call the route and retrieve the user ID
-    $response = $this->getUserId();
-    $userId = $response->body();
-      dd($userId);
+       // $response = $this->getUserId();
+       // $userId = $response->body();
+       // dd($userId);
 
         try {
             $validatedData = $request->validate([
