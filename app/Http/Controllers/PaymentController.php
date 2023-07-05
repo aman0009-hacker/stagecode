@@ -117,8 +117,8 @@ class PaymentController extends Controller
                     //if(isset($returnVal))
                     {
                         //return $returnVal; 
-                        return Auth::user()->id;
-                        //return redirect()->route('RawMaterial');
+                        //return Auth::user()->id;
+                        return redirect()->route('RawMaterial');
                     }
                     else 
                     {
@@ -311,7 +311,7 @@ class PaymentController extends Controller
 
     public function paymentProcessVerify(Request $request)
     {
-        //dd(Auth::user()->id);
+        dd(Auth::user()->id);
         // $response = Http::post($this->EAZYPAY_BASE_URL_VERIFY, [
         //     'name' => 'Steve',
         //     'role' => 'Network Administrator',
