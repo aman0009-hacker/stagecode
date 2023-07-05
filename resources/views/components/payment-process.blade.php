@@ -88,23 +88,31 @@
                             {{-- paymentStatus reterived from payment Page --}}
                             <?php
                                ?>
-       
-                               <?php
-                            
-                               if( request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="SUCCESS")
+                            <?php
+                             if( request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="SUCCESS")
                                {
+                                $userID=Auth::user()->id;
+        if(isset($userID) && !empty($userID))
+        {
+            $latestId = PaymentHandling::latest()->value('id');
+            $paymentHandling=PaymentHandling::find($latestId);
+            $paymentHandling->user_id=$userID;
+            $paymentHandling->save();
+        }
                                 ?>
                             {{-- <div class="alert alert-success" role="alert">
                                 <p>Payment has successfully done.</p>
                                 <a href="{{ route('RawMaterial') }}" class="alert-link">Click here</a> to visit the
                                 Raw Material Booking Section.
                             </div> --}}
-                            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
+                                aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="successModalLabel">Payment Successful</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <p>Payment has been successfully done.</p>
@@ -130,7 +138,8 @@
                                 <p>Success message goes here.</p> --}}
                                 {{-- <a href="#" class="alert-link">Click here</a> to visit the
                                 link. --}}
-                            {{-- </div> --}}
+                                {{--
+                            </div> --}}
                             <?php
                                }
                            ?>
