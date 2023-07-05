@@ -134,12 +134,11 @@
                                else 
                                {
                                 ?>
-                            {{-- <div class="alert alert-warning" role="alert">
-                                <p>Success message goes here.</p> --}}
+                            <div class="alert alert-warning" role="alert">
+                                <p>Payment has not verified. Kindly try again or contact system administrator for further process.</p>
                                 {{-- <a href="#" class="alert-link">Click here</a> to visit the
                                 link. --}}
-                                {{--
-                            </div> --}}
+                            </div>
                             <?php
                                }
                            ?>

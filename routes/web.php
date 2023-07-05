@@ -118,8 +118,10 @@ Route::get("/redirect", function (Request $request) {
             $userId = Auth::id();
             $userStatus = User::find($userId)->approved;
             if (isset($userStatus) && $userStatus === 1) {
-                $userPayment = PaymentDataHandling::where('user_id', $userId)
-                ->whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
+                // $userPayment = PaymentDataHandling::where('user_id', $userId)
+                // ->whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
+                // ->first();
+                $userPayment = PaymentDataHandling::whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
                 ->first();
                 if ($userPayment && isset($userPayment)) {
                     //return redirect()->route('category');
