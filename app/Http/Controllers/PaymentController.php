@@ -21,14 +21,14 @@ class PaymentController extends Controller
     public $EAZYPAY_BASE_URL;
     public $EAZYPAY_BASE_URL_VERIFY;
 
-    public $UserID;
+    //public $UserID;
 
     public function __construct()
     {
         $this->encryption_key = config('eazypay.encryption_key');
         $this->EAZYPAY_BASE_URL = env('EAZYPAY_BASE_URL', '');
         $this->EAZYPAY_BASE_URL_VERIFY = env('EAZYPAY_BASE_URL_VERIFY', '');
-        $this->UserID= Auth::user()->id;
+        //$this->UserID= Auth::user()->id;
     }
 
     public function paymentResponse(Request $request)
@@ -324,7 +324,7 @@ class PaymentController extends Controller
        // dd($userId);
 
 
-       dd($this->UserID);
+       //dd($this->UserID);
         try {
             $validatedData = $request->validate([
                 'merchantId' => 'required',
