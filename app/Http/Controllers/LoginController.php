@@ -49,22 +49,24 @@ class LoginController extends Controller
         if (Auth::check()) {
             $checkCurrentUserId = Auth::user()->id;
             if (isset($checkCurrentUserId)) {
-                $approvedStatus=User::where('id',$checkCurrentUserId)->first();
-               if (isset($approvedStatus) && $approvedStatus->approved == 0) {
+                $approvedStatus = User::where('id', $checkCurrentUserId)->first();
+                if (isset($approvedStatus) && $approvedStatus->approved == 0) {
                     // dd("jkljl");
                     return redirect()->route('home');
                 } else if (isset($approvedStatus) && $approvedStatus->approved == 1) {
-                    $userPayment = PaymentDataHandling::where('user_id', $checkCurrentUserId)
-                    ->whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
-                    ->first();
-                if ($userPayment && isset($userPayment)) {
-                    //return redirect()->route('category');
-                    return redirect()->route('RawMaterial');
-                } else {
-                    return redirect()->route('payment.process');
-                }
-              } else if (isset($approvedStatus) && $approvedStatus->approved == 2) {
-                   return redirect()->route('chat');
+                    // $userPayment = PaymentDataHandling::where('user_id', $checkCurrentUserId)
+                    // ->whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
+                    // ->first();
+                    $userPayment = PaymentDataHandling::whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
+                        ->first();
+                    if ($userPayment && isset($userPayment)) {
+                        //return redirect()->route('category');
+                        return redirect()->route('RawMaterial');
+                    } else {
+                        return redirect()->route('payment.process');
+                    }
+                } else if (isset($approvedStatus) && $approvedStatus->approved == 2) {
+                    return redirect()->route('chat');
                 }
             }
 
@@ -75,17 +77,14 @@ class LoginController extends Controller
 
     public function chartStatus(Request $request)
     {
-     if(Auth::check())
-     {
-       $currentUserId=Auth::user()->id;
-       if(isset($currentUserId) && !empty($currentUserId) && $currentUserId>0)
-        {
-            $data=User::where('approved',2)->where('id',$currentUserId)->first();
-            if(isset($data))
-            {
-                return response()->json(['hasRecord' => true]);
+        if (Auth::check()) {
+            $currentUserId = Auth::user()->id;
+            if (isset($currentUserId) && !empty($currentUserId) && $currentUserId > 0) {
+                $data = User::where('approved', 2)->where('id', $currentUserId)->first();
+                if (isset($data)) {
+                    return response()->json(['hasRecord' => true]);
+                }
             }
-       }
-     }
+        }
     }
 }
