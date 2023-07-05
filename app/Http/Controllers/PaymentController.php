@@ -35,7 +35,7 @@ class PaymentController extends Controller
     public function paymentResponse(Request $request)
     {
         //return redirect()->route('RawMaterial');
-        //dd($request);
+        dd($request);
         try {
             if (isset($request) && !empty($request) && isset($request['Total_Amount']) && isset($request['Response_Code']) && $request['Response_Code'] == "E000") {
                 $data = array(
