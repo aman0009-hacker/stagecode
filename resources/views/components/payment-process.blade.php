@@ -85,7 +85,7 @@
 
                             {{-- paymentStatus reterived from payment Page --}}
                             <?php
-                               echo($data['paymentResponse'] ?? 'hkkjhjkhkj');
+                               echo($data);
                                if(isset($data['paymentResponse']) && $data['paymentResponse']=="SUCCESS")
                                {
                                 ?>
