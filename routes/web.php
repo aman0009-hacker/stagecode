@@ -210,3 +210,4 @@ Route::get("/payment/user-id", [PaymentController::class, 'getUserId'])->name('p
 
 
 Route::get("/orderProcess",[OrderProcessController::class,'index'])->name('orderProcess');
+Route::post('/payment/process/verify/extra/js',[OrderProcessController::class,'jspart']);
