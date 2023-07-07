@@ -17,6 +17,7 @@ use App\Admin\Actions\OrderDispatched;
 use App\Admin\Actions\OrderPayment;
 use App\Admin\Actions\OrderApproved;
 use Illuminate\Support\Facades\Log;
+use Encore\Admin\Facades\Admin;
 
 class OrderController extends AdminController
 {
@@ -35,6 +36,7 @@ class OrderController extends AdminController
     protected function grid()
     {
         try {
+            $csrfToken = csrf_token();
             $grid = new Grid(new Order());
             // $grid->column('id', __('Id'));
             // $grid->column('amount', __('Amount'));
@@ -73,7 +75,13 @@ class OrderController extends AdminController
             // {
             // });
             $grid->column('status', __('Status'));
-            $grid->column('payment_mode', __('Payment Mode'));
+            // $grid->column('payment_mode', __('Payment Mode'));
+
+            $grid->column('payment_mode', __('Payment Mode'))->display(function ($title) {
+                $id = $this->id;
+                return "<a style='color:#fff' class='btn btn-primary' onclick='fun($id)'>Cheque</a>";
+            });
+
             $grid->column('payment_status', __('Payment'));
             // $grid->column('firm', __('Firm'));
             $grid->column('created_at', __('Created at'))->display(function ($value) {
@@ -144,6 +152,91 @@ class OrderController extends AdminController
             $grid->disableRowSelector();
             $grid->disableCreateButton();
             $grid->model()->orderBy('created_at', 'desc');
+
+            $htmls = <<<HTML
+            <head>
+            <meta name="csrf-token" content="{{ csrf_token() }}">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.0/dropzone.min.css">
+            <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.0/dropzone.js"></script>
+            <style>
+            input[type=file] {
+                  margin-bottom: 20px;
+            }
+           .fileadding
+               {
+                display: inline-flex;
+                flex-direction: column;
+               }
+            span.btn.btn-success {
+                  padding: 0px;
+                  height: 27px;
+                  width: 80px;
+                  margin-right:10px;
+              }
+              span.btn.btn-danger
+              {
+                padding: 0px;
+                  height: 27px;
+                  width: 100px;
+              }
+              svg {
+                      border-right: 1px solid #fff;
+                      width: 25px;
+                  }
+                span.name {
+                  vertical-align: 6px;
+                  padding: 0px 7px;
+                  font-size: 16px;
+              }
+            </style>
+            </head>
+             <section>
+                  <div class="modal fade" id="openthemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel"style="font-size: 20px;">Fill the Deposit form</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                                      <form method="post" action="/payment/process/verify/extra/js" enctype="multipart/form-data" id="OrderForm">
+                          <input type="hidden" name="_token" value="{$csrfToken}"> 
+                          <input type="text" id="modalIdInput" name="modalId">
+                                     <label for="file">Upload File</label >
+                                            <div id="allfiles" class="fileadding">
+                                      <input type="file" name="files[]" >
+                                            </div>
+                                      <!-- icon -->
+                                               <span class="btn btn-success"onclick="let image=imagesAdd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Add</span></span>
+                                               <span class="btn btn-danger"onclick="imagesRemove()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 11H5V13H19V11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Remove</span></span>
+                                            <!--  -->
+                                         <div class="amount_coloumn"style="margin-top:20px">
+                                                        <label for="Amount" class="form-label">Amount</label>
+                                                        <input type="number" class="form-control" id="Amount" name="amount" placeholder="Enter Amount" required>
+                                                    </div>
+                                                    <div class="chequecoloumn"style="margin-top:20px" >
+                                                        <label for="Cheque" class="form-label">Cheque</label>
+                                                        <input type="text" class="form-control" id="Cheque" name="cheque" placeholder="Enter Cheque Number"required>
+                                                    </div>
+                                      <div class="row">
+                                         <hr>
+                                      </div>      
+                              <div class="action"style="margin-top:-3px">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary"style="float:right">Submit</button>
+                                                </div>
+                          </form>
+                </div>
+              </div>
+            </div>
+                  </div>
+         </section> 
+         HTML;
+            Admin::html($htmls);
+
             return $grid;
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());

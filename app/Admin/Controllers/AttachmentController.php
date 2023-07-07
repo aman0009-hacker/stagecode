@@ -19,7 +19,6 @@ use App\Admin\Button\CustomButton;
 use Encore\Admin\Grid\Tools as GridTools;
 use Encore\Admin\Grid\Displayers\AbstractDisplayer;
 use Encore\Admin\Admin;
-use Illuminate\Support\Facades\Log;
 
 // use App\Admin\Actions\ReportPost;
 
@@ -33,18 +32,14 @@ class AttachmentController extends AdminController
      */
     public function index(Content $content)
     {
-        try {
-            $currentRowId = session('current_row_id');
-            $name = User::find($currentRowId)->name;
-            $lastname = User::find($currentRowId)->last_name;
-            $fullname = $name . " " . $lastname . " " ?? '';
-            return $content
-                ->header($fullname . 'Document Information')
-                ->body($this->grid());
-            //->view('admin.custom-page');
-        } catch (\Throwable $ex) {
-            Log::info($ex->getMessage());
-        }
+        $currentRowId = session('current_row_id');
+        $name = User::find($currentRowId)->name;
+        $lastname = User::find($currentRowId)->last_name;
+        $fullname = $name . " " . $lastname . " " ?? '';
+        return $content
+            ->header($fullname . 'Document Information')
+            ->body($this->grid());
+        //->view('admin.custom-page');
     }
 
     protected function renderForm()
@@ -62,94 +57,191 @@ class AttachmentController extends AdminController
      */
     protected function grid()
     {
-        try {
-            $currentAdminId = \Encore\Admin\Facades\Admin::user()->id;
-            // $currentAdminRole=\Encore\Admin\Facades\Admin::user()->roles;
-            $currentAdminRole = "admin";
-            $currentAdminUserName = \Encore\Admin\Facades\Admin::user()->username;
-            $currentRowId = session('current_row_id');
-            $grid = new Grid(new Attachment());
-            $grid->column('user.name', __('User Name'));
-            // $grid->column('filename', __('Filename'))->displayUsing(PdfDisplayer::class);
-            $grid->column('filename', __('Filename'))->display(function ($value) {
-                return $this->getFileNameAttribute($value);
-            })->displayUsing(PdfDisplayer::class);
-            $grid->column('file_type', __('Document type'));
-            $grid->column('updated_at', __('Updated at'))->display(function ($value) {
-                //return Carbon::parse($value)->format('Y-m-d H:i:s');
-                return Carbon::parse($value)->format('d-m-Y');
-            });
-            // $grid->column('fileno', __('Document No'));
-            $grid->column('fileno', __('Document No'))->display(function ($value) {
-                return $this->getFileNoAttribute($value);
-            });
-            $grid->model()->where('user_id', $currentRowId);
-            $grid->disableCreateButton();
-            // $grid->actions(function ($actions) {
-            //     $actions->disableView();
-            //     $actions->disableEdit();
-            //     $actions->disableDelete();
-            //     // $actions->setActionClassHeader('hidden');
-            // });
-            $grid->disableActions();
+        $currentAdminId = \Encore\Admin\Facades\Admin::user()->id;
+        // $currentAdminRole=\Encore\Admin\Facades\Admin::user()->roles;
+        $currentAdminRole = "admin";
+        $currentAdminUserName = \Encore\Admin\Facades\Admin::user()->username;
+        $currentRowId = session('current_row_id');
+        $grid = new Grid(new Attachment());
+        $grid->column('user.name', __('User Name'));
+        // $grid->column('filename', __('Filename'))->displayUsing(PdfDisplayer::class);
+        $grid->column('filename', __('Filename'))->display(function ($value) {
+            return $this->getFileNameAttribute($value);
+        })->displayUsing(PdfDisplayer::class);
+        $grid->column('file_type', __('Document type'));
+        $grid->column('updated_at', __('Updated at'))->display(function ($value) {
+            //return Carbon::parse($value)->format('Y-m-d H:i:s');
+            return Carbon::parse($value)->format('d-m-Y');
+        });
+        // $grid->column('fileno', __('Document No'));
+        $grid->column('fileno', __('Document No'))->display(function ($value) {
+            return $this->getFileNoAttribute($value);
+        });
+        $grid->model()->where('user_id', $currentRowId);
+        $grid->disableCreateButton();
+        // $grid->actions(function ($actions) {
+        //     $actions->disableView();
+        //     $actions->disableEdit();
+        //     $actions->disableDelete();
+        //     // $actions->setActionClassHeader('hidden');
+        // });
+        $grid->disableActions();
+      
+      
+        $grid->tools(function ($tools) {
+            $tools->append('<a class="btn btn-default" href="/admin/auth/user"><i class="fa fa-arrow-left"></i> Back</a>');
+            $tools->append(new BatchReplicate());
 
+        });
+        $grid->disableFilter();
 
-            $grid->tools(function ($tools) {
-                $tools->append('<a class="btn btn-default" href="/admin/auth/user"><i class="fa fa-arrow-left"></i> Back</a>');
-                $tools->append(new BatchReplicate());
-
-            });
-            $grid->disableFilter();
-
-            $html = <<<HTML
+        $html = <<<HTML
         <head>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- <meta http-equiv="refresh" content="7"> -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+       
         <!-- <link rel="stylesheet" href="{{asset('css/chatbox.css'}}"> -->
+        <style>
+            .message_body 
+
+            {
+                display:block;
+                margin-bottom:15px;
+            }
+            .color_message
+            {
+                background-color:#0085fe;
+                display:inline-block;
+                padding:10px;
+                border-radius:10px;
+                color:#fff;
+            }
+            .color_message.user
+            {
+                background-color:#eaf0f6;
+                color:#000;
+                Clear:both;
+            }
+     
+            .timer
+            {
+                margin-top:19px;
+                float:right;
+            }
+            .read_by
+            {
+                font-weight:800;
+                text-decoration:underline;
+            }
+            .chat-wrapper
+            {
+                position:relative;
+                margin-top:50px;
+            }
+            .image_chat img
+            {
+                width:100%;
+            }
+           .image_chat
+           {
+            position:absolute;
+            top:-32px;
+            width: 70px;
+            padding:15px;
+            left: 50%;
+            background-color:#fff;
+            border-radius:100%;
+            transform: translateX(-50%);
+            box-shadow: 0px 0px 7px -2px #0000007a;
+
+           }
+           .text-head {
+          display: flex;
+        justify-content: center;
+         padding-top: 25px;
+         position:relative;
+         }
+         .text_control {
+                padding: 10px 19px;
+                font-size: 15px;
+                }
+            textarea::placeholder
+            {
+                font-size:15px; 
+            }
+            .all_reply {
+                font-size: 20px;
+                margin-bottom: 25px;
+                font-weight: 600;
+            }  
+            .message_body.user
+            {
+                margin-left:70px;
+                display:inline-block;
+            }
+            .message_body.user div
+            {
+                float:right;
+            }
+            .svg-icon
+            {
+                width: 20px;
+            position: absolute;
+            right: 10%;
+            top: 54%;
+            cursor: pointer;
+            }
+            #submitDiv
+            {
+                display:inline-flex;
+                flex-direction: column-reverse;
+            }
+        </style>
         </head>
      
         <section>
-        <form id="commentForm">
+        <form id="commentForms">
          <input type="hidden" name="adminid" id="adminid"             value="$currentAdminId"              />
          <input type="hidden" name="userid" id="userid"             value="$currentRowId"                   />
          <input type="hidden" name="adminrole" id="adminrole"      value="$currentAdminRole"               />
          <input type="hidden" name="adminusername" id="adminusername"     value="$currentAdminUserName"     />
-        <div class="container px-5 my-5">
+            <div class="container px-5 my-5">
             <div class="chat-wrapper" style="margin-bottom:30px;background-color:#ffffff">
-                <div class="row">
-                    <div class="col-12 border-bottom">
-                        <h3>Reply</h3>
-                    </div>
-                    <hr class="mt-2">
-                    <div class="col-12 border-bottom">
-                        <div class="my-4 row">
-                            <label for="textAreaMsg" class="col-sm-2 col-form-label" id="msgTxt">Message</label>
-                            <textarea class="col-sm-9 form-control" id="textAreaMsg" rows="3" name="textAreaMsg" required style="border-radius:5px"></textarea>
-                          </div>
-                    </div>
-                    <hr class="mt-2">
-                    <!-- <div class="mt-4"> -->
-                    <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                      <div class="text-right" style="margin-top:10px">
-                        <button type="button" class="btn btn-info me-3" id="btnClear">Clear</button>
-                        <input class="btn btn-primary" type="submit" value="Submit" id="btnSubmit"/>
-                    </div>
-                     </div>
-                     </div>
-                    </div>
+            <div class="image_chat">
+                <img src="../images/icon/reply.png">
+            </div>
+               
                     <div class="col-12 scroll-chat mt-4" style="margin-top:5px">
                       <p class="note-text"></p>
-                        <div class="msg-grp">
-                  
-                        <p>
-                            Reply has placed here:- 
+                      <div class="msg-grp">
+                          <p class="all_reply">
+                              All Replies 
+                            </p>
+                            <hr class="mt-5">
                             <div id="submitDiv" >
+                                <div class="Data">
+
+                                </div>
                             </div>
-                        </p>
                         </div>
                     </div>
+                    <div class="row">
+                 
+                    
+                    <div class="col-12 border-bottom">
+                        <div class="my-4 row  text-head">
+                          
+                               <textarea class="col-sm-9 form-control text_control" id="textAreaMsg" rows="1" name="textAreaMsg" required style="border-radius:5px" placeholder="Type a message"></textarea>
+                           
+                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="svg-icon"id="btnSubmit"><path d="M3 13.0001H9V11.0001H3V1.8457C3 1.56956 3.22386 1.3457 3.5 1.3457C3.58425 1.3457 3.66714 1.36699 3.74096 1.4076L22.2034 11.562C22.4454 11.695 22.5337 11.9991 22.4006 12.241C22.3549 12.3241 22.2865 12.3925 22.2034 12.4382L3.74096 22.5925C3.499 22.7256 3.19497 22.6374 3.06189 22.3954C3.02129 22.3216 3 22.2387 3 22.1544V13.0001Z" fill="rgba(36,106,191,1)"></path></svg>
+
+                          </div>
+                    </div>
+                   
+                    <!-- <div class="mt-4"> -->
+                 
+                    </div>  
                  </div>
             </div>
        </div>
@@ -161,17 +253,13 @@ class AttachmentController extends AdminController
      </section> 
  
      HTML;
-            Admin::html($html);
-            $jsFilePath = public_path('js/chatReply.js');
-            $jsContent = file_get_contents($jsFilePath);
-            Admin::script($jsContent);
-            //$grid->refresh();
-            $grid->disableExport();
-            return $grid;
-        } catch (\Throwable $ex) {
-            Log::info($ex->getMessage());
-            return $grid;
-        }
+        Admin::html($html);
+        $jsFilePath = public_path('js/chatReply.js');
+        $jsContent = file_get_contents($jsFilePath);
+        Admin::script($jsContent);
+        //$grid->refresh();
+        $grid->disableExport();
+        return $grid;
     }
 
     /**
@@ -211,10 +299,13 @@ class AttachmentController extends AdminController
         $form->text('fileno', __('Fileno'));
         $form->footer(function ($footer) {
             $footer->disableViewCheck();
+
             // disable `Continue editing` checkbox
             $footer->disableEditingCheck();
+
             // disable `Continue Creating` checkbox
             $footer->disableCreatingCheck();
+
         });
         return $form;
     }

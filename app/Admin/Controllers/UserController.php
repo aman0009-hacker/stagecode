@@ -24,6 +24,7 @@ use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
+use Encore\Admin\Grid\Actions\BatchDelete;
 
 class UserController extends AdminController
 {
@@ -114,6 +115,11 @@ class UserController extends AdminController
           //$actions->add(new Rejected);
         }
       });
+
+      $grid->batchActions(function ($batchActions) {
+        $batchActions->disableDelete(); // Disable batch delete for all cases
+      });
+
       $grid->disableCreateButton();
       // $grid->column('id')->hidden();
       //$grid->model()->orderBy('created_at', 'desc');
