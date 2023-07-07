@@ -93,11 +93,24 @@
                 id="bookingUserStatus{{ $order->id }}" data-status="{{ $order->status }}">View Order Details</button>
               {{-- <button type="button" class="btn btn-secondary order-btn bookingUserStatus">View Order
                 Details</button> --}}
+
+
+                
+          
+
+             
+
+
+
+
+
             </div>
           </div>
           @if (!$loop->last)
           <hr style="border-top: 3px solid black; margin-top: 15px;">
           @endif
+
+
           @endforeach
         </div>
       </div>
@@ -131,6 +144,12 @@
   </div>
 </div>
 <!-- Make payment Modal -->
+
+
+
+
+
+
 <!-- Confirmation Modal -->
 <div class="modal fade" id="makepaymentnModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -152,12 +171,16 @@
         </div>
       </div>
       <div class="modal-footer mb-4">
-        <a href="/payment" class="btn btn-secondary continue-btn">Make Payment</a>
+        <a href="/payment/process" class="btn btn-secondary continue-btn">Make Payment</a>
+        {{-- <input type="text" name="txtOrderId" id="txtOrderId" value="{{ session('orderId', '') }}"> --}}
         <!-- <button type="button" class="btn btn-primary continue-btn">Ok</button> -->
       </div>
     </div>
   </div>
 </div>
+
+
+
 <div class="modal fade" id="makepaymentnModalRejection" tabindex="-1" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">

@@ -12,8 +12,8 @@ use App\Models\UserPayment;
 use App\Models\PaymentDataHandling;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Http\Controllers\PaymentController;
-
+use App\Http\Controllers\PaymentController;  
+use App\Http\Controllers\OrderProcessController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -207,3 +207,6 @@ Route::get("/payment/process", [PaymentController::class, 'index'])->name('payme
 Route::get("/payment/verify", [PaymentController::class, 'paymentVerify'])->name('payment.verify');
 Route::get("/payment/process/verify", [PaymentController::class, 'paymentProcessVerify'])->name('payment.process.verify');
 Route::get("/payment/user-id", [PaymentController::class, 'getUserId'])->name('payment.get-user-id');
+
+
+Route::get("/orderProcess",[OrderProcessController::class,'index'])->name('orderProcess');

@@ -73,6 +73,8 @@ class OrderController extends AdminController
             // {
             // });
             $grid->column('status', __('Status'));
+            $grid->column('payment_mode', __('Payment Mode'));
+            $grid->column('payment_status', __('Payment'));
             // $grid->column('firm', __('Firm'));
             $grid->column('created_at', __('Created at'))->display(function ($value) {
                 //  return Carbon::parse($value)->format('Y-m-d H:i:s');

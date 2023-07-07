@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use App\Models\Order;
 
 
 
@@ -35,7 +36,7 @@ class PaymentController extends Controller
     public function paymentResponse(Request $request)
     {
         //return redirect()->route('RawMaterial');
-        //dd($request);
+        dd($request);
         try {
             if (isset($request) && !empty($request) && isset($request['Total_Amount']) && isset($request['Response_Code']) && $request['Response_Code'] == "E000") {
                 $data = array(
@@ -127,7 +128,7 @@ class PaymentController extends Controller
                     } else {
                         //return $returnVal; 
                         //return Auth::user()->id;
-                        return redirect('/login');
+                        return redirect()->route('payment.process',['paymentResponse'=>'FAILURE']);
                     }
                     // new code to verify
                 } else {
@@ -418,6 +419,23 @@ class PaymentController extends Controller
     {
         //dd(Auth::user()->id);
         try {
+
+             $orderAmount=$request->input('amount_order');
+             $orderID=$request->input('order_id');
+             $orderMode=$request->input('payment_mode_cheque');
+
+             if(isset($orderAmount) &&  isset($orderID) && isset($orderMode))
+             {
+             $order=Order::find($orderID);
+             $order->amount= $orderAmount;
+             $order->payment_mode=$orderMode;
+             $order->payment_status="verified";
+             $order->save();
+             }
+
+
+
+
             $validator = Validator::make($request->all(), [
                 'amountValue' => ['required', 'in:10000'],
             ]);
@@ -434,7 +452,7 @@ class PaymentController extends Controller
             //$amount = $request->input('amountValue');
             $reference_no = rand(1111, 9999);
             //$reference_no = 'ABC123'; // Example reference number
-            $optionalField = null;
+            $optionalField = '9354388975';
              // Example optional field (can be null)
             //Instantiate the EazyPayController
             $base = new EazyPayController();

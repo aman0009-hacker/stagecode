@@ -122,6 +122,17 @@ class UserController extends AdminController
         return Carbon::parse($value)->format('Y-m-d H:i');
         //return Carbon::parse($value)->format('d-m-Y');
       });
+      $grid->column('comment', __('Payment'))->display(function($value)
+      {
+        if(isset($value) && !empty($value))
+        {
+          return "verified";
+        }
+        else if(is_null($value) && empty($value))
+        {
+          return "unverified";
+        }
+      });
       $grid->filter(function ($filter) {
         $filter->disableIdFilter();
         $filter->column(1 / 2, function ($filter) {

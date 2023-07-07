@@ -152,7 +152,7 @@
         </div>
       </div>
       <div class="modal-footer mb-4">
-        <a href="/payment" class="btn btn-secondary continue-btn">Make Payment</a>
+        <a href="/orderProcess" class="btn btn-secondary continue-btn">Make Payment</a>
         <!-- <button type="button" class="btn btn-primary continue-btn">Ok</button> -->
       </div>
     </div>
@@ -179,7 +179,7 @@
         </div>
       </div>
       <div class="modal-footer mb-4">
-        <a href="/payment" class="btn btn-secondary continue-btn">Make Payment</a>
+        <a href="/orderProcess" class="btn btn-secondary continue-btn">Make Payment</a>
         <!-- <button type="button" class="btn btn-primary continue-btn">Ok</button> -->
       </div>
     </div>
