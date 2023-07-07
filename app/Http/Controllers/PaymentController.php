@@ -26,19 +26,18 @@ class PaymentController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->encryption_key = config('eazypay.encryption_key');
         $this->EAZYPAY_BASE_URL = env('EAZYPAY_BASE_URL', '');
         $this->EAZYPAY_BASE_URL_VERIFY = env('EAZYPAY_BASE_URL_VERIFY', '');
-        //$this->UserID= Auth::user()->id;
-        //$this->middleware('auth');
     }
 
     public function paymentResponse(Request $request)
     {
         //return redirect()->route('RawMaterial');
         //dd($request);
-        return redirect('/login');
-        //$ggg=Auth::user()->id;
+        //return redirect('/login');
+        $ggg=Auth::user()->id;
         dd($ggg);
         try {
             if (isset($request) && !empty($request) && isset($request['Total_Amount']) && isset($request['Response_Code']) && $request['Response_Code'] == "E000") {
