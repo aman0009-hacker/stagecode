@@ -99,7 +99,7 @@ class PaymentController extends Controller
                 $paymentHandling->user_id = Auth::user()->id ?? '';
                 //$paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
                 $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
-                $paymentHandling->data = 'Registration_Amount' ?? '';
+                //$paymentHandling->data = 'Registration_Amount' ?? '';
                 $dbResponse = $paymentHandling->save();
                 if ($dbResponse) {
                 }
