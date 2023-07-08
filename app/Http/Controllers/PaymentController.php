@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use App\Models\Order;
+use Illuminate\Support\Facades\Crypt;
 
 
 
@@ -35,11 +36,6 @@ class PaymentController extends Controller
 
     public function paymentResponse(Request $request)
     {
-        //dd(request(Auth::user()->id));
-        //return redirect()->route('RawMaterial');
-        //dd($request);
-        //return redirect('/login');
-        //dd(Session::get('GLOBALUSERID') ?? '');
         try {
             if (isset($request) && !empty($request) && isset($request['Total_Amount']) && isset($request['Response_Code']) && $request['Response_Code'] == "E000") {
                 $data = array(
@@ -96,7 +92,7 @@ class PaymentController extends Controller
                 //$paymentHandling->transaction_date = $request['Transaction_Date'] ?? '';
                 $paymentHandling->transaction_date = Carbon::createFromFormat('d-m-Y H:i:s', $request['Transaction_Date'])->format('Y-m-d H:i:s');
                 $paymentHandling->amount = $request['Total_Amount'] ?? '';
-                $paymentHandling->user_id = Auth::user()->id ?? '';
+                //$paymentHandling->user_id = Auth::user()->id ?? '';
                 //$paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
                 $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
                 //$paymentHandling->data = 'Registration_Amount' ?? '';
@@ -120,20 +116,23 @@ class PaymentController extends Controller
                         'transactionId' => $request['Unique_Ref_Number'],
                     ]);
                     $returnVal = $this->paymentProcessVerify($request);
-                    //return $returnVal;
-                    if (isset($returnVal) && $returnVal == "SUCCESS")
-
-                    //if(isset($returnVal))
-                    {
-                        //return $returnVal; 
-                        //return Auth::user()->id;
-                        return redirect()->route('payment.process',['paymentResponse'=>'SUCCESS','reference_no'=>$data['ReferenceNo'] , 'transaction_id'=>$data['Unique_Ref_Number']]);
+                    if (isset($returnVal) && $returnVal == "SUCCESS") {
+                        $encryptedResponse = Crypt::encrypt([
+                            'paymentResponse' => 'SUCCESS',
+                            'reference_no' => $data['ReferenceNo'],
+                            'transaction_id' => $data['Unique_Ref_Number']
+                        ]);
+                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
+                        // return redirect()->route('payment.process', ['paymentResponse' => 'SUCCESS', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
                     } else {
-                        //return $returnVal; 
-                        //return Auth::user()->id;
-                        return redirect()->route('payment.process',['paymentResponse'=>'FAILURE','reference_no'=>$data['ReferenceNo'] , 'transaction_id'=>$data['Unique_Ref_Number']]);
+                        $encryptedResponse = Crypt::encrypt([
+                            'paymentResponse' => 'FAILURE',
+                            'reference_no' => $data['ReferenceNo'],
+                            'transaction_id' => $data['Unique_Ref_Number']
+                        ]);
+                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
+                        // return redirect()->route('payment.process', ['paymentResponse' => 'FAILURE', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
                     }
-                    // new code to verify
                 } else {
                     //return "failure";
                 }
@@ -172,10 +171,10 @@ class PaymentController extends Controller
                 $paymentHandling->transaction_date = Carbon::createFromFormat('d-m-Y H:i:s', $request['Transaction_Date'])->format('Y-m-d H:i:s');
                 // $paymentHandling->transaction_date = $request['Transaction_Date'] ?? '';
                 $paymentHandling->amount = $request['Total_Amount'] ?? '';
-                $paymentHandling->user_id = Auth::user()->id ?? '';
+                //$paymentHandling->user_id = Auth::user()->id ?? '';
                 //$paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
                 $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
-                $paymentHandling->data = 'Registration_Amount' ?? '';
+                //$paymentHandling->data = 'Registration_Amount' ?? '';
                 $dbResponse = $paymentHandling->save();
                 if ($dbResponse) {
                     $request = new Request([
@@ -183,11 +182,25 @@ class PaymentController extends Controller
                         'referenceNo' => $request['ReferenceNo'],
                         'transactionId' => $request['Unique_Ref_Number'],
                     ]);
-                    $this->paymentProcessVerify($request);
+                    $returnVal = $this->paymentProcessVerify($request);
+                    if (isset($returnVal) && $returnVal == "SUCCESS") {
+                        $encryptedResponse = Crypt::encrypt([
+                            'paymentResponse' => 'SUCCESS',
+                            'reference_no' => $data['ReferenceNo'],
+                            'transaction_id' => $data['Unique_Ref_Number']
+                        ]);
+                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
+                        // return redirect()->route('payment.process', ['paymentResponse' => 'SUCCESS', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
+                    } else {
+                        $encryptedResponse = Crypt::encrypt([
+                            'paymentResponse' => 'FAILURE',
+                            'reference_no' => $data['ReferenceNo'],
+                            'transaction_id' => $data['Unique_Ref_Number']
+                        ]);
+                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
+                        // return redirect()->route('payment.process', ['paymentResponse' => 'FAILURE', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
+                    }
                 }
-                //return $request['Response_Code'];
-                //code to send info to DB
-
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
@@ -318,18 +331,6 @@ class PaymentController extends Controller
 
     public function paymentProcessVerify(Request $request)
     {
-        //dd(Auth::user()->id);
-        // $response = Http::post($this->EAZYPAY_BASE_URL_VERIFY, [
-        //     'name' => 'Steve',
-        //     'role' => 'Network Administrator',
-        // ]);
-        //Call the route and retrieve the user ID
-       // $response = $this->getUserId();
-       // $userId = $response->body();
-       // dd($userId);
-
-
-       //dd($this->UserID);
         try {
             $validatedData = $request->validate([
                 'merchantId' => 'required',
@@ -342,57 +343,32 @@ class PaymentController extends Controller
             if (isset($merchantId) && !empty($merchantId)) {
                 if (isset($referenceNo) && !empty($referenceNo)) {
                     $this->EAZYPAY_BASE_URL_VERIFY = $this->EAZYPAY_BASE_URL_VERIFY . 'ezpaytranid=&amount=&paymentmode=&merchantid=' . $merchantId . '&trandate=&pgreferenceno=' . $referenceNo;
-                    //return $this->EAZYPAY_BASE_URL_VERIFY;
                     $response = Http::get($this->EAZYPAY_BASE_URL_VERIFY);
-                    // $response = Http::post($this->EAZYPAY_BASE_URL_VERIFY, [
-                    //     'ezpaytranid' => '',
-                    //     'amount' => '',
-                    //     'paymentmode' => '',
-                    //     'merchantid' => $merchantId,
-                    //     'trandate' => '',
-                    //     'pgreferenceno' => $referenceNo
-                    // ]);
-                    //dd($response->successful());
                     if ($response->successful()) {
-                        // $responseData = $response->json();
-                        // dd($response);
-                        // $status = $responseData['status'];
-                        // echo $responseData;
-                        // echo $status;
                         $responseData = $response->body();
-
                         // Extract the status from the response
                         $status = '';
                         parse_str($responseData, $parsedResponse);
                         if (isset($parsedResponse['status'])) {
                             $status = $parsedResponse['status'];
-
                             //set status of payment in DB
                             $paymentHandling = PaymentDataHandling::where('reference_no', $referenceNo)->first();
                             $paymentHandling->payment_status = $status ?? '';
                             $queryResponse = $paymentHandling->save();
                             if (isset($queryResponse) && isset($status) && ($status == "RIP" || $status == "SIP" || $status == "SUCCESS")) {
-                                //dd(Auth::user()->id);
                                 return "SUCCESS";
                             } else {
                                 return "OTHER";
-
                             }
-                            //set status of payment in DB
                         }
-                        //echo "Status: " . $status;
-
                     } else {
                         return "not success";
                     }
                 } else if (isset($transactionId) && !empty($transactionId)) {
                     $this->EAZYPAY_BASE_URL_VERIFY = $this->EAZYPAY_BASE_URL_VERIFY . 'ezpaytranid=' . $transactionId . '&amount=&paymentmode=&merchantid=' . $merchantId . '&trandate=&pgreferenceno=';
-                    //echo $this->EAZYPAY_BASE_URL_VERIFY;
                     $response = Http::get($this->EAZYPAY_BASE_URL_VERIFY);
-                    //dd($response->successful());
                     if ($response->successful()) {
                         $responseData = $response->body();
-
                         // Extract the status from the response
                         $status = '';
                         parse_str($responseData, $parsedResponse);
@@ -401,10 +377,14 @@ class PaymentController extends Controller
                             //set status of payment in DB
                             $paymentHandling = PaymentDataHandling::where('transaction_id', $transactionId)->first();
                             $paymentHandling->payment_status = $status ?? '';
-                            $paymentHandling->save();
-                            //set status of payment in DB
+                            $queryResponse = $paymentHandling->save();
+                            if (isset($queryResponse) && isset($status) && ($status == "RIP" || $status == "SIP" || $status == "SUCCESS")) {
+                                return "SUCCESS";
+                            } else {
+                                return "OTHER";
+                            }
                         }
-                        echo "Status: " . $status;
+             
                     }
                 }
             }
@@ -423,21 +403,20 @@ class PaymentController extends Controller
         //dd(Auth::user()->id);
         try {
 
-             Session::forget('GLOBALUSERID');
-             Session::put('GLOBALUSERID',Auth::user()->id);
+            Session::forget('GLOBALUSERID');
+            Session::put('GLOBALUSERID', Auth::user()->id);
 
-             $orderAmount=$request->input('amount_order');
-             $orderID=$request->input('order_id');
-             $orderMode=$request->input('payment_mode_cheque');
+            $orderAmount = $request->input('amount_order');
+            $orderID = $request->input('order_id');
+            $orderMode = $request->input('payment_mode_cheque');
 
-             if(isset($orderAmount) &&  isset($orderID) && isset($orderMode))
-             {
-             $order=Order::find($orderID);
-             $order->amount= $orderAmount;
-             $order->payment_mode=$orderMode;
-             $order->payment_status="verified";
-             $order->save();
-             }
+            if (isset($orderAmount) && isset($orderID) && isset($orderMode)) {
+                $order = Order::find($orderID);
+                $order->amount = $orderAmount;
+                $order->payment_mode = $orderMode;
+                $order->payment_status = "verified";
+                $order->save();
+            }
 
 
 
@@ -459,11 +438,11 @@ class PaymentController extends Controller
             $reference_no = rand(1111, 9999);
             //$reference_no = 'ABC123'; // Example reference number
             $optionalField = null;
-             // Example optional field (can be null)
+            // Example optional field (can be null)
             //Instantiate the EazyPayController
 
-            
-       
+
+
 
 
             $base = new EazyPayController();
@@ -480,7 +459,7 @@ class PaymentController extends Controller
 
     public function index(Request $request)
     {
-      return view('components.payment-process');
+        return view('components.payment-process');
     }
 
     public function getUserId()
