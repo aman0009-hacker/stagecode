@@ -422,6 +422,7 @@ class PaymentController extends Controller
         //dd(Auth::user()->id);
         try {
 
+             Session::forget('GLOBALUSERID');
              Session::put('GLOBALUSERID',Auth::user()->id);
 
              $orderAmount=$request->input('amount_order');
