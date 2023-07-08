@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,7 +10,6 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/congratulations.css')}}" />
     <link rel="icon" type="image/png" sizes="32x32" href="{{asset('images/login-signup/admin_logo_img.png')}}">
 </head>
-
 <body>
     <div class="main">
         <div class="container-fluid p-4">
@@ -82,43 +80,22 @@
                     </div>
                     <div class="col-12 col-md-5 user-signUp">
                         <div class="user-signUp-form process-pending-form d-block">
-
-
-                            {{-- {{ request('paymentResponse') ?? ''}} --}}
-                            {{-- paymentStatus reterived from payment Page --}}
-                            <?php
-                               ?>
                             <?php
                              if( request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="SUCCESS")
                                {
-
-                                // dd(Session::get('GLOBALUSERID'));
-
-                                echo Session::get('reference_no');
-                                $GLOBALUSERID=Session::get('GLOBALUSERID');
+                                $GLOBALUSERID=Session::get('GLOBALUSERID') ?? '';
                                 $reference_no=request('reference_no') ?? '';
                                 $transaction_id=request('transaction_id') ?? '';
-                                dd( $GLOBALUSERID ."\n" .  $reference_no. "\n" .  $transaction_id);
-
-                                  
-
-
-        //                         $userID=Auth::user()->id;
-        // if(isset($userID) && !empty($userID))
-        // {
-        //     $latestId = PaymentHandling::latest()->value('id');
-        //     $paymentHandling=PaymentHandling::find($latestId);
-        //     $paymentHandling->user_id=$userID;
-        //     $paymentHandling->save();
-        // }
-        
-      
-                                ?>
-                            {{-- <div class="alert alert-success" role="alert">
-                                <p>Payment has successfully done.</p>
-                                <a href="{{ route('RawMaterial') }}" class="alert-link">Click here</a> to visit the
-                                Raw Material Booking Section.
-                            </div> --}}
+                                if(isset($GLOBALUSERID) && !empty($GLOBALUSERID))
+                                {
+                                    $affectedRows=PaymentHandling::where('reference_no', $reference_no)
+                                    ->when($transaction_id, function ($query) use ($transaction_id) {
+                                        $query->where('transaction_id', $transaction_id);
+                                    })
+                                    ->update(['user_id' => $GLOBALUSERID]);
+                                    if(isset($affectedRows) && $affectedRows>0)
+                                    {
+                               ?>
                             <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
                                 aria-hidden="true">
                                 <div class="modal-dialog">
@@ -138,30 +115,26 @@
                                 </div>
                             </div>
                             <script>
-                                // window.addEventListener('DOMContentLoaded', function() {
-                                //     var successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                                //     successModal.show();
-                                // });
+                                window.addEventListener('DOMContentLoaded', function() {
+                                    var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                                    successModal.show();
+                                });
                             </script>
                             <?php
                                }
-                               else if(request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="FAILURE")
+                               }
+                             }
+                            else if(request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="FAILURE")
                                {
                                 ?>
                             <div class="alert alert-warning" role="alert">
                                 <p>Payment has not verified. Kindly try again or contact system administrator for
                                     further process.</p>
-                                {{-- <a href="#" class="alert-link">Click here</a> to visit the
-                                link. --}}
-                            </div>
+                           </div>
                             <?php
                                }
                            ?>
-                            {{-- paymentStatus reterived from payment Page --}}
-
-
-
-                            <form method="post" action="{{route('payment.process.data')}}">
+                          <form method="post" action="{{route('payment.process.data')}}">
                                 @csrf
                                 <div class="row text-center">
                                     <div class="col-12">
@@ -169,10 +142,6 @@
                                             alt="process-pending" class="img-fluid process-pending" width="220"
                                             height="220">
                                         <h1 class="sign-up-text document-text">Payment Process</h1>
-                                        {{-- <p class="sign-up-text process-pending-text">Congratulations, Your Account
-                                            has
-                                            been <br />
-                                            Successfully created</p> --}}
                                         <div class="input-group">
                                             <span class="input-group-text">₹</span>
                                             <input type="number" class="form-control" placeholder="Enter amount"
@@ -185,9 +154,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="action">
-                                            {{-- //<a href="/RawMaterial" class="btn continue-btn w-100">Continue</a>
-                                            --}}
-                                            <button type="submit" class="btn continue-btn w-100">Continue</button>
+                                         <button type="submit" class="btn continue-btn w-100">Continue</button>
                                         </div>
                                     </div>
                                 </div>
@@ -230,5 +197,4 @@
         </div>
     </div>
 </body>
-
 </html>
