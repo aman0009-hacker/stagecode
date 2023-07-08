@@ -92,7 +92,12 @@
                              if( request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="SUCCESS")
                                {
 
-                                dd(Session::get('GLOBALUSERID'));
+                                // dd(Session::get('GLOBALUSERID'));
+
+                                $GLOBALUSERID=Session::get('GLOBALUSERID');
+                                $reference_no=Session::get('reference_no');
+                                $transaction_id=Session::get('transaction_id');
+                                dd( $GLOBALUSERID ."\n" .  $reference_no. "\n" .  $transaction_id);
 
                                   
 

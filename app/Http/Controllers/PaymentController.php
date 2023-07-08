@@ -126,11 +126,11 @@ class PaymentController extends Controller
                     {
                         //return $returnVal; 
                         //return Auth::user()->id;
-                        return redirect()->route('payment.process',['paymentResponse'=>'SUCCESS']);
+                        return redirect()->route('payment.process',['paymentResponse'=>'SUCCESS','reference_no'=>$request['ReferenceNo'] ?? '', 'transaction_id'=>$request['Unique_Ref_Number'] ?? '']);
                     } else {
                         //return $returnVal; 
                         //return Auth::user()->id;
-                        return redirect()->route('payment.process',['paymentResponse'=>'FAILURE']);
+                        return redirect()->route('payment.process',['paymentResponse'=>'FAILURE','reference_no'=>$request['ReferenceNo'] ?? '', 'transaction_id'=>$request['Unique_Ref_Number'] ?? '']);
                     }
                     // new code to verify
                 } else {
