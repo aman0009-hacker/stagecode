@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/congratulations.css')}}" />
     <link rel="icon" type="image/png" sizes="32x32" href="{{asset('images/login-signup/admin_logo_img.png')}}">
 </head>
+
 <body>
     <div class="main">
         <div class="container-fluid p-4">
@@ -81,12 +83,14 @@
                     <div class="col-12 col-md-5 user-signUp">
                         <div class="user-signUp-form process-pending-form d-block">
                             <?php
-                             if( request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="SUCCESS")
+                                $encryptedResponse = request('encryptedResponse');
+                                $decryptedResponse = Illuminate\Support\Facades\Crypt::decrypt($encryptedResponse);
+                                $paymentResponse = $decryptedResponse['paymentResponse'] ?? '';
+                                $reference_no = $decryptedResponse['reference_no'] ?? '';
+                                $transaction_id = $decryptedResponse['transaction_id'] ?? '';
+                             if( $paymentResponse!="" && $paymentResponse!=null && $paymentResponse=="SUCCESS")
                                {
                                 $GLOBALUSERID=Session::get('GLOBALUSERID') ?? '';
-                                //dd($GLOBALUSERID);
-                                $reference_no=request('reference_no') ?? '';
-                                $transaction_id=request('transaction_id') ?? '';
                                 if(isset($GLOBALUSERID) && !empty($GLOBALUSERID))
                                 {
                                     $affectedRows=App\Models\PaymentDataHandling::where('reference_no', $reference_no)
@@ -132,11 +136,11 @@
                             <div class="alert alert-warning" role="alert">
                                 <p>Payment has not verified. Kindly try again or contact system administrator for
                                     further process.</p>
-                           </div>
+                            </div>
                             <?php
                                }
                            ?>
-                          <form method="post" action="{{route('payment.process.data')}}">
+                            <form method="post" action="{{route('payment.process.data')}}">
                                 @csrf
                                 <div class="row text-center">
                                     <div class="col-12">
@@ -156,7 +160,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="action">
-                                         <button type="submit" class="btn continue-btn w-100">Continue</button>
+                                            <button type="submit" class="btn continue-btn w-100">Continue</button>
                                         </div>
                                     </div>
                                 </div>
@@ -199,4 +203,5 @@
         </div>
     </div>
 </body>
+
 </html>
