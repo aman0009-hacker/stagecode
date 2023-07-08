@@ -84,6 +84,7 @@
                         <div class="user-signUp-form process-pending-form d-block">
                             <?php
                                 $encryptedResponse = request('encryptedResponse');
+                                if(isset($encryptedResponse) && !empty($encryptedResponse)) {
                                 $decryptedResponse = Illuminate\Support\Facades\Crypt::decrypt($encryptedResponse);
                                 $paymentResponse = $decryptedResponse['paymentResponse'] ?? '';
                                 $reference_no = $decryptedResponse['reference_no'] ?? '';
@@ -130,6 +131,7 @@
                                }
                                }
                              }
+                            }
                             else if(request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="FAILURE")
                                {
                                 ?>
