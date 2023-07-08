@@ -38,7 +38,7 @@ class PaymentController extends Controller
         //return redirect()->route('RawMaterial');
         //dd($request);
         //return redirect('/login');
-        dd(Session::get('GLOBALUSERID') ?? '');
+        //dd(Session::get('GLOBALUSERID') ?? '');
         try {
             if (isset($request) && !empty($request) && isset($request['Total_Amount']) && isset($request['Response_Code']) && $request['Response_Code'] == "E000") {
                 $data = array(
@@ -461,7 +461,7 @@ class PaymentController extends Controller
             //Instantiate the EazyPayController
 
             
-            $sessionKey = config('session.cookie') . '=' . Auth::user()->id;
+       
 
 
             $base = new EazyPayController();
@@ -469,7 +469,7 @@ class PaymentController extends Controller
             //dd($url);
             // Do something with the generated URL
             // For example, you can redirect the user to the payment URL
-            return redirect()->to($url. '?' . $sessionKey);
+            return redirect()->to($url);
             //  $value=$url;
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
