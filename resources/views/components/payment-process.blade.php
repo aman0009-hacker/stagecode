@@ -93,7 +93,7 @@
                                     ->when($transaction_id, function ($query) use ($transaction_id) {
                                         $query->where('transaction_id', $transaction_id);
                                     })
-                                    ->update(['user_id' => $GLOBALUSERID]);
+                                    ->update(['user_id' => $GLOBALUSERID, 'data'=>"Registration_Amount"]);
                                     //dd($affectedRows);
                                     if(isset($affectedRows) && $affectedRows>0)
                                     {
