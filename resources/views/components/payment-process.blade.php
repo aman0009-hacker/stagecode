@@ -84,7 +84,7 @@
                              if( request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="SUCCESS")
                                {
                                 $GLOBALUSERID=Session::get('GLOBALUSERID') ?? '';
-                                dd($GLOBALUSERID);
+                                //dd($GLOBALUSERID);
                                 $reference_no=request('reference_no') ?? '';
                                 $transaction_id=request('transaction_id') ?? '';
                                 if(isset($GLOBALUSERID) && !empty($GLOBALUSERID))
@@ -94,6 +94,7 @@
                                         $query->where('transaction_id', $transaction_id);
                                     })
                                     ->update(['user_id' => $GLOBALUSERID]);
+                                    dd($affectedRows);
                                     if(isset($affectedRows) && $affectedRows>0)
                                     {
                                ?>
