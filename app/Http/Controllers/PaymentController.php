@@ -35,6 +35,7 @@ class PaymentController extends Controller
 
     public function paymentResponse(Request $request)
     {
+        //dd(request(Auth::user()->id));
         //return redirect()->route('RawMaterial');
         //dd($request);
         //return redirect('/login');
