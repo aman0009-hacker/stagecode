@@ -9,6 +9,7 @@ use App\Models\PaymentHandling;
 use App\Models\PaymentDataHandling;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use App\Models\Order;
@@ -37,8 +38,7 @@ class PaymentController extends Controller
         //return redirect()->route('RawMaterial');
         //dd($request);
         //return redirect('/login');
-        $ggg=Auth::user()->id;
-        dd($ggg);
+        dd(Session::get('GLOBALUSERID') ?? '');
         try {
             if (isset($request) && !empty($request) && isset($request['Total_Amount']) && isset($request['Response_Code']) && $request['Response_Code'] == "E000") {
                 $data = array(
@@ -421,6 +421,8 @@ class PaymentController extends Controller
     {
         //dd(Auth::user()->id);
         try {
+
+             Session::put('GLOBALUSERID',Auth::user()->id);
 
              $orderAmount=$request->input('amount_order');
              $orderID=$request->input('order_id');
