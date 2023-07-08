@@ -37,8 +37,8 @@ class PaymentController extends Controller
         //return redirect()->route('RawMaterial');
         //dd($request);
         //return redirect('/login');
-        // $ggg=Auth::user()->id;
-        // dd($ggg);
+        $ggg=Auth::user()->id;
+        dd($ggg);
         try {
             if (isset($request) && !empty($request) && isset($request['Total_Amount']) && isset($request['Response_Code']) && $request['Response_Code'] == "E000") {
                 $data = array(

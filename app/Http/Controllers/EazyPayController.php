@@ -36,7 +36,7 @@ class EazyPayController extends Controller
         $amount = $this->getAmount($amount);
         $reference_no = $this->getReferenceNo($reference_no);
         $paymentUrl = $this->generatePaymentUrl($mandatoryField, $optionalField, $amount, $reference_no);
-        return $paymentUrl.'?val='.Auth::user()->id;
+        return $paymentUrl;
         // return redirect()->to($paymentUrl);
     } catch (\Throwable $ex) {
         Log::info($ex->getMessage());
