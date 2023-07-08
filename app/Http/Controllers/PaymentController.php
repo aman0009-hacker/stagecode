@@ -26,7 +26,7 @@ class PaymentController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->middleware('auth');
         $this->encryption_key = config('eazypay.encryption_key');
         $this->EAZYPAY_BASE_URL = env('EAZYPAY_BASE_URL', '');
         $this->EAZYPAY_BASE_URL_VERIFY = env('EAZYPAY_BASE_URL_VERIFY', '');
