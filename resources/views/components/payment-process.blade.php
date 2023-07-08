@@ -96,8 +96,8 @@
 
                                 echo Session::get('reference_no');
                                 $GLOBALUSERID=Session::get('GLOBALUSERID');
-                                $reference_no=request('reference_no') ?? ''
-                                $transaction_id=request('transaction_id') ?? ''
+                                $reference_no=request('reference_no') ?? '';
+                                $transaction_id=request('transaction_id') ?? '';
                                 dd( $GLOBALUSERID ."\n" .  $reference_no. "\n" .  $transaction_id);
 
                                   
