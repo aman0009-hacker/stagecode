@@ -88,7 +88,7 @@
                                 $transaction_id=request('transaction_id') ?? '';
                                 if(isset($GLOBALUSERID) && !empty($GLOBALUSERID))
                                 {
-                                    $affectedRows=PaymentHandling::where('reference_no', $reference_no)
+                                    $affectedRows=App\Models\PaymentHandling::where('reference_no', $reference_no)
                                     ->when($transaction_id, function ($query) use ($transaction_id) {
                                         $query->where('transaction_id', $transaction_id);
                                     })
