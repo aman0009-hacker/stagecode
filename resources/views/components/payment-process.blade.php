@@ -84,6 +84,7 @@
                              if( request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="SUCCESS")
                                {
                                 $GLOBALUSERID=Session::get('GLOBALUSERID') ?? '';
+                                dd($GLOBALUSERID);
                                 $reference_no=request('reference_no') ?? '';
                                 $transaction_id=request('transaction_id') ?? '';
                                 if(isset($GLOBALUSERID) && !empty($GLOBALUSERID))
