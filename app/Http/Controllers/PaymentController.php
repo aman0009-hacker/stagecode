@@ -384,7 +384,7 @@ class PaymentController extends Controller
                                 return "OTHER";
                             }
                         }
-             
+
                     }
                 }
             }
@@ -400,66 +400,71 @@ class PaymentController extends Controller
 
     public function paymentProcess(Request $request)
     {
-        //dd(Auth::user()->id);
         try {
-
+            
             Session::forget('GLOBALUSERID');
-            Session::put('GLOBALUSERID', Auth::user()->id);
-
-            $orderAmount = $request->input('amount_order');
-            $orderID = $request->input('order_id');
-            $orderMode = $request->input('payment_mode_cheque');
-
-            if (isset($orderAmount) && isset($orderID) && isset($orderMode)) {
-                $order = Order::find($orderID);
-                $order->amount = $orderAmount;
-                $order->payment_mode = $orderMode;
-                $order->payment_status = "verified";
-                $order->save();
-            }
-
-
-
-
+            Session::put('GLOBALUSERID', Auth::user()->id ?? '');
             $validator = Validator::make($request->all(), [
                 'amountValue' => ['required', 'in:10000'],
             ]);
             if ($validator->fails()) {
-                // Value validation failed
-                // Handle the error and redirect back with an error message
                 $amount = 10000;
             } else {
                 $amount = $request->input('amountValue');
-                //$amount = 10000;
             }
-            // Call the getPaymentUrl method
-            //$amount = $request->input('amount'); // Example amount amountValue
-            //$amount = $request->input('amountValue');
             $reference_no = rand(1111, 9999);
-            //$reference_no = 'ABC123'; // Example reference number
             $optionalField = null;
-            // Example optional field (can be null)
-            //Instantiate the EazyPayController
-
-
-
-
-
             $base = new EazyPayController();
             $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
-            //dd($url);
-            // Do something with the generated URL
-            // For example, you can redirect the user to the payment URL
             return redirect()->to($url);
-            //  $value=$url;
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
         }
     }
 
+
+    public function paymentProcessOrder(Request $request)
+    {
+        try {
+            Session::forget('GLOBALUSERID');
+            Session::put('GLOBALUSERID', Auth::user()->id ?? '') ;
+            // $validator = Validator::make($request->all(), [
+            //     'amountOrder' => ['required', 'in:10000'],
+            // ]);
+            // if ($validator->fails()) {
+            //     $amount = 10000;
+            // } else {
+            //     $amount = $request->input('amountOrder');
+            // }
+
+            $amount = $request->input('amountOrder');
+            $reference_no = rand(1111, 9999);
+            $optionalField = null;
+            $base = new EazyPayController();
+            $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
+            return redirect()->to($url);
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+        }
+    }
+
+
+
     public function index(Request $request)
     {
         return view('components.payment-process');
+    }
+
+    public function paymentComplete(Request $request)
+    {
+
+        $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
+        Session::forget('txtOrderGlobalModalCompleteID');
+        Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
+
+        if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
+            return view('components.order-complete-process',compact('txtOrderGlobalModalCompleteID'));
+        }
     }
 
     public function getUserId()
@@ -470,6 +475,57 @@ class PaymentController extends Controller
         // For example, you can call another method or return the value directly
         // ...
         return $userId;
+    }
+
+    public function paymentProcessOrderComplete(Request $request)
+    {
+
+        try {
+          
+            $paymentMode = $request->input('paymentMode');
+            $amountOrderFinal = $request->input('amountOrderFinal');
+            if (isset($paymentMode) && !empty($paymentMode) && $paymentMode == "online" && isset($amountOrderFinal) && !empty($amountOrderFinal)) {
+                try {
+                    $validator = Validator::make($request->all(), [
+                        'paymentMode' => 'required',
+                        'amountOrderFinal' => 'required',
+                    ]);
+                    if ($validator->fails()) {
+                        // Validation failed, handle the error
+                        return redirect()->back()->withErrors($validator)->withInput();
+                    }
+                    Session::forget('GLOBALUSERID');
+                    Session::put('GLOBALUSERID', Auth::user()->id ?? '' );
+                    // $validator = Validator::make($request->all(), [
+                    //     'amountValue' => ['required', 'in:10000'],
+                    // ]);
+                    // if ($validator->fails()) {
+                    //     $amount = 10000;
+                    // } else {
+                    //     $amount = $request->input('amountValue');
+                    // }
+                    $amount = $amountOrderFinal;
+                    $reference_no = rand(1111, 9999);
+                    $optionalField = null;
+                    $base = new EazyPayController();
+                    $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
+                    return redirect()->to($url);
+                } catch (\Throwable $ex) {
+                    Log::info($ex->getMessage());
+                }
+            } else if (isset($paymentMode) && !empty($paymentMode) && $paymentMode == "cheque") {
+               $txtOrderGlobalModalCompleteID=Session::get('txtOrderGlobalModalCompleteID');
+              // dd($txtOrderGlobalModalCompleteID);
+               if(isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID))  
+               {
+                 $value=Order::find($txtOrderGlobalModalCompleteID);
+                 $value->payment_mode="cheque";
+                 $value->save();
+               } 
+            }
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+        }
     }
 
 }

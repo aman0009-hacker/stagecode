@@ -90,7 +90,8 @@
             <div class="col-md-12 text-center">
               {{-- <a href="" class="btn btn-secondary order-btn" id="bookingUserStatus">View Order Details</a> --}}
               <button type="button" class="btn btn-secondary order-btn bookingUserStatusOrder"
-                id="bookingUserStatus{{ $order->id }}" data-status="{{ $order->status }}">View Order Details</button>
+                id="bookingUserStatus{{ $order->id }}" data-status="{{ $order->status }}"
+                data-order-ids="{{ $order->id }}">View Order Details</button>
               {{-- <button type="button" class="btn btn-secondary order-btn bookingUserStatus">View Order
                 Details</button> --}}
             </div>
@@ -179,8 +180,13 @@
         </div>
       </div>
       <div class="modal-footer mb-4">
-        <a href="/orderProcess" class="btn btn-secondary continue-btn">Make Payment</a>
-        <!-- <button type="button" class="btn btn-primary continue-btn">Ok</button> -->
+        <form action="/payment/complete/process" method="post">
+          @csrf
+          <input type="text" name="txtOrderGlobalModalCompleteID" id="txtOrderGlobalModalCompleteID">
+          {{-- <a href="/orderProcess" class="btn btn-secondary continue-btn">Make Payment</a> --}}
+          <button type="submit" class="btn btn-secondary continue-btn">Make Payment</button>
+          <!-- <button type="button" class="btn btn-primary continue-btn">Ok</button> -->
+        </form>
       </div>
     </div>
   </div>

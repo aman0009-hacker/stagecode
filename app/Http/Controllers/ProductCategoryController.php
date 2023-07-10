@@ -263,6 +263,10 @@ class ProductCategoryController extends Controller
             if (Auth::check()) {
                 $adminStatus = $request->input('adminStatus');
 
+                
+
+              
+
                 if (isset($adminStatus) && !empty($adminStatus)) {
                     $id = Auth::user()->id;
                     if (isset($id)) {

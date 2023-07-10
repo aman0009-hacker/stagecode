@@ -10,9 +10,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{{asset('css/congratulations.css')}}" />
     <link rel="icon" type="image/png" sizes="32x32" href="{{asset('images/login-signup/admin_logo_img.png')}}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{asset('js/finalpayment.js')}}"></script>
 </head>
 
 <body>
+  
     <div class="main">
         <div class="container-fluid p-4">
             <div class="sign-up-page">
@@ -83,7 +86,7 @@
                     <div class="col-12 col-md-5 user-signUp">
                         <div class="user-signUp-form process-pending-form d-block">
                             {{-- @php
-                              echo  $txtOrderGlobalModalID;
+                              echo  $txtOrderGlobalModalCompleteID;
                             @endphp --}}
                             <?php
                                 $encryptedResponse = request('encryptedResponse');
@@ -92,8 +95,8 @@
                                 $paymentResponse = $decryptedResponse['paymentResponse'] ?? '';
                                 $reference_no = $decryptedResponse['reference_no'] ?? '';
                                 $transaction_id = $decryptedResponse['transaction_id'] ?? '';
-                                // $txtOrderGlobalModalID=$txtOrderGlobalModalID ?? '';
-                                $txtOrderGlobalModalID=Session::get('txtOrderGlobalModalID') ?? '';
+                                // $txtOrderGlobalModalCompleteID=$txtOrderGlobalModalCompleteID ?? '';
+                                $txtOrderGlobalModalCompleteID=Session::get('txtOrderGlobalModalCompleteID') ?? '';
                              if( $paymentResponse!="" && $paymentResponse!=null && $paymentResponse=="SUCCESS")
                                {
                                 $GLOBALUSERID=Session::get('GLOBALUSERID') ?? '';
@@ -103,12 +106,12 @@
                                     ->when($transaction_id, function ($query) use ($transaction_id) {
                                         $query->where('transaction_id', $transaction_id);
                                     })
-                                    ->update(['user_id' => $GLOBALUSERID, 'data'=>"Booking_Initial_Amount" , 'order_id'=>$txtOrderGlobalModalID]);
+                                    ->update(['user_id' => $GLOBALUSERID, 'data'=>"Booking_Final_Amount" , 'order_id'=>$txtOrderGlobalModalCompleteID]);
                                     //dd($affectedRows);
                                     if(isset($affectedRows) && $affectedRows>0)
                                     {
-                                        $order=App\Models\Order::find($txtOrderGlobalModalID);
-                                        $order->payment_status="verified";
+                                        $order=App\Models\Order::find($txtOrderGlobalModalCompleteID);
+                                        $order->final_payment_status="verified";
                                         $order->save();
                                ?>
                             <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
@@ -150,7 +153,7 @@
                             <?php
                                }
                            ?>
-                            <form method="post" action="{{route('payment.process.data.order')}}">
+                            <form method="post" action="{{route('payment.process.data.order.complete')}}">
                                 @csrf
                                 <div class="row text-center">
                                     <div class="col-12">
@@ -158,11 +161,31 @@
                                             alt="process-pending" class="img-fluid process-pending" width="220"
                                             height="220">
                                         <h1 class="sign-up-text document-text">Payment Process</h1>
-                                        <div class="input-group">
-                                            <span class="input-group-text">₹</span>
-                                            <input type="number" class="form-control" placeholder="Enter amount"
-                                                aria-label="Amount"  name="amountOrder" id="amountOrder" required>
-                                            <span class="input-group-text">.00</span>
+                                        <div class="col-12">
+                                          
+                                            {{-- error handling --}}
+                                            @error('paymentMode')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
+                                            @error('amountOrderFinal')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
+                                            {{-- error handling --}}
+
+                                            <div class="input-group mb-3 mt-2">
+                                                <label class="input-group-text" for="paymentMode">Payment Mode</label>
+                                                <select class="form-select" id="paymentMode" name="paymentMode" required>
+                                                    <option value="" selected>Select Payment Mode</option>
+                                                    <option value="online">online</option>
+                                                    <option value="cheque">cheque</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-group mt-2" id="divPayment">
+                                                <span class="input-group-text">₹</span>
+                                                <input type="number" class="form-control" placeholder="Enter amount"
+                                                    aria-label="Amount"  name="amountOrderFinal" id="amountOrderFinal" >
+                                                <span class="input-group-text">.00</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
