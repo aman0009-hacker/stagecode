@@ -429,6 +429,7 @@ class PaymentController extends Controller
             if (Auth::check()) {
                 Session::forget('GLOBALUSERID');
                 Session::put('GLOBALUSERID', Auth::user()->id ?? '');
+                $amount="";
                 $validator = Validator::make($request->all(), [
                     'amountValue' => ['required', 'in:10000'],
                 ]);
@@ -437,8 +438,9 @@ class PaymentController extends Controller
                 } else {
                     $amount = $request->input('amountValue');
                 }
-                $reference_no = rand(1111, 9999); 
-                //$reference_no = time() . Str::random(5);
+                //$reference_no = rand(1111, 9999); 
+                //$amount = 10000;
+                $reference_no = time() . Str::random(5);
                 $paymentDataHandling = new PaymentDataHandling();
                 $paymentDataHandling->reference_no = $reference_no;
                 $paymentDataHandling->user_id = Auth::user()->id ?? '';
