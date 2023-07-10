@@ -437,8 +437,8 @@ class PaymentController extends Controller
                 } else {
                     $amount = $request->input('amountValue');
                 }
-                //$reference_no = rand(1111, 9999); 
-                $reference_no = time() . Str::random(5);
+                $reference_no = rand(1111, 9999); 
+                //$reference_no = time() . Str::random(5);
                 $paymentDataHandling = new PaymentDataHandling();
                 $paymentDataHandling->reference_no = $reference_no;
                 $paymentDataHandling->user_id = Auth::user()->id ?? '';
