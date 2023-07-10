@@ -91,22 +91,22 @@
                                 $transaction_id = $decryptedResponse['transaction_id'] ?? '';
                              if( $paymentResponse!="" && $paymentResponse!=null && $paymentResponse=="SUCCESS")
                                {
-                                $GLOBALUSERID=Session::get('GLOBALUSERID') ?? '';
-                                if(isset($GLOBALUSERID) && !empty($GLOBALUSERID))
-                                {
-                                    $affectedRows=App\Models\PaymentDataHandling::where('reference_no', $reference_no)
-                                    ->when($transaction_id, function ($query) use ($transaction_id) {
-                                        $query->where('transaction_id', $transaction_id);
-                                    })
-                                    ->update(['user_id' => $GLOBALUSERID, 'data'=>"Registration_Amount"]);
-                                    //dd($affectedRows);
-                                    if(isset($affectedRows) && $affectedRows>0)
-                                    {
-                                        $user=App\Models\User::find($GLOBALUSERID);
-                                        $user->comment="verified";
-                                        $user->save();
+                                // $GLOBALUSERID=Session::get('GLOBALUSERID') ?? '';
+                                // if(isset($GLOBALUSERID) && !empty($GLOBALUSERID))
+                                // {
+                                //     $affectedRows=App\Models\PaymentDataHandling::where('reference_no', $reference_no)
+                                //     ->when($transaction_id, function ($query) use ($transaction_id) {
+                                //         $query->where('transaction_id', $transaction_id);
+                                //     })
+                                //     ->update(['user_id' => $GLOBALUSERID, 'data'=>"Registration_Amount"]);
+                                //     //dd($affectedRows);
+                                //     if(isset($affectedRows) && $affectedRows>0)
+                                //     {
+                                //         $user=App\Models\User::find($GLOBALUSERID);
+                                //         $user->comment="verified";
+                                //         $user->save();
                                ?>
-                            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
+                            {{-- <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
                                 aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -129,12 +129,12 @@
                                     var successModal = new bootstrap.Modal(document.getElementById('successModal'));
                                     successModal.show();
                                 });
-                            </script>
+                            </script> --}}
                             <?php
-                               }
-                               }
+                            //    }
+                            //    }
                              }
-                            }
+                            
                             else if(request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="FAILURE")
                                {
                                 ?>
@@ -144,6 +144,7 @@
                             </div>
                             <?php
                                }
+                            }
                            ?>
                             <form method="post" action="{{route('payment.process.data')}}">
                                 @csrf
@@ -165,7 +166,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="action">
-                                            <button type="submit" class="btn continue-btn w-100">Continue</button>
+                                            <button type="submit" class="btn continue-btn w-100">Pay Now</button>
                                         </div>
                                     </div>
                                 </div>
