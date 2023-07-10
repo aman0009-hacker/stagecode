@@ -122,8 +122,8 @@ class PaymentController extends Controller
                             'reference_no' => $data['ReferenceNo'],
                             'transaction_id' => $data['Unique_Ref_Number']
                         ]);
-                        //return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
-                        return redirect()->back()->with('encryptedResponse', $encryptedResponse);
+                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
+                        //return redirect()->back()->with('encryptedResponse', $encryptedResponse);
                         // return redirect()->route('payment.process', ['paymentResponse' => 'SUCCESS', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
                     } else {
                         $encryptedResponse = Crypt::encrypt([
@@ -131,8 +131,8 @@ class PaymentController extends Controller
                             'reference_no' => $data['ReferenceNo'],
                             'transaction_id' => $data['Unique_Ref_Number']
                         ]);
-                        return redirect()->back()->with('encryptedResponse', $encryptedResponse);
-                        //return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
+                        //return redirect()->back()->with('encryptedResponse', $encryptedResponse);
+                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
                         // return redirect()->route('payment.process', ['paymentResponse' => 'FAILURE', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
                     }
                 } else {
