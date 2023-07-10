@@ -11,7 +11,7 @@ class EazyPayController extends Controller
     public $merchant_id;
     public $encryption_key;
     public $sub_merchant_id;
-    public $reference_no;
+    //public $reference_no;
     public $paymode;
     public $return_url;
     public $EAZYPAY_BASE_URL;
@@ -22,7 +22,7 @@ class EazyPayController extends Controller
         $this->merchant_id = config('eazypay.merchant_id');
         $this->encryption_key = config('eazypay.encryption_key');
         $this->sub_merchant_id = config('eazypay.sub_merchant_id');
-        $this->reference_no = rand(1111, 9999);
+        //$this->reference_no = rand(1111, 9999);
         $this->paymode = config('eazypay.paymode');
         $this->return_url = config('eazypay.return_url');
         $this->EAZYPAY_BASE_URL = env('EAZYPAY_BASE_URL', '');

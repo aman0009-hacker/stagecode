@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use App\Models\Order;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 
 
@@ -79,7 +80,7 @@ class PaymentController extends Controller
                     */
                 );
                 //code to send info to DB
-                $paymentHandling = new PaymentDataHandling();
+                $paymentHandling = PaymentDataHandling::where('reference_no', $request['ReferenceNo']);
                 $paymentHandling->merchant_id = $request['ID'] ?? '';
                 $paymentHandling->encryption_key = config('eazypay.encryption_key') ?? '';
                 $paymentHandling->sub_merchant_id = $request['SubMerchantId'] ?? '';
@@ -122,7 +123,16 @@ class PaymentController extends Controller
                             'reference_no' => $data['ReferenceNo'],
                             'transaction_id' => $data['Unique_Ref_Number']
                         ]);
-                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
+
+
+
+                        $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
+                            ->where('data', 'Registration_Amount')
+                            ->get();
+                        if ($paymentData->count() > 0) {
+                            return redirect()->route('congratulations', ['encryptedResponse' => $encryptedResponse]);
+                        }
+                        //return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
                         //return redirect()->back()->with('encryptedResponse', $encryptedResponse);
                         // return redirect()->route('payment.process', ['paymentResponse' => 'SUCCESS', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
                     } else {
@@ -132,7 +142,11 @@ class PaymentController extends Controller
                             'transaction_id' => $data['Unique_Ref_Number']
                         ]);
                         //return redirect()->back()->with('encryptedResponse', $encryptedResponse);
-                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
+                        $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
+                            ->where('data', 'Registration_Amount')
+                            ->get();
+                        if ($paymentData->count() > 0) {
+                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]); }
                         // return redirect()->route('payment.process', ['paymentResponse' => 'FAILURE', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
                     }
                 } else {
@@ -160,7 +174,7 @@ class PaymentController extends Controller
                     'RSV' => $request['RSV']
                 );
                 //code to send info to DB
-                $paymentHandling = new PaymentDataHandling();
+                $paymentHandling = PaymentDataHandling::where('reference_no', $request['ReferenceNo']);
                 $paymentHandling->merchant_id = $request['ID'] ?? '';
                 $paymentHandling->encryption_key = config('eazypay.encryption_key') ?? '';
                 $paymentHandling->sub_merchant_id = $request['SubMerchantId'] ?? '';
@@ -191,7 +205,12 @@ class PaymentController extends Controller
                             'reference_no' => $data['ReferenceNo'],
                             'transaction_id' => $data['Unique_Ref_Number']
                         ]);
-                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
+                        $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
+                            ->where('data', 'Registration_Amount')
+                            ->get();
+                        if ($paymentData->count() > 0) {
+                        return redirect()->route('congratulations', ['encryptedResponse' => $encryptedResponse]); }
+                        //return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
                         // return redirect()->route('payment.process', ['paymentResponse' => 'SUCCESS', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
                     } else {
                         $encryptedResponse = Crypt::encrypt([
@@ -199,7 +218,11 @@ class PaymentController extends Controller
                             'reference_no' => $data['ReferenceNo'],
                             'transaction_id' => $data['Unique_Ref_Number']
                         ]);
-                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
+                        $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
+                            ->where('data', 'Registration_Amount')
+                            ->get();
+                        if ($paymentData->count() > 0) {
+                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]); }
                         // return redirect()->route('payment.process', ['paymentResponse' => 'FAILURE', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
                     }
                 }
@@ -403,22 +426,30 @@ class PaymentController extends Controller
     public function paymentProcess(Request $request)
     {
         try {
-            
-            Session::forget('GLOBALUSERID');
-            Session::put('GLOBALUSERID', Auth::user()->id ?? '');
-            $validator = Validator::make($request->all(), [
-                'amountValue' => ['required', 'in:10000'],
-            ]);
-            if ($validator->fails()) {
-                $amount = 10000;
-            } else {
-                $amount = $request->input('amountValue');
+            if (Auth::check()) {
+                Session::forget('GLOBALUSERID');
+                Session::put('GLOBALUSERID', Auth::user()->id ?? '');
+                $validator = Validator::make($request->all(), [
+                    'amountValue' => ['required', 'in:10000'],
+                ]);
+                if ($validator->fails()) {
+                    $amount = 10000;
+                } else {
+                    $amount = $request->input('amountValue');
+                }
+                //$reference_no = rand(1111, 9999); 
+                $reference_no = time() . Str::random(5);
+                $paymentDataHandling = new PaymentDataHandling();
+                $paymentDataHandling->reference_no = $reference_no;
+                $paymentDataHandling->user_id = Auth::user()->id ?? '';
+                $paymentDataHandling->data = "Registration_Amount";
+                $paymentDataHandling->user_amount = $amount;
+                $paymentDataHandling->save();
+                $optionalField = null;
+                $base = new EazyPayController();
+                $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
+                return redirect()->to($url);
             }
-            $reference_no = rand(1111, 9999);
-            $optionalField = null;
-            $base = new EazyPayController();
-            $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
-            return redirect()->to($url);
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
         }
@@ -429,7 +460,7 @@ class PaymentController extends Controller
     {
         try {
             Session::forget('GLOBALUSERID');
-            Session::put('GLOBALUSERID', Auth::user()->id ?? '') ;
+            Session::put('GLOBALUSERID', Auth::user()->id ?? '');
             // $validator = Validator::make($request->all(), [
             //     'amountOrder' => ['required', 'in:10000'],
             // ]);
@@ -465,7 +496,7 @@ class PaymentController extends Controller
         Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
 
         if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
-            return view('components.order-complete-process',compact('txtOrderGlobalModalCompleteID'));
+            return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID'));
         }
     }
 
@@ -483,7 +514,7 @@ class PaymentController extends Controller
     {
 
         try {
-          
+
             $paymentMode = $request->input('paymentMode');
             $amountOrderFinal = $request->input('amountOrderFinal');
             if (isset($paymentMode) && !empty($paymentMode) && $paymentMode == "online" && isset($amountOrderFinal) && !empty($amountOrderFinal)) {
@@ -497,7 +528,7 @@ class PaymentController extends Controller
                         return redirect()->back()->withErrors($validator)->withInput();
                     }
                     Session::forget('GLOBALUSERID');
-                    Session::put('GLOBALUSERID', Auth::user()->id ?? '' );
+                    Session::put('GLOBALUSERID', Auth::user()->id ?? '');
                     // $validator = Validator::make($request->all(), [
                     //     'amountValue' => ['required', 'in:10000'],
                     // ]);
@@ -516,14 +547,13 @@ class PaymentController extends Controller
                     Log::info($ex->getMessage());
                 }
             } else if (isset($paymentMode) && !empty($paymentMode) && $paymentMode == "cheque") {
-               $txtOrderGlobalModalCompleteID=Session::get('txtOrderGlobalModalCompleteID');
-              // dd($txtOrderGlobalModalCompleteID);
-               if(isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID))  
-               {
-                 $value=Order::find($txtOrderGlobalModalCompleteID);
-                 $value->payment_mode="cheque";
-                 $value->save();
-               } 
+                $txtOrderGlobalModalCompleteID = Session::get('txtOrderGlobalModalCompleteID');
+                // dd($txtOrderGlobalModalCompleteID);
+                if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
+                    $value = Order::find($txtOrderGlobalModalCompleteID);
+                    $value->payment_mode = "cheque";
+                    $value->save();
+                }
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
