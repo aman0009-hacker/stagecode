@@ -89,16 +89,17 @@
           <div class="row mb-3">
             <div class="col-md-12 text-center">
               {{-- <a href="" class="btn btn-secondary order-btn" id="bookingUserStatus">View Order Details</a> --}}
+              {{-- <input type="text" name="txtOrderGlobalID" id="txtOrderGlobalID" value="{{ $order->id }}"> --}}
               <button type="button" class="btn btn-secondary order-btn bookingUserStatus"
-                id="bookingUserStatus{{ $order->id }}" data-status="{{ $order->status }}">View Order Details</button>
+                id="bookingUserStatus{{ $order->id }}" data-status="{{ $order->status }}"
+                data-order-id="{{ $order->id }}">View Order Details</button>
               {{-- <button type="button" class="btn btn-secondary order-btn bookingUserStatus">View Order
                 Details</button> --}}
 
 
-                
-          
 
-             
+
+
 
 
 
@@ -171,7 +172,12 @@
         </div>
       </div>
       <div class="modal-footer mb-4">
-        <a href="/payment/process" class="btn btn-secondary continue-btn">Make Payment</a>
+        <form action="/orderProcess" method="post">
+          @csrf
+          <input type="text" name="txtOrderGlobalModalID" id="txtOrderGlobalModalID">
+          {{-- <a href="/orderProcess" class="btn btn-secondary continue-btn">Make Payment</a> --}}
+          <button type="submit" class="btn btn-secondary continue-btn">Make Payment</button>
+        </form>
         {{-- <input type="text" name="txtOrderId" id="txtOrderId" value="{{ session('orderId', '') }}"> --}}
         <!-- <button type="button" class="btn btn-primary continue-btn">Ok</button> -->
       </div>

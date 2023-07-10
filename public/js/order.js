@@ -13,6 +13,17 @@ $(document).ready(function()
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     var status = $(this).data('status');
     var form = document.getElementById("userBookingFormData");
+
+
+    var currentOrderIDsValue=$(this).data('order-ids');
+    if(currentOrderIDsValue)
+    {
+        $("#txtOrderGlobalModalCompleteID").val(currentOrderIDsValue); 
+    }
+
+
+
+
     var formData = new FormData(form);
     $.ajax(
         {

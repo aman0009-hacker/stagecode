@@ -102,6 +102,9 @@
                                     //dd($affectedRows);
                                     if(isset($affectedRows) && $affectedRows>0)
                                     {
+                                        $user=App\Models\User::find($GLOBALUSERID);
+                                        $user->comment="verified";
+                                        $user->save();
                                ?>
                             <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
                                 aria-hidden="true">
@@ -153,7 +156,7 @@
                                         <div class="input-group">
                                             <span class="input-group-text">₹</span>
                                             <input type="number" class="form-control" placeholder="Enter amount"
-                                                aria-label="Amount" value="10000" name="amount" id="amount">
+                                                aria-label="Amount" value="10000" name="amount" id="amount" readonly>
                                             <span class="input-group-text">.00</span>
                                             <input type="hidden" name="amountValue" value="10000">
                                         </div>

@@ -11,11 +11,29 @@ $(document).ready(function()
     });
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     var status = $(this).data('status');
+    //alert(status);
+    //alert(status);
     // alert(status);
     // var orderId = $(this).data('order-id');
     // var adminStatus = $("#adminStatus" + orderId).val();
     // alert(adminStatus);
     var form = document.getElementById("userBookingFormData");
+
+    //alert($(this).data('order-id'));
+    // var txtOrderGlobalID=$("#txtOrderGlobalID").val();
+    // if(txtOrderGlobalID)
+    // {
+    //     $("#txtOrderGlobalModalID").val(txtOrderGlobalID);
+    //     alert($("#txtOrderGlobalID").val());
+    // }
+
+    var currentOrderIDValue=$(this).data('order-id');
+    if(currentOrderIDValue)
+    {
+        $("#txtOrderGlobalModalID").val(currentOrderIDValue); 
+    }
+
+
     var formData = new FormData(form);
     $.ajax(
         {

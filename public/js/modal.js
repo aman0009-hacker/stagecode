@@ -1,12 +1,15 @@
 function fun(id)
 {
- alert(id);   
+ //alert(id);   
  document.getElementById("OrderForm").reset();
+ var fileInput = document.querySelector('input[name="files[]"]');
+ var newFileInput = fileInput.cloneNode(true);
+fileInput.parentNode.replaceChild(newFileInput, fileInput);
  document.getElementById("modalIdInput").value = id;
  $('#openthemodal').modal('show');
 }
 
-let num=1;
+let num=2;
 function imagesAdd()
 {
    if(num<=2)

@@ -123,6 +123,7 @@ Route::get("/redirect", function (Request $request) {
                 // ->first();
                 $userPayment = PaymentDataHandling::whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
                 ->where('data', 'Registration_Amount')
+                ->where('user_id', $userId)
                 ->first();
                 if ($userPayment && isset($userPayment)) {
                     //return redirect()->route('category');
@@ -206,8 +207,11 @@ Route::post("/payment/process/data", [PaymentController::class, 'paymentProcess'
 Route::get("/payment/process", [PaymentController::class, 'index'])->name('payment.process');
 Route::get("/payment/verify", [PaymentController::class, 'paymentVerify'])->name('payment.verify');
 Route::get("/payment/process/verify", [PaymentController::class, 'paymentProcessVerify'])->name('payment.process.verify');
-Route::get("/payment/user-id", [PaymentController::class, 'getUserId'])->name('payment.get-user-id');
+Route::get("/payment/user-id", [PaymentController::class, 'getUserId'])->name('payment.get-user-id');  
+Route::post("/payment/process/data/order", [PaymentController::class, 'paymentProcessOrder'])->name('payment.process.data.order');
 
-
-Route::get("/orderProcess",[OrderProcessController::class,'index'])->name('orderProcess');
+Route::any("/orderProcess",[OrderProcessController::class,'index'])->name('orderProcess');
 Route::post('/payment/process/verify/extra/js',[OrderProcessController::class,'jspart']);
+
+Route::post("/payment/process/data/order/complete", [PaymentController::class, 'paymentProcessOrderComplete'])->name('payment.process.data.order.complete');
+Route::any("/payment/complete/process", [PaymentController::class, 'paymentComplete'])->name('payment.complete.process');

@@ -79,10 +79,15 @@ class OrderController extends AdminController
 
             $grid->column('payment_mode', __('Payment Mode'))->display(function ($title) {
                 $id = $this->id;
-                return "<a style='color:#fff' class='btn btn-primary' onclick='fun($id)'>Cheque</a>";
+                if($title=="cheque") {
+                return "<a style='color:#fff' class='btn btn-primary' onclick='fun($id)'>$title</a>"; }
+                else {
+                return "<a style='color:#fff' class='btn btn-primary'>$title</a>"; 
+                }
             });
 
-            $grid->column('payment_status', __('Payment'));
+            $grid->column('payment_status', __('Initial Payment'));
+            $grid->column('final_payment_status', __('Final Payment'));
             // $grid->column('firm', __('Firm'));
             $grid->column('created_at', __('Created at'))->display(function ($value) {
                 //  return Carbon::parse($value)->format('Y-m-d H:i:s');
@@ -196,22 +201,22 @@ class OrderController extends AdminController
                     <div div class="modal-dialog" role="document">
                     <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel"style="font-size: 20px;">Fill the Deposit form</h5>
+                  <h5 class="modal-title" id="exampleModalLabel"style="font-size: 20px;">Cheque Deposit Form</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                                      <form method="post" action="/payment/process/verify/extra/js" enctype="multipart/form-data" id="OrderForm">
+                       <form method="post" action="/payment/process/verify/extra/js" enctype="multipart/form-data" id="OrderForm">
                           <input type="hidden" name="_token" value="{$csrfToken}"> 
-                          <input type="text" id="modalIdInput" name="modalId">
+                          <input type="hidden" id="modalIdInput" name="modalId">
                                      <label for="file">Upload File</label >
                                             <div id="allfiles" class="fileadding">
-                                      <input type="file" name="files[]" >
+                                      <input type="file" name="files[]" required>
                                             </div>
                                       <!-- icon -->
-                                               <span class="btn btn-success"onclick="let image=imagesAdd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Add</span></span>
-                                               <span class="btn btn-danger"onclick="imagesRemove()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 11H5V13H19V11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Remove</span></span>
+                                               <span class="btn btn-success" onclick="let image=imagesAdd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Add</span></span>
+                                               <span class="btn btn-danger" onclick="imagesRemove()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 11H5V13H19V11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Remove</span></span>
                                             <!--  -->
                                          <div class="amount_coloumn"style="margin-top:20px">
                                                         <label for="Amount" class="form-label">Amount</label>

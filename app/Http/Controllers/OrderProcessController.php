@@ -4,43 +4,46 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use App\Models\Order;
 
 class OrderProcessController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('components.order-process');
+        $txtOrderGlobalModalID=$request->input('txtOrderGlobalModalID');
+        Session::forget('txtOrderGlobalModalID');
+        Session::put('txtOrderGlobalModalID', $txtOrderGlobalModalID ?? '');
+        if(isset($txtOrderGlobalModalID) && !empty($txtOrderGlobalModalID))
+        {
+            return view('components.order-process',compact('txtOrderGlobalModalID'));
+            //dd($txtOrderGlobalModalID=$request->input('txtOrderGlobalModalID'));
+        }
     }
 
     public function jspart(Request $request)
     {
-        // $allfiles = $request->file('files');
-      
-        // $data = new imageupload();
-        // $num = 0;
-        // foreach ($allfiles as $image) {
-        //     $files = time() . "." . $image->getClientOriginalExtension();
-        //     $image->move(public_path('uploads'), $files);
-        //     if ($num == 0) {
-        //         $data->upload = $files;
-        //         $num++;
-        //     } elseif ($num == 1) {
-        //         $data->file1 = $files;
-
-        //     } else {
-        //         $data->file2 = $files;
-        //     }
-        // }
-
-
-        // $data->amount = $request->amount;
-        // $data->cheque = $request->cheque;
-        // $data->save();
-
-
-        // return redirect()->back();
-
-
-
+        $allfiles = $request->file('files');
+        $modalIdInput = $request->input('modalId');
+            // Find the Order model based on $modalIdInput
+        $order = Order::findOrFail($modalIdInput);
+        $num = 0;
+        foreach ($allfiles as $image) {
+            //$files = time() . "." . $image->getClientOriginalExtension();   
+            $files =time().rand(11,99) . '.' . $image->getClientOriginalName();
+            $image->move(public_path('uploads'), $files);
+            if ($num == 0) {
+                $order->upload = $files;
+                $num++;
+            } elseif ($num == 1) {
+                $order->file1 = $files;
+            } else {
+                $order->file2 = $files;
+            }
+        }
+        $order->amount = $request->amount;
+        $order->cheque_number = $request->cheque;
+        $order->save();
+        return redirect()->back();
     }
 }

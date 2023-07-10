@@ -59,6 +59,7 @@ class LoginController extends Controller
                     // ->first();
                     $userPayment = PaymentDataHandling::whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
                     ->where('data', 'Registration_Amount')
+                    ->where('user_id', $checkCurrentUserId)
                     ->first();
                     if ($userPayment && isset($userPayment)) {
                         //return redirect()->route('category');
