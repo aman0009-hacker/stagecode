@@ -150,8 +150,8 @@
                  }
               }
              ?>
-              <p class="sign-up-text process-pending-text">Congratulations, Your Account has been <br />
-                    Successfully created</p>
+              {{-- <p class="sign-up-text process-pending-text">Congratulations, Your Account has been <br />
+                    Successfully created</p> --}}
                 </div>
               </div>
               <div class="row">

@@ -133,19 +133,19 @@ class PaymentController extends Controller
                         $paymentDataOrderFinal = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
                             ->where('data', 'Booking_Final_Amount')
                             ->first();
-                        if ($paymentData->count() > 0) {
+                        if ($paymentData) {
                             $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('user_id');
                             $user = User::find($id);
                             $user->comment = "Done";
                             $user->save();
                             return redirect()->route('congratulations', ['encryptedResponse' => $encryptedResponse]);
-                        } else if ($paymentDataOrder->count() > 0) {
+                        } else if ($paymentDataOrder) {
                             $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
                             $order = Order::find($id);
                             $order->payment_status = "verified";
                             $order->save();
                             return redirect()->route('booking', ['encryptedResponse' => $encryptedResponse]);
-                        } else if ($paymentDataOrderFinal->count() > 0) {
+                        } else if ($paymentDataOrderFinal) {
                             $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
                             $order = Order::find($id);
                             $order->final_payment_status = "verified";
@@ -171,15 +171,15 @@ class PaymentController extends Controller
                         $paymentDataOrderFinal = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
                             ->where('data', 'Booking_Final_Amount')
                             ->first();
-                        if ($paymentData->count() > 0) {
+                        if ($paymentData) {
                             return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
-                        } else if ($paymentDataOrder->count() > 0) {
+                        } else if ($paymentDataOrder) {
                             $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
                             $order = Order::find($id);
                             $order->payment_status = "verified";
                             $order->save();
                             return redirect()->route('booking', ['encryptedResponse' => $encryptedResponse]);
-                        } else if ($paymentDataOrderFinal->count() > 0) {
+                        } else if ($paymentDataOrderFinal) {
                             $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
                             $order = Order::find($id);
                             $order->final_payment_status = "verified";
@@ -254,19 +254,19 @@ class PaymentController extends Controller
                         $paymentDataOrderFinal = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
                             ->where('data', 'Booking_Final_Amount')
                             ->first();
-                        if ($paymentData->count() > 0) {
+                        if ($paymentData) {
                             $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('user_id');
                             $user = User::find($id);
                             $user->comment = "Done";
                             $user->save();
                             return redirect()->route('congratulations', ['encryptedResponse' => $encryptedResponse]);
-                        } else if ($paymentDataOrder->count() > 0) {
+                        } else if ($paymentDataOrder) {
                             $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
                             $order = Order::find($id);
                             $order->payment_status = "verified";
                             $order->save();
                             return redirect()->route('booking', ['encryptedResponse' => $encryptedResponse]);
-                        } else if ($paymentDataOrderFinal->count() > 0) {
+                        } else if ($paymentDataOrderFinal) {
                             $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
                             $order = Order::find($id);
                             $order->final_payment_status = "verified";
@@ -297,15 +297,15 @@ class PaymentController extends Controller
                         $paymentDataOrderFinal = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
                             ->where('data', 'Booking_Final_Amount')
                             ->first();
-                        if ($paymentData->count() > 0) {
+                        if ($paymentData) {
                             return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
-                        } else if ($paymentDataOrder->count() > 0) {
+                        } else if ($paymentDataOrder) {
                             $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
                             $order = Order::find($id);
                             $order->payment_status = "verified";
                             $order->save();
                             return redirect()->route('booking', ['encryptedResponse' => $encryptedResponse]);
-                        } else if ($paymentDataOrderFinal->count() > 0) {
+                        } else if ($paymentDataOrderFinal) {
                             $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
                             $order = Order::find($id);
                             $order->final_payment_status = "verified";
