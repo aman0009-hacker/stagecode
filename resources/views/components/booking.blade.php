@@ -84,16 +84,16 @@
 
 
 
-            
+
             <div class="col-12 col-sm-12 col-md-4 col-lg-4">
               <!-- Display additional order information if needed -->
-              <h4 class="orderid mb-0"><span>Booking Amount:</span>
+              <h6 class="orderid mb-0"><span>Booking Amount:</span>
                 <?php if ($order->payment_status === 'verified'): ?>
                 Done
                 <?php else: ?>
                 Pending
                 <?php endif; ?>
-              </h4>
+              </h6>
             </div>
 
 
