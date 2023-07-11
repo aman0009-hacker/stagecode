@@ -1,4 +1,4 @@
-et allbutton=document.getElementsByClassName('allbtn') ;
+let allbutton=document.getElementsByClassName('allbtn') ;
 let allitem=document.getElementsByClassName('allitems') ; 
 
 
