@@ -1,15 +1,4 @@
-// function fun(id)
-// {
-//  //alert(id);   
-//  document.getElementById("OrderForm").reset();
-//  var fileInput = document.querySelector('input[name="files[]"]');
-//  var newFileInput = fileInput.cloneNode(true);
-// fileInput.parentNode.replaceChild(newFileInput, fileInput);
-//  document.getElementById("modalIdInput").value = id;
-//  $('#openthemodal').modal('show');
-// }
-
-let allbutton=document.getElementsByClassName('allbtn') ;
+et allbutton=document.getElementsByClassName('allbtn') ;
 let allitem=document.getElementsByClassName('allitems') ; 
 
 
