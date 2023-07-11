@@ -6,6 +6,7 @@ use App\Http\Controllers\EazyPayController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PaymentHandling;
+use App\Models\User;
 use App\Models\PaymentDataHandling;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -29,7 +30,6 @@ class PaymentController extends Controller
 
     public function __construct()
     {
-        // $this->middleware('auth');
         $this->encryption_key = config('eazypay.encryption_key');
         $this->EAZYPAY_BASE_URL = env('EAZYPAY_BASE_URL', '');
         $this->EAZYPAY_BASE_URL_VERIFY = env('EAZYPAY_BASE_URL_VERIFY', '');
@@ -123,14 +123,36 @@ class PaymentController extends Controller
                             'reference_no' => $data['ReferenceNo'],
                             'transaction_id' => $data['Unique_Ref_Number']
                         ]);
-
-
-
                         $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
                             ->where('data', 'Registration_Amount')
                             ->get();
                         if ($paymentData->count() > 0) {
+                            $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('user_id');
+                            $user = User::find($id);
+                            $user->comment = "verified";
+                            $user->save();
                             return redirect()->route('congratulations', ['encryptedResponse' => $encryptedResponse]);
+                        }
+                        $paymentDataOrder = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
+                            ->where('data', 'Booking_Amount')
+                            ->get();
+                        if ($paymentDataOrder->count() > 0) {
+                            $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
+                            $order = Order::find($id);
+                            $order->payment_status = "verified";
+                            $order->save();
+                            return redirect()->route('booking', ['encryptedResponse' => $encryptedResponse]);
+                        }
+                       
+                        $paymentDataOrder = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
+                            ->where('data', 'Booking_Final_Amount')
+                            ->get();
+                        if ($paymentDataOrder->count() > 0) {
+                            $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
+                            $order = Order::find($id);
+                            $order->final_payment_status = "verified";
+                            $order->save();
+                            return redirect()->route('order', ['encryptedResponse' => $encryptedResponse]);
                         }
                         //return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
                         //return redirect()->back()->with('encryptedResponse', $encryptedResponse);
@@ -146,7 +168,28 @@ class PaymentController extends Controller
                             ->where('data', 'Registration_Amount')
                             ->get();
                         if ($paymentData->count() > 0) {
-                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]); }
+                            return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
+                        }
+                        $paymentDataOrder = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
+                        ->where('data', 'Booking_Amount')
+                        ->get();
+                    if ($paymentDataOrder->count() > 0) {
+                        $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
+                        $order = Order::find($id);
+                        $order->payment_status = "verified";
+                        $order->save();
+                        return redirect()->route('booking', ['encryptedResponse' => $encryptedResponse]);
+                    }
+                        $paymentDataOrder = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
+                            ->where('data', 'Booking_Final_Amount')
+                            ->get();
+                        if ($paymentDataOrder->count() > 0) {
+                            $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
+                            $order = Order::find($id);
+                            $order->final_payment_status = "verified";
+                            $order->save();
+                            return redirect()->route('order', ['encryptedResponse' => $encryptedResponse]);
+                        }
                         // return redirect()->route('payment.process', ['paymentResponse' => 'FAILURE', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
                     }
                 } else {
@@ -209,7 +252,8 @@ class PaymentController extends Controller
                             ->where('data', 'Registration_Amount')
                             ->get();
                         if ($paymentData->count() > 0) {
-                        return redirect()->route('congratulations', ['encryptedResponse' => $encryptedResponse]); }
+                            return redirect()->route('congratulations', ['encryptedResponse' => $encryptedResponse]);
+                        }
                         //return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
                         // return redirect()->route('payment.process', ['paymentResponse' => 'SUCCESS', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
                     } else {
@@ -222,7 +266,8 @@ class PaymentController extends Controller
                             ->where('data', 'Registration_Amount')
                             ->get();
                         if ($paymentData->count() > 0) {
-                        return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]); }
+                            return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
+                        }
                         // return redirect()->route('payment.process', ['paymentResponse' => 'FAILURE', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
                     }
                 }
@@ -429,7 +474,7 @@ class PaymentController extends Controller
             if (Auth::check()) {
                 Session::forget('GLOBALUSERID');
                 Session::put('GLOBALUSERID', Auth::user()->id ?? '');
-                $amount="";
+                $amount = "";
                 $validator = Validator::make($request->all(), [
                     'amountValue' => ['required', 'in:10000'],
                 ]);
@@ -473,7 +518,15 @@ class PaymentController extends Controller
             // }
 
             $amount = $request->input('amountOrder');
-            $reference_no = rand(1111, 9999);
+            //$reference_no = rand(1111, 9999);
+            $reference_no = time() . Str::random(5);
+            $paymentDataHandling = new PaymentDataHandling();
+            $paymentDataHandling->reference_no = $reference_no;
+            $paymentDataHandling->user_id = Auth::user()->id ?? '';
+            $paymentDataHandling->data = "Booking_Amount";
+            $paymentDataHandling->user_amount = $amount;
+            $paymentDataHandling->order_id = Session::get('txtOrderGlobalModalID') ?? '';
+            $paymentDataHandling->save();
             $optionalField = null;
             $base = new EazyPayController();
             $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
@@ -540,7 +593,15 @@ class PaymentController extends Controller
                     //     $amount = $request->input('amountValue');
                     // }
                     $amount = $amountOrderFinal;
-                    $reference_no = rand(1111, 9999);
+                    //$reference_no = rand(1111, 9999);
+                    $reference_no = time() . Str::random(5);
+                    $paymentDataHandling = new PaymentDataHandling();
+                    $paymentDataHandling->reference_no = $reference_no;
+                    $paymentDataHandling->user_id = Auth::user()->id ?? '';
+                    $paymentDataHandling->data = "Booking_Final_Amount";
+                    $paymentDataHandling->user_amount = $amount;
+                    $paymentDataHandling->order_id = Session::get('txtOrderGlobalModalCompleteID') ?? '';
+                    $paymentDataHandling->save();
                     $optionalField = null;
                     $base = new EazyPayController();
                     $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
