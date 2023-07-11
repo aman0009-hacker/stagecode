@@ -101,7 +101,7 @@ class AttachmentController extends AdminController
         <!-- <meta http-equiv="refresh" content="7"> -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
        
-        <link rel="stylesheet" href="{{asset('css/chatbox.css'}}">
+        <link rel="stylesheet" href="../../css/chatbox.css">
         </head>
      
         <section>

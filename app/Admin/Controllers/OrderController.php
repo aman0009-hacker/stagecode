@@ -176,7 +176,7 @@ class OrderController extends AdminController
             $htmls = <<<HTML
             <head>
             <meta name="csrf-token" content="{{ csrf_token() }}">
-            <script src="{{asset('js/modal.js')}}"></script>
+            <script src="../../js/modal.js"></script>
             <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
          
        
