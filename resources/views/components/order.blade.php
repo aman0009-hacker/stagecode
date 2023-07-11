@@ -244,7 +244,7 @@
       <div class="modal-footer mb-4">
         <form action="/payment/complete/process" method="post">
           @csrf
-          <input type="text" name="txtOrderGlobalModalCompleteID" id="txtOrderGlobalModalCompleteID">
+          <input type="hidden" name="txtOrderGlobalModalCompleteID" id="txtOrderGlobalModalCompleteID">
           {{-- <a href="/orderProcess" class="btn btn-secondary continue-btn">Make Payment</a> --}}
           <button type="submit" class="btn btn-secondary continue-btn">Make Payment</button>
           <!-- <button type="button" class="btn btn-primary continue-btn">Ok</button> -->
