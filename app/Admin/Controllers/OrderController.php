@@ -86,7 +86,16 @@ class OrderController extends AdminController
                 }
             });
 
-            $grid->column('payment_status', __('Initial Payment'));
+            $grid->column('payment_status', __('Booking Amount'))->display(function($value){
+              if($value=="verified")
+              {
+               return $this->id;
+              }
+              else 
+              {
+              return "Pending";
+              }
+            });
             $grid->column('final_payment_status', __('Final Payment'));
             // $grid->column('firm', __('Firm'));
             $grid->column('created_at', __('Created at'))->display(function ($value) {
