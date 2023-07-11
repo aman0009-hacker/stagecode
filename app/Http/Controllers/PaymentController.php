@@ -149,6 +149,7 @@ class PaymentController extends Controller
                             $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
                             $order = Order::find($id);
                             $order->final_payment_status = "verified";
+                            $order->payment_mode="online";
                             $order->save();
                             return redirect()->route('order', ['encryptedResponse' => $encryptedResponse]);
                         }
@@ -668,7 +669,7 @@ class PaymentController extends Controller
                     $returnValue=$value->save();
                     if($returnValue)
                     {
-                    $paymentMode="Cheque";   
+                    $paymentMode="cheque";   
                     return redirect()->route('order', compact('paymentMode'));
                     }
                 }

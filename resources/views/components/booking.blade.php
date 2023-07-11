@@ -235,7 +235,7 @@
       <div class="modal-footer mb-4">
         <form action="/orderProcess" method="post">
           @csrf
-          <input type="text" name="txtOrderGlobalModalID" id="txtOrderGlobalModalID">
+          <input type="hidden" name="txtOrderGlobalModalID" id="txtOrderGlobalModalID">
           {{-- <a href="/orderProcess" class="btn btn-secondary continue-btn">Make Payment</a> --}}
           <button type="submit" class="btn btn-secondary continue-btn">Make Payment</button>
         </form>
