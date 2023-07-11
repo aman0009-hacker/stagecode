@@ -41,7 +41,7 @@ class OrderProcessController extends Controller
                 $order->file2 = $files;
             }
         }
-        $order->amount = $request->amount;
+        $order->check_amount = $request->amount;
         $order->cheque_number = $request->cheque;
         $order->save();
         return redirect()->back();

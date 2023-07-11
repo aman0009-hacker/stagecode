@@ -8,6 +8,7 @@ $.ajaxSetup(
 );
 var form=document.getElementById("chatForm");
 var formData=new FormData(form);
+setInterval(function() {
 $.ajax(
 
       {
@@ -38,7 +39,7 @@ $.ajax(
           }
       }
   );
-// }, 10000);
+}, 10000);
 
 $("#btnSubmit").on("click",function(event)
 {
