@@ -10,6 +10,7 @@ use Encore\Admin\Widgets\Table;
 use App\Models\OrderItem;
 use App\Admin\Actions\OrderRejected;
 use Encore\Admin\Show;
+use App\Models\PaymentDataHandling;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Models\Order;
@@ -89,7 +90,8 @@ class OrderController extends AdminController
             $grid->column('payment_status', __('Booking Amount'))->display(function($value){
               if($value=="verified")
               {
-               return $this->id;
+                $value=PaymentDataHandling::where('order_id',$this->id)->where('data',"Booking_Amount")->orderBy('created_at', 'desc')->first();
+                return $value->transaction_amount ?? "Done";
               }
               else 
               {
