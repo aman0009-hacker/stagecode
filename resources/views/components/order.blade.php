@@ -57,6 +57,26 @@
        <?php 
       }
      }
+  
+           else if(request('paymentMode')!=null && !empty(request('paymentMode')) && request('paymentMode')=="Cheque")
+           {
+            ?>
+
+<script>
+  Swal.fire({
+    title: 'Payment Mode set Cheque successfully',
+    showClass: {
+      popup: 'animate__animated animate__fadeInDown'
+    },
+    hideClass: {
+      popup: 'animate__animated animate__fadeOutUp'
+    }
+  })
+</script>
+
+        <?php
+           }
+
       ?>
        {{-- New Code to show Payment Success Page --}}
 
@@ -73,13 +93,13 @@
             </div>
             <div class="col-12 col-sm-12 col-md-4 col-lg-4">
               <!-- Display additional order information if needed -->
-              <h6 class="orderid mb-0"><span>Booking Amount:</span>
+              <h4 class="orderid mb-0"><span>Final Payment:</span>
                 <?php if ($order->final_payment_status === 'verified'): ?>
-                Done
+                 Done ( {{$order->payment_mode}} ) 
                 <?php else: ?>
                 Pending
                 <?php endif; ?>
-              </h6>
+              </h4>
             </div>
             <div class="col-12 col-sm-12 col-md-4 col-lg-4">
               <h4 class="orderplaced mb-0">

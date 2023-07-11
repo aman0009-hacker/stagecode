@@ -665,7 +665,12 @@ class PaymentController extends Controller
                 if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
                     $value = Order::find($txtOrderGlobalModalCompleteID);
                     $value->payment_mode = "cheque";
-                    $value->save();
+                    $returnValue=$value->save();
+                    if($returnValue)
+                    {
+                    $paymentMode="Cheque";   
+                    return redirect()->route('order', compact('paymentMode'));
+                    }
                 }
             }
         } catch (\Throwable $ex) {
