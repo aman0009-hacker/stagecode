@@ -130,13 +130,13 @@ class UserController extends AdminController
       });
       $grid->column('comment', __('Payment'))->display(function($value)
       {
-        if(isset($value) && !empty($value))
+        if(isset($value) && !empty($value) && $value=="Done")
         {
-          return "verified";
+          return "Done";
         }
-        else if(is_null($value) && empty($value))
+        else
         {
-          return "unverified";
+          return "Pending";
         }
       });
       $grid->filter(function ($filter) {

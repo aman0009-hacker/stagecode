@@ -129,7 +129,7 @@ class PaymentController extends Controller
                         if ($paymentData->count() > 0) {
                             $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('user_id');
                             $user = User::find($id);
-                            $user->comment = "verified";
+                            $user->comment = "Done";
                             $user->save();
                             return redirect()->route('congratulations', ['encryptedResponse' => $encryptedResponse]);
                         }
