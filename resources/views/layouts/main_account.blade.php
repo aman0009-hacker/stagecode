@@ -18,9 +18,11 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/category.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/raw-material.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/total-payment.css') }}" />
+    
 </head>
 
 <body>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
         integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -32,6 +34,7 @@
     <script src="{{asset('js/productcategory.js')}}"></script>
     <script src="{{asset('js/booking.js')}}"></script>
     <script src="{{asset('js/order.js')}}"></script>
+  
 </body>
 
 </html>
