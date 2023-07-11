@@ -80,25 +80,29 @@ class OrderController extends AdminController
 
             $grid->column('payment_mode', __('Payment Mode'))->display(function ($title) {
                 $id = $this->id;
-                if($title=="cheque") {
-                return "<a style='color:#fff' class='btn btn-primary' onclick='fun($id)'>$title</a>"; }
-                else {
-                return "<a style='color:#fff' class='btn btn-primary'>$title</a>"; 
+                if ($title == "cheque") {
+                    //return "<a style='color:#fff' class='btn btn-primary' onclick='fun($id)'>$title</a>";
+                    return "<a style='color:#fff' class='btn btn-primary allbtn' id=$id>$title</a>";
+                } else {
+                    return "<a style='color:#fff' class='btn btn-primary'>$title</a>";
                 }
             });
 
-            $grid->column('payment_status', __('Booking Amount'))->display(function($value){
-              if($value=="verified")
-              {
-                $value=PaymentDataHandling::where('order_id',$this->id)->where('data',"Booking_Amount")->orderBy('created_at', 'desc')->first();
-                return $value->transaction_amount ?? "Done";
-              }
-              else 
-              {
-              return "Pending";
-              }
+            $grid->column('payment_status', __('Booking Amount'))->display(function ($value) {
+                if ($value == "verified") {
+                    $value = PaymentDataHandling::where('order_id', $this->id)->where('data', "Booking_Amount")->orderBy('created_at', 'desc')->first();
+                    return $value->transaction_amount ?? "Done";
+                } else {
+                    return "Pending";
+                }
             });
-            $grid->column('final_payment_status', __('Final Payment'));
+            $grid->column('final_payment_status', __('Final Payment'))->display(function ($value) {
+                if ($value == "verified") {
+                    return "Done";
+                } else {
+                   return "Pending";
+                }
+            });
             // $grid->column('firm', __('Firm'));
             $grid->column('created_at', __('Created at'))->display(function ($value) {
                 //  return Carbon::parse($value)->format('Y-m-d H:i:s');
@@ -172,7 +176,7 @@ class OrderController extends AdminController
             $htmls = <<<HTML
             <head>
             <meta name="csrf-token" content="{{ csrf_token() }}">
-            <script src="../../js/modal.js"></script>
+            <script src="{{asset('js/modal.js')}}"></script>
             <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
          
        
@@ -224,7 +228,7 @@ class OrderController extends AdminController
                           <input type="hidden" id="modalIdInput" name="modalId">
                                      <label for="file">Upload File</label >
                                             <div id="allfiles" class="fileadding">
-                                      <input type="file" name="files[]" required>
+                                      <input type="file" name="files[]" class="allitems" required >
                                             </div>
                                       <!-- icon -->
                                                <span class="btn btn-success" onclick="let image=imagesAdd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Add</span></span>
