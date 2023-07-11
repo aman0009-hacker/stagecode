@@ -143,10 +143,10 @@
                             else if(request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="FAILURE")
                                {
                                 ?>
-                            {{-- <div class="alert alert-warning" role="alert">
+                            <div class="alert alert-warning" role="alert">
                                 <p>Payment has not verified. Kindly try again or contact system administrator for
                                     further process.</p>
-                            </div> --}}
+                            </div>
                             <?php
                                }
                             }

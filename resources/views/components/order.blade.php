@@ -29,6 +29,41 @@
           </h3>
         </div>
       </div>
+
+
+       {{-- New Code to show Payment Success Page --}}
+       <?php
+       $encryptedResponse = request('encryptedResponse');
+       if(isset($encryptedResponse) && !empty($encryptedResponse)) 
+       {
+       $decryptedResponse = Illuminate\Support\Facades\Crypt::decrypt($encryptedResponse);
+       $paymentResponse = $decryptedResponse['paymentResponse'] ?? '';
+       $reference_no = $decryptedResponse['reference_no'] ?? '';
+       $transaction_id = $decryptedResponse['transaction_id'] ?? '';
+      if( $paymentResponse!="" && $paymentResponse!=null && $paymentResponse=="SUCCESS")
+      {
+       ?>
+       <script>
+         Swal.fire({
+           title: 'Payment Done Succesfully.Your Payment Reference No is <?php echo $reference_no; ?>',
+           showClass: {
+             popup: 'animate__animated animate__fadeInDown'
+           },
+           hideClass: {
+             popup: 'animate__animated animate__fadeOutUp'
+           }
+         })
+       </script>
+       <?php 
+      }
+     }
+      ?>
+       {{-- New Code to show Payment Success Page --}}
+
+
+
+
+
       <div class="row orderhistoryOne-section">
         <div class="col-md-12">
           @foreach ($orders as $index => $order)
@@ -38,6 +73,13 @@
             </div>
             <div class="col-12 col-sm-12 col-md-4 col-lg-4">
               <!-- Display additional order information if needed -->
+              <h6 class="orderid mb-0"><span>Booking Amount:</span>
+                <?php if ($order->final_payment_status === 'verified'): ?>
+                Done
+                <?php else: ?>
+                Pending
+                <?php endif; ?>
+              </h6>
             </div>
             <div class="col-12 col-sm-12 col-md-4 col-lg-4">
               <h4 class="orderplaced mb-0">

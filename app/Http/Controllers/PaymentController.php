@@ -174,17 +174,17 @@ class PaymentController extends Controller
                         if ($paymentData) {
                             return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
                         } else if ($paymentDataOrder) {
-                            $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
-                            $order = Order::find($id);
-                            $order->payment_status = "verified";
-                            $order->save();
+                            // $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
+                            // $order = Order::find($id);
+                            // $order->payment_status = "verified";
+                            // $order->save();
                             return redirect()->route('orderProcess', ['encryptedResponse' => $encryptedResponse]);
                         } else if ($paymentDataOrderFinal) {
-                            $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
-                            $order = Order::find($id);
-                            $order->final_payment_status = "verified";
-                            $order->save();
-                            return redirect()->route('order', ['encryptedResponse' => $encryptedResponse]);
+                            // $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
+                            // $order = Order::find($id);
+                            // $order->final_payment_status = "verified";
+                            // $order->save();
+                            return redirect()->route('payment.complete.process', ['encryptedResponse' => $encryptedResponse]);
                         }
                         // return redirect()->route('payment.process', ['paymentResponse' => 'FAILURE', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
                     }
@@ -300,17 +300,17 @@ class PaymentController extends Controller
                         if ($paymentData) {
                             return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
                         } else if ($paymentDataOrder) {
-                            $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
-                            $order = Order::find($id);
-                            $order->payment_status = "verified";
-                            $order->save();
+                            // $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
+                            // $order = Order::find($id);
+                            // $order->payment_status = "verified";
+                            // $order->save();
                             return redirect()->route('orderProcess', ['encryptedResponse' => $encryptedResponse]);
                         } else if ($paymentDataOrderFinal) {
-                            $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
-                            $order = Order::find($id);
-                            $order->final_payment_status = "verified";
-                            $order->save();
-                            return redirect()->route('order', ['encryptedResponse' => $encryptedResponse]);
+                            // $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
+                            // $order = Order::find($id);
+                            // $order->final_payment_status = "verified";
+                            // $order->save();
+                            return redirect()->route('payment.complete.process', ['encryptedResponse' => $encryptedResponse]);
                         }
                         // $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
                         //     ->where('data', 'Registration_Amount')
@@ -600,9 +600,9 @@ class PaymentController extends Controller
         Session::forget('txtOrderGlobalModalCompleteID');
         Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
 
-        if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
+        // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
             return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID'));
-        }
+        // }
     }
 
     public function getUserId()
