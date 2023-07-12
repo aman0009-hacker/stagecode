@@ -74,8 +74,8 @@ class YardController extends AdminController
             // });
             $grid->actions(function ($actions) {
                 $actions->disableView();
-                //$actions->disableEdit();
-                //$actions->disableDelete();
+                // $actions->disableEdit();
+                // $actions->disableDelete();
             });
             //$grid->disableActions();
             $grid->disableRowSelector();

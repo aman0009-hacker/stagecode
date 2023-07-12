@@ -71,7 +71,7 @@ class YardSupervisorManagementController extends AdminController
       });
       $grid->actions(function ($actions) {
         $actions->disableEdit();
-        // $actions->disableView();
+        $actions->disableView();
         $actions->disableDelete();
         //new code
         if (Admin::user()->can('create-post')) {
@@ -79,6 +79,7 @@ class YardSupervisorManagementController extends AdminController
         }
         //new code
       });
+      $grid->disableActions();
       $grid->disableRowSelector();
       //new code
       //$grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
