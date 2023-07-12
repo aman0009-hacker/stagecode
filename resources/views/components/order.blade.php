@@ -25,7 +25,7 @@
       <div class="row">
         <div class="col-md-12">
           <h3>
-            My Orders
+            My Bookings
           </h3>
         </div>
       </div>

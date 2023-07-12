@@ -39,6 +39,7 @@ class OrderController extends AdminController
         try {
             $csrfToken = csrf_token();
             $grid = new Grid(new Order());
+            // $grid->refresh();
             // $grid->column('id', __('Id'));
             // $grid->column('amount', __('Amount'));
             // $grid->column('transaction_date', __('Transaction date'));
@@ -176,7 +177,7 @@ class OrderController extends AdminController
             $htmls = <<<HTML
             <head>
             <meta name="csrf-token" content="{{ csrf_token() }}">
-            <script src="../../js/modal.js"></script>
+            <!-- <script src="../../js/modal.js"></script> -->
             <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
          
        
@@ -258,6 +259,10 @@ class OrderController extends AdminController
          </section> 
          HTML;
             Admin::html($htmls);
+
+            $jsFilePath = public_path('js/modal.js');
+            $jsContent = file_get_contents($jsFilePath);
+            Admin::script($jsContent);
 
             return $grid;
         } catch (\Throwable $ex) {

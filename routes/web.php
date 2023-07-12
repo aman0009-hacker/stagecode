@@ -209,9 +209,7 @@ Route::get("/payment/verify", [PaymentController::class, 'paymentVerify'])->name
 Route::get("/payment/process/verify", [PaymentController::class, 'paymentProcessVerify'])->name('payment.process.verify');
 Route::get("/payment/user-id", [PaymentController::class, 'getUserId'])->name('payment.get-user-id');  
 Route::post("/payment/process/data/order", [PaymentController::class, 'paymentProcessOrder'])->name('payment.process.data.order');
-
 Route::any("/orderProcess",[OrderProcessController::class,'index'])->name('orderProcess');
 Route::post('/payment/process/verify/extra/js',[OrderProcessController::class,'jspart']);
-
 Route::post("/payment/process/data/order/complete", [PaymentController::class, 'paymentProcessOrderComplete'])->name('payment.process.data.order.complete');
 Route::any("/payment/complete/process", [PaymentController::class, 'paymentComplete'])->name('payment.complete.process');
