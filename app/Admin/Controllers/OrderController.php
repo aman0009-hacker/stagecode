@@ -175,22 +175,27 @@ class OrderController extends AdminController
             $grid->model()->orderBy('created_at', 'desc');
 
             $htmls = <<<HTML
-            <head>
+            <head>  
             <meta name="csrf-token" content="{{ csrf_token() }}">
-            <!-- <script src="../../js/modal.js"></script> -->
-            <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
-         
-       
+            
+           
+           <!-- <script src="../../js/modal.js"></script> -->
+           
+           <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+            
+              
             <style>
             input[type=file] {
-                  margin-bottom: 20px;
+      
+            margin-bottom: 20px;
             }
-           .fileadding
-               {
-                display: inline-flex;
-                flex-direction: column;
-               }
-            span.btn.btn-success {
+                      .fileadding {
+                  display: inline-flex;
+                  flex-direction: column;
+                  margin-left: 15px;
+              }
+             
+               span.btn.btn-success {
                   padding: 0px;
                   height: 27px;
                   width: 80px;
@@ -202,64 +207,110 @@ class OrderController extends AdminController
                   height: 27px;
                   width: 100px;
               }
-              svg {
+                svg {
                       border-right: 1px solid #fff;
                       width: 25px;
                   }
-                span.name {
+                            span.name {
                   vertical-align: 6px;
                   padding: 0px 7px;
                   font-size: 16px;
               }
+              .close{
+                  position: absolute;
+                  right: 10px;
+                  top: 50%;
+                  transform: translateY(-50%);
+              }
+              .modal-header
+              {
+                position:relative;
+              }
             </style>
             </head>
-             <section>
+         
+         
+            <section>
+    
+             
+     
+    
                   <div class="modal fade" id="openthemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div div class="modal-dialog" role="document">
                     <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel"style="font-size: 20px;">Cheque Deposit Form</h5>
+                  <h5 class="modal-title" id="exampleModalLabel"style="font-size: 20px;">Fill the Deposit form</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                       <form method="post" action="/payment/process/verify/extra/js" enctype="multipart/form-data" id="OrderForm">
-                          <input type="hidden" name="_token" value="{$csrfToken}"> 
-                          <input type="hidden" id="modalIdInput" name="modalId">
-                                     <label for="file">Upload File</label >
+              
+    
+                  
+                                    <form method="post" action="/payment/process/verify/extra/js" enctype="multipart/form-data" id="allformsmethod">
+    
+                                      
+                                                <input type="hidden" id="modalIdInput">
+                                            <input type="hidden" name="_token"value="{$csrfToken}"> 
+                                            <label for="file">Upload File</label >
                                             <div id="allfiles" class="fileadding">
-                                      <input type="file" name="files[]" class="allitems" required >
+                                              
+                                              <input type="file"name="files[]" class="allitems" >
+                                              <input type="file"name="files[]" class="allitems" >
+                                              <input type="file"name="files[]" class="allitems" >
                                             </div>
-                                      <!-- icon -->
-                                               <span class="btn btn-success" onclick="let image=imagesAdd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Add</span></span>
-                                               <span class="btn btn-danger" onclick="imagesRemove()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 11H5V13H19V11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Remove</span></span>
+                                          
+    
+                                            <!-- icon -->
+                                               <!-- <span class="btn btn-success"onclick="imagesAdd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Add</span></span>
+                                               <span class="btn btn-danger"onclick="imagesRemove()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 11H5V13H19V11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Remove</span></span> -->
                                             <!--  -->
-                                         <div class="amount_coloumn"style="margin-top:20px">
+        
+                                                    <div class="amount_coloumn"style="margin-top:20px">
                                                         <label for="Amount" class="form-label">Amount</label>
                                                         <input type="number" class="form-control" id="Amount" name="amount" placeholder="Enter Amount" required>
                                                     </div>
                                                     <div class="chequecoloumn"style="margin-top:20px" >
                                                         <label for="Cheque" class="form-label">Cheque</label>
-                                                        <input type="text" class="form-control" id="Cheque" name="cheque" placeholder="Enter Cheque Number"
-                                                        maxlength="18" required>
+                                                        <input type="text" class="form-control" id="Cheque" name="cheque" placeholder="Enter Cheque Number"required>
                                                     </div>
                                       <div class="row">
-                                         <hr>
+    
+                                        <hr>
                                       </div>      
-                              <div class="action"style="margin-top:-3px">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    
+                                                <div class="action"style="margin-top:-3px">
+                                                  
+                                                  
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary"style="float:right">Submit</button>
                                                 </div>
-                          </form>
+                                          
+                                    </form>
+    
+    
+    
+    
+    
+    
                 </div>
+             
               </div>
             </div>
                   </div>
-                  <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    
+                    <!-- <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+                    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+              -->
+            
          </section> 
+         
          HTML;
-            Admin::html($htmls);
+        
+        
+         Admin::html($htmls);
+
 
             $jsFilePath = public_path('js/modal.js');
             $jsContent = file_get_contents($jsFilePath);
