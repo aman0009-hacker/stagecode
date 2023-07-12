@@ -35,8 +35,9 @@ class OrderProcessController extends Controller
             if ($num == 0) {
                 $order->upload = $files;
                 $num++;
-            } elseif ($num == 1) {
+            } else if ($num == 1) {
                 $order->file1 = $files;
+                $num++;
             } else {
                 $order->file2 = $files;
             }

@@ -241,7 +241,8 @@ class OrderController extends AdminController
                                                     </div>
                                                     <div class="chequecoloumn"style="margin-top:20px" >
                                                         <label for="Cheque" class="form-label">Cheque</label>
-                                                        <input type="text" class="form-control" id="Cheque" name="cheque" placeholder="Enter Cheque Number"required>
+                                                        <input type="text" class="form-control" id="Cheque" name="cheque" placeholder="Enter Cheque Number"
+                                                        maxlength="18" required>
                                                     </div>
                                       <div class="row">
                                          <hr>

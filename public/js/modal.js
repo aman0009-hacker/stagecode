@@ -1,3 +1,4 @@
+var num=1;
 Array.from(document.getElementsByClassName('allbtn')).forEach(element => {
    element.addEventListener('click', function () {
 
@@ -6,6 +7,7 @@ Array.from(document.getElementsByClassName('allbtn')).forEach(element => {
       for (let a = document.getElementsByClassName('allitems').length - 1; a > 0; a--) {
          document.getElementsByClassName('allitems')[a].remove();
          num = 1;
+         console.log(num);
       }
       let attr = element.getAttribute('id');
       //alert(attr);
@@ -17,9 +19,9 @@ Array.from(document.getElementsByClassName('allbtn')).forEach(element => {
 });
 
 
-let num = 2;
+// let num = 2;
 function imagesAdd() {
-
+ 
    if (num <= 2) {
       let grab = document.getElementById('allfiles');
       let add = document.createElement('input');
