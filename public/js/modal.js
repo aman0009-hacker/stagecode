@@ -1,7 +1,7 @@
 Array.from(document.getElementsByClassName('allbtn')).forEach(element => {
    element.addEventListener('click', function () {
 
-      $('#allformsmethod')[0].reset();
+      $('#OrderForm')[0].reset();
 
       
       let attr = element.getAttribute('id');
@@ -12,9 +12,3 @@ Array.from(document.getElementsByClassName('allbtn')).forEach(element => {
    })
 
 });
-
-
-
-
-
- 
