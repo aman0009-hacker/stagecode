@@ -345,7 +345,7 @@
                     @csrf
                   {{-- <label for="textAreaMsg" class="col-sm-2 col-form-label">Message</label> --}}
                   <textarea class="col-sm-9 form-control w-100 mx-auto" name="textAreaMsg" id="textAreaMsg" rows="1"
-                 placeholder="Type message here"   required></textarea>
+                 placeholder="Type message here"   required style="resize: none;"></textarea>
                  <input class="submit_btn" type="submit" value="Send now" id="btnSubmit"> 
                 </form>
                 <form action="{{ route('dropzone.store') }}" method="post" enctype="multipart/form-data"
