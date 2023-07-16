@@ -29,7 +29,6 @@ class AddProducts extends Form
     public function handle(Request $request)
     {
         $csrfToken = $request->cookie('XSRF-TOKEN');
-
         if ($csrfToken) {
             $validatedData = $request->validate([
                 'product' => 'required',
@@ -38,28 +37,23 @@ class AddProducts extends Form
                 'size' => 'required',
                 //'quantity' => 'required',
             ]);
-
             $productName = $validatedData['product'];
             $categoryName = $validatedData['category'];
             $entityName = $validatedData['entity'];
             $size = $validatedData['size'];
             //$quantity = $validatedData['quantity'];
-
             // Begin the database transaction
             DB::beginTransaction();
-
             try {
                 // Create a new product
                 $product = new Product();
                 $product->name = $productName;
                 $product->save();
-
                 // Create a new category
                 $category = new Category();
                 $category->name = $categoryName;
-                $category->category_id = $product->id; 
+                $category->category_id = $product->id;
                 $category->save();
-
                 // Create a new entity
                 $entity = new Entity();
                 $entity->name = $entityName;
@@ -67,15 +61,11 @@ class AddProducts extends Form
                 //$entity->quantity = $quantity;
                 $entity->entity_id = $category->id; // Assign the category ID
                 $entity->save();
-
                 // Commit the transaction
                 DB::commit();
-
                 // Success message
                 admin_success('Data saved successfully.');
-
                 return back();
-
             } catch (\Exception $e) {
                 // If an exception occurs, rollback the transaction
                 DB::rollback();
@@ -86,7 +76,6 @@ class AddProducts extends Form
                 return back();
             }
         }
-
         return back();
     }
 
@@ -104,7 +93,7 @@ class AddProducts extends Form
         $this->text('entity')->rules('required');
         $this->text('size')->rules('required');
         //$this->number('quantity')->rules('required|integer');
-      
+
     }
 
     /**

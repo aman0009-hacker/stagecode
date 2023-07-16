@@ -65,13 +65,14 @@ class OrderController extends AdminController
                     return [
                         'Item' => $item->category_name,
                         'Description' => $item->description,
-                        'Diameter' => $item->diameter,
-                        'Size' => $item->size,
+                        // 'Diameter' => $item->diameter,
+                        // 'Size' => $item->size,
                         'Quantity' => $item->quantity,
                         'Measurement (Ton) ' => $item->measurement,
                     ];
                 });
-                return new Table(['Item', 'Description', 'Diameter', 'Size', 'Quantity', 'Measurement'], $tableData->toArray());
+                return new Table(['Item', 'Description', 'Quantity', 'Measurement'], $tableData->toArray());
+                //return new Table(['Item', 'Description', 'Diameter', 'Size', 'Quantity', 'Measurement'], $tableData->toArray());
             });
             // $grid->column('user_id', __('User'))->display(function($user_id)
             // {
@@ -246,6 +247,10 @@ class OrderController extends AdminController
                                                         <input type="text" class="form-control" id="Cheque" name="cheque" placeholder="Enter Cheque Number"
                                                         maxlength="18" required>
                                                     </div>
+                                                    <div class="chequedatecoloumn"style="margin-top:20px" >
+                                                    <label for="Chequedate" class="form-label">Cheque Date</label>
+                                                    <input type="date" class="form-control" id="Chequedate" name="chequedate" required>
+                                                   </div>
                                       <div class="row">
                                          <hr>
                                       </div>      

@@ -27,7 +27,6 @@
                         <div class="row">
                           <div class="col-12">
                             <span class="welcome-text">WELCOME TO
-
                               <span class="welcome-border"></span>
                             </span>
                           </div>
@@ -109,9 +108,9 @@
                   //         $user->comment="verified";
                   //         $user->save();
                  ?>
-                 <div class="alert alert-success" role="alert">
-                  <p>Congratulations!!! Payment has successfully submitted.</p>
-                </div> 
+                  <div class="alert alert-success" role="alert">
+                    <p>Congratulations!!! Payment has successfully submitted.</p>
+                  </div>
                   {{-- <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
@@ -150,7 +149,7 @@
                  }
               }
              ?>
-              {{-- <p class="sign-up-text process-pending-text">Congratulations, Your Account has been <br />
+                  {{-- <p class="sign-up-text process-pending-text">Congratulations, Your Account has been <br />
                     Successfully created</p> --}}
                 </div>
               </div>

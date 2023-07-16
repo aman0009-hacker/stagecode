@@ -130,10 +130,10 @@
                         <thead class="bg-gray">
                             <tr>
                                 <th style="width:10%">SELECT</th>
-                                <th style="width:20%">CATERORY NAME</th>
+                                <th style="width:20%">CATEGORY NAME</th>
                                 <th style="width:30%">DESCRIPTION</th>
-                                <th style="width:10%">Diameter</th>
-                                <th style="width:10%">Size</th>
+                                {{-- <th style="width:10%">Diameter</th>
+                                <th style="width:10%">Size</th> --}}
                                 {{-- <th style="width:10%">Quanity</th>
                                 <th style="width:10%">Measurement</th> --}}
                                 <th style="width:30%">Book</th>
@@ -254,7 +254,7 @@
                         <h3></h3>
                         <p></p>
                     </div>
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <strong>
@@ -265,9 +265,9 @@
                                 <span></span>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-md-6"></div>
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <strong>
@@ -278,7 +278,7 @@
                                 <span></span>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-md-6"></div>
                     <div class="col-md-6">
                         <form>
@@ -374,12 +374,12 @@
                     <table class="table showDetailsTableOrder" style="width:100%">
                         <thead>
                             <tr>
-                                <th style="width:20%">Booking Details</th>
-                                <th style="width:20%">Description</th>
-                                <th style="width:10%">Diameter</th>
-                                <th style="width:10%">Size</th>
-                                <th style="width:20%">Quantity*</th>
-                                <th style="width:20%">Measurement*</th>
+                                <th style="width:25%">Booking Details</th>
+                                <th style="width:25%">Description</th>
+                                {{-- <th style="width:10%">Diameter</th>
+                                <th style="width:10%">Size</th> --}}
+                                <th style="width:25%">Quantity*</th>
+                                <th style="width:25%">Measurement*</th>
                             </tr>
                         </thead>
                         <tbody>

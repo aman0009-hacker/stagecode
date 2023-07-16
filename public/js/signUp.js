@@ -12,42 +12,7 @@ function onlyNumberKey(evt) {
         return true;
     return false;
 }
-// $(document).on('click', '#passwordimg', function () {
-//     var clicks = $(this).data('clicks');
-//     if (clicks) {
-//         // odd clicks
-//         // var source = "{!! asset('images/login-signup/show.png') !!}";
-//         var source = "/images/login-signup/show.png";
-//         $('#passwordimg').prop('src', source);
-//         $('#userPassword').prop('type', 'text');
-//     } else {
 
-//         //var source = "{!! asset('images/login-signup/hide.png') !!}";
-//         var source = "/images/login-signup/hide.png";
-//         $('#passwordimg').prop('src', source);
-//         $('#userPassword').prop('type', 'password');
-//         // even clicks
-//     }
-//     $(this).data("clicks", !clicks);
-// });
-// $(document).on('click', '#confirmpasswordimg', function () {
-//     var clicks = $(this).data('clicks');
-//     if (clicks) {
-//         //var source = "{!! asset('images/login-signup/show.png') !!}";
-//         var source = "/images/login-signup/show.png";
-//         $('#confirmpasswordimg').prop('src', source);
-//         $('#userconfirmPassword').prop('type', 'text');
-//     }
-//     else {
-//         // even clicks
-//         //var source = "{!! asset('images/login-signup/hide.png') !!}";
-//         var source = "/images/login-signup/hide.png";
-//         $('#confirmpasswordimg').prop('src', source);
-//         $('#userconfirmPassword').prop('type', 'password');
-//     }
-//     $(this).data("clicks", !clicks);
-
-// });
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -31,8 +31,8 @@
       </div>
 
 
-       {{-- New Code to show Payment Success Page --}}
-       <?php
+      {{-- New Code to show Payment Success Page --}}
+      <?php
        $encryptedResponse = request('encryptedResponse');
        if(isset($encryptedResponse) && !empty($encryptedResponse)) 
        {
@@ -43,8 +43,8 @@
       if( $paymentResponse!="" && $paymentResponse!=null && $paymentResponse=="SUCCESS")
       {
        ?>
-       <script>
-         Swal.fire({
+      <script>
+        Swal.fire({
            title: 'Payment Done Succesfully.Your Payment Reference No is <?php echo $reference_no; ?>',
            showClass: {
              popup: 'animate__animated animate__fadeInDown'
@@ -53,17 +53,15 @@
              popup: 'animate__animated animate__fadeOutUp'
            }
          })
-       </script>
-       <?php 
+      </script>
+      <?php 
       }
      }
-  
-           else if(request('paymentMode')!=null && !empty(request('paymentMode')) && request('paymentMode')=="Cheque")
+             else if(request('paymentMode')!=null && !empty(request('paymentMode')) && request('paymentMode')=="Cheque")
            {
             ?>
-
-<script>
-  Swal.fire({
+      <script>
+        Swal.fire({
     title: 'Payment Mode set Cheque successfully',
     showClass: {
       popup: 'animate__animated animate__fadeInDown'
@@ -72,18 +70,11 @@
       popup: 'animate__animated animate__fadeOutUp'
     }
   })
-</script>
-
-        <?php
+      </script>
+      <?php
            }
-
       ?>
-       {{-- New Code to show Payment Success Page --}}
-
-
-
-
-
+      {{-- New Code to show Payment Success Page --}}
       <div class="row orderhistoryOne-section">
         <div class="col-md-12">
           @foreach ($orders as $index => $order)
@@ -95,7 +86,7 @@
               <!-- Display additional order information if needed -->
               <h4 class="orderid mb-0"><span>Final Payment:</span>
                 <?php if ($order->final_payment_status === 'verified'): ?>
-                 Done ( {{$order->payment_mode}} ) 
+                Done ( {{$order->payment_mode}} )
                 <?php else: ?>
                 Pending
                 <?php endif; ?>
@@ -122,12 +113,12 @@
                 <table class="table" style="width:100%">
                   <thead class="bg-gray">
                     <tr>
-                      <th style="width:20%">CATEGORY NAME</th>
-                      <th style="width:35%">DESCRIPTION</th>
-                      <th style="width:15%">Diameter</th>
-                      <th style="width:15%">Size</th>
-                      <th style="width:15%">Quantity</th>
-                      <th style="width:15%">MEASUREMENT</th>
+                      <th style="width:25%">CATEGORY NAME</th>
+                      <th style="width:25%">DESCRIPTION</th>
+                      {{-- <th style="width:15%">Diameter</th>
+                      <th style="width:15%">Size</th> --}}
+                      <th style="width:25%">Quantity</th>
+                      <th style="width:25%">MEASUREMENT</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -137,8 +128,8 @@
                         <a href="" class="text-underline">{{ $orderItem->category_name ?? '' }}</a>
                       </td>
                       <td>{{ $orderItem->description ?? '' }}</td>
-                      <td>{{ $orderItem->diameter ?? '' }}</td>
-                      <td>{{ $orderItem->size ?? '' }}</td>
+                      {{-- <td>{{ $orderItem->diameter ?? '' }}</td>
+                      <td>{{ $orderItem->size ?? '' }}</td> --}}
                       <td>{{ $orderItem->quantity ?? '' }}</td>
                       <td>{{ $orderItem->measurement ?? '' }}</td>
                     </tr>
@@ -275,6 +266,60 @@
       <div class="modal-footer mb-4">
         {{-- <a href="/order" class="btn btn-secondary continue-btn">Make Payment</a> --}}
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="makepaymentnModalRejection" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="order-box mt-5">
+              <p>Your Booking has Rejected.</p>
+              {{-- <p>Kindly Pay Booking amount as
+                <span>per PSIEC Policy.</span>
+              </p> --}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer mb-4">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+        <!-- <button type="button" class="btn btn-primary continue-btn">Ok</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="makepaymentnModalRejectionAdmin" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="order-box mt-5">
+              <p>Kindly contact the administrator for live update.</p>
+              {{-- <p>Kindly Pay Booking amount as
+                <span>per PSIEC Policy.</span>
+              </p> --}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer mb-4">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+        <!-- <button type="button" class="btn btn-primary continue-btn">Ok</button> -->
       </div>
     </div>
   </div>

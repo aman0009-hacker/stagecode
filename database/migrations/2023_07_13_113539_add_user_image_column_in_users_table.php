@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('attachments', function (Blueprint $table) {
-            $table->text('filename')->nullable()->change();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('user_image')->nullable();
         });
     }
 
@@ -21,8 +21,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('attachments', function (Blueprint $table) {
-            $table->text('filename')->nullable()->change();
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(array_merge([
+                'user_image'
+           ]));
         });
     }
 };

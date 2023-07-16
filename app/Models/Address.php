@@ -4,25 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\OrderItem;
 use Webpatser\Uuid\Uuid;
-// use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
-class Order extends Model
+class Address extends Model
 {
     use HasFactory;
-    
+
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $table = 'orders';
+
+
+    protected $table = 'address';
     public $timestamps = true;
 
-
-    public function orderItems()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
-    
     protected static function boot(){
         parent::boot();
         static::creating(function ($model) {

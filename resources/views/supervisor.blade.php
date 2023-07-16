@@ -305,14 +305,11 @@ $('.dates').val(today);
         data.reset();
     }
     let data=new Date();
-
     let day=String(data.getDate()).padStart(2,"0");
     let month=String(data.getMonth()+1).padStart(2,"0");
     let year=data.getFullYear();
-
     let hour=data.getHours();
     let minute=String(data.getMinutes()).padStart(2,"0");
-
 let today=year+"-"+month+"-"+day+" "+hour+":"+minute;
     $('.dates').attr({min:today,max:today});
     $('.dates').val(today);      

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Controllers\PaymentController;  
 use App\Http\Controllers\OrderProcessController;
+use App\Http\Controllers\profileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -213,3 +214,7 @@ Route::any("/orderProcess",[OrderProcessController::class,'index'])->name('order
 Route::post('/payment/process/verify/extra/js',[OrderProcessController::class,'jspart']);
 Route::post("/payment/process/data/order/complete", [PaymentController::class, 'paymentProcessOrderComplete'])->name('payment.process.data.order.complete');
 Route::any("/payment/complete/process", [PaymentController::class, 'paymentComplete'])->name('payment.complete.process');
+Route::get('profile',[profileController::class,'profile'])->name('userprofile');
+Route::post('userdata',[profileController::class,'storedata'])->name('userimage');
+Route::post('remove',[profileController::class,'removeimage'])->name('removeimage');
+Route::post('address',[profileController::class,'addresssave'])->name('profile-address');

@@ -85,21 +85,7 @@ class ProductCategoryController extends Controller
     public function storeOrder(Request $request)
     {
         try {
-            // return "jlkjlk";
-            //return response()->json(["msg"=>"successs"]);
-            // $name = $request->input('name');
-            // $description = $request->input('description');
-            // $diameter = $request->input('diameter');
-            // $size = $request->input('size');
-            // $quantity = $request->input('quantity');
-            // $measurement = $request->input('measurement');
             $order = new Order();
-            // $order->category_name = $name;
-            // $order->description = $description;
-            // $order->diameter = $diameter;
-            // $order->size = $size;
-            // $order->quantity = $quantity;
-            // $order->measurement = $measurement;
             $order->status = "New";
             $order->user_id = Auth::user()->id;
             $order->save();
@@ -128,13 +114,9 @@ class ProductCategoryController extends Controller
 
     public function booking(Request $request)
     {
-        // if (Auth::check()) {
-        //     $bookingData = Order::where('user_id', Auth::user()->id)->where('status', 'Approved')->get();
-        //     return view('components.booking', compact('bookingData'));
-        // }
         try {
             if (Auth::check()) {
-                $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+                $orders = Order::where('user_id', Auth::user()->id)->whereIn('status', ['New', 'Approved'])->orderBy('created_at', 'desc')->get();
                 foreach ($orders as $order) {
                     $order->orderItems = OrderItem::where('order_id', $order->id)->get();
                 }
@@ -147,35 +129,18 @@ class ProductCategoryController extends Controller
 
     public function order(Request $request)
     {
-        // if (Auth::check()) {
-        //     $bookingData = Order::where('user_id', Auth::user()->id)->where('status', 'Dispatched')->get();
-        //     return view('components.order', compact('bookingData'));
-        // }
-
-        // if (Auth::check()) {
-        //     $orders = Order::where('user_id', Auth::user()->id)->get();
-
-        //     foreach ($orders as $order) {
-        //         $order->orderItems = OrderItem::where('order_id', $order->id)->get();
-        //     }
-
-        //     return view('components.order', compact('orders'));
-        // }
         try {
             if (Auth::check()) {
                 //$orders = Order::where('user_id', Auth::user()->id)->where('status', 'Dispatched')->orderBy('created_at', 'desc')->get();
                 $orders = Order::where('user_id', Auth::user()->id)
                     ->where(function ($query) {
-                        $query->where('status', 'Dispatched')
-                            ->orWhere('status', 'Payment_Done');
+                        $query->whereIn('status', ['Dispatched', 'Payment_Done', 'Rejected']);
                     })
                     ->orderBy('created_at', 'desc')
                     ->get();
-
                 foreach ($orders as $order) {
                     $order->orderItems = OrderItem::where('order_id', $order->id)->get();
                 }
-
                 return view('components.order', compact('orders'));
             }
         } catch (\Exception $ex) {
@@ -246,7 +211,7 @@ class ProductCategoryController extends Controller
                 if (isset($adminStatus) && !empty($adminStatus)) {
                     $id = Auth::user()->id;
                     if (isset($id)) {
-                        $status = Order::where('user_id', $id)->where('status', $adminStatus)->value('status');
+                        $status = Order::where('user_id', $id)->where('status', $adminStatus)->get();
                         return response()->json(["msg" => "success", "statusCode" => "200", "orderStatus" => $status]);
                     }
                 }
@@ -262,10 +227,6 @@ class ProductCategoryController extends Controller
         try {
             if (Auth::check()) {
                 $adminStatus = $request->input('adminStatus');
-
-                
-
-              
 
                 if (isset($adminStatus) && !empty($adminStatus)) {
                     $id = Auth::user()->id;
@@ -285,26 +246,29 @@ class ProductCategoryController extends Controller
     {
         try {
             $adminID = Admin::user()->id;
-            $this->validate($request, [
-                'product' => 'required',
-                'quantity' => 'required',
-                'amount' => 'required'
-            ]);
-            $hide = $request->hide;
-            $date = $request->date;
-            $product = $request->product;
-            $quantity = $request->quantity;
-            $amount = $request->amount;
-            for ($a = 0; $a < $hide; $a++) {
-                $data = new Records();
-                $data->date = $date[$a];
-                $data->product = $product[$a];
-                $data->quantity = $quantity[$a];
-                $data->amount = $amount[$a];
-                $data->description = $request->description;
-                $data->save();
+            if (isset($adminID) && !empty($adminID)) {
+                $this->validate($request, [
+                    'product' => 'required',
+                    'quantity' => 'required',
+                    'amount' => 'required'
+                ]);
+                $hide = $request->hide;
+                $date = $request->date;
+                $product = $request->product;
+                $quantity = $request->quantity;
+                $amount = $request->amount;
+                for ($a = 0; $a < $hide; $a++) {
+                    $data = new Records();
+                    $data->date = $date[$a];
+                    $data->product = $product[$a];
+                    $data->quantity = $quantity[$a];
+                    $data->amount = $amount[$a];
+                    $data->description = $request->description;
+                    $data->supervisor_id= $adminID;
+                    $data->save();
+                }
+                return redirect('/admin/records');
             }
-            return redirect('/admin/records');
         } catch (\Exception $ex) {
             Log::info($ex->getMessage());
         }
@@ -319,37 +283,13 @@ class ProductCategoryController extends Controller
 
                 $items = count($rowsValues);
                 if (isset($rowsValues) && count($rowsValues) > 0) {
-
                     $order = new Order();
-                    // $order->category_name = $name;
-                    // $order->description = $description;
-                    // $order->diameter = $diameter;
-                    // $order->size = $size;
-                    // $order->quantity = $quantity;
-                    // $order->measurement = $measurement;
                     $order->status = "New";
                     $order->user_id = Auth::user()->id;
                     $order->save();
-
                     if ($order->save()) {
                         $latestId = Order::latest()->first()->id;
-
                         foreach ($rowsValues as $data) {
-                            // $order = new Order;
-                            // // $category_name = $data->name;
-                            // // $description = $data->description;
-                            // // $diameter = $data->diameter;
-                            // // $size = $data->size;
-                            // // $quantity = $data->quantity;
-                            // // $measurement = $data->measurement;
-                            // $order->category_name = $data['name'];
-                            // $order->description = $data['description'];
-                            // $order->diameter = $data['diameter'];
-                            // $order->size = $data['size'];
-                            // $order->quantity = $data['quantity'];
-                            // $order->measurement = $data['measurement'];
-                            // $order->user_id = Auth::user()->id;
-                            // $order->save();
                             $orderItem = new OrderItem();
                             $orderItem->order_id = $latestId;
                             $orderItem->category_name = $data['name'];

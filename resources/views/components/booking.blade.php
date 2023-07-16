@@ -25,16 +25,10 @@
       <div class="row">
         <div class="col-md-12">
           <h3>
-            My Booking
+            My Bookings
           </h3>
         </div>
       </div>
-
-
-
-
-
-
       {{-- New Code to show Payment Success Page --}}
       <?php
       $encryptedResponse = request('encryptedResponse');
@@ -63,16 +57,6 @@
     }
      ?>
       {{-- New Code to show Payment Success Page --}}
-
-
-
-
-
-
-
-
-
-
       <div class="row orderhistoryOne-section">
         <div class="col-md-12">
           @foreach ($orders as $index => $order)
@@ -80,11 +64,6 @@
             <div class="col-12 col-sm-12 col-md-4 col-lg-4">
               <h4 class="orderid mb-0"><span>Order ID:</span>{{ $order->id ?? '' }}</h4>
             </div>
-
-
-
-
-
             <div class="col-12 col-sm-12 col-md-4 col-lg-4">
               <!-- Display additional order information if needed -->
               <h4 class="orderid mb-0"><span>Booking Amount:</span>
@@ -95,18 +74,13 @@
                 <?php endif; ?>
               </h4>
             </div>
-
-
-
-
-
             <div class="col-12 col-sm-12 col-md-4 col-lg-4">
               <h4 class="orderplaced mb-0">
                 <span>Booking Date: </span><span class="order-status">{{ $order->created_at ?? '' }}</span>
               </h4>
             </div>
           </div>
-          @if ($order->status === 'Rejected')
+          {{-- @if ($order->status === 'Rejected')
           <div class="alert alert-danger" role="alert">
             Order Rejected
           </div>
@@ -114,19 +88,19 @@
           <div class="alert alert-success" role="alert">
             Order Delivered
           </div>
-          @endif
+          @endif --}}
           <div class="row">
             <div class="col-md-12">
               <div class="table-responsive">
                 <table class="table" style="width:100%">
                   <thead class="bg-gray">
                     <tr>
-                      <th style="width:20%">CATEGORY NAME</th>
-                      <th style="width:35%">DESCRIPTION</th>
-                      <th style="width:15%">Diameter</th>
-                      <th style="width:15%">Size</th>
-                      <th style="width:15%">Quantity</th>
-                      <th style="width:15%">MEASUREMENT</th>
+                      <th style="width:25%">CATEGORY NAME</th>
+                      <th style="width:25%">DESCRIPTION</th>
+                      {{-- <th style="width:15%">Diameter</th>
+                      <th style="width:15%">Size</th> --}}
+                      <th style="width:25%">Quantity</th>
+                      <th style="width:25%">MEASUREMENT</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -136,8 +110,8 @@
                         <a href="" class="text-underline">{{ $orderItem->category_name ?? '' }}</a>
                       </td>
                       <td>{{ $orderItem->description ?? '' }}</td>
-                      <td>{{ $orderItem->diameter ?? '' }}</td>
-                      <td>{{ $orderItem->size ?? '' }}</td>
+                      {{-- <td>{{ $orderItem->diameter ?? '' }}</td>
+                      <td>{{ $orderItem->size ?? '' }}</td> --}}
                       <td>{{ $orderItem->quantity ?? '' }}</td>
                       <td>{{ $orderItem->measurement ?? '' }}</td>
                     </tr>
@@ -156,23 +130,11 @@
                 data-order-id="{{ $order->id }}">View Order Details</button>
               {{-- <button type="button" class="btn btn-secondary order-btn bookingUserStatus">View Order
                 Details</button> --}}
-
-
-
-
-
-
-
-
-
-
             </div>
           </div>
           @if (!$loop->last)
           <hr style="border-top: 3px solid black; margin-top: 15px;">
           @endif
-
-
           @endforeach
         </div>
       </div>
@@ -206,12 +168,6 @@
   </div>
 </div>
 <!-- Make payment Modal -->
-
-
-
-
-
-
 <!-- Confirmation Modal -->
 <div class="modal fade" id="makepaymentnModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -245,9 +201,6 @@
     </div>
   </div>
 </div>
-
-
-
 <div class="modal fade" id="makepaymentnModalRejection" tabindex="-1" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
