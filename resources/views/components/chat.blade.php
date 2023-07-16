@@ -21,161 +21,166 @@
 </head>
 <style>
   .chat-wrapper {
-      border-radius: 60px;
-      box-shadow: 4px 6px 0px 0px #11bfdc;
-      width: 50%;
-      margin: auto;
-      padding: 35px 35px 0px 35px;
+    border-radius: 60px;
+    box-shadow: 4px 6px 0px 0px #11bfdc;
+    width: 50%;
+    margin: auto;
+    padding: 35px 35px 0px 35px;
   }
+
   .heading {
-      / background-color: #ff9618b0; /
-      padding: 50px 0px;
-      margin-bottom: 20px;
+    / background-color: #ff9618b0;/ padding: 50px 0px;
+    margin-bottom: 20px;
   }
+
   input#btnSubmit {
-      position: absolute;
-      top: 50%;
-      right: 22px;
-      transform: translateY(-50%);
-      border-radius: 10px;
-      padding: 5px 10px;
-      border: 1px solid;
-      background-color: #bbf5ff00;
-      color: #416078;
-      font-weight: 600;
+    position: absolute;
+    top: 50%;
+    right: 22px;
+    transform: translateY(-50%);
+    border-radius: 10px;
+    padding: 5px 10px;
+    border: 1px solid;
+    background-color: #bbf5ff00;
+    color: #416078;
+    font-weight: 600;
   }
+
   textarea#textAreaMsg {
-      padding: 12px 120px 12px 55px;
-      background-color: #f1f1f1;
+    padding: 12px 120px 12px 55px;
+    background-color: #f1f1f1;
   }
-  
+
   form#image-upload {
-      border-radius: 40%!important;
-      width: 30px!important;
-      min-height: 0px!important;
-      box-sizing: border-box;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 18px;
-      background: #fff;
-      padding: 0px 0px 0px 8px!important;
-      height: 30px!important;
-      display: flex;
-      text-align: center;
+    border-radius: 40% !important;
+    width: 30px !important;
+    min-height: 0px !important;
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 18px;
+    background: #fff;
+    padding: 0px 0px 0px 8px !important;
+    height: 30px !important;
+    display: flex;
+    text-align: center;
   }
-  .dz-preview{
-      position: relative;
-      top: -163px;
-      left: -44px;
+
+  .dz-preview {
+    position: relative;
+    top: -163px;
+    left: -44px;
   }
-  
+
   .dz-default.dz-message {
-      display: none;
+    display: none;
   }
-  
-  .message_body 
-  
-  {
-      display:block;
-      margin-bottom:15px;
+
+  .message_body {
+    display: block;
+    margin-bottom: 15px;
   }
-  .color_message
-  {
-      background-color:#8beeff;
-      display:inline-block;
-      padding:10px;
-      border-radius:10px;
-      color:#000;
+
+  .color_message {
+    background-color: #8beeff;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 10px;
+    color: #000;
   }
-  .color_message.user
-  {
-      background-color:#eaf0f6;
-      color:#000;
-      Clear:both;
+
+  .color_message.user {
+    background-color: #eaf0f6;
+    color: #000;
+    Clear: both;
   }
-  
-  .timer
-  {
-      margin-top:19px;
-      float:right;
+
+  .timer {
+    margin-top: 19px;
+    float: right;
   }
-  .read_by
-  {
-      font-weight:800;
-     
+
+  .read_by {
+    font-weight: 800;
+
   }
-  .chat-wrapper
-  {
-      position:relative;
-      margin-top:50px;
-      height: 750px;
+
+  .chat-wrapper {
+    position: relative;
+    margin-top: 50px;
+    height: 750px;
   }
-  .image_chat img
-  {
-      width:100%;
+
+  .image_chat img {
+    width: 100%;
   }
-  .image_chat
-  {
-  position:absolute;
-  top:-32px;
-  width: 70px;
-  padding:15px;
-  left: 50%;
-  background-color:#fff;
-  border-radius:100%;
-  transform: translateX(-50%);
-  box-shadow: 0px 0px 7px -2px #0000007a;
-  
+
+  .image_chat {
+    position: absolute;
+    top: -32px;
+    width: 70px;
+    padding: 15px;
+    left: 50%;
+    background-color: #fff;
+    border-radius: 100%;
+    transform: translateX(-50%);
+    box-shadow: 0px 0px 7px -2px #0000007a;
+
   }
+
   .text-head {
-  display: flex;
-  justify-content: center;
-  padding-top: 25px;
-  position:relative;
+    display: flex;
+    justify-content: center;
+    padding-top: 25px;
+    position: relative;
   }
+
   .text_control {
-      padding: 10px 19px;
-      font-size: 15px;
-      }
-  textarea::placeholder
-  {
-      font-size:15px; 
+    padding: 10px 19px;
+    font-size: 15px;
   }
+
+  textarea::placeholder {
+    font-size: 15px;
+  }
+
   .all_reply {
-      font-size: 20px;
-      margin-bottom: 25px;
-      font-weight: 600;
-  }  
-  .message_body.user
-  {
-      margin-left:70px;
-      display:inline-block;
+    font-size: 20px;
+    margin-bottom: 25px;
+    font-weight: 600;
   }
-  .message_body.user div
-  {
-      float:right;
+
+  .message_body.user {
+    margin-left: 70px;
+    display: inline-block;
   }
-  .svg-icon
-  {
-      width: 20px;
-  position: absolute;
-  right: 10%;
-  top: 54%;
-  cursor: pointer;
+
+  .message_body.user div {
+    float: right;
   }
-  #submitDiv
-  {
-      display:inline-flex;
-      flex-direction: column-reverse;
+
+  .svg-icon {
+    width: 20px;
+    position: absolute;
+    right: 10%;
+    top: 54%;
+    cursor: pointer;
   }
+
+  #submitDiv {
+    display: inline-flex;
+    flex-direction: column-reverse;
+  }
+
   .set-background {
     background-color: darkcyan;
-      background-size: 250px;
-      height: 579px;
-      background-attachment: fixed;
+    background-size: 250px;
+    height: 579px;
+    background-attachment: fixed;
   }
-  </style>
+</style>
+
 <body>
   <div class="main">
     <!--  Navigation -->
@@ -213,15 +218,12 @@
               <li class="language-links">
                 <a class="language-text pe-2" href="#">English</a>|
                 <a class="language-text ps-2" href="#">Hindi</a>
-
               </li>
-
             </ul>
             <a href="/logout" class="btn btn-outline-secondary  account-btn ms-1" id="logoutid">Logout</a>
           </div>
         </div>
       </div>
-
       <div class="primary-menu">
         <div class="container">
           <div class="row my-3">
@@ -236,7 +238,6 @@
                   <i id="search-icon" class="fa fa-search" aria-hidden="true"></i>
                   <input id="search-input" placeholder="Search" />
                 </div>
-
                 <div class="navbar-nav ms-auto">
                   <ul>
                     <li>
@@ -253,7 +254,6 @@
                       <a href="" class="btn btn-primary account-btn">
                         My Account
                       </a>
-
                     </li>
                   </ul>
                 </div>
@@ -294,85 +294,61 @@
         </nav>
       </div>
     </section>
-
-
     <div class="alert alert-warning text-center">
       <strong>Note!</strong> Kindly submit the required documents for <b>approval</b>. If already submitted then please
       wait for
       <b>approval confirmation.</b>
     </div>
-
-
     {{-- Message Section --}}
-    
-      <section class="heading">
-        <div class="container px-5 my-5">
-          <div class="chat-wrapper">
-            <div class="row ">
-              <div class="col-12 border-bottom">
-                <h3 style="font-size:18px;color: #939497;">Reply</h3>
-              </div>
-              <div class=" col-md-12 set-background">
-              
-             
-              
-             
-              
+    <section class="heading">
+      <div class="container px-5 my-5">
+        <div class="chat-wrapper">
+          <div class="row ">
+            <div class="col-12 border-bottom">
+              <h3 style="font-size:18px;color: #939497;">Reply</h3>
+            </div>
+            <div class=" col-md-12 set-background">
               <div class=" mt-4">
                 <div class="justify-content-end d-flex">
-                  {{-- <button type="button" class="btn btn-outline-secondary me-3 clear_btn" id="btnClear">Clear</button>
+                  {{-- <button type="button" class="btn btn-outline-secondary me-3 clear_btn"
+                    id="btnClear">Clear</button>
                   <input class="submit_btn" type="submit" value="Submit" id="btnSubmit"> --}}
-
                 </div>
               </div>
               <div class="col-12 scroll-chat  ">
-
                 {{-- <p class="note-text">Note:Username will not appear on the app.</p> --}}
                 <div class="msg-grp">
-
                   <p>
-
                   <div id="submitDiv"></div>
                   </p>
                 </div>
               </div>
-
-              </div>
-
-              <div class="col-12 text-message">
-                <div class="my-4 row" style="position: relative">
-                  <form id="chatForm">
-                    @csrf
+            </div>
+            <div class="col-12 text-message">
+              <div class="my-4 row" style="position: relative">
+                <form id="chatForm">
+                  @csrf
                   {{-- <label for="textAreaMsg" class="col-sm-2 col-form-label">Message</label> --}}
                   <textarea class="col-sm-9 form-control w-100 mx-auto" name="textAreaMsg" id="textAreaMsg" rows="1"
-                 placeholder="Type message here"   required style="resize: none;"></textarea>
-                 <input class="submit_btn" type="submit" value="Send now" id="btnSubmit"> 
+                    placeholder="Type message here" required style="resize: none;"></textarea>
+                  <input class="submit_btn" type="submit" value="Send now" id="btnSubmit">
                 </form>
                 <form action="{{ route('dropzone.store') }}" method="post" enctype="multipart/form-data"
-    id="image-upload" class="dropzone">
-    @csrf
-    
-      +
-      
-  
-  </form>
-                </div>
+                  id="image-upload" class="dropzone">
+                  @csrf
+                  +
+                </form>
               </div>
             </div>
           </div>
-
         </div>
-      </section>
-    
-    
-
+      </div>
+    </section>
     {{-- <div class="container"> --}}
       <div class="row">
-
       </div>
       {{--
     </div> --}}
-
     <!--  Footer -->
     <footer id="footer">
       <div class="footer-top">
@@ -508,7 +484,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
       <div class="footer-bottom w-100">
@@ -525,11 +500,8 @@
             </div>
           </div>
         </div>
-
       </div>
-
     </footer>
-  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js' type='text/javascript'></script>
     <script src="{{asset('js/chat.js')}}"></script>

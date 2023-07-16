@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('attachments', function (Blueprint $table) {
-            $table->text('filename')->nullable()->change();
+        Schema::table('orders', function (Blueprint $table) {
+            $table->string("Cheque_Date")->nullable();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('attachments', function (Blueprint $table) {
-            $table->text('filename')->nullable()->change();
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropColumn(array_merge(['Cheque_Date']));
         });
     }
 };

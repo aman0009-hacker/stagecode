@@ -29,11 +29,8 @@ class YardMgmt extends Form
         ]);
         $product_id = $validatedData['product_id'];
         $category_id = $validatedData['category_id'];
-
         //dump($request->all());
-
         admin_success('Processed successfully.');
-
         return back();
     }
 
@@ -42,22 +39,16 @@ class YardMgmt extends Form
      */
     public function form()
     {
-
         //$this->hidden('_token')->default(csrf_token());
-
-
         $this->select('product_id', 'Product')
             ->options(function () {
                 // Retrieve the products from the database
                 $products = \App\Models\Product::pluck('name', 'id');
-
                 // Add a placeholder option
                 $products->prepend('-- Select Product --', '');
-
                 return $products;
             })
             ->rules('required')->load('category_id', '/admin/load-categories');
-
         // $this->select('category_id', 'Category')
         //     ->options(function () {
         //         // Retrieve the categories from the database
@@ -69,12 +60,8 @@ class YardMgmt extends Form
         //         return $categories;
         //     })
         //     ->rules('required');
-
         $this->select('category_id', 'Category')->rules('required')->load('entity_id', '/admin/load-entities');
-
         $this->select('entity_id', 'Entity')->rules('required');
-
-
     }
 
     /**
@@ -85,7 +72,6 @@ class YardMgmt extends Form
     public function data()
     {
         return [
-            
         ];
     }
 }

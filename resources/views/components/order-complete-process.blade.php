@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,10 +12,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{asset('js/finalpayment.js')}}"></script>
 </head>
-
 <body>
-  
-    <div class="main">
+      <div class="main">
         <div class="container-fluid p-4">
             <div class="sign-up-page">
                 <div class="row">

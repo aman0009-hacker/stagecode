@@ -87,19 +87,20 @@
                             Messages
                           </div>
                         </a></li> --}}
-                      <li><a class="dropdown-item" href="/booking">
-                          <img src="{{asset('images/home-page/Combined-Shape.png')}}" alt="Combined-Shape">
-                          <div class="dropdown-text d-inline">
-                            My Booking
-                          </div>
-                        </a></li>
-                      <li class="ms-1 mt-2"><a class="dropdown-item" href="/order">
+
+                        <li class="ms-1 mt-2"><a class="dropdown-item" href="/booking">
                           <img src="{{asset('images/home-page/Sent.png')}}" alt="Sent">
                           <div class="dropdown-text d-inline">
-                            My Orders
+                            My Bookings
                           </div>
                         </a></li>
-                      {{-- <li><a class="dropdown-item" href="#">
+                        <li class="ms-1 mt-2"><a class="dropdown-item" href="/order">
+                          <img src="{{asset('images/home-page/Combined-Shape.png')}}" alt="Combined-Shape">
+                          <div class="dropdown-text d-inline">
+                            My Cart
+                          </div>
+                        </a></li>
+                         {{-- <li><a class="dropdown-item" href="#">
                           <img src="./resources/images/home-page/File.png" alt="File">
                           <div class="dropdown-text d-inline">
                             My Booking

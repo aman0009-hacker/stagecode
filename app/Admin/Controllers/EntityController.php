@@ -45,13 +45,13 @@ class EntityController extends AdminController
                 return "";
             });
             // $grid->column('id', __('Id'));
-            $grid->column('entity_id', __('Category Name'))->display(function ($entity_id) {
+            $grid->column('entity_id', __('Category'))->display(function ($entity_id) {
                 return Category::where('id', $entity_id)->firstOrFail()->name ?? '';
             });
-            $grid->column('name', __('Entity Name'));
-            $grid->column('description', __('Description'));
+            $grid->column('name', __('Material'));
+            // $grid->column('description', __('Description'));
             // $grid->column('size', __('Size'));
-            $grid->column('diameter', __('Diameter'));
+            // $grid->column('diameter', __('Diameter'));
             // $grid->column('quantity', __('Quantity'));
             // $grid->column('remaining', __('Remaining'));
             // $grid->column('measurement', __('Measurement'));
@@ -67,7 +67,8 @@ class EntityController extends AdminController
             // });
             $grid->filter(function ($filter) {
                 $filter->disableIdFilter();
-                $filter->like('name', __('Entity Name'));
+                $filter->like('name', __('Material'));
+                //$filter->like('entity_id', __('Category'));
                 // $filter->like('id', __('Product Name'));
                 // $filter->column(1 / 2, function ($filter) {
                 //      $filter->like('name', __('Entity Name'));
@@ -79,7 +80,7 @@ class EntityController extends AdminController
                 //  });
             });
             $grid->actions(function ($actions) {
-                $actions->disableEdit();
+                //$actions->disableEdit();
                 $actions->disableView();
                 if (Admin::user()->can('create-post')) {
                     Permission::check('create-post');

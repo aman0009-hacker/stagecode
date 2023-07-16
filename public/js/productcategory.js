@@ -11,8 +11,8 @@ function handleMultipleCheckboxes() {
         var rowData = {
             name: row.find('td:nth-child(2)').text(),
             description: row.find('td:nth-child(3)').text(),
-            diameter: row.find('td:nth-child(4)').text(),
-            size: row.find('td:nth-child(5)').text(),
+            // diameter: row.find('td:nth-child(4)').text(),
+            // size: row.find('td:nth-child(5)').text(),
             //quantity: parseFloat(row.find('.quantity-input').val()),
             //measurement: parseFloat(row.find('.measurement-input').val())
         };
@@ -57,8 +57,8 @@ function updateModalContentMultiple(rowsData) {
         var tr = $('<tr></tr>');
         tr.append('<td>' + rowData.name + '</td>');
         tr.append('<td>' + rowData.description + '</td>');
-        tr.append('<td>' + rowData.diameter + '</td>');
-        tr.append('<td>' + rowData.size + '</td>');
+        // tr.append('<td>' + rowData.diameter + '</td>');
+        // tr.append('<td>' + rowData.size + '</td>');
         //   tr.append('<td>' + rowData.quantity + '</td>');
         //   tr.append('<td>' + rowData.measurement + '</td>');
         tr.append('<td>' + '<input type="number" class="form-control quantity-input" value="' + rowData.quantity + '">' + '</td>');
@@ -353,8 +353,8 @@ function generateTableRows(data) {
         var checkboxCell = $('<td><input class="form-check-input" type="checkbox"></td>');
         var nameCell = $('<td></td>').text(entity.name);
         var descriptionCell = $('<td></td>').text(entity.description);
-        var diameterCell = $('<td></td>').text(entity.diameter);
-        var sizeCell = $('<td></td>').text(entity.size);
+        // var diameterCell = $('<td></td>').text(entity.diameter);
+        // var sizeCell = $('<td></td>').text(entity.size);
 
         //new code
         // var quantityCell = $('<td></td>').html('<input type="number" class="form-control quantity-input" value="' + entity.quantity + '">');
@@ -374,8 +374,8 @@ function generateTableRows(data) {
             var rowData = {
                 name: entity.name,
                 description: entity.description,
-                diameter: entity.diameter,
-                size: entity.size,
+                // diameter: entity.diameter,
+                // size: entity.size,
 
                 //new code
 
@@ -387,7 +387,8 @@ function generateTableRows(data) {
             // Update the modal content with the current row data
             updateModalContent(rowData);
         });
-        tr.append(checkboxCell, nameCell, descriptionCell, diameterCell, sizeCell, bookNowCell);
+        //tr.append(checkboxCell, nameCell, descriptionCell, diameterCell, sizeCell, bookNowCell);
+        tr.append(checkboxCell, nameCell, descriptionCell, bookNowCell);
         //tr.append(checkboxCell, nameCell, descriptionCell, diameterCell, sizeCell, quantityCell, measurementCell, bookNowCell);
         tbody.append(tr);
     });
@@ -398,8 +399,8 @@ function updateModalContent(rowData, callingFunction = 1) {
     var modal = $('#exampleModal');
     modal.find('.modal-body h3').text(rowData.name);
     modal.find('.modal-body p').text(rowData.description);
-    modal.find('.modal-body span').eq(0).text(rowData.diameter);
-    modal.find('.modal-body span').eq(1).text(rowData.size);
+    // modal.find('.modal-body span').eq(0).text(rowData.diameter);
+    // modal.find('.modal-body span').eq(1).text(rowData.size);
     modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" value="' + rowData.quantity + '">');
     //modal.find('#measurement').empty().append('<input type="number" class="form-control measurement-input" value="' + rowData.measurement + '">');
     //var measurement = modal.find('.measurement-input').val();

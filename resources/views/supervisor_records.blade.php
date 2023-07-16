@@ -5,14 +5,6 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>PSIEC</title>
- 
-
- 
-   
- 
-
-  
- 
     <style>
         .back-button {
             position: absolute;
@@ -23,10 +15,8 @@
 </head>
 
 <body style="border: 1px solid grey">
-
-        <a href="/admin/records" class="btn btn-default">Back</a>
+    <a href="/admin/records" class="btn btn-default">Back</a>
     </div>
-
     <h2 class="text-center mt-3">Records Collection - Yard Supervisor</h2>
     <br>
     <div class="container mt-4">
@@ -39,14 +29,16 @@
                 </div>
                 <div class="col-md-6">
                     <label for="quantity" class="control-label">Quantity</label>
-                    <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity" required>
+                    <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity"
+                        required>
                 </div>
             </div>
             <br>
             <div class="row mt-5">
                 <div class="col-md-12">
                     <label for="description" class="control-label">Description</label>
-                    <textarea class="form-control" id="description" name="description" placeholder="Description" rows="5"></textarea>
+                    <textarea class="form-control" id="description" name="description" placeholder="Description"
+                        rows="5"></textarea>
                 </div>
             </div>
             <br>
@@ -58,7 +50,6 @@
             </div>
         </form>
     </div>
-
     <div class="container mt-4">
         <table class="table">
             <thead>
@@ -71,11 +62,8 @@
             </thead>
             <tbody></tbody>
         </table>
-        <button type="button" class="btn btn-danger delete-row"  style="display:none">Delete</button>
+        <button type="button" class="btn btn-danger delete-row" style="display:none">Delete</button>
     </div>
-
- 
-   
     <script>
         $(document).ready(function(){
             $(".add-row").click(function(){
@@ -85,13 +73,11 @@
                 if(product && quantity) {
                     var markup = "<tr><td><input type='checkbox' name='record'></td><td>" + product + "</td><td>" + quantity + "</td><td>"+description+ "</td></tr>";
                     $("table tbody").append(markup);
-                    
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
-
                     var form = document.getElementById("records");
                     var formData = new FormData(form);
                     var csrfToken = $('meta[name="csrf-token"]').attr('content'); 
@@ -122,7 +108,6 @@
                     });
                 }
             });
-
             $(".delete-row").click(function(){
                 $("table tbody").find('input[name="record"]').each(function(){
                     if($(this).is(":checked")){
@@ -138,8 +123,6 @@
             });
         });
     </script>
-       
-        
 </body>
 
 </html>

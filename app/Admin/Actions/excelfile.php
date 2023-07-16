@@ -5,13 +5,15 @@ namespace App\Admin\Actions;
 use Encore\Admin\Actions\Action;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\Log;
 use App\Models\Product;
 use App\Models\Entity;
-use Illuminate\Support\Facades\Log;
+use PHPUnit\Event\Code\Throwable;
 
 class excelfile extends Action
 {
     protected $selector = '.excelfile';
+
     public function handle(Request $request)
     {
         try {
@@ -29,7 +31,7 @@ class excelfile extends Action
                         $array[] = $content;
                     }
                     //  $transRow=false;
-                    elseif (strtoupper($content[0]) == strtoupper('Product') && strtoupper($content[1]) == strtoupper('category') && strtoupper($content[2]) == strtoupper('subcategory') && strtoupper($content[3]) == strtoupper('dimension')) {
+                    elseif (strtoupper($content[0]) == strtoupper('Product') && strtoupper($content[1]) == strtoupper('category') && strtoupper($content[2]) == strtoupper('subcategory')) {
                         $transRow = false;
                     } else {
                         return $this->response()->error('Please give the coloumns in following way: Product,category,subcategory,dimension')->refresh();
@@ -37,37 +39,32 @@ class excelfile extends Action
                 }
                 fclose($data);
                 foreach ($array as $value) {
-                    $catego = Category::where('name', $value[1])->exists();
-
+                    $catego = category::where('name', $value[1])->exists();
                     if ($catego) {
                         continue;
                     } else {
-
-                        $catall = Product::all();
+                        $catall = product::all();
                         foreach ($catall as $single) {
-
                             if (strtoupper($single->name) == strtoupper($value[0])) {
-                                Category::create([
+                                //   
+                                category::create([
                                     "name" => $value[1],
                                     "category_id" => $single->id
                                 ]);
                             }
                         }
-
                     }
-
                 }
                 foreach ($array as $sub) {
-                    $catego = Entity::where('name', $sub[2])->where('diameter', $sub[3])->exists();
+                    $catego = entity::where('name', $sub[2])->exists();
                     if ($catego) {
                         continue;
                     } else {
-                        $catall = Category::all();
+                        $catall = category::all();
                         foreach ($catall as $subid) {
                             if (strtoupper($subid->name) == strtoupper($sub[1])) {
-                                Entity::create([
+                                entity::create([
                                     "name" => $sub[2],
-                                    "diameter" => $sub[3],
                                     "entity_id" => $subid->id,
                                 ]);
                             }

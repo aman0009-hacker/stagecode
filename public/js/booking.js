@@ -11,29 +11,12 @@ $(document).ready(function()
     });
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     var status = $(this).data('status');
-    //alert(status);
-    //alert(status);
-    // alert(status);
-    // var orderId = $(this).data('order-id');
-    // var adminStatus = $("#adminStatus" + orderId).val();
-    // alert(adminStatus);
     var form = document.getElementById("userBookingFormData");
-
-    //alert($(this).data('order-id'));
-    // var txtOrderGlobalID=$("#txtOrderGlobalID").val();
-    // if(txtOrderGlobalID)
-    // {
-    //     $("#txtOrderGlobalModalID").val(txtOrderGlobalID);
-    //     alert($("#txtOrderGlobalID").val());
-    // }
-
     var currentOrderIDValue=$(this).data('order-id');
     if(currentOrderIDValue)
     {
         $("#txtOrderGlobalModalID").val(currentOrderIDValue); 
     }
-
-
     var formData = new FormData(form);
     $.ajax(
         {
@@ -44,8 +27,6 @@ $(document).ready(function()
             },
             data: { adminStatus:status },
             dataType: 'JSON',
-            // processData: false,
-            // contentType: false,
             success:function(data)
             {
                 //alert(data.orderStatus);
@@ -55,25 +36,18 @@ $(document).ready(function()
                 }
                 else if(data.orderStatus == "Rejected")
                 {
-                    $('#makepaymentnModalRejection').modal('show');
+                    // $('#makepaymentnModalRejection').modal('show');
                 }
                 // else if(data.orderStatus=="Dispatched")
                 // {
                 //     $('#makepaymentnModals').modal('show');
                 // }
-                else 
+                else if(data.orderStatus=="New")
                 {
                     $('#confirmationModal').modal('show');
                     
                 }
-
-                //alert(data.msg);
-                // $.each(data, function(key, value) {
-                //     if (value !== null) {
-                //         var option = $('<option>').val(key).text(value);
-                //         $("#entity").append(option);
-                //     }
-                // });
+              
             },
             error: function(error) {
                 console.error(error);

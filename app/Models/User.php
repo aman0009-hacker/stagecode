@@ -75,10 +75,10 @@ class User extends Authenticatable
 
     protected $encryptable = [
      
-            // 'name',
-            // 'last_name',
+            'name',
+            'last_name',
             // 'email',
-            // 'contact_number'      
+            'contact_number'      
         
         
     ];

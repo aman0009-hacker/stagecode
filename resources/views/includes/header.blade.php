@@ -1,3 +1,8 @@
+<style>
+  .items-drop li a:hover {
+    background-color: #bbf5ff !important;
+  }
+</style>
 <section>
   <div class=" container-fluid px-0 language-2-header">
     <div class="">
@@ -67,27 +72,49 @@
                   </a>
                 </li>
                 <li>
-                  <form method="post" action="{{route('myaccount')}}">
-           
-                    @csrf
-                     {{-- <a href="#" class="btn btn-primary account-btn" id="myid" style="display:none">
+                  {{-- <form method="post" action="{{route('myaccount')}}">
+                    @csrf --}}
+                    {{-- <a href="#" class="btn btn-primary account-btn" id="myid" style="display:none">
                       My Account
-                    </a>  --}}
-                    <button type="submit" class="btn btn-secondary account-btn" id="myid" style="display:none">My
-                      Account</button>
+                    </a> --}}
+                    {{-- <button type="submit" class="btn btn-secondary account-btn" id="myid" style="display:none">My
+                      Account</button> --}}
 
-                      {{-- <a href="/order" class="btn btn-outline-secondary ms-4" id="myOrder" style="display:none">
-                        My Order
-                      </a>  --}}
-                  </form> 
+                    {{-- <a href="/order" class="btn btn-outline-secondary ms-4" id="myOrder" style="display:none">
+                      My Order
+                    </a> --}}
+                    {{-- </form> --}}
+                  @auth
+                  <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle border-0" type="button"
+                      style="background-color:#bbf5ff;color:#000;" data-bs-toggle="dropdown" aria-expanded="false">
+                      My
+                      Account
+                    </button>
+                    <ul class="dropdown-menu items-drop">
+                      <li class=" d-block mx-0"><a class="dropdown-item" href="{{route('userprofile')}}">Profile</a>
+                      </li>
+                      <li class=" d-block mx-0"><a class="dropdown-item" href="#">Dashboard</a></li>
+                    </ul>
+                  </div>
+                  @endauth
+                  @guest
                   <h2 style="display: inline;">
                     <a href="/signup" class="btn btn-outline-secondary" id="mySignUp">
                       Register
                     </a> <a href="/login" class="btn btn-outline-secondary ms-4" id="myLogin">
                       Login
                     </a>
-               
                   </h2>
+                  @endguest
+                  {{-- <h2 style="display: inline;">
+                    <a href="/signup" class="btn btn-outline-secondary" id="mySignUp">
+                      Register
+                    </a> <a href="/login" class="btn btn-outline-secondary ms-4" id="myLogin">
+                      Login
+                    </a>
+
+                  </h2> --}}
                 </li>
               </ul>
             </div>
@@ -127,5 +154,3 @@
     </nav>
   </div>
 </section>
-
-

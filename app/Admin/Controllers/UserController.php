@@ -21,10 +21,13 @@ use Illuminate\Http\Request;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Auth\Permission;
 use Illuminate\Validation\Rule;
+use App\EncryptedFilter;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Encore\Admin\Grid\Actions\BatchDelete;
+use Encore\Admin\Grid\Filter\Like;
+use Encore\Admin\Grid\Filter\Equal;
 
 class UserController extends AdminController
 {
@@ -48,6 +51,9 @@ class UserController extends AdminController
       $grid = new Grid(new User());
       // $grid->column('id', __('Id'));
       $grid->column('name', __('First Name'));
+      //   $grid->column('name', __('First Name'))->display(function ($value) {
+      //     return $this->getNameAttribute($value);
+      // });
       $grid->column('last_name', __('Last Name'));
       $grid->column('email', __('Email'));
       $grid->column('contact_number', __('Contact Number'));
@@ -128,23 +134,39 @@ class UserController extends AdminController
         return Carbon::parse($value)->format('Y-m-d H:i');
         //return Carbon::parse($value)->format('d-m-Y');
       });
-      $grid->column('comment', __('Payment'))->display(function($value)
-      {
-        if(isset($value) && !empty($value) && $value=="Done")
-        {
+      $grid->column('comment', __('Payment'))->display(function ($value) {
+        if (isset($value) && !empty($value) && $value == "Done") {
           return "Done";
-        }
-        else
-        {
+        } else {
           return "Pending";
         }
       });
+      // $grid->filter(function ($filter) {
+      //   $filter->disableIdFilter();
+      //   $filter->column(1 / 2, function ($filter) {
+      //     //$filter->equal('name', __('Select Name'))->select(User::pluck('name', 'name')->toArray());
+      //     $filter->like('name', __('First Name'));
+      //     $filter->like('email', __('Email'));
+      //   });
+      //   $filter->column(1 / 2, function ($filter) {
+      //     $filter->equal('approved', __('Status'))->select([
+      //       0 => 'New',
+      //       1 => 'Approved',
+      //       2 => 'Rejected',
+      //     ]);
+      //     $filter->like('contact_number', __('Contact'));
+      //   });
+      // });
+
       $grid->filter(function ($filter) {
         $filter->disableIdFilter();
         $filter->column(1 / 2, function ($filter) {
-          //$filter->equal('name', __('Select Name'))->select(User::pluck('name', 'name')->toArray());
-          $filter->like('name', __('First Name'));
-          $filter->like('email', __('Email'));
+          $filter->where(function ($query) {
+            $query->where('name', 'like', '%' . request()->input('name') . '%');
+          }, __('First Name'))->placeholder(__('First Name'));
+          $filter->where(function ($query) {
+            $query->where('email', 'like', '%' . request()->input('email') . '%');
+          }, __('Email'))->placeholder(__('Email'));
         });
         $filter->column(1 / 2, function ($filter) {
           $filter->equal('approved', __('Status'))->select([
@@ -152,9 +174,12 @@ class UserController extends AdminController
             1 => 'Approved',
             2 => 'Rejected',
           ]);
-          $filter->like('contact_number', __('Contact'));
+          $filter->where(function ($query) {
+            $query->where('contact_number', 'like', '%' . request()->input('contact_number') . '%');
+          }, __('Contact'))->placeholder(__('Search'));
         });
       });
+
       //$grid->disableRowSelector();
       $grid->model()->whereHas('attachment', function ($query) {
         $query->whereNotNull('filename');
