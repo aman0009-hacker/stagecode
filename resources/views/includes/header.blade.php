@@ -73,17 +73,18 @@
                 </li>
                 <li>
                   <form method="post" action="{{route('myaccount')}}">
+           
                     @csrf
-                    <a href="#" class="btn btn-primary account-btn" id="myid" style="display:none">
+                     {{-- <a href="#" class="btn btn-primary account-btn" id="myid" style="display:none">
                       My Account
-                    </a>
-                    {{-- <button type="submit" class="btn btn-secondary account-btn" id="myid" style="display:none">My
-                      Account</button> --}}
+                    </a>  --}}
+                    <button type="submit" class="btn btn-secondary account-btn" id="myid" style="display:none">My
+                      Account</button>
 
-                    <a href="/order" class="btn btn-outline-secondary ms-4" id="myOrder" style="display:none">
-                      My Order
-                    </a>
-                    </form>
+                      {{-- <a href="/order" class="btn btn-outline-secondary ms-4" id="myOrder" style="display:none">
+                        My Order
+                      </a>  --}}
+                  </form> 
                   {{-- @auth
                   <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle border-0" type="button"
