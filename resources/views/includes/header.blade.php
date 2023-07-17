@@ -72,19 +72,19 @@
                   </a>
                 </li>
                 <li>
-                  {{-- <form method="post" action="{{route('myaccount')}}">
-                    @csrf --}}
-                    {{-- <a href="#" class="btn btn-primary account-btn" id="myid" style="display:none">
+                  <form method="post" action="{{route('myaccount')}}">
+                    @csrf
+                    <a href="#" class="btn btn-primary account-btn" id="myid" style="display:none">
                       My Account
-                    </a> --}}
+                    </a>
                     {{-- <button type="submit" class="btn btn-secondary account-btn" id="myid" style="display:none">My
                       Account</button> --}}
 
-                    {{-- <a href="/order" class="btn btn-outline-secondary ms-4" id="myOrder" style="display:none">
+                    <a href="/order" class="btn btn-outline-secondary ms-4" id="myOrder" style="display:none">
                       My Order
-                    </a> --}}
-                    {{-- </form> --}}
-                  @auth
+                    </a>
+                    </form>
+                  {{-- @auth
                   <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle border-0" type="button"
                       style="background-color:#bbf5ff;color:#000;" data-bs-toggle="dropdown" aria-expanded="false">
@@ -106,15 +106,15 @@
                       Login
                     </a>
                   </h2>
-                  @endguest
-                  {{-- <h2 style="display: inline;">
+                  @endguest --}}
+                  <h2 style="display: inline;">
                     <a href="/signup" class="btn btn-outline-secondary" id="mySignUp">
                       Register
                     </a> <a href="/login" class="btn btn-outline-secondary ms-4" id="myLogin">
                       Login
                     </a>
 
-                  </h2> --}}
+                  </h2>
                 </li>
               </ul>
             </div>

@@ -97,7 +97,7 @@
                         <li class="ms-1 mt-2"><a class="dropdown-item" href="/order">
                           <img src="{{asset('images/home-page/Combined-Shape.png')}}" alt="Combined-Shape">
                           <div class="dropdown-text d-inline">
-                            My Cart
+                            My Orders
                           </div>
                         </a></li>
                          {{-- <li><a class="dropdown-item" href="#">
