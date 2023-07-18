@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\OrderItem;
 use Webpatser\Uuid\Uuid;
+use App\Models\User;
 
 
 // use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -19,6 +20,11 @@ class PaymentDataHandling extends Model
 
    
     public $timestamps = true;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 
     protected static function boot(){
         parent::boot();

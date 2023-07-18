@@ -32,11 +32,11 @@ $(document).ready(function () {
                         $('#makepaymentnModalRejectionAdmin').modal('show');
                     }
                     else if (data.orderStatus[0]["status"] == "Dispatched") {
-                        alert("jkjklfffffffj");
+                        //alert("jkjklfffffffj");
                         $('#makepaymentnModals').modal('show');
                     }
                     else if (data.orderStatus[0]["status"] == "Payment_Done") {
-                        alert("jkjklfffvvvvvvvvvvvvffffj");
+                        //alert("jkjklfffvvvvvvvvvvvvffffj");
                         $('#alreadyPaidTotalAmount').modal('show');
                     }
                     else if (data.orderStatus[0]["status"] == "Rejected") {
