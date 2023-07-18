@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Order;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\Address;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 
@@ -149,7 +151,7 @@ class PaymentController extends Controller
                             $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
                             $order = Order::find($id);
                             $order->final_payment_status = "verified";
-                            $order->payment_mode="online";
+                            $order->payment_mode = "online";
                             $order->save();
                             return redirect()->route('order', ['encryptedResponse' => $encryptedResponse]);
                         }
@@ -596,13 +598,18 @@ class PaymentController extends Controller
 
     public function paymentComplete(Request $request)
     {
-
+        // $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
+        // Session::forget('txtOrderGlobalModalCompleteID');
+        // Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
+        //     return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID'));
+        $address = Address::where('user_id', Auth::user()->id)->latest()->first();
+        // dd($address);
         $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
+        //dd($txtOrderGlobalModalCompleteID);
         Session::forget('txtOrderGlobalModalCompleteID');
         Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
-
         // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
-            return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID'));
+        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'address'));
         // }
     }
 
@@ -616,11 +623,101 @@ class PaymentController extends Controller
         return $userId;
     }
 
+
+    public function paymentCompleteProcessAddress(Request $request)
+    {
+        try {
+            $validator1 = Validator::make(
+                $request->all(),
+                [
+                    'shipping_name' => 'required',
+                    'shipping_address' => 'required',
+                    'shipping_state' => 'required',
+                    'shipping_district' => 'required',
+                    'shipping_city' => 'required',
+                    'shipping_zipcode' => 'required|min:6|max:6',
+                    'shipping_gst_number' => 'required|min:15|max:15',
+                    'shipping_gst_statecode' => 'required|min:2|max:2',
+                ]
+            );
+            if ($validator1->fails()) {
+                // Validation failed, handle the error
+                return response()->json(['success' => false, 'message' => "error", 'data' => 'data'], 400);
+                // return redirect()->back()->withErrors($validator)->withInput();
+            }
+            if ((!$request->has('is_same'))) {
+                $validator2 = Validator::make(
+                    $request->all(),
+                    [
+                        'billing_name' => 'required',
+                        'billing_address' => 'required',
+                        'billing_district' => 'required',
+                        'billing_state' => 'required',
+                        'billing_city' => 'required',
+                        'billing_zipcode' => 'required|min:6|max:6',
+                        'billing_gst_number' => 'required|min:15|max:15',
+                        'billing_gst_statecode' => 'required|min:2|max:2',
+                    ]
+                );
+            }
+            // return response()->json(['success'=>true,'message'=>"king",'data'=>'data'],200);
+            if ($validator2->fails()) {
+                // Validation failed, handle the error
+                return response()->json(['success' => false, 'message' => "error", 'data' => 'data'], 400);
+                // return redirect()->back()->withErrors($validator)->withInput();
+            }
+            $orderId = $request->input('txtOrderGlobalModalCompleteIDValue') ?? '';
+            //$orderId = 25;
+            if (isset($orderId) && !empty($orderId)) {
+                $address = new Address();
+                $address->user_id = Auth::user()->id ?? '';
+                $address->order_id = $orderId;
+                $address->shipping_name = $request->shipping_name;
+                $address->shipping_address = $request->shipping_address;
+                $address->shipping_state = $request->shipping_state;
+                $address->shipping_district = $request->shipping_district;
+                $address->shipping_city = $request->shipping_city;
+                $address->shipping_zipcode = $request->shipping_zipcode;
+                $address->shipping_gst_number = $request->shipping_gst_number;
+                $address->shipping_gst_statecode = $request->shipping_gst_statecode;
+                if (($request->has('is_same'))) {
+                    $address->billing_name = $request->shipping_name;
+                    $address->billing_address = $request->shipping_address;
+                    $address->billing_state = $request->shipping_state;
+                    $address->billing_district = $request->shipping_district;
+                    $address->billing_city = $request->shipping_city;
+                    $address->billing_zipcode = $request->shipping_zipcode;
+                    $address->billing_gst_number = $request->shipping_gst_number;
+                    $address->billing_gst_statecode = $request->shipping_gst_statecode;
+                    $address->save();
+                } else {
+                    $address->billing_name = $request->billing_name;
+                    $address->billing_address = $request->billing_address;
+                    $address->billing_state = $request->billing_state;
+                    $address->billing_district = $request->billing_district;
+                    $address->billing_city = $request->billing_city;
+                    $address->billing_zipcode = $request->billing_zipcode;
+                    $address->billing_gst_number = $request->billing_gst_number;
+                    $address->billing_gst_statecode = $request->billing_gst_statecode;
+                    $address->save();
+                }
+            }
+            if (Auth::check()) {
+                $addressId = Address::where('user_id', Auth::user()->id)->get()->last();
+                if (isset($orderId) && !empty($orderId)) {
+                    $addressToOrder = Order::where('user_id', Auth::user()->id)->where('id', $orderId)->update(['address_id' => $addressId->id]);
+                    alert::success('Address Save Successfully');
+                    return redirect()->back();
+                }
+            }
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+        }
+    }
+
     public function paymentProcessOrderComplete(Request $request)
     {
-
         try {
-
             $paymentMode = $request->input('paymentMode');
             $amountOrderFinal = $request->input('amountOrderFinal');
             if (isset($paymentMode) && !empty($paymentMode) && $paymentMode == "online" && isset($amountOrderFinal) && !empty($amountOrderFinal)) {
@@ -666,11 +763,10 @@ class PaymentController extends Controller
                 if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
                     $value = Order::find($txtOrderGlobalModalCompleteID);
                     $value->payment_mode = "cheque";
-                    $returnValue=$value->save();
-                    if($returnValue)
-                    {
-                    $paymentMode="cheque";   
-                    return redirect()->route('order', compact('paymentMode'));
+                    $returnValue = $value->save();
+                    if ($returnValue) {
+                        $paymentMode = "cheque";
+                        return redirect()->route('order', compact('paymentMode'));
                     }
                 }
             }

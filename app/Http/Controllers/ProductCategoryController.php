@@ -231,7 +231,8 @@ class ProductCategoryController extends Controller
                 if (isset($adminStatus) && !empty($adminStatus)) {
                     $id = Auth::user()->id;
                     if (isset($id)) {
-                        $status = Order::where('user_id', $id)->where('status', $adminStatus)->value('status');
+                        //$status = Order::where('user_id', $id)->where('status', $adminStatus)->value('status');
+                        $status = Order::where('user_id', $id)->where('status', $adminStatus)->get();
                         return response()->json(["msg" => "success", "statusCode" => "200", "orderStatus" => $status]);
                     }
                 }

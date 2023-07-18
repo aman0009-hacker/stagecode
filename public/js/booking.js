@@ -30,11 +30,15 @@ $(document).ready(function()
             success:function(data)
             {
                 //alert(data.orderStatus);
-                if(data.orderStatus=="Approved")
+                if(data.orderStatus[0]["payment_status"] == "verified")
+                {
+                    $('#makepaymentnModalConfirm').modal('show');
+                }
+                else if(data.orderStatus[0]["status"]=="Approved")
                 {
                     $('#makepaymentnModal').modal('show');
                 }
-                else if(data.orderStatus == "Rejected")
+                else if(data.orderStatus[0]["status"]== "Rejected")
                 {
                     // $('#makepaymentnModalRejection').modal('show');
                 }
@@ -42,7 +46,7 @@ $(document).ready(function()
                 // {
                 //     $('#makepaymentnModals').modal('show');
                 // }
-                else if(data.orderStatus=="New")
+                else if(data.orderStatus[0]["status"]=="New")
                 {
                     $('#confirmationModal').modal('show');
                     
