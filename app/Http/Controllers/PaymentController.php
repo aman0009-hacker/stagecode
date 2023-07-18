@@ -83,7 +83,6 @@ class PaymentController extends Controller
                 );
                 //code to send info to DB
                 $paymentHandling = PaymentDataHandling::where('reference_no', $request['ReferenceNo'])->first();
-                ;
                 $paymentHandling->merchant_id = $request['ID'] ?? '';
                 $paymentHandling->encryption_key = config('eazypay.encryption_key') ?? '';
                 $paymentHandling->sub_merchant_id = $request['SubMerchantId'] ?? '';
@@ -217,7 +216,6 @@ class PaymentController extends Controller
                 );
                 //code to send info to DB
                 $paymentHandling = PaymentDataHandling::where('reference_no', $request['ReferenceNo'])->first();
-                ;
                 $paymentHandling->merchant_id = $request['ID'] ?? '';
                 $paymentHandling->encryption_key = config('eazypay.encryption_key') ?? '';
                 $paymentHandling->sub_merchant_id = $request['SubMerchantId'] ?? '';
