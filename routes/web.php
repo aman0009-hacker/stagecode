@@ -218,3 +218,5 @@ Route::get('profile',[profileController::class,'profile'])->name('userprofile');
 Route::post('userdata',[profileController::class,'storedata'])->name('userimage');
 Route::post('remove',[profileController::class,'removeimage'])->name('removeimage');
 Route::post('address',[profileController::class,'addresssave'])->name('profile-address');
+
+Route::post("/payment/complete/process/address", [PaymentController::class, 'paymentCompleteProcessAddress'])->name('payment.complete.process.address');
