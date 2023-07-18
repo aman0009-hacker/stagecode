@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Attachment;
+use App\Models\PaymentDataHandling;
 // use Illuminate\Database\Eloquent\Concerns\HasUuids;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
@@ -71,6 +72,16 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(Comments::class);
+    }
+
+    public function paymentDataHandling()
+    {
+        return $this->hasMany(PaymentDataHandling::class, 'user_id', 'id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'id');
     }
 
     protected $encryptable = [
