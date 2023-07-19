@@ -49,7 +49,7 @@ class EntityController extends AdminController
                 return Category::where('id', $entity_id)->firstOrFail()->name ?? '';
             });
             $grid->column('name', __('Material'));
-            // $grid->column('description', __('Description'));
+            $grid->column('description', __('Description'));
             // $grid->column('size', __('Size'));
             // $grid->column('diameter', __('Diameter'));
             // $grid->column('quantity', __('Quantity'));

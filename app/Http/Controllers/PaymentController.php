@@ -657,13 +657,14 @@ class PaymentController extends Controller
                         'billing_gst_statecode' => 'required|min:2|max:2',
                     ]
                 );
-            }
-            // return response()->json(['success'=>true,'message'=>"king",'data'=>'data'],200);
+                    // return response()->json(['success'=>true,'message'=>"king",'data'=>'data'],200);
             if ($validator2->fails()) {
                 // Validation failed, handle the error
                 return response()->json(['success' => false, 'message' => "error", 'data' => 'data'], 400);
                 // return redirect()->back()->withErrors($validator)->withInput();
             }
+            }
+        
             $orderId = $request->input('txtOrderGlobalModalCompleteIDValue') ?? '';
             //$orderId = 25;
             if (isset($orderId) && !empty($orderId)) {
