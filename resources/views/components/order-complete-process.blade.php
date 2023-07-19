@@ -604,6 +604,11 @@
                     .fail(function(error) {
                         // Request failed
                         console.log('Error:', error);
+                        swal.fire({
+                            title: 'Order Not Found',
+                            text:'Please placed order first',
+                            icon: 'warning',
+                        });
                     });
               });
         });
