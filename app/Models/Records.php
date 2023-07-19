@@ -14,8 +14,6 @@ class Records extends Model
     protected $table="supervisor_records";
     use HasFactory;
 
-  
-
     protected static function boot(){
         parent::boot();
         static::creating(function ($model) {

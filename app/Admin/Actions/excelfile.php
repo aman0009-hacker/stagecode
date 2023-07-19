@@ -5,10 +5,9 @@ namespace App\Admin\Actions;
 use Encore\Admin\Actions\Action;
 use Illuminate\Http\Request;
 use App\Models\Category;
-use Illuminate\Support\Facades\Log;
 use App\Models\Product;
 use App\Models\Entity;
-use PHPUnit\Event\Code\Throwable;
+use Illuminate\Support\Facades\Log;
 
 class excelfile extends Action
 {
@@ -31,7 +30,7 @@ class excelfile extends Action
                         $array[] = $content;
                     }
                     //  $transRow=false;
-                    elseif (strtoupper($content[0]) == strtoupper('Product') && strtoupper($content[1]) == strtoupper('category') && strtoupper($content[2]) == strtoupper('subcategory')) {
+                    elseif(strtoupper($content[0])==strtoupper('Product') && strtoupper($content[1])==strtoupper('category') &&   strtoupper($content[2])==strtoupper('subcategory') && strtoupper($content[3])==strtoupper('description')){
                         $transRow = false;
                     } else {
                         return $this->response()->error('Please give the coloumns in following way: Product,category,subcategory,dimension')->refresh();
@@ -63,10 +62,18 @@ class excelfile extends Action
                         $catall = category::all();
                         foreach ($catall as $subid) {
                             if (strtoupper($subid->name) == strtoupper($sub[1])) {
-                                entity::create([
-                                    "name" => $sub[2],
-                                    "entity_id" => $subid->id,
-                                ]);
+                                if ($sub[3] == "") {
+                                    entity::create([
+                                        "name" => $sub[2],
+                                        "entity_id" => $subid->id,
+                                    ]);
+                                } else {
+                                    entity::create([
+                                        "name" => $sub[2],
+                                        "description" => $sub[3],
+                                        "entity_id" => $subid->id,
+                                    ]);
+                                }
                             }
                         }
                     }

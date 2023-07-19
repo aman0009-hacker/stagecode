@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Log;
 use Encore\Admin\Grid\Actions\BatchDelete;
 use Encore\Admin\Grid\Filter\Like;
 use Encore\Admin\Grid\Filter\Equal;
+use App\Models\PaymentDataHandling;
 
 class UserController extends AdminController
 {
@@ -76,6 +77,7 @@ class UserController extends AdminController
           return "Rejected";
         }
       });
+
       // ->expand(function ($model) {
       //         $query = DB::table('comments')->where('approved', $model->approved)->where('admin_id',Admin::user()->id)->get();
       //         if ($model->approved == 0) {
@@ -106,7 +108,11 @@ class UserController extends AdminController
         $export->except(['approved', 'comments', 'attachment', 'otp']);
       });
       $grid->actions(function ($actions) {
-        $actions->disableEdit();
+        if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
+          //$actions->disableEdit();
+        } else if (Admin::user()->inRoles(['superadmin', 'SuperAdmin'])) {
+
+        }
         $actions->disableView();
         $actions->disableDelete();
         $actions->add(new ShowDocuments);
@@ -139,6 +145,35 @@ class UserController extends AdminController
           return "Done";
         } else {
           return "Pending";
+        }
+      });
+      $grid->column("member_at", __("Member At"))->display(function ($value) {
+        if (isset($value) && !empty($value)) {
+          return Carbon::parse($value)->format('Y-m-d');
+        } else {
+          $userID = $this->id;
+          //return $userID;
+          if (isset($userID) && !empty($userID)) {
+            $user = User::with([
+              'paymentDataHandling' => function ($query) {
+                $query->where('payment_status', 'SUCCESS')
+                  ->where("data", "Registration_Amount")
+                  ->orderBy('updated_at', 'desc')
+                  ->limit(1);
+              }
+            ])->find($userID);
+            //return $user;
+            if ($user) {
+              if ($user->paymentDataHandling->isNotEmpty()) {
+                $updatedAt = $user->paymentDataHandling->first()->updated_at;
+                //return $updatedAt;
+                $customerStartDate = Carbon::parse($updatedAt);
+                return Carbon::parse($customerStartDate)->format('Y-m-d');
+              }
+            } else {
+              return "N/A";
+            }
+          }
         }
       });
       // $grid->filter(function ($filter) {
@@ -217,10 +252,11 @@ class UserController extends AdminController
   {
     // return $form;
     $form = new Form(new User());
-    $form->text('name', __('First Name'))->rules('required|max:255|regex:/^[a-zA-Z]+$/');
-    $form->text('last_name', __('Last name'))->rules('required|max:255|regex:/^[a-zA-Z]+$/');
-    $form->email('email', __('Email'))->rules('required|max:255|email');
-    $form->text('contact_number', __('Contact number'))->rules('required|max:10|unique:users|min:10');
+    // $form->text('name', __('First Name'))->rules('required|max:255|regex:/^[a-zA-Z]+$/');
+    // $form->text('last_name', __('Last name'))->rules('required|max:255|regex:/^[a-zA-Z]+$/');
+    // $form->email('email', __('Email'))->rules('required|max:255|email');
+    // $form->text('contact_number', __('Contact number'))->rules('required|max:10|unique:users|min:10');
+    $form->date("member_at", __("Member At"));
     $form->footer(function ($footer) {
       $footer->disableViewCheck();
       // disable `Continue editing` checkbox
