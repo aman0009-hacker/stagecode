@@ -708,6 +708,10 @@ class PaymentController extends Controller
                     alert::success('Address Save Successfully');
                     return redirect()->back();
                 }
+                else
+            {
+                return response()->json(['success'=>false,'message'=>"no_order",'data'=>'data'],400);
+            }
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
