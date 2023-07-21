@@ -5,23 +5,19 @@
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <style>
     @import url('https://fonts.googleapis.com/css?family=Poppins');
-
     * {
       font-family: 'Poppins', sans-serif;
     }
-
     #chart {
       width: 100%;
       margin: 35px auto;
       opacity: 0.9;
     }
-
     #timeline-chart .apexcharts-toolbar {
       opacity: 1;
       border: 0;
     }
-
-    .apexcharts-zoomin-icon,
+   .apexcharts-zoomin-icon,
     .apexcharts-zoomout-icon,
     .apexcharts-zoom-icon.apexcharts-selected,
     .apexcharts-reset-icon,
@@ -30,7 +26,6 @@
     }
   </style>
 </head>
-
 <body>
   <!--Div that will hold the pie chart-->
   <form>
