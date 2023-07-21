@@ -63,7 +63,6 @@ class profileController extends Controller
 
     public function addresssave(request $request)
     {
-
         try {
             $address = new Address();
             $valid = Validator::make($request->all(), [
@@ -84,13 +83,10 @@ class profileController extends Controller
                 "billpincode" => 'required|min:6|max:6',
                 "billaddress" => 'required',
             ]);
-
             if ($valid->fails()) {
                 return redirect()->back()->withErrors($valid);
             }
             $user_id = Address::where('user_id', Auth::user()->id)->get()->last();
-
-
             if ($user_id != "") {
                 $user_id->user_id = Auth::user()->id;
                 $user_id->shipping_name = $request->shipname;
@@ -110,12 +106,9 @@ class profileController extends Controller
                 $user_id->billing_zipcode = $request->billpincode;
                 $user_id->billing_address = $request->billaddress;
                 $user_id->save();
-
                 Alert::success('Data is updated', 'Your address has been updated succesfully ');
-
                 return redirect()->back();
             } else {
-
                 $address->user_id = Auth::user()->id;
                 $address->shipping_name = $request->shipname;
                 $address->shipping_gst_number = $request->shipgstnumber;
@@ -133,16 +126,85 @@ class profileController extends Controller
                 $address->billing_district = $request->billdistrict;
                 $address->billing_zipcode = $request->billpincode;
                 $address->billing_address = $request->billaddress;
-
                 $address->save();
-
                 Alert::success('Data is saved', 'Your address has been store succesfully ');
-
                 return redirect()->back();
             }
         } catch (\Exception $ex) {
             Log::info($ex->getMessage());
         }
 
+    }
+
+    public function userdashboard()
+    {
+        try {
+            $arr = 0;
+            $auth_id = auth::user()->id;
+            $data = auth::user();
+            $order = Order::where('user_id', $auth_id)->orderBy('id', 'DESC')->with('orderItems')->get();
+            //  total order amount per month
+            $user_order_total = \DB::table('orders')
+                ->selectRaw('Month(created_at) as month, SUM(amount) as total_amount')
+                ->where('user_id', $auth_id)
+                ->groupBy('month')
+                ->get();
+            //dd($user_order_total);
+            $chardate = "";
+            foreach ($user_order_total as $date) {
+                $month = \DateTime::createFromFormat('!m', $date->month);
+                $chardate .= "['" . $month->format('F') . "'," . $date->total_amount . "],";
+            }
+            $chartrim = rtrim($chardate, ',');
+            //  total purchse in order
+            $user_per_month = \DB::table('orders')
+                ->selectRaw('Month(created_at) as month , count(id)
+ as id')
+                ->where('user_id', $auth_id)->groupBy('month')->get();
+            $charorder = "";
+            foreach ($user_per_month as $month) {
+                $order_m = \DateTime::createFromFormat('!m', $month->month);
+                $charorder .= "['" . $order_m->format('F') . "'," . $month->id . "],";
+            }
+            $order_trim = rtrim($charorder, ',');
+            if (count($order) > 0) {
+                foreach ($order as $total) {
+                    $arr += $total->amount;
+                }
+            }
+            $total_amount = "['amount',$arr]";
+            return view('userDashboard.dashboard', compact('data', 'order', 'chartrim', 'order_trim', 'total_amount'));
+        } catch (\Exception $ex) {
+            Log::info($ex->getMessage());
+        }
+    }
+
+    public function userorder()
+    {
+        try {
+            $data = auth::user();
+            $mainItem = Order::where('user_id', $data->id)->get();
+            if (count($mainItem) == 0) {
+                $main = null;
+            } else {
+                foreach ($mainItem as $order_main) {
+                    $main[] = OrderItem::where('order_id', $order_main->id)->get();
+                }
+            }
+            return view('userDashboard.order', compact('data', 'main'));
+        } catch (\Exception $ex) {
+            Log::info($ex->getMessage());
+        }
+    }
+
+    public function useraddress()
+    {
+        try {
+            $data = auth::user();
+            $address = address::where('user_id', $data->id)->get()->last();
+            return view('userDashboard.address', compact('data', 'address'));
+        } catch (\Exception $ex) {
+            Log::info($ex->getMessage());
+        }
     }
 }

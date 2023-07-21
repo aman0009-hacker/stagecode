@@ -171,6 +171,14 @@ class CategoriesTableSeeder extends Seeder
                 'created_at' => '2023-07-03 15:03:56',
                 'updated_at' => '2023-07-03 15:03:56',
             ),
+            19 => 
+            array (
+                'id' => 'bb5cb950-1984-11ee-bb4d-1722c7b7314z',
+                'name' => 'ROM',
+                'category_id' => 'e2268c80-10c7-11ee-8722-c9aa42136e46',
+                'created_at' => '2023-07-03 15:03:56',
+                'updated_at' => '2023-07-03 15:03:56',
+            ),
         ));
         
         

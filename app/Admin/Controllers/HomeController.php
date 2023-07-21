@@ -21,17 +21,21 @@ class HomeController extends Controller
             ->row(function (Row $row) {
                 $row->class('justify-content-center align-items-center h-100');
                 $row->column(3, function (Column $column) {
-                    $column->append(new Box('User Document Verification (BAR)', view('admin.chartjs')));
+                    $column->append(new Box('User Document Verification', view('admin.charts.barChart')));
                 });
-                $row->column(3, function (Column $column) {
-                    $column->append(new Box('User Document Verification (PIE)', view('admin.chartjspie')));
+                $row->column(5, function (Column $column) {
+                    $column->append(new Box('User  Verification', view('admin.charts.donutChart')));
                 });
-                $row->column(3, function (Column $column) {
-                    $column->append(new Box('User Document Verification (LINE)', view('admin.chartjsline')));
+                $row->column(4, function (Column $column) {
+                    $column->append(new Box('User  Verification', view('admin.charts.lineChart')));
                 });
-                $row->column(3, function (Column $column) {
-                    $column->append(new Box('User Document Verification (DOUGHNUT)', view('admin.chartjsscatter')));
+                $row->column(8, function (Column $column) {
+                    $column->append(new Box('User Document Verification (PIE)', view('admin.charts.waveChart')));
+                });
+                $row->column(4, function (Column $column) {
+                    $column->append(new Box('User Document Verification (PIE)', view('admin.charts.pieChart')));
                 });
             });
+
     }
 }

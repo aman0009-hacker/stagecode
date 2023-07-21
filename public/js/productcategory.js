@@ -242,6 +242,7 @@ function handleCategoryChange(categoryId) {
     // $("#entity").html('<option value="">Select</option>');
     $("#entity").html('');
     $("#entity").append("<option value=''>Select</option>");
+
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     var form = document.getElementById("productCategoryInfo");
     var formData = new FormData(form);
@@ -263,6 +264,52 @@ function handleCategoryChange(categoryId) {
                         if (value !== null) {
                             var option = $('<option>').val(key).text(value);
                             $("#entity").append(option);
+                            
+                        }
+                    });
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            }
+        );
+
+    }
+}
+
+
+function handleCategoryChangeCoal(categoryId) {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    // $("#entity").html('<option value="">Select</option>');
+    $("#entityCoal").html('');
+    $("#entityCoal").append("<option value=''>Select</option>");
+
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    var form = document.getElementById("productCategoryInfo");
+    var formData = new FormData(form);
+    // alert(categoryId);
+    if (categoryId) {
+        $.ajax(
+            {
+                url: '/entities/' + categoryId,
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken // Include the CSRF token in the request headers
+                },
+                data: formData,
+                dataType: 'JSON',
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    $.each(data, function (key, value) {
+                        if (value !== null) {
+                            var option = $('<option>').val(key).text(value);
+                            $("#entityCoal").append(option);
+                            
                         }
                     });
                 },
@@ -288,6 +335,51 @@ $("#showEntity").on("click", function (event) {
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     var category_data = $("#category").val();
     var subcategory_data = $("#entity option:selected").text();
+
+
+    //alert( category +  "  "  +subcategory); 
+
+    if (category) {
+        $.ajax(
+            {
+                url: '/entityData',
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                //data: formData,
+                data: {
+                    category_data: category_data,
+                    subcategory_data: subcategory_data,
+                },
+                dataType: 'JSON',
+                // processData: false,
+                // contentType: false,
+                success: function (data) {
+                    generateTableRows(data);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            }
+        );
+    }
+
+});
+
+
+$("#showEntityCoal").on("click", function (event) {
+    // event.preventDefault();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var form = document.getElementById("productCategoryInfo");
+    var formData = new FormData(form);
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    var category_data = $("#categoryCoal").val();
+    var subcategory_data = $("#entityCoal option:selected").text();
 
 
     //alert( category +  "  "  +subcategory); 

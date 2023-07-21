@@ -23,13 +23,23 @@ class ProductCategoryController extends Controller
     public function index(Request $request)
     {
         try {
-            $categoryList = Category::pluck('name', 'id');
-
-            if ($categoryList->isNotEmpty()) {
-                return view('components.category', compact('categoryList'));
+            //$categoryList = Category::pluck('name', 'id');
+            $categoryList = Category::whereHas('product', function ($query) {
+                $query->where('name', 'Steel');
+            })->pluck('name', 'id');
+            //dd($categoryList);
+            $categoryListCoal = Category::whereHas('product', function ($query) {
+                $query->where('name', 'Coal');
+            })->pluck('name', 'id');
+            if ($categoryList->isNotEmpty() && $categoryListCoal->isNotEmpty()) {
+                return view('components.category', compact('categoryList', 'categoryListCoal'));
             } else {
                 return view('components.category')->withInput();
             }
+            // foreach ($categories as $category) {
+            //     echo "Category Name: " . $category->name . ", Category ID: " . $category->id . "<br>";
+            // }
+            //$categoryListCoal = Category::pluck('name', 'id');
         } catch (\Exception $ex) {
             return view('components.category');
         }
@@ -265,7 +275,7 @@ class ProductCategoryController extends Controller
                     $data->quantity = $quantity[$a];
                     $data->amount = $amount[$a];
                     $data->description = $request->description;
-                    $data->supervisor_id= $adminID;
+                    $data->supervisor_id = $adminID;
                     $data->save();
                 }
                 return redirect('/admin/records');

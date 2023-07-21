@@ -78,7 +78,7 @@
                                                 <input placeholder="Search term">
                                             </div> --}}
                                             <select class="form-select form-select-lg mb-3 category-selection"
-                                                aria-label="form-select-lg" name="entity" id="entity">
+                                                aria-label="form-select-lg" name="entity" id="entity" >
                                                 <option value="">Select</option>
                                             </select>
                                             <button type="button" value="Submit" class="btn btn-info mt-4"
@@ -91,22 +91,33 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <select class="form-select form-select-lg mb-3 category-selection"
-                                                aria-label=".form-select-lg">
-                                                <option selected>Select</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                                aria-label=".form-select-lg" onchange="handleCategoryChangeCoal(this.value)" name="categoryCoal" id="categoryCoal">
+                                                <option value="">Select</option>
+                                                @if(isset($categoryListCoal))
+                                                @foreach ($categoryListCoal as $id => $name)
+                                                <option value="{{ $id }}" {{ old('category')==$id ? ' selected' : ''
+                                                    }}>
+                                                    {{ $name }}
+                                                </option>
+                                                @endforeach
+                                                @endif
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <div class="col-md-12">
-                                            <div class="search">
+                                        <div class="col-md-12 text-center">
+                                            {{-- <div class="search">
                                                 <span class="search-icon">
                                                     <i class="fa fa-search" aria-hidden="true"></i>
                                                 </span>
                                                 <input placeholder="Search term">
-                                            </div>
+                                            </div> --}}
+                                            <select class="form-select form-select-lg mb-3 category-selection"
+                                                aria-label="form-select-lg" name="entityCoal" id="entityCoal" >
+                                                <option value="">Select</option>
+                                            </select>
+                                            <button type="button" value="Submit" class="btn btn-info mt-4"
+                                                id="showEntityCoal">Submit</button>
                                         </div>
                                     </div>
                                 </div>
