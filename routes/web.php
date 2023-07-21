@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\OrderProcessController;
 use App\Http\Controllers\profileController;
+use App\Http\Controllers\InvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,11 +44,13 @@ Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPa
 Route::get("/forgot-password", function () {
     return view('auth.forgot-password');
 })->name('forgot-password');
-Route::get("/test", function () {
-    return view("components.test");
+Route::get("/dummy", function () {
+    return view("components.invoice");
 });
 Route::get('refresh_captcha', [ProductCategoryController::class, 'refreshCaptcha'])->name('refresh_captcha');
 Route::get("/resetPassword", function () {  return view('auth.resetPassword');  });
+Route::post("/records", [ProductCategoryController::class, 'records'])->name('records');
+Route::get("admin/records/create", [ProductCategoryController::class, 'supervisor']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/payment', function () { return view('components.payment');  });
@@ -90,7 +93,7 @@ Route::middleware(['auth'])->group(function () {
         return redirect()->route('/home');
     });
     Route::get('document-process-update', function () {  return view('components.document-process-update'); })->name('documentUpdate');
-    Route::get("dashboard", function () { return view('dashboard'); })->name('dashboard');
+    //Route::get("dashboard", function () { return view('dashboard'); })->name('dashboard');
     Route::get('/chat', function () { return view('components.chat'); })->name('chat');
     Route::get('PaymentDetails', function () {  return view('components.payment-details'); })->name('PaymentDetailsView');
     Route::any('congratulations', function () { return view('components.congratulations'); })->name('congratulations');
@@ -122,8 +125,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/storeOrder', [ProductCategoryController::class, 'storeOrder'])->name('storeOrder');
     Route::get("/booking", [ProductCategoryController::class, 'booking'])->name('booking');
     Route::get("/order", [ProductCategoryController::class, 'order'])->name('order');
-    Route::post("/records", [ProductCategoryController::class, 'records'])->name('records');
-    Route::get("admin/records/create", [ProductCategoryController::class, 'supervisor']);
     Route::post('storeSupervisor', [ProductCategoryController::class, 'storeSupervisor'])->name('storeSupervisor');
     Route::post('verifyAdminStatus', [ProductCategoryController::class, 'verifyAdminStatus'])->name('verifyAdminStatus');
     Route::post('verifyAdminStatusOrder', [ProductCategoryController::class, 'verifyAdminStatusOrder'])->name('verifyAdminStatusOrder');
@@ -145,4 +146,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('remove', [profileController::class, 'removeimage'])->name('removeimage');
     Route::post('address', [profileController::class, 'addresssave'])->name('profile-address');
     Route::post("/payment/complete/process/address", [PaymentController::class, 'paymentCompleteProcessAddress'])->name('payment.complete.process.address');
+    Route::prefix('user')->group(function()
+    {
+        Route::get('dashboard',[profileController::class,'userdashboard'])->name('userdashboard');
+        Route::get('order',[profileController::class,'userorder'])->name('userorder');  
+        Route::get('address',[profileController::class,'useraddress'])->name('useraddress');  
+    });
 });
+
+Route::get('invoice',[InvoiceController::class, 'index'])->name('invoice');
