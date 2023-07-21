@@ -447,25 +447,11 @@
       <!-- JQVMap -->
       <script src="{{asset('plugins/jqvmap/jquery.vmap.min.js')}}"></script>
       <script src="{{asset('plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script>
-      <!-- jQuery Knob Chart -->
-      <!-- <script src="plugins/jquery-knob/jquery.knob.min.js')}}"></script> -->
-      <!-- daterangepicker -->
-      <!-- <script src="plugins/moment/moment.min.js')}}"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js')}}"></script> -->
-      <!-- Tempusdominus Bootstrap 4 -->
-      <!-- <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script> -->
-      <!-- Summernote -->
-      <!-- <script src="plugins/summernote/summernote-bs4.min.js"></script> -->
-      <!-- overlayScrollbars -->
-      <!-- <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script> -->
-      <!-- AdminLTE App -->
       <script src="{{asset('dist/js/adminlte.js')}}"></script>
       <!-- AdminLTE for demo purposes -->
       <script src="{{asset('dist/js/demo.js')}}"></script>
       <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
       <script src="{{asset('dist/js/pages/dashboard.js')}}"></script>
-
-      
       <!--  For Charts -->
       <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
       <script src="cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

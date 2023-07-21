@@ -30,40 +30,31 @@
   <!-- sctylesheet -->
   <link rel="stylesheet" href="{{asset('./dist/css/index.css')}}">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
-  integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
-  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="{{asset('js/dashboard.js')}}"></script>
-
-
-  
-
-
- @include('userDashboard.css')
+  @include('userDashboard.css')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
- 
-   @include('userDashboard.navbar')
+    @include('userDashboard.navbar')
     <!-- /.navbar -->
     <!-- Main Sidebar Container -->
     @include('userDashboard.sidebar')
     <!-- Content Wrapper. Contains page content -->
-    
     <div class="content-wrapper">
       <!-- /.content-header -->
       <!-- Main content -->
       <section class="content">
         <div class="container-fluid">
-  @yield('content')
-
-  </div>
-</section>
+          @yield('content')
+        </div>
+      </section>
     </div>
     <!-- /.content-wrapper -->
-   @include('userDashboard.footer')
+    @include('userDashboard.footer')
     <!-- Control Sidebar -->
-   
     <!-- /.control-sidebar -->
   </div>
   <!-- ./wrapper -->
