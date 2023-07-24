@@ -22,6 +22,7 @@ use App\Models\State;
 use App\Models\City;
 use App\Models\Order;
 use Illuminate\Support\Facades\Log;
+use App\Models\Records;
 
 
 class CustomPageController extends AdminController
@@ -344,125 +345,160 @@ class CustomPageController extends AdminController
     }
 
 
-    /* chart function Start*/
+        /* chart function Start*/
 
-    public function getTotalYardCount()
-    {
-
-        $Yards = Records::selectRaw('COUNT(id)
- as total_yards, YEAR(date) as year, MONTH(date) as month')
-        ->groupBy('year', 'month')
-        ->get();
-
-        foreach($Yards as $month)
+        public function getTotalYardCount()
         {
+    
+            $Yards = Records::selectRaw('COUNT(id)
+     as total_yards, YEAR(date) as year, MONTH(date) as month')
+            ->groupBy('year', 'month')
+            ->get();
+    
+            if(isset($yards) && !empty($yards))
+            {
+    
+    
+            foreach($Yards as $month)
+            {
+                $order_m=\DateTime::createFromFormat('!m',$month->month);
+    
+    
+                $charmonth[]=$order_m->format('F');
+    
+            }
+            // dd($charmonth);
+    
+            foreach($Yards as $month)
+            {
+                $chardate[]=$month->total_yards;
+            }
+    
+            $myData=[
+                'month'=>$charmonth,
+                'numberOf'=>$chardate
+             ];
+            //  dd($myData);
+             return response()->json(['msg' => "success", 'data' => $myData]);
+            }
+            else
+            {
+                // return response()->json(['msg' => "Error", 'data' => 'null']);
+            }
+        }
+        public function getTotalUsersCount()
+        {
+    
+            $user_per_month = User::selectRaw('COUNT(id)
+     as total_users, YEAR(created_at) as year, MONTH(created_at) as month')
+            ->groupBy('year', 'month')
+            ->get();
+    
+            if(isset($user_per_month) && !empty($user_per_month))
+            {
+    
+            foreach($user_per_month as $month)
+            {
+                $order_m=\DateTime::createFromFormat('!m',$month->month);
+    
+    
+                $charmonth[]=$order_m->format('F');
+    
+            }
+    
+            foreach($user_per_month as $month)
+            {
+                $chardate[]=$month->total_users;
+            }
+            // dd($chardate);
+    
+            $myData=[
+                'month'=>$charmonth,
+                'numberOf'=>$chardate
+             ];
+    
+             return response()->json(['msg' => "success", 'data' => $myData]);
+            }
+            else
+            {
+                // return response()->json(['msg' => "error", 'data' => 'null']);
+    
+            }
+        }
+        public function getTotalOrdersCount()
+        {
+    
+            $order_per_month = Order::selectRaw('COUNT(id)
+     as total_orders, YEAR(created_at) as year, MONTH(created_at) as month')
+            ->groupBy('year', 'month')
+            ->get();
+            // dd($orders);
+            if(isset($order_per_month) && !empty($order_per_month))
+            {
+    
+            foreach($order_per_month as $month)
+            {
             $order_m=\DateTime::createFromFormat('!m',$month->month);
-
-
+    
+    
             $charmonth[]=$order_m->format('F');
-
+    
+            }
+    
+            foreach($order_per_month as $month)
+            {
+                $chardate[]=$month->total_orders;
+            }
+    
+            $myData=[
+                'month'=>$charmonth,
+                'numberOf'=>$chardate
+             ];
+    
+             return response()->json(['msg' => "success", 'data' => $myData]);
+            }
+            else
+            {
+                // return response()->json(['msg' => "error", 'data' => 'null']);
+            }
         }
-        // dd($charmonth);
-
-        foreach($Yards as $month)
+    
+        public function getTotalOrdersAmount()
         {
-            $chardate[]=$month->total_yards;
-        }
-
-        $myData=[
-            'month'=>$charmonth,
-            'numberOf'=>$chardate
-         ];
-        //  dd($myData);
-         return response()->json(['msg' => "success", 'data' => $myData]);
-    }
-    public function getTotalUsersCount()
-    {
-
-        $user_per_month = User::selectRaw('COUNT(id)
- as total_users, YEAR(created_at) as year, MONTH(created_at) as month')
-        ->groupBy('year', 'month')
-        ->get();
-
-        foreach($user_per_month as $month)
-        {
+            $amount_per_month=\DB::table('orders')
+            ->selectRaw('SUM(amount) as total_orders, YEAR(created_at) as year, MONTH(created_at) as month')
+            ->groupBy('year','month')->get();
+    
+            if(isset($amount_per_month) && !empty($amount_per_month))
+            {
+    
+    
+            foreach($amount_per_month as $month)
+            {
             $order_m=\DateTime::createFromFormat('!m',$month->month);
-
-
+    
             $charmonth[]=$order_m->format('F');
-
+    
+            }
+            foreach($amount_per_month as $month)
+            {
+                $chardate[]=$month->total_orders;
+            }
+    
+             $myData=[
+                'month'=>$charmonth,
+                'total'=>$chardate
+             ];
+    
+            return response()->json(['msg' => "success", 'data' => $myData]);
+            }
+            else
+            {
+                // return response()->json(['msg' => "error", 'data' => 'null']);
+    
+            }
+    
         }
-
-        foreach($user_per_month as $month)
-        {
-            $chardate[]=$month->total_users;
-        }
-        // dd($chardate);
-
-        $myData=[
-            'month'=>$charmonth,
-            'numberOf'=>$chardate
-         ];
-
-         return response()->json(['msg' => "success", 'data' => $myData]);
-    }
-    public function getTotalOrdersCount()
-    {
-
-        $order_per_month = Order::selectRaw('COUNT(id)
- as total_orders, YEAR(created_at) as year, MONTH(created_at) as month')
-        ->groupBy('year', 'month')
-        ->get();
-        // dd($orders);
-
-        foreach($order_per_month as $month)
-        {
-        $order_m=\DateTime::createFromFormat('!m',$month->month);
-
-
-        $charmonth[]=$order_m->format('F');
-
-        }
-
-        foreach($order_per_month as $month)
-        {
-            $chardate[]=$month->total_orders;
-        }
-
-        $myData=[
-            'month'=>$charmonth,
-            'numberOf'=>$chardate
-         ];
-
-         return response()->json(['msg' => "success", 'data' => $myData]);
-    }
-
-    public function getTotalOrdersAmount()
-    {
-        $amount_per_month=\DB::table('orders')
-        ->selectRaw('SUM(amount) as total_orders, YEAR(created_at) as year, MONTH(created_at) as month')
-        ->groupBy('year','month')->get();
-
-
-        foreach($amount_per_month as $month)
-        {
-        $order_m=\DateTime::createFromFormat('!m',$month->month);
-
-        $charmonth[]=$order_m->format('F');
-
-        }
-        foreach($amount_per_month as $month)
-        {
-            $chardate[]=$month->total_orders;
-        }
-
-         $myData=[
-            'month'=>$charmonth,
-            'total'=>$chardate
-         ];
-
-        return response()->json(['msg' => "success", 'data' => $myData]);
-    }
-
-    /* charts function End*/
+    
+        /* charts function End*/
 }
