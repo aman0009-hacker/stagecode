@@ -28,8 +28,13 @@ $(document).ready(function () {
                 // contentType: false,
                 success: function (data) {
                     if ((data.orderStatus[0]["status"] == "Dispatched" || data.orderStatus[0]["status"] == "Payment_Done") && data.orderStatus[0]["final_payment_status"] == "verified") {
-                        //alert("jkjklj");
                         $('#makepaymentnModalRejectionAdmin').modal('show');
+
+                        //Code for "download invoice" start
+
+                        //Code for "download invoice" complete
+
+
                     }
                     else if (data.orderStatus[0]["status"] == "Dispatched") {
                         //alert("jkjklfffffffj");

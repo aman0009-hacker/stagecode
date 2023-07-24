@@ -51,6 +51,8 @@ Route::get('refresh_captcha', [ProductCategoryController::class, 'refreshCaptcha
 Route::get("/resetPassword", function () {  return view('auth.resetPassword');  });
 Route::post("/records", [ProductCategoryController::class, 'records'])->name('records');
 Route::get("admin/records/create", [ProductCategoryController::class, 'supervisor']);
+Route::post("/chartApproveStatus", [App\Admin\Controllers\CustomPageController::class, 'chartApproveStatus'])->name('chartApproveStatus');
+Route::post("/checkStatus", [LoginController::class, 'chartStatus'])->name('checkStatus');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/payment', function () { return view('components.payment');  });
@@ -117,8 +119,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('chatDataPost', [App\Admin\Controllers\CustomPageController::class, 'chatDataPost'])->name('chatDataPost');
     Route::get("PaymentDetails/{id}", [App\Admin\Controllers\CustomPageController::class, 'PaymentDetails'])->name('PaymentDetails');
     Route::get("PaymentDetailsOrder/{id}/{status}", [App\Admin\Controllers\CustomPageController::class, 'PaymentDetailsOrder'])->name('PaymentDetailsOrder');
-    Route::post("/checkStatus", [LoginController::class, 'chartStatus'])->name('checkStatus');
-    Route::post("/chartApproveStatus", [App\Admin\Controllers\CustomPageController::class, 'chartApproveStatus'])->name('chartApproveStatus');
     Route::post('/entities/{categoryId}', [ProductCategoryController::class, 'entity'])->name('category.entities');
     Route::get('/RawMaterial', [ProductCategoryController::class, 'index'])->name('RawMaterial');
     Route::post('/entityData', [ProductCategoryController::class, 'entityData'])->name('entityData');

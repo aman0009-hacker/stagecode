@@ -29,10 +29,10 @@ class HomeController extends Controller
                 $row->column(4, function (Column $column) {
                     $column->append(new Box('User  Verification', view('admin.charts.lineChart')));
                 });
-                $row->column(8, function (Column $column) {
+                $row->column(7, function (Column $column) {
                     $column->append(new Box('User Document Verification (PIE)', view('admin.charts.waveChart')));
                 });
-                $row->column(4, function (Column $column) {
+                $row->column(5, function (Column $column) {
                     $column->append(new Box('User Document Verification (PIE)', view('admin.charts.pieChart')));
                 });
             });

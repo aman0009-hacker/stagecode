@@ -17,6 +17,11 @@ class Address extends Model
     protected $table = 'address';
     public $timestamps = true;
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'id');
+    }
+
     protected static function boot(){
         parent::boot();
         static::creating(function ($model) {
