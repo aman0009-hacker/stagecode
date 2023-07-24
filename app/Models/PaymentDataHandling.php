@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\OrderItem;
 use Webpatser\Uuid\Uuid;
 use App\Models\User;
+use App\Models\Address;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Invoice;
+
 
 
 // use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -24,6 +28,11 @@ class PaymentDataHandling extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 
     protected static function boot(){

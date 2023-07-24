@@ -705,7 +705,7 @@ class PaymentController extends Controller
                 $addressId = Address::where('user_id', Auth::user()->id)->get()->last();
                 if (isset($orderId) && !empty($orderId)) {
                     $addressToOrder = Order::where('user_id', Auth::user()->id)->where('id', $orderId)->update(['address_id' => $addressId->id]);
-                    alert::success('Address Save Successfully');
+                    Alert::success('Address Save Successfully');
                     return redirect()->back();
                 }
                 else

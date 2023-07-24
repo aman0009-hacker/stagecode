@@ -79,10 +79,10 @@
         <div class="col-md-12">
           @foreach ($orders as $index => $order)
           <div class="row historyBox mb-3">
-            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
               <h4 class="orderid mb-0"><span>Order ID:</span>{{ $order->id ?? '' }}</h4>
             </div>
-            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
               <!-- Display additional order information if needed -->
               <h4 class="orderid mb-0"><span>Final Payment:</span>
                 <?php if ($order->final_payment_status === 'verified'): ?>
@@ -92,7 +92,20 @@
                 <?php endif; ?>
               </h4>
             </div>
-            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+
+  
+            
+            @if ($order->status=="Dispatched" || $order->status=="Payment_Done")
+            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+              <!-- Display additional order information if needed -->
+              <h4 class="orderid mb-0"><span></span>
+               <a href="{{ route('invoice') }}?orderIDInvoice={{Crypt::encrypt($order->id)}}" class="link-success" id="download-invoice-link">Download Invoice</a>
+              </h4>
+            </div>
+            @endif
+
+
+            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
               <h4 class="orderplaced mb-0">
                 <span>Booking Date: </span><span class="order-status">{{ $order->created_at ?? '' }}</span>
               </h4>
@@ -324,5 +337,3 @@
     </div>
   </div>
 </div>
-
-

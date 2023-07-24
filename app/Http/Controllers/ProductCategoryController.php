@@ -27,7 +27,6 @@ class ProductCategoryController extends Controller
             $categoryList = Category::whereHas('product', function ($query) {
                 $query->where('name', 'Steel');
             })->pluck('name', 'id');
-            //dd($categoryList);
             $categoryListCoal = Category::whereHas('product', function ($query) {
                 $query->where('name', 'Coal');
             })->pluck('name', 'id');
@@ -36,11 +35,8 @@ class ProductCategoryController extends Controller
             } else {
                 return view('components.category')->withInput();
             }
-            // foreach ($categories as $category) {
-            //     echo "Category Name: " . $category->name . ", Category ID: " . $category->id . "<br>";
-            // }
-            //$categoryListCoal = Category::pluck('name', 'id');
         } catch (\Exception $ex) {
+            Log::info($ex->getMessage());
             return view('components.category');
         }
     }
@@ -204,17 +200,6 @@ class ProductCategoryController extends Controller
     //verifyAdminStatusOrder
     public function verifyAdminStatusOrder(Request $request)
     {
-        // try {
-        //     if (Auth::check()) {
-        //              $id = Auth::user()->id;
-        //             if (isset($id)) {
-        //         $status = Order::where('user_id', $id)->value('status');
-        //                 return response()->json(["msg" => "success", "statusCode" => "200", "orderStatus" => $status]);
-        //             }
-        //     }
-        // } catch (\Exception $ex) {
-        // }
-        // //return response()->json(["msg"=>"success"]);
         try {
             if (Auth::check()) {
                 $adminStatus = $request->input('adminStatus');
