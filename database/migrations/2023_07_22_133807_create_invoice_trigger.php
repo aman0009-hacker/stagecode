@@ -12,6 +12,9 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Set the log_bin_trust_function_creators to allow non-SUPER users to create triggers
+        DB::unprepared('SET GLOBAL log_bin_trust_function_creators = 1;');
+
         // Define the SQL statement for the trigger
         $triggerSQL = <<<EOT
         CREATE TRIGGER after_order_status_update
@@ -39,7 +42,10 @@ return new class extends Migration
     public function down(): void
     {
         // Drop the trigger
-        DB::unprepared('DROP TRIGGER IF EXISTS after_order_status_update');
+        DB::unprepared('DROP TRIGGER IF EXISTS after_order_status_update;');
+
+        // Reset log_bin_trust_function_creators to its default value (optional)
+        DB::unprepared('SET GLOBAL log_bin_trust_function_creators = 0;');
     }
 };
 
