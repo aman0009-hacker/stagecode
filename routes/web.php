@@ -169,3 +169,9 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('invoice', [InvoiceController::class, 'index'])->name('invoice');
+/*Charts Route*/
+Route::get("/totalOrdersCount", [App\Admin\Controllers\CustomPageController::class, 'getTotalOrdersCount'])->name('total.orders.count');
+Route::get("/totalOrdersAmount", [App\Admin\Controllers\CustomPageController::class, 'getTotalOrdersAmount'])->name('total.orders.amount');
+Route::get("/totalUsers", [App\Admin\Controllers\CustomPageController::class, 'getTotalUsersCount'])->name('total.user');
+Route::get("/totalYards", [App\Admin\Controllers\CustomPageController::class, 'getTotalYardCount'])->name('total.yards');
+/*Charts Route*/

@@ -1,35 +1,42 @@
 <html>
-
-<head>
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <style>
     @import url(https://fonts.googleapis.com/css?family=Roboto);
 
-    body {
-      font-family: Roboto, sans-serif;
-    }
+body {
+  font-family: Roboto, sans-serif;
+}
 
-    #chart {
-      max-width: 650px;
-      /* margin: 35px auto; */
-    }
+#chart {
+  max-width: 650px;
+  /* margin: 35px auto; */
+}
   </style>
-</head>
+  </head>
 
-<body>
-  <form>
-    @csrf
+
+  <body>
+    <!--Div that will hold the pie chart-->
+    {{-- <div id="chart_div"></div> --}}
+    <form>
+        @csrf
     <div id="chart1"></div>
-  </form>
-  <script>
-    $(function () {
+    </form>
+
+
+    <script>
+            $(function () {
   $.ajax({
-      url:'/chartApproveStatus',
-      type:'POST',
-      dataType:'JSON',
-      success:function(response)
-      {
-                var options = {
+    url: '/totalYards',
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(response)
+                {
+                    const month= response.data.month;
+                    const numberOf=  response.data.numberOf;
+
+        var options = {
   chart: {
     height: 420,
     type: "bar",
@@ -38,32 +45,22 @@
   dataLabels: {
     enabled: false
   },
-  colors: ["#FF1654", "#247BA0","#247AA0"],
-  series: [
-    {
-      name: "Approved",
-      data: [response.data[0],0]
-    },
-    {
-      name: "new",
-      data: [response.data[1],0]
-    },
-    {
-      name: "reject",
-      data: [response.data[2],0]
-    },
-  ],
+  colors: ['#008FFB', '#00E396', '#FEB019', '#FF1654'],
+  series:[{
+    name:"Records",
+  data: numberOf
+}],
   stroke: {
-    width: [6, 6],
+    width: [6,6],
     colors: ['transparent'],
   },
   plotOptions: {
     bar: {
-      columnWidth: "20%"
+      columnWidth: "45%"
     }
   },
   xaxis: {
-    categories: []
+    categories: month
   },
   yaxis: [
     {
@@ -72,41 +69,20 @@
       },
       axisBorder: {
         show: true,
-        color: "#FF1654"
+        color: "#FEB019"
       },
       labels: {
         style: {
-          colors: "#FF1654"
+          colors: "#008FFB"
         }
       },
       title: {
-        text: "Approved",
+        text: "Number of Records",
         style: {
-          color: "#FF1654"
+            colors: "008FFB"
         }
       }
     },
-    {
-      opposite: true,
-      axisTicks: {
-        show: true
-      },
-      axisBorder: {
-        show: true,
-        color: "#247BA0"
-      },
-      labels: {
-        style: {
-          colors: "#247BA0"
-        }
-      },
-      title: {
-        text: "Series B",
-        style: {
-          color: "#247BA0"
-        }
-      }
-    }
   ],
   tooltip: {
     shared: false,
@@ -120,12 +96,13 @@
     offsetX: 40
   }
 };
+
 var chart = new ApexCharts(document.querySelector("#chart1"), options);
+
 chart.render();
 }
     });
 });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
