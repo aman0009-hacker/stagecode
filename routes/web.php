@@ -48,58 +48,73 @@ Route::get("/dummy", function () {
     return view("components.invoice");
 });
 Route::get('refresh_captcha', [ProductCategoryController::class, 'refreshCaptcha'])->name('refresh_captcha');
-Route::get("/resetPassword", function () {  return view('auth.resetPassword');  });
+Route::get("/resetPassword", function () {
+    return view('auth.resetPassword'); });
 Route::post("/records", [ProductCategoryController::class, 'records'])->name('records');
 Route::get("admin/records/create", [ProductCategoryController::class, 'supervisor']);
 Route::post("/chartApproveStatus", [App\Admin\Controllers\CustomPageController::class, 'chartApproveStatus'])->name('chartApproveStatus');
 Route::post("/checkStatus", [LoginController::class, 'chartStatus'])->name('checkStatus');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/payment', function () { return view('components.payment');  });
-    Route::get('/totalPayment', function () { return view('components.total-payment'); });
-    Route::get('userDocument', function () {   return view('components.user-document');  })->name('userDocument');
-    Route::get('updatedDocument', function () {  return view('components.updated-documents');   })->name('updatedDocument');
-    Route::get('documentProcess', function () {  return view('components.document-process');  })->name('documentProcess');
-    Route::get('signUpSubmit', function () {    return view('auth.signUpSubmit');   })->name('signUpSubmit');
-    Route::get('/logout', function () { Auth::logout(); Session::flush();  return redirect('/login');    })->name('logout');
+    Route::get('/payment', function () {
+        return view('components.payment'); });
+    Route::get('/totalPayment', function () {
+        return view('components.total-payment'); });
+    Route::get('userDocument', function () {
+        return view('components.user-document'); })->name('userDocument');
+    Route::get('updatedDocument', function () {
+        return view('components.updated-documents'); })->name('updatedDocument');
+    Route::get('documentProcess', function () {
+        return view('components.document-process'); })->name('documentProcess');
+    Route::get('signUpSubmit', function () {
+        return view('auth.signUpSubmit'); })->name('signUpSubmit');
+    Route::get('/logout', function () {
+        Auth::logout();
+        Session::flush();
+        return redirect('/login'); })->name('logout');
     Route::get("/redirect", function (Request $request) {
         if (Auth::check()) {
             if (Auth::user()->state == 1) {
-                redirect()->route('signUpSubmit');
+              return redirect()->route('signUpSubmit');
             } else if (Auth::user()->state == 2) {
 
-                redirect()->route('userDocument');
+                return  redirect()->route('userDocument');
             } else if (Auth::user()->state == 3) {
-                redirect()->route('documentProcess');
+                return redirect()->route('documentProcess');
             } else {
-                $userId = Auth::id();
-                $userStatus = User::find($userId)->approved;
-                if (isset($userStatus) && $userStatus === 1) {
-                    $userPayment = PaymentDataHandling::whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
-                        ->where('data', 'Registration_Amount')
-                        ->where('user_id', $userId)
-                        ->first();
-                    if ($userPayment && isset($userPayment)) {
-                        return redirect()->route('RawMaterial');
-                    } else {
-                        return redirect()->route('payment.process');
-                    }
-                    //return redirect()->route('RawMaterial');
-                } else if (isset($userStatus) && $userStatus === 2) {
-                    return redirect()->route('chat');
-                } else if (isset($userStatus) && $userStatus === 0) {
-                    return redirect()->route('/home');
-                }
+                // $userId = Auth::id();
+                // $userStatus = User::find($userId)->approved;
+                // if (isset($userStatus) && $userStatus === 1) {
+                //     $userPayment = PaymentDataHandling::whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
+                //         ->where('data', 'Registration_Amount')
+                //         ->where('user_id', $userId)
+                //         ->first();
+                //     if ($userPayment && isset($userPayment)) {
+                //         return redirect()->route('RawMaterial');
+                //     } else {
+                //         return redirect()->route('payment.process');
+                //     }
+                // } else if (isset($userStatus) && $userStatus === 2) {
+                //     return redirect()->route('chat');
+                // } else if (isset($userStatus) && $userStatus === 0) {
+                //     return redirect()->route('/home');
+                // }
+                return redirect()->route('/home');
             }
         }
         return redirect()->route('/home');
     });
-    Route::get('document-process-update', function () {  return view('components.document-process-update'); })->name('documentUpdate');
+    Route::get('document-process-update', function () {
+        return view('components.document-process-update'); })->name('documentUpdate');
     //Route::get("dashboard", function () { return view('dashboard'); })->name('dashboard');
-    Route::get('/chat', function () { return view('components.chat'); })->name('chat');
-    Route::get('PaymentDetails', function () {  return view('components.payment-details'); })->name('PaymentDetailsView');
-    Route::any('congratulations', function () { return view('components.congratulations'); })->name('congratulations');
-    Route::get('/supervisor_records', function () { return view('supervisor_records');   });
+    Route::get('/chat', function () {
+        return view('components.chat'); })->name('chat');
+    Route::get('PaymentDetails', function () {
+        return view('components.payment-details'); })->name('PaymentDetailsView');
+    Route::any('congratulations', function () {
+        return view('components.congratulations'); })->name('congratulations');
+    Route::get('/supervisor_records', function () {
+        return view('supervisor_records'); });
     Route::post('ajaxRequest', [OTPHandleController::class, 'ajaxRequestPost'])->name('ajaxRequest.post');
     Route::post('store', [OTPHandleController::class, 'store'])->name('store');
     Route::post('ajaxRequestPostDocument', [DocumentProcessController::class, 'ajaxRequestPostDocument'])->name('ajaxRequest.postdocument');
@@ -146,12 +161,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('remove', [profileController::class, 'removeimage'])->name('removeimage');
     Route::post('address', [profileController::class, 'addresssave'])->name('profile-address');
     Route::post("/payment/complete/process/address", [PaymentController::class, 'paymentCompleteProcessAddress'])->name('payment.complete.process.address');
-    Route::prefix('user')->group(function()
-    {
-        Route::get('dashboard',[profileController::class,'userdashboard'])->name('userdashboard');
-        Route::get('order',[profileController::class,'userorder'])->name('userorder');  
-        Route::get('address',[profileController::class,'useraddress'])->name('useraddress');  
+    Route::prefix('user')->group(function () {
+        Route::get('dashboard', [profileController::class, 'userdashboard'])->name('userdashboard');
+        Route::get('order', [profileController::class, 'userorder'])->name('userorder');
+        Route::get('address', [profileController::class, 'useraddress'])->name('useraddress');
     });
 });
 
-Route::get('invoice',[InvoiceController::class, 'index'])->name('invoice');
+Route::get('invoice', [InvoiceController::class, 'index'])->name('invoice');
