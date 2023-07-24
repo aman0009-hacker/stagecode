@@ -10,10 +10,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+      public function up(): void
     {
         Schema::table('address', function (Blueprint $table) {
-            $defaultData = [
+            $table->text('psiec_address_ludhiana')->nullable();
+        });
+
+           // Set default value for existing rows
+           DB::table('address')->update([
+            'psiec_address_ludhiana' => json_encode([
                 "psiec_biilling_name" => "Punjab Small Industries & Export Corp. Ind.",
                 "psiec_billing_area" => "Area-B",
                 "psiec_biilling_city" => "Ludhiana",
@@ -21,10 +26,8 @@ return new class extends Migration
                 "psiec_biilling_state" => "Punjab",
                 "psiec_biilling_code" => "03",
                 "psiec_biilling_cin" => "U51219CH9162SGC002427",
-            ];
-
-            $table->text('psiec_address_ludhiana')->default(json_encode($defaultData));
-        });
+            ]),
+        ]);
     }
 
     /**
