@@ -8,12 +8,14 @@ use Webpatser\Uuid\Uuid;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\PaymentDataHandling;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 // use App\Models\Invoice;
 // use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Invoice extends Model
 {
     use HasFactory;
+    use HasUuids;
     
     public $incrementing = false;
     protected $keyType = 'string';
