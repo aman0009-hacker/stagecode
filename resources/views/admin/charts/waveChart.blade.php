@@ -30,6 +30,8 @@
 
 
     <div id="chart100" mt-3></div>
+    <div id="joker"><img src="{{asset('images/error/empty1.png')}}" alt="" width="400" style="margin: 80px 60px;"></div>
+
     <script>
 
 
@@ -41,6 +43,15 @@
                 dataType: 'JSON',
                 success: function(response)
                 {
+                    if(response.data === 'null')
+                    {
+                        var chart = new ApexCharts(
+                        document.querySelector("#joker"),
+                        options
+                    );
+
+                    chart.render();                    }else
+                    {
                     const month=response.data.month;
                     const total =response.data.total;
 
@@ -109,6 +120,7 @@
 
                     chart.render();
                 }
+            }
             });
         });
     </script>

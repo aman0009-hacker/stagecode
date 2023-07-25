@@ -22,6 +22,7 @@ body {
     <form>
         @csrf
     <div id="chart1"></div>
+    <div id="joker"><img src="{{asset('images/error/empty1.png')}}" alt="" width="400" style="margin: 80px 60px;"></div>
     </form>
 
 
@@ -33,9 +34,15 @@ body {
                 dataType: 'JSON',
                 success: function(response)
                 {
+                    console.log(response.data);
                     const month= response.data.month;
                     const numberOf=  response.data.numberOf;
-
+                    if(response.data === 'null')
+                    {
+                        var chart = new ApexCharts(document.querySelector("#joker"), options);
+                        chart.render();
+                    }else
+                    {
         var options = {
   chart: {
     height: 420,
@@ -101,6 +108,7 @@ var chart = new ApexCharts(document.querySelector("#chart1"), options);
 
 chart.render();
 }
+                }
     });
 });
     </script>
