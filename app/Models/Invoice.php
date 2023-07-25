@@ -19,7 +19,7 @@ class Invoice extends Model
     protected $keyType = 'string';
     protected $table = 'invoice';
     public $timestamps = true;
-
+    protected $primaryKey = 'id';
     
 
     public function order()
