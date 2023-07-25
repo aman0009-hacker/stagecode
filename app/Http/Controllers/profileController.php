@@ -11,6 +11,8 @@ use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Address;
 use Validator;
 use Illuminate\Support\Facades\Log;
+use DateTime;
+use Illuminate\Support\Facades\DB;
 
 class profileController extends Controller
 {
@@ -138,45 +140,95 @@ class profileController extends Controller
 
     public function userdashboard()
     {
-        try {
-            $arr = 0;
-            $auth_id = auth::user()->id;
-            $data = auth::user();
-            $order = Order::where('user_id', $auth_id)->orderBy('id', 'DESC')->with('orderItems')->get();
-            //  total order amount per month
-            $user_order_total = \DB::table('orders')
-                ->selectRaw('Month(created_at) as month, SUM(amount) as total_amount')
-                ->where('user_id', $auth_id)
-                ->groupBy('month')
-                ->get();
-            //dd($user_order_total);
-            $chardate = "";
-            foreach ($user_order_total as $date) {
-                $month = \DateTime::createFromFormat('!m', $date->month);
-                $chardate .= "['" . $month->format('F') . "'," . $date->total_amount . "],";
-            }
-            $chartrim = rtrim($chardate, ',');
-            //  total purchse in order
-            $user_per_month = \DB::table('orders')
-                ->selectRaw('Month(created_at) as month , count(id)
+      $arr=0;
+      $auth_id=auth::user()->id;
+      $data=auth::user();
+
+
+      
+ 
+   
+
+      
+      $order=Order::where('user_id',$auth_id)->orderBy('id','DESC')->with('orderItems')->get();
+
+    
+        
+   
+    //  total order amount per month
+      $user_order_total = DB::table('orders')
+      ->selectRaw('Month(created_at) as month, SUM(amount) as total_amount')
+      ->where('user_id',$auth_id)
+      ->groupBy('month')
+      ->get();
+      
+      
+      $chardate="";
+      
+   foreach($user_order_total as $date)
+   {
+    $month=DateTime::createFromFormat('!m',$date->month);
+  
+   $chardate.="['". $month->format('F')."',".$date->total_amount."],";
+
+   }
+  
+   $chartrim=rtrim($chardate,',');
+
+  
+  //  total purchse in order
+      $user_per_month=DB::table('orders')
+      ->selectRaw('Month(created_at) as month , count(id)
  as id')
-                ->where('user_id', $auth_id)->groupBy('month')->get();
-            $charorder = "";
-            foreach ($user_per_month as $month) {
-                $order_m = \DateTime::createFromFormat('!m', $month->month);
-                $charorder .= "['" . $order_m->format('F') . "'," . $month->id . "],";
-            }
-            $order_trim = rtrim($charorder, ',');
-            if (count($order) > 0) {
-                foreach ($order as $total) {
-                    $arr += $total->amount;
-                }
-            }
-            $total_amount = "['amount',$arr]";
-            return view('userDashboard.dashboard', compact('data', 'order', 'chartrim', 'order_trim', 'total_amount'));
-        } catch (\Exception $ex) {
-            Log::info($ex->getMessage());
+      ->where('user_id',$auth_id)->groupBy('month')->get();
+
+      $charorder="";
+    
+      foreach($user_per_month as $month)
+      {
+       $order_m=DateTime::createFromFormat('!m',$month->month);
+     
+      $charorder.="['". $order_m->format('F')."',".$month->id."],";
+   
+      }
+      $order_trim=rtrim($charorder,',');
+     
+
+      if(count($order)>0)
+      {
+
+        foreach($order as $total)
+        {
+          $arr+=$total->amount;
         }
+      }
+      $total_amount="['amount',$arr]";
+    
+        
+ 
+// per day order
+      $per_month_amount = DB::table('orders')
+      ->selectRaw('Date(created_at) as date, amount as total_amount')
+      ->where('user_id',$auth_id)
+      ->groupBy('date','amount')
+      ->get();
+  // dd($per_month_amount); 
+      $perday="";
+
+      foreach($per_month_amount as $day)
+      {
+       $month=new DateTime($day->date);
+       $perday.="['". $month->format('d')."',".$day->total_amount."],";
+      }
+   
+  
+      $perday_trim=rtrim($perday,',');
+
+  
+      
+    
+      
+      return view('userDashboard.dashboard',compact('data','order','chartrim','order_trim','total_amount','perday_trim'));  
     }
 
     public function userorder()
