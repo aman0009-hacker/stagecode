@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('invoice', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(Str::uuid());
+            //$table->uuid('id')->primary();
             $table->text('delivery_terms')->nullable();
             $table->date('invoice_date')->nullable();
             $table->string('order_id')->nullable();
