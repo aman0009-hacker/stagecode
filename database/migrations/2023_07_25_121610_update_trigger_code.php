@@ -14,7 +14,7 @@ return new class extends Migration
     {
          // Define the SQL statement for the trigger
          $triggerSQL = <<<EOT
-         CREATE TRIGGER after_order_status_update
+         CREATE TRIGGER after_order_status_updates
          AFTER UPDATE ON orders FOR EACH ROW
          BEGIN
              IF NEW.status = 'Dispatched' AND OLD.status != 'Dispatched' THEN
@@ -35,6 +35,6 @@ return new class extends Migration
     public function down(): void
     {
              // Drop the trigger
-             DB::unprepared('DROP TRIGGER IF EXISTS after_order_status_update');
+             DB::unprepared('DROP TRIGGER IF EXISTS after_order_status_updates');
     }
 };
