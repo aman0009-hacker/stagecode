@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('invoice', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(Str::uuid().rand(11,99));
+            $table->uuid('id')->primary()->default(Str::uuid());
             //$table->uuid('id')->primary();
             $table->text('delivery_terms')->nullable();
             $table->date('invoice_date')->nullable();
