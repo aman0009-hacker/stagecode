@@ -1,7 +1,9 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pie Chart Example</title>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Poppins');
@@ -13,7 +15,6 @@
         #chart {
             width: 100%;
             margin: 75px auto !important;
-            /* padding: 0 30px !important; */
             opacity: 0.9;
         }
 
@@ -24,7 +25,6 @@
 
         #chart .apexcharts-toolbar {
             top: -65px !important;
-            /* right: 75px !important; */
         }
 
         .apexcharts-zoomin-icon,
@@ -36,7 +36,6 @@
         }
     </style>
 </head>
-
 
 <body>
     <!--Div that will hold the pie chart-->
@@ -52,73 +51,20 @@
             }
         });
 
-        $(function() {
+        $(function () {
             $.ajax({
                 url: '/chartApproveStatus',
                 type: 'POST',
                 dataType: 'JSON',
-                success: function(response) {
+                success: function (response) {
                     const data = response.data;
-
-
-                    //     var options = {
-                    //     chart: {
-                    //         height: 420,
-                    //         type: "line",
-                    //     },
-                    //     series: [
-                    //         {
-                    //         name: "Approved",
-                    //         type: "column",
-                    //         data: [response.data[0]]
-                    //         },
-                    //         {
-                    //         name: "New",
-                    //         type: "column",
-                    //         data: [response.data[1]]
-                    //         },
-                    //         {
-                    //         name: " Rejected",
-                    //         type: "column",
-                    //         data: [response.data[2]]
-                    //         }
-                    //     ],
-                    //     stroke: {
-                    //         width: [0, 4],
-                    //         curve: 'smooth',
-                    //         width:10,
-                    //         colors: ['transparent'],
-                    //     },
-                    //     title: {
-                    //         text: "Active User"
-                    //     },
-                    //     xaxis: {
-
-                    //     },
-                    //     yaxis: [
-                    //         {
-                    // },
-                    // {
-                    //     opposite: true,
-
-                    // }
-                    //     ]
-                    //     }
                     const error = response.data.length;
-                    // console.log(error);
 
                     const graph = document.getElementById('chart');
-
-                    // const errorContainer = document.getElementById('error_pieChart');
                     if (error === 0) {
                         graph.style.display = 'none';
-                        // errorContainer.style.visibility = 'visible';
                     } else {
                         graph.style.display = 'block';
-                        // errorContainer.style.visibility = 'hidden';
-
-
-
 
                         var options = {
                             series: data,
@@ -130,6 +76,9 @@
                                 }
                             },
                             labels: ['Approved', 'New', 'Rejected'],
+                            legend: {
+                                position: 'bottom' // Set the legend position to bottom
+                            },
                             responsive: [{
                                 breakpoint: 480,
                                 options: {
@@ -137,7 +86,7 @@
                                         width: 200
                                     },
                                     legend: {
-                                        position: 'bottom'
+                                        position: 'bottom' // Set the legend position to bottom for smaller screens
                                     }
                                 }
                             }]
@@ -147,8 +96,7 @@
                         chart.render();
                     }
                 }
-            })
-
+            });
         });
     </script>
 </body>
