@@ -49,36 +49,48 @@ Route::get("/dummy", function () {
 });
 Route::get('refresh_captcha', [ProductCategoryController::class, 'refreshCaptcha'])->name('refresh_captcha');
 Route::get("/resetPassword", function () {
-    return view('auth.resetPassword'); });
+    return view('auth.resetPassword');
+});
 Route::post("/records", [ProductCategoryController::class, 'records'])->name('records');
 Route::get("admin/records/create", [ProductCategoryController::class, 'supervisor']);
 Route::post("/chartApproveStatus", [App\Admin\Controllers\CustomPageController::class, 'chartApproveStatus'])->name('chartApproveStatus');
 Route::post("/checkStatus", [LoginController::class, 'chartStatus'])->name('checkStatus');
+Route::get('/chat', function () {
+    return view('components.chat'); })->name('chat');
+Route::post('chatData', [App\Admin\Controllers\CustomPageController::class, 'chatData'])->name('chatData');
+Route::post('chatDataPost', [App\Admin\Controllers\CustomPageController::class, 'chatDataPost'])->name('chatDataPost');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/payment', function () {
-        return view('components.payment'); });
+        return view('components.payment');
+    });
     Route::get('/totalPayment', function () {
-        return view('components.total-payment'); });
+        return view('components.total-payment');
+    });
     Route::get('userDocument', function () {
-        return view('components.user-document'); })->name('userDocument');
+        return view('components.user-document');
+    })->name('userDocument');
     Route::get('updatedDocument', function () {
-        return view('components.updated-documents'); })->name('updatedDocument');
+        return view('components.updated-documents');
+    })->name('updatedDocument');
     Route::get('documentProcess', function () {
-        return view('components.document-process'); })->name('documentProcess');
+        return view('components.document-process');
+    })->name('documentProcess');
     Route::get('signUpSubmit', function () {
-        return view('auth.signUpSubmit'); })->name('signUpSubmit');
+        return view('auth.signUpSubmit');
+    })->name('signUpSubmit');
     Route::get('/logout', function () {
         Auth::logout();
         Session::flush();
-        return redirect('/login'); })->name('logout');
+        return redirect('/login');
+    })->name('logout');
     Route::get("/redirect", function (Request $request) {
         if (Auth::check()) {
             if (Auth::user()->state == 1) {
-              return redirect()->route('signUpSubmit');
+                return redirect()->route('signUpSubmit');
             } else if (Auth::user()->state == 2) {
 
-                return  redirect()->route('userDocument');
+                return redirect()->route('userDocument');
             } else if (Auth::user()->state == 3) {
                 return redirect()->route('documentProcess');
             } else {
@@ -105,16 +117,19 @@ Route::middleware(['auth'])->group(function () {
         return redirect()->route('/home');
     });
     Route::get('document-process-update', function () {
-        return view('components.document-process-update'); })->name('documentUpdate');
+        return view('components.document-process-update');
+    })->name('documentUpdate');
     //Route::get("dashboard", function () { return view('dashboard'); })->name('dashboard');
-    Route::get('/chat', function () {
-        return view('components.chat'); })->name('chat');
+
     Route::get('PaymentDetails', function () {
-        return view('components.payment-details'); })->name('PaymentDetailsView');
+        return view('components.payment-details');
+    })->name('PaymentDetailsView');
     Route::any('congratulations', function () {
-        return view('components.congratulations'); })->name('congratulations');
+        return view('components.congratulations');
+    })->name('congratulations');
     Route::get('/supervisor_records', function () {
-        return view('supervisor_records'); });
+        return view('supervisor_records');
+    });
     Route::post('ajaxRequest', [OTPHandleController::class, 'ajaxRequestPost'])->name('ajaxRequest.post');
     Route::post('store', [OTPHandleController::class, 'store'])->name('store');
     Route::post('ajaxRequestPostDocument', [DocumentProcessController::class, 'ajaxRequestPostDocument'])->name('ajaxRequest.postdocument');
@@ -130,8 +145,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('adminDownload', [App\Admin\Controllers\CustomPageController::class, 'adminDownload'])->name('adminDownload');
     Route::post('checkurl', [App\Admin\Controllers\CustomPageController::class, 'checkurl'])->name('checkurl');
     Route::post('checkurlIndex', [App\Admin\Controllers\CustomPageController::class, 'checkurlIndex'])->name('checkurlIndex');
-    Route::post('chatData', [App\Admin\Controllers\CustomPageController::class, 'chatData'])->name('chatData');
-    Route::post('chatDataPost', [App\Admin\Controllers\CustomPageController::class, 'chatDataPost'])->name('chatDataPost');
     Route::get("PaymentDetails/{id}", [App\Admin\Controllers\CustomPageController::class, 'PaymentDetails'])->name('PaymentDetails');
     Route::get("PaymentDetailsOrder/{id}/{status}", [App\Admin\Controllers\CustomPageController::class, 'PaymentDetailsOrder'])->name('PaymentDetailsOrder');
     Route::post('/entities/{categoryId}', [ProductCategoryController::class, 'entity'])->name('category.entities');
