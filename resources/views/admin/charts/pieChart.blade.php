@@ -15,24 +15,15 @@
 
         #chart123 {
             min-height: 249.7px;
-            margin: 80px;
+
             margin-top: 50px !important;
         }
 
-        #chart123 .apexcharts-canvas .apexcharts-svg {
-            margin: auto !important;
-            display: block !important;
-        }
-
-        #chart123 .apexcharts-canvas {
-
-            width: 550px !important;
-        }
 
         #chart123 .apexcharts-toolbar {
-            top: -60px !important;
-            margin-right: -45px !important;
+            top: -40px !important;
 
+            margin-right: -45px !important;
         }
 
         #error_pieChart {

@@ -13,17 +13,21 @@ body {
 }
 
 #chart {
+    padding: 0 15px;
   margin: 0 auto;
 }
 
 #chart56 .apexcharts-toolbar {
     top: -50px!important;
-    right: 3px!important;
+    /* right: 75px !important; */
 }
+    /* position: relative !important; */
+
+
 #chart56 .apexcharts-canvas {
     position: relative;
     user-select: none;
-    width: 600px!important;
+    width: 500px!important;
 }
 
   </style>
@@ -32,12 +36,11 @@ body {
 
   <body>
 
-    <form>
-        @csrf
+
         <div id="chart56" style="margin:61px;"></div>
         <div id="error_donutChart"><img src="{{asset('images/error/empty1.png')}}" alt="" width="400" style="margin: 80px 60px;"></div>
 
-        </form>
+
     <script>
     $(function() {
             $.ajax({
