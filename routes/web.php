@@ -59,6 +59,8 @@ Route::get('/chat', function () {
     return view('components.chat'); })->name('chat');
 Route::post('chatData', [App\Admin\Controllers\CustomPageController::class, 'chatData'])->name('chatData');
 Route::post('chatDataPost', [App\Admin\Controllers\CustomPageController::class, 'chatDataPost'])->name('chatDataPost');
+Route::post('checkurl', [App\Admin\Controllers\CustomPageController::class, 'checkurl'])->name('checkurl');
+Route::post('checkurlIndex', [App\Admin\Controllers\CustomPageController::class, 'checkurlIndex'])->name('checkurlIndex');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/payment', function () {
@@ -143,8 +145,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('adminReturnMsg', [FileUploadController::class, 'adminReturnMsg'])->name('adminReturnMsg');
     Route::post('dropzone/store', [FileUploadController::class, 'store'])->name('dropzone.store');
     Route::post('adminDownload', [App\Admin\Controllers\CustomPageController::class, 'adminDownload'])->name('adminDownload');
-    Route::post('checkurl', [App\Admin\Controllers\CustomPageController::class, 'checkurl'])->name('checkurl');
-    Route::post('checkurlIndex', [App\Admin\Controllers\CustomPageController::class, 'checkurlIndex'])->name('checkurlIndex');
     Route::get("PaymentDetails/{id}", [App\Admin\Controllers\CustomPageController::class, 'PaymentDetails'])->name('PaymentDetails');
     Route::get("PaymentDetailsOrder/{id}/{status}", [App\Admin\Controllers\CustomPageController::class, 'PaymentDetailsOrder'])->name('PaymentDetailsOrder');
     Route::post('/entities/{categoryId}', [ProductCategoryController::class, 'entity'])->name('category.entities');
