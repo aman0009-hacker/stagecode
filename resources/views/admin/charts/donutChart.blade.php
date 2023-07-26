@@ -35,7 +35,7 @@ body {
     <form>
         @csrf
         <div id="chart56" style="margin:61px;"></div>
-        <div id="joker"><img src="{{asset('images/error/empty1.png')}}" alt="" width="400" style="margin: 80px 60px;"></div>
+        <div id="error_donutChart"><img src="{{asset('images/error/empty1.png')}}" alt="" width="400" style="margin: 80px 60px;"></div>
 
         </form>
     <script>
@@ -46,16 +46,20 @@ body {
                 dataType: 'JSON',
                 success: function(response)
                 {
-                    if(response.data === 'null')
-                    {
-                        var chart = new ApexCharts(
-                        document.querySelector("#joker"),
-                        options
-                    );
+                    const error = response.data.length;
+                    const graph = document.getElementById('chart56');
 
-                    chart.render();
-                    }else
+                    const errorContainer = document.getElementById('error_donutChart');
+                    if (error === 0)
                     {
+                        graph.style.display = 'none';
+                        errorContainer.style.visibility = 'visible';
+                    }
+                    else
+                    {
+                        graph.style.display = 'block';
+                        errorContainer.style.visibility = 'hidden';
+
                     const month= response.data.month;
                     const numberOf=  response.data.numberOf;
 

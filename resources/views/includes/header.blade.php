@@ -134,19 +134,19 @@
           <span class="navbar-text d-md-flex justify-content-center align-items-center w-100">
             <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link active" aria-current="page" href="{{url('/')}}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Products</a>
+                <a class="nav-link" href="#product">Products</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">About Us</a>
+                <a class="nav-link" href="#about">About Us</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">News</a>
+                <a class="nav-link" href="#new">News</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Contact Us</a>
+                <a class="nav-link" href="#contact">Contact Us</a>
               </li>
             </ul>
           </span>

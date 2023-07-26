@@ -1,110 +1,126 @@
 <html>
-  <head>
+
+<head>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.28.0/dist/apexcharts.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.28.0/dist/extensions/apexcharts.min.js"></script> --}}
-  <style>
-    @import url(https://fonts.googleapis.com/css?family=Roboto);
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto);
 
 
 
-body {
-  font-family: Roboto, sans-serif;
+        body {
+            font-family: Roboto, sans-serif;
+        }
+
+        #chart123 {
+            min-height: 249.7px;
+            margin: 80px;
+            margin-top: 50px !important;
+        }
+
+        #chart123 .apexcharts-canvas .apexcharts-svg {
+            margin: auto !important;
+            display: block !important;
+        }
+
+        #chart123 .apexcharts-canvas {
+
+            width: 550px !important;
+        }
+
+        #chart123 .apexcharts-toolbar {
+            top: -60px !important;
+            margin-right: -45px !important;
+
+        }
+
+        #error_pieChart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
-
-#chart123 {
-    min-height: 249.7px;
-    margin: 80px;
-    margin-top: 50px!important;
-}
-#chart123 .apexcharts-canvas .apexcharts-svg
-{
-    margin: auto !important;
-    display: block !important;
-}
-#chart123 .apexcharts-canvas {
-
-    width: 550px!important;
-}
-#chart123 .apexcharts-toolbar {
-    top: -60px!important;
-    margin-right: -45px!important;
-
-}
+    </style>
+</head>
 
 
-  </style>
-  </head>
-
-
-  <body>
+<body>
     <!--Div that will hold the pie chart-->
     {{-- <div id="chart_div"></div> --}}
-    <form>
-        @csrf
-        <div id="chart123"></div>
-        <div id="joker"><img src="{{asset('images/error/empty1.png')}}" alt="" width="400" style="margin: 80px 60px;"></div>
 
-    </form>
+
+
+
+
+    <div id="chart123"></div>
+    <div id="error_pieChart"><img src="{{ asset('images/error/empty1.png') }}" alt="" width="400"></div>
+
 
 
     <script>
-                $(function() {
+        $(function() {
             $.ajax({
-                url: '/totalOrdersCount',
-                type: 'GET',
-                dataType: 'JSON',
-                success: function(response)
-                {
-                    if(response.data === 'null')
-                    {
-                        var chart = new ApexCharts(
-                        document.querySelector("#joker"),
-                        options
-                    );
+                    url: '/totalOrdersCount',
+                    type: 'GET',
+                    dataType: 'JSON',
+                    success: function(response) {
 
-                    chart.render();                    }else
-                    {
-                    const month= response.data.month;
-                    const numberOf=  response.data.numberOf;
+                        const error = response.data.length;
 
-        var series = numberOf
-      let labels = month
+                        const graph = document.getElementById('chart123');
 
-      let newSeries = []
-      let newLabels = []
-      let grouped = 0
-      series.forEach((s, i) => {
-        if (s < 2) {
-          grouped += s
-        }
-        if (s >= 0) {
-          newSeries.push(s)
-          newLabels.push(labels[i])
-        }
-      })
+                        const errorContainer = document.getElementById('error_pieChart');
+                        if (error === 0)
+                        {
+                            graph.style.display = 'none';
+                            errorContainer.style.visibility = 'visible';
+                        }
 
-      var options = {
-        series: newSeries,
-        chart: {
-          width: 500,
-          type: 'pie',
-          toolbar: {
-            show: true
-          }
+                        else {
+                            graph.style.display = 'block';
+                            errorContainer.style.visibility = 'hidden';
+                        const month = response.data.month;
+                        const numberOf = response.data.numberOf;
 
-        },
-        colors: ['#008FFB', '#00E396', '#FEB019', '#ccc'],
-        labels: newLabels
-      }
+                        var series = numberOf
+                        let labels = month
+
+                        let newSeries = []
+                        let newLabels = []
+                        let grouped = 0
+                        series.forEach((s, i) => {
+                            if (s < 2) {
+                                grouped += s
+                            }
+                            if (s >= 0) {
+                                newSeries.push(s)
+                                newLabels.push(labels[i])
+                            }
+                        })
+
+                        var options = {
+                            series: newSeries,
+                            chart: {
+                                width: 500,
+                                type: 'pie',
+                                toolbar: {
+                                    show: true
+                                }
+
+                            },
+                            colors: ['#008FFB', '#00E396', '#FEB019', '#ccc'],
+                            labels: newLabels
+                        }
 
 
-      var chart = new ApexCharts(document.querySelector('#chart123'), options)
-      chart.render()
-    }
-    }
-    });
-});
+                        var chart = new ApexCharts(document.querySelector('#chart123'), options)
+                        chart.render()
+                    }
+                }
+            });
+        });
     </script>
-  </body>
+</body>
+
 </html>
