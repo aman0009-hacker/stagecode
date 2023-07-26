@@ -22,7 +22,7 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo' => '<b>PSIEC</b> Admin Panel',
+    'logo' => '<b>PSIEC</b> Panel',
     // 'logo' => '',
 
     /*
