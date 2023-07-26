@@ -21,20 +21,20 @@ class HomeController extends Controller
             ->row(function (Row $row) {
                 $row->class('justify-content-center align-items-center h-100');
                 $row->column(3, function (Column $column) {
-                    $column->append(new Box('User Document Verification', view('admin.charts.barChart')));
+                    $column->append(new Box('Users Records', view('admin.charts.barChart')));
                 });
                 $row->column(5, function (Column $column) {
-                    $column->append(new Box('User  Verification', view('admin.charts.donutChart')));
+                    $column->append(new Box('Users Count Records ', view('admin.charts.donutChart')));
                 });
                 $row->column(4, function (Column $column) {
-                    $column->append(new Box('User  Verification', view('admin.charts.lineChart')));
+                    $column->append(new Box('Yard Records', view('admin.charts.lineChart')));
                 });
                 $row->column(7, function (Column $column) {
-                    $column->append(new Box('User Document Verification (PIE)', view('admin.charts.waveChart')));
+                    $column->append(new Box('Order Amount Records', view('admin.charts.waveChart')));
                 });
                 $row->column(5, function (Column $column) {
-                    $column->append(new Box('User Document Verification (PIE)', view('admin.charts.pieChart')));
-                });
+                    $column->append(new Box('Order Count Records', view('admin.charts.pieChart')));
+                  });
             });
 
     }

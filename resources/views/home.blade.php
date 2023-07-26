@@ -16,8 +16,12 @@
         <img src="{{asset('images/home-page/homepage.webp')}}" class="d-block carousel-img img-fluid w-100"
           alt="no-image" />
         <div class="carousel-caption  d-md-block">
+          
           <a href="" class="btn btn-secondary welcome-btn mb-4">
             welcome to</a>
+
+         
+         
           <h2>
             Punjab Small Industries <span>& Export Corporation</span>
           </h2>
@@ -102,8 +106,8 @@ else
 }
 }
 ?>
-<!--  About Section -->
-<section class="about-us">
+<!--  About Section --> 
+<section class="about-us" id="about">
   <div class="container box-shadow">
     <div class="row h-100 align-items-center">
       <div class="col-md-6">
@@ -150,7 +154,7 @@ else
           </a>
         </div>
       </div>
-      <div class="col-lg-3 col-xl-3 col-md-6 p-0">
+      <div class="col-lg-3 col-xl-3 col-md-6 p-0" id="new">
         <div class="notice-board">
           <div class="row tender-box">
             <div class="col-md-12">
@@ -251,7 +255,7 @@ else
   </div>
 </section>
 <!-- Hot Product Selling -->
-<section class="product-selling">
+<section class="product-selling" id="product">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -370,7 +374,7 @@ else
   </div>
 </section>
 <!-- Contact Us  -->
-<section class="contact-us">
+<section class="contact-us"id="contact">
   <div class="container">
     <div class="row">
       <div class="col-lg-2"></div>
