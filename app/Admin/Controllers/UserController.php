@@ -232,7 +232,7 @@ class UserController extends AdminController
     // $form->text('last_name', __('Last name'))->rules('required|max:255|regex:/^[a-zA-Z]+$/');
     // $form->email('email', __('Email'))->rules('required|max:255|email');
     // $form->text('contact_number', __('Contact number'))->rules('required|max:10|unique:users|min:10');
-    $form->date("member_at", __("Member At"));
+    $form->date("member_at", __("Register with PSIEC"));
     $form->footer(function ($footer) {
       $footer->disableViewCheck();
       // disable `Continue editing` checkbox
