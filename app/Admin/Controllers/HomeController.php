@@ -20,11 +20,11 @@ class HomeController extends Controller
             // ->row(Dashboard::title())
             ->row(function (Row $row) {
                 $row->class('justify-content-center align-items-center h-50');
-                $row->column(3, function (Column $column) {
+                $row->column(5, function (Column $column) {
                     $column->append(new Box('Users Records', view('admin.charts.barChart')));
                 });
 
-                $row->column(5, function (Column $column) {
+                $row->column(3, function (Column $column) {
                     $column->append(new Box('Yard Records', view('admin.charts.lineChart')));
                 });
                 $row->column(4, function (Column $column) {
