@@ -24,12 +24,12 @@ class HomeController extends Controller
                     $column->append(new Box('Users Records', view('admin.charts.barChart')));
                 });
 
-                $row->column(3, function (Column $column) {
+                $row->column(7, function (Column $column) {
                     $column->append(new Box('Yard Records', view('admin.charts.lineChart')));
                 });
-                $row->column(4, function (Column $column) {
-                    $column->append(new Box('Order Amount Records', view('admin.charts.waveChart')));
-                });
+                // $row->column(4, function (Column $column) {
+                //     $column->append(new Box('Order Amount Records', view('admin.charts.waveChart')));
+                // });
                 $row->column(6, function (Column $column) {
                     $column->append(new Box('Users Count Records ', view('admin.charts.donutChart')));
                 });
