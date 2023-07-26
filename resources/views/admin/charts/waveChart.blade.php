@@ -1,7 +1,7 @@
 <html>
 
 <head>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto);
@@ -14,14 +14,15 @@
             max-width: 650px;
             /* margin-top: 40px!important; */
         }
-        #chart100{
+
+        #chart100 {
             margin-top: 40px;
         }
 
         #chart100 .apexcharts-toolbar {
-        top: -50px!important;
+            top: -50px !important;
 
-}
+        }
     </style>
 </head>
 
@@ -30,12 +31,10 @@
 
 
     <div id="chart100" mt-3></div>
-    <div id="error_waveChart" style="text-align:center;"><img src="{{asset('images/error/empty1.png')}}" alt="" width="400" style="margin: 80px 60px;"></div>
+    <div id="error_waveChart" style="text-align:center;"><img src="{{asset('images/error/empty1.png')}}" alt=""
+            width="400" style="margin: 80px 60px;"></div>
 
     <script>
-
-
-
         $(function() {
             $.ajax({
                 url: '/totalOrdersAmount',

@@ -1,9 +1,10 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.28.0/dist/apexcharts.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.28.0/dist/extensions/apexcharts.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.28.0/dist/extensions/apexcharts.min.js"></script> --}}
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto);
 
@@ -27,11 +28,11 @@
         }
 
         #error_pieChart {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
     </style>
 </head>
 
