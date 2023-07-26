@@ -12,6 +12,7 @@
 #chart {
   width: 100%;
   margin: 35px auto;
+  padding: 0 30px !important;
   opacity: 0.9;
 }
 
@@ -51,7 +52,7 @@
       dataType:'JSON',
       success:function(response)
       {
-        
+
 
         var options = {
         chart: {

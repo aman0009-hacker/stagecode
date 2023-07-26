@@ -348,198 +348,202 @@ class CustomPageController extends AdminController
     }
 
 
-        /* chart function Start*/
+       /* chart function Start*/
 
-    public function getTotalYardCount()
-    {
-        try
-        {
-            $Yards = Records::selectRaw('COUNT(id)
- as total_yards, YEAR(date) as year, MONTH(date) as month')
-            ->groupBy('year', 'month')
-            ->get();
-        
-            $charmonth=[];
-            $chardate=[];
-
-            if($Yards->isEmpty())
-            {
-                return response()->json(['msg' => "empty", 'data' =>[]], 200);
-            }
-            else
-            {
-                foreach($Yards as $month)
-                {
-                    $order_m=\DateTime::createFromFormat('!m',$month->month);
-                    $charmonth[]=$order_m->format('F');
-                }
-
-                foreach($Yards as $month)
-                {
-                    $chardate[]=$month->total_yards;
-                }
-
-                $myData=[
-                    'month'=>$charmonth,
-                    'numberOf'=>$chardate
-                ];
-
-                return response()->json(['msg' => "success", 'data' => $myData], 200);
-            }
-        }
-        catch (QueryException $e)
-        {
-            return response()->json(['error' => 'Database Error: '.$e->getMessage()], 500);
-        }
-        catch (\Exception $e)
-        {
-            return response()->json(['error' => $e->getMessage()], 404);
-        }
-    }
-    public function getTotalUsersCount()
-    {
-        try
-        {
-            $user_per_month = User::selectRaw('COUNT(id)
- as total_users, YEAR(created_at) as year, MONTH(created_at) as month')
-            ->groupBy('year', 'month')
-            ->get();
-
-            $charmonth=[];
-            $chardate=[];
-
-            if($user_per_month->isEmpty())
-            {
-
-                return response()->json(['msg' => "empty", 'data' =>[]], 200);
-            }
-            else
-            {
-                foreach($user_per_month as $month)
-                {
-                    $order_m=\DateTime::createFromFormat('!m',$month->month);
-                    $charmonth[]=$order_m->format('F');
-                }
-
-                foreach($user_per_month as $month)
-                {
-                    $chardate[]=$month->total_users;
-                }
-                $myData=[
-                    'month'=>$charmonth,
-                    'numberOf'=>$chardate
-                ];
-
-                return response()->json(['msg' => "success", 'data' => $myData], 200);
-            }
-        }
-        catch (QueryException $e)
-        {
-            return response()->json(['error' => 'Database Error: '.$e->getMessage()], 500);
-        }
-        catch (\Exception $e)
-        {
-            return response()->json(['error' => $e->getMessage()], 404);
-        }
-    }
-    public function getTotalOrdersCount()
-    {
-
-        try
-        {
-            $order_per_month = Order::selectRaw('COUNT(id)
- as total_orders, YEAR(created_at) as year, MONTH(created_at) as month')
-            ->groupBy('year', 'month')
-            ->get();
-
-            $charmonth=[];
-            $chardate=[];
-
-            if($order_per_month->isEmpty())
-            {
-
-                return response()->json(['msg' => "empty", 'data' =>[]],200);
-            }
-            else
-            {
-
-            foreach($order_per_month as $month)
-            {
-            $order_m=\DateTime::createFromFormat('!m',$month->month);
-            $charmonth[]=$order_m->format('F');
-            }
-
-            foreach($order_per_month as $month)
-            {
-                $chardate[]=$month->total_orders;
-            }
-
-            $myData=[
-                'month'=>$charmonth,
-                'numberOf'=>$chardate
-            ];
-
-            return response()->json(['msg' => "success", 'data' => $myData],200);
-
-            }
-        }
-        catch (QueryException $e)
-        {
-            return response()->json(['error' => 'Database Error: '.$e->getMessage()], 500);
-        }
-        catch (\Exception $e)
-        {
-            return response()->json(['error' => $e->getMessage()], 404);
-        }
-    }
-
-    public function getTotalOrdersAmount()
-    {
-        try
-        {
-            $amount_per_month=\DB::table('orders')
-            ->selectRaw('SUM(amount) as total_orders, YEAR(created_at) as year, MONTH(created_at) as month')
-            ->groupBy('year','month')->get();
-
-            $charmonth=[];
-            $chardate=[];
-
-            if($amount_per_month->isEmpty())
-            {
-                return response()->json(['msg' => "empty", 'data' =>[]],200);
-            }
-            else
-            {
-                foreach($amount_per_month as $month)
-                {
-                $order_m=\DateTime::createFromFormat('!m',$month->month);
-
-                $charmonth[]=$order_m->format('F');
-
-                }
-                foreach($amount_per_month as $month)
-                {
-                    $chardate[]=$month->total_orders;
-                }
-
-                $myData=[
-                    'month'=>$charmonth,
-                    'total'=>$chardate
-                 ];
-
-                return response()->json(['msg' => "success", 'data' => $myData],200);
-            }
-
-        }
-        catch (QueryException $e)
-        {
-            return response()->json(['error' => 'Database Error: '.$e->getMessage()], 500);
-        }
-        catch (\Exception $e)
-        {
-            return response()->json(['error' => $e->getMessage()], 404);
-        }
-    }
-
-    /* charts function End*/
+       public function getTotalYardCount()
+       {
+           try
+           {
+               $Yards = Records::selectRaw('COUNT(id)
+    as total_yards, YEAR(date) as year, MONTH(date) as month')
+               ->groupBy('year', 'month')
+               ->orderBy('month')
+               ->get();
+   
+               $charmonth=[];
+               $chardate=[];
+   
+               if($Yards->isEmpty())
+               {
+                   return response()->json(['msg' => "empty", 'data' =>[]], 200);
+               }
+               else
+               {
+                   foreach($Yards as $month)
+                   {
+                       $order_m=\DateTime::createFromFormat('!m',$month->month);
+                       $charmonth[]=$order_m->format('F');
+                   }
+   
+                   foreach($Yards as $month)
+                   {
+                       $chardate[]=$month->total_yards;
+                   }
+   
+                   $myData=[
+                       'month'=>$charmonth,
+                       'numberOf'=>$chardate
+                   ];
+   
+                   return response()->json(['msg' => "success", 'data' => $myData], 200);
+               }
+           }
+           catch (QueryException $e)
+           {
+               return response()->json(['error' => 'Database Error: '.$e->getMessage()], 500);
+           }
+           catch (Exception $e)
+           {
+               return response()->json(['error' => $e->getMessage()], 404);
+           }
+       }
+       public function getTotalUsersCount()
+       {
+           try
+           {
+               $user_per_month = User::selectRaw('COUNT(id)
+    as total_users, YEAR(created_at) as year, MONTH(created_at) as month')
+               ->groupBy('year', 'month')
+               ->orderBy('month')
+               ->get();
+   
+               $charmonth=[];
+               $chardate=[];
+   
+               if($user_per_month->isEmpty())
+               {
+   
+                   return response()->json(['msg' => "empty", 'data' =>[]], 200);
+               }
+               else
+               {
+                   foreach($user_per_month as $month)
+                   {
+                       $order_m=\DateTime::createFromFormat('!m',$month->month);
+                       $charmonth[]=$order_m->format('F');
+                   }
+   
+                   foreach($user_per_month as $month)
+                   {
+                       $chardate[]=$month->total_users;
+                   }
+                   $myData=[
+                       'month'=>$charmonth,
+                       'numberOf'=>$chardate
+                   ];
+   
+                   return response()->json(['msg' => "success", 'data' => $myData], 200);
+               }
+           }
+           catch (QueryException $e)
+           {
+               return response()->json(['error' => 'Database Error: '.$e->getMessage()], 500);
+           }
+           catch (Exception $e)
+           {
+               return response()->json(['error' => $e->getMessage()], 404);
+           }
+       }
+       public function getTotalOrdersCount()
+       {
+   
+           try
+           {
+               $order_per_month = Order::selectRaw('COUNT(id)
+    as total_orders, YEAR(created_at) as year, MONTH(created_at) as month')
+               ->groupBy('year', 'month')
+               ->orderBy('month')
+               ->get();
+   
+               $charmonth=[];
+               $chardate=[];
+   
+               if($order_per_month->isEmpty())
+               {
+   
+                   return response()->json(['msg' => "empty", 'data' =>[]],200);
+               }
+               else
+               {
+   
+               foreach($order_per_month as $month)
+               {
+               $order_m=\DateTime::createFromFormat('!m',$month->month);
+               $charmonth[]=$order_m->format('F');
+               }
+   
+               foreach($order_per_month as $month)
+               {
+                   $chardate[]=$month->total_orders;
+               }
+   
+               $myData=[
+                   'month'=>$charmonth,
+                   'numberOf'=>$chardate
+               ];
+   
+               return response()->json(['msg' => "success", 'data' => $myData],200);
+   
+               }
+           }
+           catch (QueryException $e)
+           {
+               return response()->json(['error' => 'Database Error: '.$e->getMessage()], 500);
+           }
+           catch (Exception $e)
+           {
+               return response()->json(['error' => $e->getMessage()], 404);
+           }
+       }
+   
+       public function getTotalOrdersAmount()
+       {
+           try
+           {
+               $amount_per_month=\DB::table('orders')
+               ->selectRaw('SUM(amount) as total_orders, YEAR(created_at) as year, MONTH(created_at) as month')
+               ->orderBy('month')
+               ->groupBy('year','month')->get();
+   
+               $charmonth=[];
+               $chardate=[];
+   
+               if($amount_per_month->isEmpty())
+               {
+                   return response()->json(['msg' => "empty", 'data' =>[]],200);
+               }
+               else
+               {
+                   foreach($amount_per_month as $month)
+                   {
+                   $order_m=\DateTime::createFromFormat('!m',$month->month);
+   
+                   $charmonth[]=$order_m->format('F');
+   
+                   }
+                   foreach($amount_per_month as $month)
+                   {
+                       $chardate[]=$month->total_orders;
+                   }
+   
+                   $myData=[
+                       'month'=>$charmonth,
+                       'total'=>$chardate
+                    ];
+   
+                   return response()->json(['msg' => "success", 'data' => $myData],200);
+               }
+   
+           }
+           catch (QueryException $e)
+           {
+               return response()->json(['error' => 'Database Error: '.$e->getMessage()], 500);
+           }
+           catch (Exception $e)
+           {
+               return response()->json(['error' => $e->getMessage()], 404);
+           }
+       }
+   
+       /* charts function End*/
 }
