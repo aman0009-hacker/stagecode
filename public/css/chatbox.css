@@ -81,7 +81,7 @@ textarea::placeholder
     margin-left:70px;
     display:inline-block;
 }
-.message_body.user span
+.message_body.user span:nth-child(1)
 {
     float:right;
 }
