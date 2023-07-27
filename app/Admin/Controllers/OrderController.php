@@ -56,7 +56,7 @@ class OrderController extends AdminController
             // $grid->column('quantity', __('Quantity'));
             // $grid->column('measurement', __('Measurement'));
             $grid->column('user_id', __('User'))->display(function ($user_id) {
-                return User::find($user_id)->name;
+                return User::find($user_id)->name ?? '';
             });
             $grid->column('id', __('Order Items'))->display(function ($id) {
                 //$count = count($comments);
@@ -113,7 +113,7 @@ class OrderController extends AdminController
                 $order = Order::with('user')->find($this->id);
                 if ($order) {
                     // Order found, you can access the user_id now
-                    $userID = $order->user->id;
+                    $userID = $order->user->id ?? '';
                     //return $userID;
                     if (isset($userID) && !empty($userID)) {
                         $member_at = User::find($userID)->member_at;
@@ -295,7 +295,7 @@ class OrderController extends AdminController
                 //$export->filename('Filename.csv');
                 $export->except(['id']);
             });
-            $grid->disableRowSelector();
+            //$grid->disableRowSelector();
             $grid->disableCreateButton();
             $grid->model()->orderBy('created_at', 'desc');
 

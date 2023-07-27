@@ -65,14 +65,33 @@ class FileUploadController extends Controller
             } else {
                 $utilityValue = 'mimes:jpeg,png,jpg,zip,pdf|max:5000';
             }
-            $request->validate([
+            //   $request->validate([
+            //         'gstFile' => $gstValue,
+            //         'msmeFile' => $msmeValue,
+            //         'itrFile' => $itrValue,
+            //         'aadharFile' => $aadharValue,
+            //         'panFile' => $panValue,
+            //         'utilityFile' => $utilityValue,
+            //     ]);
+
+            //new code added
+            $rules = [
                 'gstFile' => $gstValue,
                 'msmeFile' => $msmeValue,
                 'itrFile' => $itrValue,
                 'aadharFile' => $aadharValue,
                 'panFile' => $panValue,
                 'utilityFile' => $utilityValue,
-            ]);
+            ];
+            // Create a Validator instance with the rules
+            $validator = Validator::make($request->all(), $rules);
+
+            // Check if validation fails
+            if ($validator->fails()) {
+                // Redirect back with input data and errors
+                return redirect()->route('documentProcess')->withInput()->withErrors($validator);
+            }
+            //new code added
             $fileName = "";
             $fileNameMsme = "";
             $fileNameItr = "";
@@ -156,6 +175,8 @@ class FileUploadController extends Controller
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
+            return redirect()->route('documentProcess')->withInput()->withErrors();
+
         }
     }
 

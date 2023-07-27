@@ -22,6 +22,7 @@
     background-color:#eaf0f6;
     color:#000;
     Clear:both;
+    float:right;
 }
 
 .timer
@@ -80,7 +81,7 @@ textarea::placeholder
     margin-left:70px;
     display:inline-block;
 }
-.message_body.user div
+.message_body.user span
 {
     float:right;
 }

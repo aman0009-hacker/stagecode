@@ -35,7 +35,7 @@ class OrderApproved extends RowAction
                         //het current user emailid end
                         $details = [
                             'email' => 'PSIEC ADMIN PANEL (Payment Link)',
-                            'body' => 'Congratulations!!! Your order no ' . $model->id . ' has successfully approved. Kindly wait till dispatching of order.',
+                            'body' => 'Congratulations!!! Your order no ' . $model->order_no . ' has successfully approved. Kindly wait till dispatching of order.',
                             'encryptedID' => $encryptedID,
                             'status' => 'OrderApprove'
                         ];
@@ -46,7 +46,7 @@ class OrderApproved extends RowAction
                         return $this->response()->error('Oops! Kindly submit documents as required');
                     }
                 }
-                return $this->response()->success('Congratulations!!! Your order no ' . $model->id . ' has successfully approved. Kindly wait till dispatching of order.')->refresh();
+                return $this->response()->success('Congratulations!!! Your order no ' . $model->order_no . ' has successfully approved. Kindly wait till dispatching of order.')->refresh();
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
