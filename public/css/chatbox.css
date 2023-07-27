@@ -81,10 +81,10 @@ textarea::placeholder
     margin-left:70px;
     display:inline-block;
 }
-.message_body.user span:nth-child(1)
+/* .message_body.user span:nth-child(1)
 {
     float:right;
-}
+} */
 .svg-icon
 {
     width: 20px;
