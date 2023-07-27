@@ -34,7 +34,7 @@ $(document).ready(function () {
                         let userresul = upperuser.charAt(0).toUpperCase() + upperuser.slice(1);
 
 
-                        a.innerHTML = `<span><span style="display:block"><strong>${commentres}</strong></span><span class="color_message ${data.commented_by}"><span class="read_by">${userresul}</span> :<span>${data.comment}</span> <span class="timer">${moment(data.created_at).format("MMM D, hh:mm A")} </span></span> </span><br>`
+                        a.innerHTML = `<span><span class="color_message ${data.commented_by}"><span class="read_by">${userresul}</span> :<span>${data.comment}</span> <span class="timer">${moment(data.created_at).format("MMM D, hh:mm A")} </span></span> </span><br>`
 
                         $("#submitDiv").append(a);
                     });
