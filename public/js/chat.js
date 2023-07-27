@@ -36,7 +36,7 @@ setInterval(function () {
       }
     }
   );
-}, 15000);
+}, 10000);
 
 $("#btnSubmit").on("click", function (event) {
   event.preventDefault();
@@ -95,6 +95,22 @@ Dropzone.autoDiscover = false;
 var dropzone = new Dropzone('#image-upload', {
   thumbnailWidth: 100,
   maxFilesize: 5,
-  acceptedFiles: ".jpeg,.jpg,.png,.gif,.pdf"
+  acceptedFiles: ".jpeg,.jpg,.png,.gif,.pdf",
+  success: function(file) {
+
+   
+    console.log('alert');
+      file.previewElement.remove();
+
+      swal.fire({
+       title:"Your image is uploaded",
+       icon:"success",
+       timer:3000,
+      });
+  
+},
+error: function(file, response){
+    return false;
+}
 });
  //new code for dropzone end

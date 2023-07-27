@@ -45,7 +45,7 @@ $(document).ready(function () {
                 // Handle any errors that occur during the AJAX request
             }
         });
-    }, 15000);
+    }, 10000);
     $('#btnSubmit').on("click", function (event) {
         event.preventDefault();
         var value = ($("#textAreaMsg").val());
