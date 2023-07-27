@@ -46,11 +46,30 @@ class Order extends Model
         return $this->hasMany(PaymentDataHandling::class, 'order_id', 'id');
     }
     
-    protected static function boot(){
-        parent::boot();
-        static::creating(function ($model) {
-            $model->{$model->getKeyName()} = Uuid::generate()->string;
-        });
+    // protected static function boot(){
+    //     parent::boot();
+    //     static::creating(function ($model) {
+    //         $model->{$model->getKeyName()} = Uuid::generate()->string;
+
+    //     });
    
+    // }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($order) {
+            // Generate and set the UUID
+            $order->{$order->getKeyName()} = Uuid::generate()->string;
+
+            // Get the latest order number from the database
+            $latestOrder = static::latest()->first();
+
+            // Extract the numeric part from the latest order number
+            $latestNumber = $latestOrder ? intval(substr($latestOrder->order_no, strlen('psiec_'))) : 0;
+
+            // Increment the numeric part and set the new order number
+            $order->order_no = 'psiec_' . ($latestNumber + 1);
+        });
     }
 }
