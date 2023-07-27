@@ -35,7 +35,7 @@ class OrderRejected extends RowAction
                     //het current user emailid end
                     $details = [
                         'email' => 'PSIEC ADMIN PANEL',
-                        'body' => 'Oops!!! Your order no '. $model->id . ' has rejected due to following cause '. $request->get('reason') ?? ''.'.'
+                        'body' => 'Oops!!! Your order no '. $model->order_no . ' has rejected due to following cause '. $request->get('reason') ?? ''.'.'
                         //'encryptedID' => $encryptedID,
 
 
@@ -47,7 +47,7 @@ class OrderRejected extends RowAction
                     return $this->response()->error('Oops! Kindly submit documents as required');
                 }
                 }
-                return $this->response()->success('Oops!!! Your order no '. $model->id . ' has rejected due to following cause '. $request->get('reason') ?? ''.'.')->refresh();
+                return $this->response()->success('Oops!!! Your order no '. $model->order_no . ' has rejected due to following cause '. $request->get('reason') ?? ''.'.')->refresh();
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());

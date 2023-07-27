@@ -29,6 +29,7 @@ use Encore\Admin\Grid\Actions\BatchDelete;
 use Encore\Admin\Grid\Filter\Like;
 use Encore\Admin\Grid\Filter\Equal;
 use App\Models\PaymentDataHandling;
+use App\Admin\Actions\RegisterWithPsiec;
 
 class UserController extends AdminController
 {
@@ -125,6 +126,10 @@ class UserController extends AdminController
           $actions->add(new Data);
           //$actions->add(new Rejected);
         }
+        $actions->add(new RegisterWithPsiec);
+
+
+
       });
 
       $grid->batchActions(function ($batchActions) {

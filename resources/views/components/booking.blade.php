@@ -62,7 +62,8 @@
           @foreach ($orders as $index => $order)
           <div class="row historyBox mb-3">
             <div class="col-12 col-sm-12 col-md-4 col-lg-4">
-              <h4 class="orderid mb-0"><span>Order ID:</span>{{ $order->id ?? '' }}</h4>
+              {{-- <h4 class="orderid mb-0"><span>Order ID:</span>{{ $order->id ?? '' }}</h4> --}}
+              <h4 class="orderid mb-0"><span>Order ID:</span>{{ $order->order_no ?? '' }}</h4>
             </div>
             <div class="col-12 col-sm-12 col-md-4 col-lg-4">
               <!-- Display additional order information if needed -->

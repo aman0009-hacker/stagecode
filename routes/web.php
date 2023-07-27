@@ -62,7 +62,7 @@ Route::post('chatDataPost', [App\Admin\Controllers\CustomPageController::class, 
 Route::post('checkurl', [App\Admin\Controllers\CustomPageController::class, 'checkurl'])->name('checkurl');
 Route::post('checkurlIndex', [App\Admin\Controllers\CustomPageController::class, 'checkurlIndex'])->name('checkurlIndex');
 
-Route::middleware(['auth'])->group(function () {
+//Route::middleware(['auth'])->group(function () {
     Route::get('/payment', function () {
         return view('components.payment');
     });
@@ -179,7 +179,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('order', [profileController::class, 'userorder'])->name('userorder');
         Route::get('address', [profileController::class, 'useraddress'])->name('useraddress');
     });
-});
+//});
 
 Route::get('invoice', [InvoiceController::class, 'index'])->name('invoice');
 /*Charts Route*/

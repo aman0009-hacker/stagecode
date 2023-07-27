@@ -36,7 +36,7 @@ class OrderPayment extends RowAction
                     //het current user emailid end
                     $details = [
                         'email' => 'PSIEC ADMIN PANEL (Payment Link)',
-                        'body' => 'Congratulations!!! Your order no '. $model->id . ' payment has successfully received. Orders has delivered soon.',
+                        'body' => 'Congratulations!!! Your order no '. $model->order_no . ' payment has successfully received. Orders has delivered soon.',
                         'encryptedID' => $encryptedID,
                         'status'=>'OrderPayment'
                     ];
@@ -47,7 +47,7 @@ class OrderPayment extends RowAction
                     return $this->response()->error('Oops! Kindly submit documents as required');
                 }
                 }
-                return $this->response()->success('Congratulations!!! Your order no '. $model->id . ' payment has successfully received. Orders has delivered soon.')->refresh();
+                return $this->response()->success('Congratulations!!! Your order no '. $model->order_no . ' payment has successfully received. Orders has delivered soon.')->refresh();
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());

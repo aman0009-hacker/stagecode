@@ -80,7 +80,7 @@ class YardSupervisorManagementController extends AdminController
         //new code
       });
       $grid->disableActions();
-      $grid->disableRowSelector();
+      //$grid->disableRowSelector();
       //new code
       //$grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
       if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {

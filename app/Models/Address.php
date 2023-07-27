@@ -24,8 +24,27 @@ class Address extends Model
 
     protected static function boot(){
         parent::boot();
-        static::creating(function ($model) {
-            $model->{$model->getKeyName()} = Uuid::generate()->string;
+        // static::creating(function ($model) {
+        //     $model->{$model->getKeyName()} = Uuid::generate()->string;
+        // });
+
+        parent::boot();
+
+        static::creating(function ($address) {
+            // Set the default value for 'psiec_address_ludhiana'
+            $defaultAddress = [
+                "psiec_biilling_name" => "Punjab Small Industries & Export Corp. Ind.",
+                "psiec_billing_area" => "Area-B",
+                "psiec_biilling_city" => "Ludhiana",
+                "psiec_biilling_gst" => "03AABCP1602M1ZT",
+                "psiec_biilling_state" => "Punjab",
+                "psiec_biilling_code" => "03",
+                "psiec_biilling_cin" => "U51219CH9162SGC002427",
+            ];
+            $address->psiec_address_ludhiana = json_encode($defaultAddress);
+
+            // Generate and set the UUID for the primary key
+            $address->{$address->getKeyName()} = Uuid::generate()->string;
         });
    
     }

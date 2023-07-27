@@ -78,7 +78,7 @@ class YardController extends AdminController
                 // $actions->disableDelete();
             });
             //$grid->disableActions();
-            $grid->disableRowSelector();
+            //$grid->disableRowSelector();
             $grid->model()->orderBy('created_at', 'desc');
             return $grid;
         } catch (\Throwable $ex) {
