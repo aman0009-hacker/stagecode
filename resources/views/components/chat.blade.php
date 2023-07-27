@@ -21,9 +21,9 @@
 </head>
 <style>
   .chat-wrapper {
-    border-radius: 60px;
+
     box-shadow: 4px 6px 0px 0px #11bfdc;
-    width: 50%;
+  
     margin: auto;
     padding: 35px 35px 0px 35px;
   }
@@ -171,10 +171,11 @@
   #submitDiv {
     display: inline-flex;
     flex-direction: column-reverse;
+    width:98%;
   }
 
   .set-background {
-    background-color: darkcyan;
+  
     background-size: 250px;
     height: 579px;
     background-attachment: fixed;
@@ -182,6 +183,11 @@
 </style>
 
 <body>
+@if(session()->has('success'))
+{{dd('meta')}}
+
+@endif
+  @include('vendor.sweetalert.alert');
   <div class="main">
     <!--  Navigation -->
     <section>
@@ -504,6 +510,7 @@
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js' type='text/javascript'></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
     <script src="{{asset('js/chat.js')}}"></script>
 </body>
 
