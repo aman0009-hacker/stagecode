@@ -96,4 +96,5 @@ cursor: pointer;
 {
     display:inline-flex;
     flex-direction: column-reverse;
+    width:98%;
 }
