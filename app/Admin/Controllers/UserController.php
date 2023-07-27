@@ -103,7 +103,9 @@ class UserController extends AdminController
         //$export->filename('Filename.csv');
         $export->except(['approved', 'comments', 'attachment', 'otp']);
       });
+     
       $grid->actions(function ($actions) {
+        
         if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
           //$actions->disableEdit();
         } else if (Admin::user()->inRoles(['superadmin', 'SuperAdmin'])) {
@@ -111,6 +113,7 @@ class UserController extends AdminController
         }
         $actions->disableView();
         $actions->disableDelete();
+        $actions->disableEdit();
         $actions->add(new ShowDocuments);
         if ($actions->row->approved == 0) {
           $actions->add(new Data);
