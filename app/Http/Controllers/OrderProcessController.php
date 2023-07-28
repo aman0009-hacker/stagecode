@@ -59,6 +59,7 @@ class OrderProcessController extends Controller
                 return redirect()->back();
             }
         } catch (\Throwable $ex) {
+            dd($ex->getMessage());
             Log::info($ex->getMessage());
         }
     }

@@ -69,7 +69,7 @@ class Order extends Model
             $latestNumber = $latestOrder ? intval(substr($latestOrder->order_no, strlen('psiec_'))) : 0;
 
             // Increment the numeric part and set the new order number
-            $order->order_no = 'psiec_' . ($latestNumber + 1);
+            $order->order_no = 'PSIEC-' . ($latestNumber + 1);
         });
     }
 }

@@ -53,11 +53,11 @@
         box-sizing: border-box;
     }
 
-    @supports (font-variation-settings: normal) {
+    /* @supports (font-variation-settings-normal) {
         html {
             font-family: "Inter var", sans-serif;
         }
-    }
+    } */
 
     body {
         margin: 0;
