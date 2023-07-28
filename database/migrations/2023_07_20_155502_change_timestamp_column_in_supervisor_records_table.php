@@ -23,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('supervisor_records', function (Blueprint $table) {
-            $table->timestamp('created_at')->change();
-            $table->timestamp('updated_at')->change();
+            $table->date('created_at')->change();
+            $table->date('updated_at')->change();
         });
     }
 };

@@ -62,8 +62,8 @@
             ?>
       <script>
         Swal.fire({
-    title: 'Payment Mode set Cheque successfully',
-    showClass: {
+      title: 'Payment Mode set Cheque successfully',
+      showClass: {
       popup: 'animate__animated animate__fadeInDown'
     },
     hideClass: {
