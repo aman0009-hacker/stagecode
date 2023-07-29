@@ -219,6 +219,8 @@ class OrderController extends AdminController
                                     } else {
                                         return "N/A";
                                     }
+                                } else {
+                                    return "N/A";
                                 }
                             } else {
                                 return "N/A";
@@ -226,6 +228,7 @@ class OrderController extends AdminController
                         }
                     }
                 } else {
+                    return "N/A";
                 }
                 //new code end
             });
@@ -304,7 +307,7 @@ class OrderController extends AdminController
             <meta name="csrf-token" content="{{ csrf_token() }}">
             <!-- <script src="../../js/modal.js"></script> -->
             <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
-         
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
        
             <style>
             input[type=file] {
@@ -354,9 +357,9 @@ class OrderController extends AdminController
                           <input type="hidden" id="modalIdInput" name="modalId">
                                      <label for="file">Upload File</label >
                                             <div id="allfiles" class="fileadding">
-                                            <input type="file" name="files[]" class="allitems" >
+                                          <input type="file" name="files[]" class="allitems" required   >
                                           <input type="file" name="files[]" class="allitems" >
-                                          <input type="file" name="files[]" class="allitems" >
+                                          <!-- <input type="file" name="files[]" class="allitems" > -->
                                             </div>
                                       <!-- icon -->
                                                <!-- <span class="btn btn-success" onclick="imagesAdd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Add</span></span>
@@ -373,7 +376,7 @@ class OrderController extends AdminController
                                                     </div>
                                                     <div class="chequedatecoloumn"style="margin-top:20px" >
                                                     <label for="Chequedate" class="form-label">Cheque Date</label>
-                                                    <input type="date" class="form-control" id="Chequedate" name="chequedate" required>
+                                                    <input type="date" class="form-control" id="Chequedate" name="chequedate" required    />
                                                    </div>
                                       <div class="row">
                                          <hr>
