@@ -21,6 +21,7 @@ class OrderPayment extends RowAction
             if (isset($id) && !empty($id)) {
                 $data = Order::find($id);
                 $data->status = "Payment_Done";
+                $data->final_payment_status="verified";
                 $data->save();
 
                 if($data->save()==true)

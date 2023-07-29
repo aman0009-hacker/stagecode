@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\Order;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+
 
 class OrderProcessController extends Controller
 {
@@ -24,8 +28,15 @@ class OrderProcessController extends Controller
     public function jspart(Request $request)
     {
         try {
+            $validator = Validator::make($request->all(), [
+                'files' => 'required|array', // Ensure that 'files' is an array and not empty
+                'files.*' => 'file|mimes:jpeg,png,pdf|max:5120', // Validate each file in the 'files' array
+            ]);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
             $allfiles = $request->file('files');
-            if (isset($allfiles) && !empty($allfiles)) {
+            if (isset($allfiles) && !empty($allfiles) && $request->hasFile('files')) {
                 $modalIdInput = $request->input('modalId');
                 // Find the Order model based on $modalIdInput
                 $order = Order::findOrFail($modalIdInput);
@@ -44,14 +55,6 @@ class OrderProcessController extends Controller
                         $order->file2 = $files;
                     }
                 }
-                $order->check_amount = $request->amount;
-                $order->cheque_number = $request->cheque;
-                $order->Cheque_Date = $request->chequedate;
-                $order->save();
-                return redirect()->back();
-            } else if (isset($request->amount) && !empty($request->amount) && isset($request->cheque) && !empty($request->cheque) && isset($request->chequedate) && !empty($request->chequedate)) {
-                $modalIdInput = $request->input('modalId');
-                $order = Order::findOrFail($modalIdInput);
                 $order->check_amount = $request->amount;
                 $order->cheque_number = $request->cheque;
                 $order->Cheque_Date = $request->chequedate;
