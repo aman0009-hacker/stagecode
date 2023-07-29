@@ -16,6 +16,7 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Facades\Admin;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Invoice;
 
 
 class ProductCategoryController extends Controller
@@ -95,6 +96,26 @@ class ProductCategoryController extends Controller
             $order->status = "New";
             $order->user_id = Auth::user()->id;
             $order->save();
+
+
+            //new code to generate invoice start
+            if ($order->save === true) {
+                $lastInvoice = Invoice::orderByDesc('invoice_id')->first();
+                $newInvoiceId = $lastInvoice ? $lastInvoice->invoice_id + 1 : 1;
+                $invoice = new Invoice();
+                //$invoice->id = \Ramsey\Uuid\Uuid::uuid4(); // Generate a new UUID for the 'id' column
+                $invoice->delivery_terms = 'This information has been provided as a resource to familiarize PSIEC rules';
+                $invoice->invoice_date = now();
+                $invoice->order_id = Order::latest('id')->value('id'); // Replace $order with the actual Order model instance
+                $invoice->invoice_id = $newInvoiceId;
+                $invoice->created_at = now();
+                $invoice->updated_at = now();
+                $invoice->save();
+            }
+            //new code to generte invoice end
+
+
+
             if ($order->save()) {
                 $latestId = Order::latest()->first()->id;
                 if (isset($latestId) && !empty($latestId)) {
@@ -283,6 +304,24 @@ class ProductCategoryController extends Controller
                     $order->status = "New";
                     $order->user_id = Auth::user()->id;
                     $order->save();
+
+                    //new code to generate invoice start
+                    if ($order->save === true) {
+                        $lastInvoice = Invoice::orderByDesc('invoice_id')->first();
+                        $newInvoiceId = $lastInvoice ? $lastInvoice->invoice_id + 1 : 1;
+                        $invoice = new Invoice();
+                        //$invoice->id = \Ramsey\Uuid\Uuid::uuid4(); // Generate a new UUID for the 'id' column
+                        $invoice->delivery_terms = 'This information has been provided as a resource to familiarize PSIEC rules';
+                        $invoice->invoice_date = now();
+                        $invoice->order_id = Order::latest('id')->value('id'); // Replace $order with the actual Order model instance
+                        $invoice->invoice_id = $newInvoiceId;
+                        $invoice->created_at = now();
+                        $invoice->updated_at = now();
+                        $invoice->save();
+                    }
+                    //new code to generte invoice end
+
+                    
                     if ($order->save()) {
                         $latestId = Order::latest()->first()->id;
                         foreach ($rowsValues as $data) {
