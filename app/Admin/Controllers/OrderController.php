@@ -363,11 +363,11 @@ class OrderController extends AdminController
                                                <span class="btn btn-danger" onclick="imagesRemove()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 11H5V13H19V11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Remove</span></span> -->
                                             <!--  -->
                                          <div class="amount_coloumn"style="margin-top:20px">
-                                                        <label for="Amount" class="form-label">Amount</label>
+                                                        <label for="Amount" class="form-label">Cheque Amount</label>
                                                         <input type="number" class="form-control" id="Amount" name="amount" placeholder="Enter Amount" required>
                                                     </div>
                                                     <div class="chequecoloumn"style="margin-top:20px" >
-                                                        <label for="Cheque" class="form-label">Cheque</label>
+                                                        <label for="Cheque" class="form-label">Cheque No</label>
                                                         <input type="text" class="form-control" id="Cheque" name="cheque" placeholder="Enter Cheque Number"
                                                         maxlength="18" required>
                                                     </div>
