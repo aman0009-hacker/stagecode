@@ -110,6 +110,7 @@
               <div class="mb-3 position-relative form-control-new">
                 <input type="text" class="form-control form-input bg-transparent" id="msmeNumber" name="msmeNumber"
                   aria-describedby="msmeNumberHelp" placeholder="Enter your MSME Number (12 digit)" required
+                  onkeypress="return isNumberKey(event)"
                   oninvalid="this.setCustomValidity('Enter your MSME Number (12 digit)')" title="MSME No (12 digit)"
                   oninput="setCustomValidity('')" minlength="12" maxlength="12" value="{{old('msmeNumber')}}">
                 <label for="msmeNumber" class="form-label">Enter your MSME/Udyam Number (12 digit) <span style="color:red">★</span> </label>
