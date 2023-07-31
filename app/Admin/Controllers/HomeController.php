@@ -27,14 +27,14 @@ class HomeController extends Controller
                     $column->append(new Box('Users Count Records ', view('admin.charts.donutChart')));
                 });
                 $row->column(4, function (Column $column) {
-                    $column->append(new Box('Yard Records', view('admin.charts.lineChart')));
+                    $column->append(new Box('Order Count Records', view('admin.charts.pieChart')));
                 });
-                $row->column(7, function (Column $column) {
+
+                $row->column(6, function (Column $column) {
                     $column->append(new Box('Order Amount Records', view('admin.charts.waveChart')));
                 });
-             
-                $row->column(5, function (Column $column) {
-                    $column->append(new Box('Order Count Records', view('admin.charts.pieChart')));
+                $row->column(6, function (Column $column) {
+                    $column->append(new Box('Yard Records', view('admin.charts.lineChart')));
                 });
 
 
