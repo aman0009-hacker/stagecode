@@ -51,7 +51,7 @@ $(document).ready(function () {
                             else
                             {
 
-                                image=`<a href="../uploads/${data.comment}" target="_blank"><img src="http://localhost:8000/uploads/${data.comment}" style="width:135px;display:block"></a>`;
+                                image=`<a href="../uploads/${data.comment}" target="_blank"><img src="../uploads/${data.comment}" style="width:135px;display:block"></a>`;
                             }
                         }
                         
@@ -113,7 +113,7 @@ $(document).ready(function () {
                         }
                         else
                         {
-                           image=`<a href="../uploads/${data.comment}" target="_blank"><img src="http://localhost:8000/uploads/${data.comment}" style="width:135px;display:block"></a>`;
+                           image=`<a href="../uploads/${data.comment}" target="_blank"><img src="../uploads/${data.comment}" style="width:135px;display:block"></a>`;
                         }
                         
 
