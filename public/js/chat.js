@@ -37,7 +37,7 @@ setInterval(function () {
               image = data.comment;
             }
             else {
-              image = `<img src="http://localhost:8000/uploads/${data.comment}" style="width:135px;display:block">`;
+              image = `<img src="uploads/${data.comment}" style="width:135px;display:block">`;
             }
             a.innerHTML = `<span class="read_by">` + data.username + `</span><div class="color_message ${data.commented_by}">` + image + `<div class="timer">` + moment(data.created_at).format("MMM D, hh:mm A") + `</div></div><br/>`;
             $("#submitDiv").append(a);
@@ -90,7 +90,7 @@ $("#btnSubmit").on("click", function (event) {
                 image = data.comment;
               }
               else {
-                image = `<img src="http://localhost:8000/uploads/${data.comment}" style="width:135px;display:block">`;
+                image = `<img src="uploads/${data.comment}" style="width:135px;display:block">`;
               }
               a.innerHTML = `<span class="read_by">` + data.username + `</span><div class="color_message ${data.commented_by}">` + image + `<div class="timer">` + moment(data.created_at).format("MMM D, hh:mm A") + `</div></div><br/>`;
               $("#submitDiv").append(a);
@@ -155,7 +155,7 @@ var dropzone = new Dropzone('#image-upload', {
                 image = data.comment;
               }
               else {
-                image = `<img src="http://localhost:8000/uploads/${data.comment}" style="width:135px;display:block">`;
+                image = `<img src="uploads/${data.comment}" style="width:135px;display:block">`;
               }
               a.innerHTML = `<span class="read_by">` + data.username + `</span><div class="color_message ${data.commented_by}">` + image + `<div class="timer">` + moment(data.created_at).format("MMM D, hh:mm A") + `</div></div><br/>`;
               $("#submitDiv").append(a);
