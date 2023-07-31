@@ -179,7 +179,6 @@
     display: inline-flex;
     flex-direction: column-reverse;
     width: 100%;
-    / overflow-y: scroll; /
     height: 500px;
     overflow-y: scroll;
     padding-right: 15px;
