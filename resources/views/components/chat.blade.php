@@ -167,12 +167,23 @@
     top: 54%;
     cursor: pointer;
   }
-
+.message_body.admin .read_by
+{
+  display: block;
+}
+.message_body.user .read_by
+{
+  float: right;
+}
   #submitDiv {
     display: inline-flex;
     flex-direction: column-reverse;
-    width:98%;
-  }
+    width: 100%;
+    / overflow-y: scroll; /
+    height: 500px;
+    overflow-y: scroll;
+    padding-right: 15px;
+}
 
   .set-background {
   
@@ -183,10 +194,7 @@
 </style>
 
 <body>
-@if(session()->has('success'))
-{{dd('meta')}}
 
-@endif
   @include('vendor.sweetalert.alert');
   <div class="main">
     <!--  Navigation -->
