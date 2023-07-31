@@ -6,6 +6,7 @@ use Encore\Admin\Actions\RowAction;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Invoice;
+use Illuminate\Support\Facades\Session;
 use App\Models\Order;
 use App\Models\User;
 use Carbon\Carbon;
@@ -25,6 +26,7 @@ class OrderDispatched extends RowAction
                 $data = Order::find($id);
                 $data->status = "Dispatched";
                 $data->save();
+                Session::put('txtOrderGlobalModalCompleteID',$id);
                 //new code for update incoice table
                 $latestInvoice = Invoice::where('order_id', $id)
                     ->orderBy('updated_at', 'desc')
