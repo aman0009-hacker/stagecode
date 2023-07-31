@@ -341,41 +341,45 @@ class FileUploadController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            if ($request->hasFile('file')) {
-                $image = $request->file('file');
-                $imageName = time() . '.' . $image->getClientOriginalName();
-                $image->move(public_path('uploads'), $imageName);
-                //return response()->json(['success'=>$imageName]);
-                $id = Auth::user()->id;
-                //dd($id);
-                // $query = DB::table('attachments')->insert([
-                //     ['filename' => $imageName, 'user_id'=>$id , 'created_at' => \Carbon\Carbon::now() , 'updated_at'=>\Carbon\Carbon::now() , 'file_type'=>'other' , 'fileno'=>'additional files'] ,
-                //     ]);
-                // $query = Attachment::create([
-                //     'filename' => $imageName,
-                //     //'user_id' => $id,
-                //     'created_at' => Carbon::now(),
-                //     'updated_at' => Carbon::now(),
-                //     'file_type' => 'other',
-                //     'fileno' => 'additional files',
-                // ]);
-                $attachment = new Attachment([
-                    'filename' => $imageName,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                    'file_type' => 'other',
-                    'fileno' => 'additional files'
-                ]);
 
-                $user = User::find($id);
-                $user->attachment()->save($attachment);
 
-            }
-        } catch (\Throwable $ex) {
-            Log::info($ex->getMessage());
+        if ($request->hasFile('file')) {
+            $image = $request->file('file');
+            $imageName = time() . '.' . $image->getClientOriginalName();
+            $image->move(public_path('uploads'), $imageName);
+         
+            //return response()->json(['success'=>$imageName]);
+
+            $id = Auth::user()->id;
+          
+            $attachment = new Attachment([
+                'filename' => $imageName,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'file_type' => 'other',
+                'fileno' => 'additional files'
+            ]);
+
+            $user = User::find($id);
+            $user->attachment()->save($attachment);
 
         }
+
+
+
+
+    
+
+return response()->json(['success'=>$imageName]);
+
+
+
+
+
+
+
+
+       
     }
 
     public function storeimagecomment($data)
