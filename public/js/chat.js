@@ -1,3 +1,6 @@
+let ext = ['jpg', 'png', 'jpeg'];
+let image = "";
+
 $.ajaxSetup(
   {
     headers: {
@@ -6,8 +9,11 @@ $.ajaxSetup(
     }
   }
 );
+
 var form = document.getElementById("chatForm");
 var formData = new FormData(form);
+
+
 setInterval(function () {
   $.ajax(
 
@@ -21,12 +27,19 @@ setInterval(function () {
       success: function (response) {
         if (response.msg = "success") {
           $("#submitDiv").html("");
-          $("#textAreaMsg").val("");
+
           var values = response.latestData;
           values.forEach(function (data) {
             let a = document.createElement('div');
             a.setAttribute('class', `message_body ${data.commented_by}`);
-            a.innerHTML = `<div><strong>` + data.commented_by + `</strong></div><div class="color_message ${data.commented_by}"> <span class="read_by">` + data.username + `</span> : ` + data.comment + `<div class="timer">` + moment(data.created_at).format("MMM D, hh:mm A") + `</div></div><br/>`;
+            let comment_section = data.comment.split('.').pop().toLowerCase();
+            if ($.inArray(comment_section, ext) === -1) {
+              image = data.comment;
+            }
+            else {
+              image = `<img src="http://localhost:8000/uploads/${data.comment}" style="width:135px;display:block">`;
+            }
+            a.innerHTML = `<span class="read_by">` + data.username + `</span><div class="color_message ${data.commented_by}">` + image + `<div class="timer">` + moment(data.created_at).format("MMM D, hh:mm A") + `</div></div><br/>`;
             $("#submitDiv").append(a);
           });
         }
@@ -36,7 +49,7 @@ setInterval(function () {
       }
     }
   );
-}, 10000);
+}, 15000);
 
 $("#btnSubmit").on("click", function (event) {
   event.preventDefault();
@@ -54,7 +67,7 @@ $("#btnSubmit").on("click", function (event) {
   if (data) {
     var form = document.getElementById("chatForm");
     var formData = new FormData(form);
-    //alert("hjkjhjkh");
+
     $.ajax(
 
       {
@@ -72,7 +85,14 @@ $("#btnSubmit").on("click", function (event) {
             values.forEach(function (data) {
               let a = document.createElement('div');
               a.setAttribute('class', `message_body ${data.commented_by}`);
-              a.innerHTML = `<div><strong>` + data.commented_by + `</strong></div><div class="color_message ${data.commented_by}"> <span class="read_by">` + data.username + `</span> : ` + data.comment + `<div class="timer">` + moment(data.created_at).format("MMM D, hh:mm A") + `</div></div><br/>`;
+              let comment_section = data.comment.split('.').pop().toLowerCase();
+              if ($.inArray(comment_section, ext) === -1) {
+                image = data.comment;
+              }
+              else {
+                image = `<img src="http://localhost:8000/uploads/${data.comment}" style="width:135px;display:block">`;
+              }
+              a.innerHTML = `<span class="read_by">` + data.username + `</span><div class="color_message ${data.commented_by}">` + image + `<div class="timer">` + moment(data.created_at).format("MMM D, hh:mm A") + `</div></div><br/>`;
               $("#submitDiv").append(a);
             });
           }
@@ -96,21 +116,73 @@ var dropzone = new Dropzone('#image-upload', {
   thumbnailWidth: 100,
   maxFilesize: 5,
   acceptedFiles: ".jpeg,.jpg,.png,.gif,.pdf",
-  success: function(file) {
+  success: function (file, response) {
 
-   
-    console.log('alert');
-      file.previewElement.remove();
 
-      swal.fire({
-       title:"Your image is uploaded",
-       icon:"success",
-       timer:3000,
-      });
-  
-},
-error: function(file, response){
+    file.previewElement.remove();
+
+    swal.fire({
+      title: "Your image is uploaded",
+      icon: "success",
+      timer: 3000,
+    });
+
+
+
+
+
+
+
+    $.ajax(
+
+      {
+        url: '/imagestore/' + response.success,
+        method: 'get',
+        dataType: 'JSON',
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          console.log('data');
+          if (response.msg = "success") {
+            $("#submitDiv").html("");
+            $("#textAreaMsg").val("");
+            var values = response.latestData;
+            values.forEach(function (data) {
+              let a = document.createElement('div');
+              a.setAttribute('class', `message_body ${data.commented_by}`);
+              let comment_section = data.comment.split('.').pop().toLowerCase();
+              if ($.inArray(comment_section, ext) === -1) {
+                image = data.comment;
+              }
+              else {
+                image = `<img src="http://localhost:8000/uploads/${data.comment}" style="width:135px;display:block">`;
+              }
+              a.innerHTML = `<span class="read_by">` + data.username + `</span><div class="color_message ${data.commented_by}">` + image + `<div class="timer">` + moment(data.created_at).format("MMM D, hh:mm A") + `</div></div><br/>`;
+              $("#submitDiv").append(a);
+            });
+          }
+        },
+        error: function (xhr, status, error) {
+          //handle error
+        }
+      }
+    );
+
+
+
+
+
+
+
+
+
+  },
+  error: function (file, response) {
     return false;
-}
+  }
 });
+
+
+
+
  //new code for dropzone end

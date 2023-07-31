@@ -33,12 +33,14 @@
 .read_by
 {
     font-weight:800;
-    / text-decoration:underline; /
+  
 }
+
 .chat-wrapper
 {
-    position:relative;
+   
     margin-top:50px;
+    position: relative;
 }
 .image_chat img
 {
@@ -47,7 +49,7 @@
 .image_chat
 {
 position:absolute;
-top:-32px;
+top:-35px;
 width: 70px;
 padding:15px;
 left: 50%;
@@ -56,6 +58,14 @@ border-radius:100%;
 transform: translateX(-50%);
 box-shadow: 0px 0px 7px -2px #0000007a;
 
+}
+.message_body.user .read_by
+{
+    float:right;
+}
+.message_body.admin .read_by
+{
+    display: block;
 }
 .text-head {
 display: flex;
@@ -86,16 +96,18 @@ textarea::placeholder
     float:right;
 } */
 .svg-icon
-{
+{   
     width: 20px;
 position: absolute;
 right: 10%;
 top: 54%;
 cursor: pointer;
 }
-#submitDiv
-{
-    display:inline-flex;
+#submitDiv {
+    display: inline-flex;
     flex-direction: column-reverse;
-    width:98% !important;
+    width: 100%;
+    height: 500px;
+    overflow-y: scroll;
+    padding-right: 15px;
 }

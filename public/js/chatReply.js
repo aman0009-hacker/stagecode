@@ -4,6 +4,9 @@ $(document).ready(function () {
         $("#textAreaMsg").val("");
     }
     );
+    var ext=['png','jpg','jpeg','pdf'];
+    let image='';
+
     var form = document.getElementById("commentForms");
     var formData = new FormData(form);
     //alertify.error('Kindly fill the message');
@@ -20,21 +23,41 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-
+                   
                 if (response.msg = "success") {
                     $("#submitDiv").html("");
-                    $("#textAreaMsg").val("");
+                    // $("#textAreaMsg").val("");
                     var values = response.latestData;
                     values.forEach(function (data) {
                         let a = document.createElement('div');
                         a.setAttribute('class', `message_body ${data.commented_by}`);
                         let uppercomment = data.commented_by;
                         let commentres = uppercomment.charAt(0).toUpperCase() + uppercomment.slice(1);
-                        let upperuser = data.username;
+                        let upperuser = data.username; 
                         let userresul = upperuser.charAt(0).toUpperCase() + upperuser.slice(1);
+                        let comment=data.comment.split('.').pop().toLowerCase();
+                        if($.inArray(comment,ext)===-1)
+                        {
+                        image=data.comment;
+                        }
+                      
+                        else
+                        {
+                            if(comment === 'pdf')
+                            {
+                                image=`<a href="../uploads/${data.comment}"target="_blank">${data.comment}</a>`;
 
+                            }
+                            else
+                            {
 
-                        a.innerHTML = `<span><span class="color_message ${data.commented_by}"><span class="read_by">${userresul}</span> :<span>${data.comment}</span> <span class="timer">${moment(data.created_at).format("MMM D, hh:mm A")} </span></span> </span><br>`
+                                image=`<a href="../uploads/${data.comment}" target="_blank"><img src="http://localhost:8000/uploads/${data.comment}" style="width:135px;display:block"></a>`;
+                            }
+                        }
+                        
+                        
+
+                        a.innerHTML = `<span class="read_by">${userresul}</span><span style="display:block;"><span class="color_message ${data.commented_by}"><span>${image}</span> <span class="timer">${moment(data.created_at).format("MMM D, hh:mm A")} </span></span> </span><br>`
 
                         $("#submitDiv").append(a);
                     });
@@ -45,7 +68,7 @@ $(document).ready(function () {
                 // Handle any errors that occur during the AJAX request
             }
         });
-    }, 10000);
+    }, 15000);
     $('#btnSubmit').on("click", function (event) {
         event.preventDefault();
         var value = ($("#textAreaMsg").val());
@@ -77,12 +100,28 @@ $(document).ready(function () {
                         a.setAttribute('class', `message_body ${data.commented_by}`);
                         let uppercomment = data.commented_by;
                         let commentres = uppercomment.charAt(0).toUpperCase() + uppercomment.slice(1);
-                        let upperuser = data.username;
+                        let upperuser = data.username; 
                         let userresul = upperuser.charAt(0).toUpperCase() + upperuser.slice(1);
-                      
-                        a.innerHTML = `<span><span style="display:block"><strong>${commentres}</strong></span><span class="color_message ${data.commented_by}"><span class="read_by">${userresul}</span> :<span>${data.comment}</span> <span class="timer">${moment(data.created_at).format("MMM D, hh:mm A")} </span></span> </span><br>`
+                        let comment=data.comment.split('.').pop().toLowerCase();
+                        if($.inArray(comment,ext)===-1)
+                        {
+                        image=data.comment;
+                        }
+                        else if(comment === 'pdf')
+                        {
+                            image=`<a href="../uploads/${data.comment}">${data.comment}</a>`;
+                        }
+                        else
+                        {
+                           image=`<a href="../uploads/${data.comment}" target="_blank"><img src="http://localhost:8000/uploads/${data.comment}" style="width:135px;display:block"></a>`;
+                        }
+                        
+
+                        a.innerHTML = `<span class="read_by">${userresul}</span><span style="display:block"><span class="color_message ${data.commented_by}"><span>${image}</span> <span class="timer">${moment(data.created_at).format("MMM D, hh:mm A")} </span></span> </span><br>`
+
                         $("#submitDiv").append(a);
                     });
+
                 }
             },
             error: function (xhr, status, error) {
