@@ -10,24 +10,6 @@
       font-family: 'Poppins', sans-serif;
     }
 
-    #chart {
-      width: 100%;
-      margin: 0 auto;
-      opacity: 0.9;
-    }
-
-    .apexcharts-toolbar {
-      opacity: 1;
-      border: 0;
-    }
-
-    .apexcharts-zoomin-icon,
-    .apexcharts-zoomout-icon,
-    .apexcharts-zoom-icon.apexcharts-selected,
-    .apexcharts-reset-icon,
-    .apexcharts-pan-icon {
-      display: none;
-    }
   </style>
 </head>
 
@@ -74,9 +56,6 @@
                 options: {
                   chart: {
                     width: '100%'
-                  },
-                  legend: {
-                    position: 'bottom'
                   }
                 }
               }]

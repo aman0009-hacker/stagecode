@@ -5,14 +5,7 @@
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto);
 
-        body {
-            font-family: Roboto, sans-serif;
-        }
-
-        #chart {
-            max-width: 650px;
-            /* margin: 35px auto; */
-        }
+      
     </style>
 </head>
 
@@ -22,8 +15,8 @@
     <form>
         @csrf
         <div id="chart1"></div>
-        <div id="error_lineChart"><img src="{{ asset('images/error/empty1.png') }}" alt="" width="400"
-                style="margin: 80px 60px;"></div>
+        <div id="error_lineChart"><img src="{{ asset('images/error/empty1.png') }}" alt="" width="300"
+                style="margin: 142px 80px; align-items: center"></div>
     </form>
     <script>
         $(function() {
@@ -46,7 +39,7 @@
                         const month = response.data.month;
                         const numberOf = response.data.numberOf;
                         graph.style.display = 'block';
-                        errorContainer.style.visibility = 'hidden';
+                        errorContainer.style.display = 'none';
                         var options = {
                             chart: {
                                 height: 420,

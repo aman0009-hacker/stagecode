@@ -6,13 +6,13 @@
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto);
 
-        body {
+        /* margin-top: 40px!important; */
+        /* body {
             font-family: Roboto, sans-serif;
         }
 
         #chart {
             max-width: 650px;
-            /* margin-top: 40px!important; */
         }
 
         #chart100 {
@@ -22,14 +22,21 @@
         #chart100 .apexcharts-toolbar {
             top: -50px !important;
 
-        }
+        } */
+        .apexcharts-zoomin-icon,
+    .apexcharts-zoomout-icon,
+    .apexcharts-zoom-icon.apexcharts-selected,
+    .apexcharts-reset-icon,
+    .apexcharts-pan-icon {
+      display: none;
+    }
     </style>
 </head>
 
 <body>
     <div id="chart100" mt-3></div>
     <div id="error_waveChart" style="text-align:center;"><img src="{{asset('images/error/empty1.png')}}" alt=""
-            width="400" style="margin: 80px 60px;"></div>
+            width="300"  style="margin: 142px 60px;"></div>
     <script>
         $(function() {
             $.ajax({
@@ -49,12 +56,12 @@
                     else
                     {
                         graph.style.display = 'block';
-                        errorContainer.style.visibility = 'hidden';
+                        errorContainer.style.display = 'none';
                     const month=response.data.month;
                     const total =response.data.total;
                     var options = {
                         chart: {
-                            height: 350,
+                            height: 420,
                             type: 'area',
                             stacked: true,
                             events: {
