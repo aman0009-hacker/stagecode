@@ -105,6 +105,77 @@
             @endif
 
 
+
+            {{-- new code start  --}}
+            {{-- @if ($order->status=="Dispatched" || $order->status=="Payment_Done")
+            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                <!-- Display additional order information if needed -->
+                <h4 class="orderid mb-0"><span></span>
+                    <a href="javascript:void(0)" class="link-success" id="download-invoice-link" onclick="openModal({{ $order->id }})">Download Invoice</a>
+                </h4>
+            </div>
+        
+            <!-- Modal HTML structure -->
+            <div class="modal" id="quantityModal" style="display: none;">
+                <div class="modal-content">
+                    <h3>Enter Quantity</h3>
+                    <input type="number" id="quantityInput" placeholder="Quantity" min="1" />
+                    <button onclick="handleOk()">OK</button>
+                    <button onclick="hideModal()">Cancel</button>
+                </div>
+            </div>
+        
+            <script>
+                let orderId; // Global variable to store the orderId
+        
+                // Function to show the modal and store the orderId
+                function openModal(orderId) {
+                    orderId = orderId;
+                    document.getElementById('quantityModal').style.display = 'block';
+                }
+        
+                // Function to hide the modal
+                function hideModal() {
+                    document.getElementById('quantityModal').style.display = 'none';
+                }
+        
+                // Function to handle the OK button click
+                function handleOk() {
+                    // Get the input value
+                    const quantity = parseInt(document.getElementById('quantityInput').value);
+        
+                    // Perform validation (e.g., check if the quantity is valid)
+                    if (isNaN(quantity) || quantity < 1) {
+                        alert('Please enter a valid quantity.');
+                        return;
+                    }
+        
+                    // Form the URL with orderId only
+                    const encryptedOrderId = Crypt.encrypt(orderId);
+                    const url = `{{ route('invoice') }}?orderIDInvoice=${encryptedOrderId}`;
+                    window.location.href = url;
+        
+                    // Hide the modal after successful action
+                    hideModal();
+                }
+            </script>
+        @endif --}}
+        
+
+            {{-- new code end  --}}
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class="col-12 col-sm-12 col-md-3 col-lg-3">
               <h4 class="orderplaced mb-0">
                 <span>Booking Date: </span><span class="order-status">{{ $order->created_at ?? '' }}</span>
