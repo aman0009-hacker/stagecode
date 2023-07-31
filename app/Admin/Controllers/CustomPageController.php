@@ -195,139 +195,166 @@ class CustomPageController extends AdminController
         // ->view('admin.custom-page');
     }
 
-    public function checkurl(Request $request)
-    {
-        try {
-            $adminrole = $request->input('adminusername');
-            $adminusername = $request->input('adminusername');
-            $adminid = $request->input('adminid');
-            $userid = $request->input('userid');
-            $textAreaMsg = $request->input('textAreaMsg');
-            $query = User::find($userid);
-            if ($query) {
-                $approvedStatus = $query->approved;
-                // if ($approvedStatus == 2 || $approvedStatus == 0) {
-                if ($approvedStatus == 2 || $approvedStatus == 0 || $approvedStatus == 1) {
-                    if (isset($textAreaMsg) && isset($adminid) && isset($userid)) {
-                        $data = new Comments;
-                        $data->admin_id = $adminid;
-                        $data->user_id = $userid;
-                        $data->comment = $textAreaMsg;
-                        $data->username = $adminusername;
-                        $data->commented_by = "admin";
-                        // $data->username= $adminusername;
-                        // $data->save();
-                        if ($data->save()) {
-                            $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->take(5)->get();
-                            //$latestData=Comments::where('id',$lastInsertedId->id)->first();
-                            return response()->json([
-                                "msg" => "success",
-                                "adminid" => $adminid,
-                                "data" => $data,
-                                'adminrole' => $adminrole,
-                                "userid" => $userid,
-                                "adminusername" => $adminusername,
-                                "textAreaMsg" => $textAreaMsg,
-                                'latestData' => $latestData
-                            ]);
-                        }
-                    }
-                }
-            }
-        } catch (\Throwable $ex) {
-            Log::info($ex->getMessage());
-        }
-    }
-
-    public function checkurlIndex(Request $request)
-    {
-        try {
-            $adminrole = $request->input('adminusername');
-            $adminusername = $request->input('adminusername');
-            $adminid = $request->input('adminid');
-            $userid = $request->input('userid');
-            $textAreaMsg = $request->input('textAreaMsg');
-            $query = User::find($userid);
-            if ($query) {
-                $status = $query->approved;
-                //if ($status == 2 || $status == 0) {
-                if ($status == 2 || $status == 0 || $status == 1) {
-                    if (isset($adminid) && isset($userid)) { {
-                            $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->take(5)->get();
-                            //$latestData=Comments::where('id',$lastInsertedId->id)->first();
-                            return response()->json([
-                                "msg" => "success",
-                                "adminid" => $adminid,
-                                'adminrole' => $adminrole,
-                                "userid" => $userid,
-                                "adminusername" => $adminusername,
-                                "textAreaMsg" => $textAreaMsg,
-                                'latestData' => $latestData
-                            ]);
-
-                        }
-                    }
-                }
-            }
-        } catch (\Throwable $ex) {
-            Log::info($ex->getMessage());
-        }
-    }
-
-    public function chatData(Request $request)
-    {
-        try {
-            //return response()->json(["msg"=>"success"]);
-            $messageData = $request->input('textAreaMsg');
-            // $queryData = DB::table('users')->join('comments', 'users.id', '=', 'comments.user_id')->
-            //     where('comments.user_id', Auth::user()->id)->orderBy('comments.created_at', 'desc')->select('comments.*')->first();
-            $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
-                ->where('comments.user_id', auth()->user()->id)
-                ->orderBy('comments.created_at', 'desc')
-                ->select('comments.*')
-                ->first();
-            $admin_id = $queryData->admin_id;
-            if (isset($messageData) && !empty($messageData)) {
-                $data = new Comments;
-                $data->admin_id = $admin_id;
-                $data->user_id = Auth::user()->id;
-                $data->comment = $messageData;
-                // $data->username=$adminusername;
-                $data->commented_by = "user";
-                $data->username = Auth::user()->name;
-                $data->save();
-
-                if ($data->save()) {
-                    $latestData = Comments::latest()->where('admin_id', $admin_id)->where('user_id', Auth::user()->id)->take(5)->get();
-                    //$latestData=Comments::where('id',$lastInsertedId->id)->first();
-                    return response()->json(["msg" => "success", 'latestData' => $latestData]);
-                }
-            }
-        } catch (\Throwable $ex) {
-            Log::info($ex->getMessage());
-        }
-    }
-
     public function chatDataPost(Request $request)
     {
-        try {
-            // $queryData = DB::table('users')->join('comments', 'users.id', '=', 'comments.user_id')->
-            //     where('comments.user_id', Auth::user()->id)->orderBy('comments.created_at', 'desc')->select('comments.*')->first();
-            $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
-                ->where('comments.user_id', auth()->user()->id)
-                ->orderBy('comments.created_at', 'desc')
-                ->select('comments.*')
-                ->first();
-            $admin_id = $queryData->admin_id;
-            if (isset($queryData)) {
-                $latestData = Comments::latest()->where('admin_id', $admin_id)->where('user_id', Auth::user()->id)->take(5)->get();
+
+        // $queryData = DB::table('users')->join('comments', 'users.id', '=', 'comments.user_id')->
+        //     where('comments.user_id', Auth::user()->id)->orderBy('comments.created_at', 'desc')->select('comments.*')->first();
+
+        
+        $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
+            ->where('comments.user_id', auth()->user()->id)
+            ->orderBy('comments.created_at', 'desc')
+            ->select('comments.*')
+            ->first();
+        $admin_id = $queryData->admin_id;
+        if (isset($queryData)) {
+            $latestData = Comments::latest()->where('admin_id', $admin_id)->where('user_id', Auth::user()->id)->get();
+            //$latestData=Comments::where('id',$lastInsertedId->id)->first();
+            return response()->json(["msg" => "success", 'latestData' => $latestData]);
+        }
+    }
+
+ public function chatData(Request $request)
+    {
+     
+        //return response()->json(["msg"=>"success"]);
+        $messageData = $request->input('textAreaMsg');
+        // $queryData = DB::table('users')->join('comments', 'users.id', '=', 'comments.user_id')->
+        //     where('comments.user_id', Auth::user()->id)->orderBy('comments.created_at', 'desc')->select('comments.*')->first();
+        $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
+            ->where('comments.user_id', auth()->user()->id)
+            ->orderBy('comments.created_at', 'desc')
+            ->select('comments.*')
+            ->first();
+        $admin_id = $queryData->admin_id;
+        if (isset($messageData) && !empty($messageData)) {
+            $data = new Comments;
+            $data->admin_id = $admin_id;
+            $data->user_id = Auth::user()->id;
+            $data->comment = $messageData;
+            // $data->username=$adminusername;
+            $data->commented_by = "user";
+            $data->username = Auth::user()->name;
+            $data->save();
+
+            if ($data->save()) {
+                $latestData = Comments::latest()->where('admin_id', $admin_id)->where('user_id', Auth::user()->id)->get();
                 //$latestData=Comments::where('id',$lastInsertedId->id)->first();
                 return response()->json(["msg" => "success", 'latestData' => $latestData]);
             }
-        } catch (\Throwable $ex) {
-            Log::info($ex->getMessage());
         }
     }
+
+
+
+ public function checkurl(Request $request)
+    {
+
+        $adminrole = $request->input('adminusername');
+        $adminusername = $request->input('adminusername');
+        $adminid = $request->input('adminid');
+        $userid = $request->input('userid');
+        $textAreaMsg = $request->input('textAreaMsg');
+
+        $query = User::find($userid);
+        if ($query) {
+            $approvedStatus = $query->approved;
+            // if ($approvedStatus == 2 || $approvedStatus == 0) {
+                if ($approvedStatus == 2 || $approvedStatus == 0 || $approvedStatus == 1) {
+                if (isset($textAreaMsg) && isset($adminid) && isset($userid)) {
+                    $data = new Comments;
+                    $data->admin_id = $adminid;
+                    $data->user_id = $userid;
+                    $data->comment = $textAreaMsg;
+                    $data->username = $adminusername;
+                    $data->commented_by = "admin";
+                    // $data->username= $adminusername;
+                    // $data->save();
+
+                    if ($data->save()) {
+                        $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->get();
+                        //$latestData=Comments::where('id',$lastInsertedId->id)->first();
+                        return response()->json([
+                            "msg" => "success",
+                            "adminid" => $adminid,
+                            "data" => $data,
+                            'adminrole' => $adminrole,
+                            "userid" => $userid,
+                            "adminusername" => $adminusername,
+                            "textAreaMsg" => $textAreaMsg,
+                            'latestData' => $latestData
+                        ]);
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    public function checkurlIndex(Request $request)
+    {
+        $adminrole = $request->input('adminusername');
+        $adminusername = $request->input('adminusername');
+        $adminid = $request->input('adminid');
+        $userid = $request->input('userid');
+        $textAreaMsg = $request->input('textAreaMsg');
+        $query = User::find($userid);
+
+
+    //  $main_id=auth::user()->id;
+      $user_id=User::find($userid);
+
+
+    //     $arr=[];
+    //     $currentTime = Carbon::now();
+    //     $before15Seconds = $currentTime->subSeconds(10);
+    //     $image=\App\Models\Attachment::where('user_id', $userid)->where('created_at', '>=', $before15Seconds)->get();
+    //     if(count($image)>0)
+    //     {
+    //    foreach($image as $element)
+    //    {
+    //     $arr[]=$element->filename;
+    //    }
+     
+    //    foreach($arr as $element)
+    //    {
+    //     $data = new Comments;
+    //     $data->admin_id = $adminid;
+    //     $data->user_id = $userid;
+    //     $data->comment = $element;
+    //     $data->username = $user_id->name;
+    //     $data->commented_by = "user";
+    //     $data->save();
+    // }
+    //     }
+      
+        if ($query) {
+            $status = $query->approved;
+            //if ($status == 2 || $status == 0) {
+                if ($status == 2 || $status == 0 || $status == 1) {
+                if (isset($adminid) && isset($userid)) { {
+                        $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->get();
+                        //$latestData=Comments::where('id',$lastInsertedId->id)->first();
+                        return response()->json([
+                            "msg" => "success",
+                            "adminid" => $adminid,
+                            'adminrole' => $adminrole,
+                            "userid" => $userid,
+                            "adminusername" => $adminusername,
+                            "textAreaMsg" => $textAreaMsg,
+                            'latestData' => $latestData
+                        ]);
+
+                    }
+                }
+            }
+        }
+
+
+    }
+
 
 
     public function start(Request $request)

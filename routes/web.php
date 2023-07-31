@@ -188,3 +188,4 @@ Route::get("/totalOrdersAmount", [App\Admin\Controllers\CustomPageController::cl
 Route::get("/totalUsers", [App\Admin\Controllers\CustomPageController::class, 'getTotalUsersCount'])->name('total.user');
 Route::get("/totalYards", [App\Admin\Controllers\CustomPageController::class, 'getTotalYardCount'])->name('total.yards');
 /*Charts Route*/
+Route::get('imagestore/{maindata}',[FileUploadController::class, 'storeimagecomment']);

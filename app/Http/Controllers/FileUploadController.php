@@ -377,4 +377,33 @@ class FileUploadController extends Controller
 
         }
     }
+
+    public function storeimagecomment($data)
+    {
+        $messageData = $data;
+        // $queryData = DB::table('users')->join('comments', 'users.id', '=', 'comments.user_id')->
+        //     where('comments.user_id', Auth::user()->id)->orderBy('comments.created_at', 'desc')->select('comments.*')->first();
+        $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
+            ->where('comments.user_id', auth()->user()->id)
+            ->orderBy('comments.created_at', 'desc')
+            ->select('comments.*')
+            ->first();
+        $admin_id = $queryData->admin_id;
+        if (isset($messageData) && !empty($messageData)) {
+            $data = new Comments;
+            $data->admin_id = $admin_id;
+            $data->user_id = Auth::user()->id;
+            $data->comment = $messageData;
+            // $data->username=$adminusername;
+            $data->commented_by = "user";
+            $data->username = Auth::user()->name;
+            $data->save();
+
+            if ($data->save()) {
+                $latestData = Comments::latest()->where('admin_id', $admin_id)->where('user_id', Auth::user()->id)->get();
+                //$latestData=Comments::where('id',$lastInsertedId->id)->first();
+                return response()->json(["msg" => "success", 'latestData' => $latestData]);
+            }
+        }
+    }
 }
