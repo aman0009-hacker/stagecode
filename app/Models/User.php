@@ -12,6 +12,11 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Attachment;
 use App\Models\PaymentDataHandling;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permisssion\Traits\HasRoles;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
+
 // use Illuminate\Database\Eloquent\Concerns\HasUuids;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
@@ -19,7 +24,7 @@ use App\Models\PaymentDataHandling;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, LogsActivity;
 
     public $incrementing = false;
     protected $keyType = 'string';
@@ -34,11 +39,47 @@ class User extends Authenticatable
         'last_name',
         'password',
         'email',
-       'contact_number',
-       'state'
+        'contact_number',
+        'state'
         //'otp',
         //'otp_generated_at'
     ];
+
+
+
+
+
+
+
+    //new code for logActivity start
+    protected static $logAttributes = ["name", "last_name", "email", "contact_number","state"];
+    protected static $logOnlyDirty = true;
+    protected static $logName = 'user';
+    protected static $recordEvents = ["created", "updated", "deleted"];
+    public function getActivitylogOptions(): LogOptions
+    {
+        $logOptions = LogOptions::defaults();
+
+        $logOptions->logAttributes = static::$logAttributes;
+        $logOptions->logOnlyDirty = static::$logOnlyDirty;
+        $logOptions->logName = static::$logName;
+        // The getDescriptionForEvent method allows you to customize the description of logged events.
+        // It is defined in your User model, and here's how you can use it:
+        // $logOptions->setDescriptionForEvent(function (string $eventName) {
+        //     return "you have {$eventName} user";
+        // });
+        return $logOptions;
+    }
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "you have {$eventName} user";
+    }
+    //new code for logActivity start 
+
+
+
+
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -85,54 +126,54 @@ class User extends Authenticatable
     }
 
     protected $encryptable = [
-     
-           // 'name',
-           // 'last_name',
-            // 'email',
-           // 'contact_number'      
-        
-        
+
+        // 'name',
+        // 'last_name',
+        // 'email',
+        // 'contact_number'      
+
+
     ];
 
-    
-public function setNameAttribute($value)
-{
-    if (in_array('name', $this->encryptable)) {
-        $this->attributes['name'] = ($value !== null && trim($value) !== '') ? Crypt::encryptString($value) : null;
-    } else {
-        $this->attributes['name'] = $value;
-    }
-}
 
-public function getNameAttribute($value)
-{
-    if (in_array('name', $this->encryptable)) {
-        return ($value !== null && trim($value) !== '') ? Crypt::decryptString($value) : null;
+    public function setNameAttribute($value)
+    {
+        if (in_array('name', $this->encryptable)) {
+            $this->attributes['name'] = ($value !== null && trim($value) !== '') ? Crypt::encryptString($value) : null;
+        } else {
+            $this->attributes['name'] = $value;
+        }
     }
-    return $value;
-}
 
-public function setLastNameAttribute($value)
-{
-    if (in_array('last_name', $this->encryptable)) {
-        $this->attributes['last_name'] = ($value !== null && trim($value) !== '') ? Crypt::encryptString($value) : null;
-    } else {
-        $this->attributes['last_name'] = $value;
+    public function getNameAttribute($value)
+    {
+        if (in_array('name', $this->encryptable)) {
+            return ($value !== null && trim($value) !== '') ? Crypt::decryptString($value) : null;
+        }
+        return $value;
     }
-}
 
-public function getLastNameAttribute($value)
-{
-    if (in_array('last_name', $this->encryptable)) {
-        return ($value !== null && trim($value) !== '') ? Crypt::decryptString($value) : null;
+    public function setLastNameAttribute($value)
+    {
+        if (in_array('last_name', $this->encryptable)) {
+            $this->attributes['last_name'] = ($value !== null && trim($value) !== '') ? Crypt::encryptString($value) : null;
+        } else {
+            $this->attributes['last_name'] = $value;
+        }
     }
-    return $value;
-}
 
-//     public function setEmailAttribute($value)
+    public function getLastNameAttribute($value)
+    {
+        if (in_array('last_name', $this->encryptable)) {
+            return ($value !== null && trim($value) !== '') ? Crypt::decryptString($value) : null;
+        }
+        return $value;
+    }
+
+    //     public function setEmailAttribute($value)
 // {
 
-//     if (in_array('email', $this->encryptable)) {
+    //     if (in_array('email', $this->encryptable)) {
 //         $this->attributes['email'] = ($value !== null && trim($value) !== '') ? Crypt::encryptString($value) : null;
 //     } else {
 //         $this->attributes['email'] = $value;
@@ -140,7 +181,7 @@ public function getLastNameAttribute($value)
 //     //$this->attributes['email'] = ($value !== null && trim($value) !== '') ? Crypt::encryptString($value) : null;
 // }
 
-// public function getEmailAttribute($value)
+    // public function getEmailAttribute($value)
 // {
 //     if (in_array('email', $this->encryptable)) {
 //         return ($value !== null && trim($value) !== '') ? Crypt::decryptString($value) : null;
@@ -149,32 +190,33 @@ public function getLastNameAttribute($value)
 //     //return ($value !== null && trim($value) !== '') ? Crypt::decryptString($value) : null;
 // }
 
-public function setContactNumberAttribute($value)
-{
-    if (in_array('contact_number', $this->encryptable)) {
-        $this->attributes['contact_number'] = ($value !== null && trim($value) !== '') ? Crypt::encryptString($value) : null;
-    } else {
-        $this->attributes['contact_number'] = $value;
+    public function setContactNumberAttribute($value)
+    {
+        if (in_array('contact_number', $this->encryptable)) {
+            $this->attributes['contact_number'] = ($value !== null && trim($value) !== '') ? Crypt::encryptString($value) : null;
+        } else {
+            $this->attributes['contact_number'] = $value;
+        }
     }
-}
 
-public function getContactNumberAttribute($value)
-{
-    if (in_array('contact_number', $this->encryptable)) {
-        return ($value !== null && trim($value) !== '') ? Crypt::decryptString($value) : null;
+    public function getContactNumberAttribute($value)
+    {
+        if (in_array('contact_number', $this->encryptable)) {
+            return ($value !== null && trim($value) !== '') ? Crypt::decryptString($value) : null;
+        }
+        return $value;
     }
-    return $value;
-}
 
 
 
-    protected static function boot(){
+    protected static function boot()
+    {
         parent::boot();
         static::creating(function ($model) {
             $model->{$model->getKeyName()} = Uuid::generate()->string;
         });
-   
+
     }
 
-    
+
 }

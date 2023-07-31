@@ -16,7 +16,6 @@
     </style>
 </head>
 
-
 <body>
     <!--Div that will hold the pie chart-->
     {{-- <div id="chart_div"></div> --}}
@@ -26,8 +25,6 @@
         <div id="error_lineChart"><img src="{{ asset('images/error/empty1.png') }}" alt="" width="400"
                 style="margin: 80px 60px;"></div>
     </form>
-
-
     <script>
         $(function() {
             $.ajax({
@@ -36,11 +33,8 @@
                 dataType: 'JSON',
                 success: function(response) {
                     console.log(response.data);
-
                     const error = response.data.month.length;
-
-                    const graph = document.getElementById('chart1');
-
+                   const graph = document.getElementById('chart1');
                     const errorContainer = document.getElementById('error_lineChart');
                     if (error === 0)
                     {
@@ -51,7 +45,6 @@
                     {
                         const month = response.data.month;
                         const numberOf = response.data.numberOf;
-                        
                         graph.style.display = 'block';
                         errorContainer.style.visibility = 'hidden';
                         var options = {
@@ -112,9 +105,7 @@
                                 offsetX: 40
                             }
                         };
-
                         var chart = new ApexCharts(document.querySelector("#chart1"), options);
-
                         chart.render();
                     }
                 }

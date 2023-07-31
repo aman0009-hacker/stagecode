@@ -37,14 +37,12 @@
     @csrf
     <div id="chart"></div>
   </form>
-
   <script>
     $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
     });
-
     $(function() {
       $.ajax({
         url: '/chartApproveStatus',
@@ -52,16 +50,12 @@
         dataType: 'JSON',
         success: function(response) {
           const data = response.data;
-
           const error = response.data.length;
-
           const graph = document.getElementById('chart');
-
           if (error === 0) {
             graph.style.display = 'none';
           } else {
             graph.style.display = 'block';
-
             var options = {
               series: data,
               chart: {
@@ -74,9 +68,19 @@
               labels: ['Approved', 'New', 'Rejected'],
               legend: {
                 position: 'bottom'
-              }
+              },
+              responsive: [{
+                breakpoint: 480,
+                options: {
+                  chart: {
+                    width: '100%'
+                  },
+                  legend: {
+                    position: 'bottom'
+                  }
+                }
+              }]
             };
-
             var chart = new ApexCharts(document.querySelector("#chart"), options);
             chart.render();
           }

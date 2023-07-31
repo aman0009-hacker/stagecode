@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class AdminUser extends Model
 {
@@ -16,11 +17,15 @@ class AdminUser extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'username', 'password', 'name', 'avatar',
+        'username',
+        'password',
+        'name',
+        'avatar',
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     public function roles()
