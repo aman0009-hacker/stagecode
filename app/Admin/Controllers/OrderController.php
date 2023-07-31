@@ -109,6 +109,24 @@ class OrderController extends AdminController
                     return "Pending";
                 }
             });
+
+
+
+            $grid->column('Cheque_Date', __('Cheque Info'))->display(function () {
+                $value = "";
+                if (isset($this->Cheque_Date) && !empty($this->Cheque_Date)) {
+                    $value = "Date:- " . $this->Cheque_Date;
+                }
+                if (isset($this->cheque_number) && !empty($this->cheque_number)) {
+                    $value .= " NO:- " . $this->cheque_number;
+                }
+                if ($value == "") {
+                    return "N/A";
+                } else {
+                    return $value;
+                }
+            });
+
             $grid->column('payable_amount', __('Payable Amount[Cheque]'))->display(function ($value) {
                 $order = Order::with('user')->find($this->id);
                 if ($order) {
@@ -232,6 +250,27 @@ class OrderController extends AdminController
                 }
                 //new code end
             });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             // $grid->column('firm', __('Firm'));
             $grid->column('created_at', __('Created at'))->display(function ($value) {
                 //  return Carbon::parse($value)->format('Y-m-d H:i:s');

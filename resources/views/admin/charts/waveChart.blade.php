@@ -26,14 +26,10 @@
     </style>
 </head>
 
-
 <body>
-
-
     <div id="chart100" mt-3></div>
     <div id="error_waveChart" style="text-align:center;"><img src="{{asset('images/error/empty1.png')}}" alt=""
             width="400" style="margin: 80px 60px;"></div>
-
     <script>
         $(function() {
             $.ajax({
@@ -44,7 +40,6 @@
                 {
                     const error = response.data.length;
                     const graph = document.getElementById('chart100');
-
                     const errorContainer = document.getElementById('error_waveChart');
                     if (error === 0)
                     {
@@ -57,7 +52,6 @@
                         errorContainer.style.visibility = 'hidden';
                     const month=response.data.month;
                     const total =response.data.total;
-
                     var options = {
                         chart: {
                             height: 350,
@@ -87,8 +81,6 @@
                                 name: "Total Amount",
                                 data:total
                             },
-
-
                         ],
                         fill: {
                             type: 'gradient',
@@ -115,12 +107,10 @@
       }
                         ]
                     }
-
                     var chart = new ApexCharts(
                         document.querySelector("#chart100"),
                         options
                     );
-
                     chart.render();
                 }
             }

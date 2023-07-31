@@ -28,9 +28,17 @@ class InvoiceController extends Controller
             ])->where('id', $orderId)
                 ->where('user_id', $userId)
                 ->first();
-            if (!$order) {
-
-            }
+            // if (!$order) {
+            //     return redirect()->route('order')->with('error', 'Order not found.');
+            // }
+              // Check if related data exists
+        if (!$order->invoices || $order->invoices->isEmpty() ||
+        !$order->address || $order->address->isEmpty() ||
+        !$order->orderItems || $order->orderItems->isEmpty() ||
+        !$order->payments || $order->payments->isEmpty()
+    ) {
+        return redirect()->route('order')->with('error', 'Order not found.');
+    }
             //"{"psiec_biilling_name": "Punjab Small Industries & Export Corp. Ind.", "psiec_billing_area": "Area-B", "psiec_biilling_city": "Ludhiana", "psiec_biilling_gst": "03AABCP1602M1ZT", "psiec_biilling_state": "Punjab", "psiec_biilling_code": "03", "psiec_biilling_cin": "U51219CH9162SGC002427"}"
             // i- Find total amount
             $totalAmount =
