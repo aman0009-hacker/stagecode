@@ -41,14 +41,17 @@ class InvoiceController extends Controller
     }
             //"{"psiec_biilling_name": "Punjab Small Industries & Export Corp. Ind.", "psiec_billing_area": "Area-B", "psiec_biilling_city": "Ludhiana", "psiec_biilling_gst": "03AABCP1602M1ZT", "psiec_biilling_state": "Punjab", "psiec_biilling_code": "03", "psiec_biilling_cin": "U51219CH9162SGC002427"}"
             // i- Find total amount
-            $totalAmount =
-                $order->payments->where('data', 'Registration_Amount')->where('payment_status', 'SUCCESS')->sum('transaction_amount')
-                + $order->payments->where('data', 'Booking_Amount')->where('payment_status', 'SUCCESS')->sum('transaction_amount')
-                + (
-                    $order->payments->where('data', 'Booking_Final_Amount')->where('payment_status', 'SUCCESS')->sum('transaction_amount')
-                    ?: ($order->payment_mode === 'cheque' ? $order->check_amount : 0)
-                );
-            // ii- Find tax amount
+            //$totalAmount =
+                // $order->payments->where('data', 'Registration_Amount')->where('payment_status', 'SUCCESS')->sum('transaction_amount')
+                // + $order->payments->where('data', 'Booking_Amount')->where('payment_status', 'SUCCESS')->sum('transaction_amount')
+                // + (
+                //     $order->payments->where('data', 'Booking_Final_Amount')->where('payment_status', 'SUCCESS')->sum('transaction_amount')
+                //     ?: ($order->payment_mode === 'cheque' ? $order->check_amount : 0)
+                // );
+             $totalAmount= $order->payments->where('data', 'Booking_Final_Amount')->where('payment_status', 'SUCCESS')
+             ?: ($order->payment_mode === 'cheque' ? $order->check_amount : 0);
+             $bookingAmount=$order->payments->where('data', 'Booking_Amount')->where('payment_status', 'SUCCESS');
+             // ii- Find tax amount
             $cgstPercent = env('CGST', 9); // Set your CGST percentage here (e.g., 9%)
             $sgstPercent = env('SGST', 9);
             ; // Set your SGST percentage here (e.g., 9%)
@@ -57,6 +60,7 @@ class InvoiceController extends Controller
             $stateTaxAmount = ($totalAmount * $sgstPercent / 100) ?? 0;
             // iii- Find the complete amount
             $completeAmount = ($totalAmount + $totalTaxAmount) ?? 0;
+            $balance= $totalAmount-$bookingAmount;
             // Prepare the data for the response
             // $invoiceData = [
             //     'IRN' => env('IRN', ''),
@@ -192,6 +196,7 @@ class InvoiceController extends Controller
                     'HSNSAC' => env('HSN_SAC', ''),
                     'Rate' => env('RATE', ''),
                     'Per' => env('PER', ''),
+                    'Balance'=>$balance,
                     'Amount' => $totalAmount,
                     'CGST' => $centralTaxAmount,
                     'SGST' => $stateTaxAmount,

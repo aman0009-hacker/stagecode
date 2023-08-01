@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  
   <style>
     table,
     th,
@@ -12,7 +12,7 @@
       border: 1px solid black;
       border-collapse: collapse;
       vertical-align: initial;
-      padding: 3px;
+      padding: 8px;
       text-align: initial;
     }
 
@@ -32,25 +32,27 @@
 <body>
   <div class="main">
     <div class="container">
-      <table class="qr-table" style="border: 0px solid !important; width: 100%">
+      <table class="qr-table" style="border: 0px solid !important;width: 100%;">
         <tr>
-          <td style="width: 20%">IRN:</td>
+          <td style="width: 20%;">IRN:</td>
+          {{-- <td>hf09dfkjskdjnf98d9v0sdfksndf98d809fsdfhadf80a8ds0f</td> --}}
           <td>{{$IRN}}</td>
-          <td rowspan="4" style="text-align: end; vertical-align: middle">
-            <!-- <img
-                src="./QR_code_for_mobile_English_Wikipedia.svg.png"
-                alt=""
-                class="img-fluid"
-                style="width: 9%"
-              /> -->
+          <td rowspan="4" style="text-align: end;vertical-align: middle;">
+            {{-- <img
+              src="{{'data:image/png;base64,' . base64_encode(file_get_contents(public_path('uploads/QR_code_for_mobile_English_Wikipedia.svg.png')))}}"
+              alt="bar image" class="img-fluid" style="width: 9%;"> --}}
+            {{-- <img src="{{asset('uploads/QR_code_for_mobile_English_Wikipedia.svg.png')}}" alt="image"
+              class="img-fluid" style="width: 9%;" /> --}}
           </td>
         </tr>
         <tr>
           <td>Ack No. :</td>
+          {{-- <td>3126546846431649864</td> --}}
           <td>{{$AckNo}}</td>
         </tr>
         <tr>
           <td>Ack Date :</td>
+          {{-- <td>3126546846431649864</td> --}}
           <td>{{$AckDate}}</td>
         </tr>
         <tr></tr>
@@ -76,21 +78,19 @@
             CIN: {{ $value }}
             @endif
             @endforeach
+
           </th>
           <td style="text-align: start">
-            Invoice No. <span style="text-align: end">/E-way Bill No.</span>
-            <br />
-            <span style="font-weight: bold">{{$InvoiceNo}}</span>
+            Invoice No. <span style="text-align: end">/E-way Bill No.</span> <br>
+            {{-- <span style="font-weight: bold;">181</span> --}}
+            <span style="font-weight: bold;">{{$InvoiceNo}}</span>
           </td>
-          <td>
-            Dated <br />
-            <span style="font-weight: bold">{{$DatedInvoice}}</span>
-          </td>
+          {{-- <td>Dated <br> <span style="font-weight: bold;">181</span></td> --}}
+          <td>Dated <br> <span style="font-weight: bold;">{{$DatedInvoice}}</span></td>
         </tr>
         <tr>
-          <td>
-            Delivery Note <br /><span style="font-weight: bold">{{$DeliveryNote}}</span>
-          </td>
+          {{-- <td>Delivery Note <br><span style="font-weight: bold;">181</span></td> --}}
+          <td>Delivery Note <br><span style="font-weight: bold;">{{$DeliveryNote}}</span></td>
           <td>Mode/Terms of Payment
             <br><span style="font-weight: bold;">{{$ModeTermsofPayment}}</span>
           </td>
@@ -118,24 +118,12 @@
           </td>
         </tr>
         <tr>
-          <td>
-            Dispatch Doc No. <br />
-            <span style="font-weight: bold">{{$DispatchDocNo}}</span>
-          </td>
-          <td>
-            Delivery Note Date<br />
-            <span style="font-weight: bold">{{$DeliveryNoteDate}}</span>
-          </td>
+          <td>Dispatch Doc No. <br> <span style="font-weight: bold;">{{$DispatchDocNo}}</span></td>
+          <td>Delivery Note Date<br> <span style="font-weight: bold;">{{$DeliveryNoteDate}}</span></td>
         </tr>
         <tr>
-          <td>
-            Dispatched through<br />
-            <span style="font-weight: bold">{{$DispatchedThrough}}</span>
-          </td>
-          <td>
-            Destination<br />
-            <span style="font-weight: bold">{{$Destination}}</span>
-          </td>
+          <td>Dispatched through<br> <span style="font-weight: bold;">{{$DispatchedThrough}}</span></td>
+          <td>Destination<br> <span style="font-weight: bold;">{{$Destination}}</span></td>
         </tr>
         <tr>
           <th rowspan="2">
@@ -146,20 +134,12 @@
             GSTIN/UIN: {{$billing_gst_number}} <br />
             State Name: {{$billing_state}} , Code: {{$billing_gst_statecode}} <br />
           </th>
-          <td>
-            Bill of Landing/LR-RR No.<br />
-            <span style="font-weight: bold">{{$BillofLandingLRRRNo ?? ''}}</span>
-          </td>
-          <td>
-            Moter Vehicle No.<br />
-            <span style="font-weight: bold">{{$MotorVehicleNo ?? ''}}</span>
-          </td>
+          <td>Bill of Landing/LR-RR No.<br> <span style="font-weight: bold;">{{$BillofLandingLRRRNo ?? ''}}</span></td>
+          <td>Moter Vehicle No.<br> <span style="font-weight: bold;">{{$MotorVehicleNo ?? ''}}</span></td>
         </tr>
         <tr>
-          <td colspan="2">
-            Term of Delivery<br />
-            <span style="font-weight: bold">{{$TermsofDelivery ?? ''}}</span>
-          </td>
+          <td colspan="2">Term of Delivery<br> <span style="font-weight: bold;">{{$TermsofDelivery ?? ''}}</span></td>
+
         </tr>
       </table>
       <table style="width: 100%">
@@ -184,8 +164,10 @@
         </tr>
         @endforeach
 
+
+
         <tr>
-          <td style="border-top: none; border-bottom: none">1.</td>
+          <td style="border-top: none; border-bottom: none"></td>
           <td style="border-top: none; border-bottom: none; text-align: end">
             CGST
           </td>
@@ -197,21 +179,21 @@
             {{$CGST}}
           </td>
         </tr>
-        <!-- <tr>
-            <td style="border-bottom: none; border-top: none">1.</td>
-            <td style="border-bottom: none; border-top: none; text-align: end">
-              Maria Anders
-            </td>
-            <td style="border-bottom: none; border-top: none">Germany</td>
-            <td style="border-bottom: none; border-top: none">Maria Anders</td>
-            <td style="border-bottom: none; border-top: none">Germany</td>
-            <td style="border-bottom: none; border-top: none">Maria Anders</td>
-            <td style="border-bottom: none; border-top: none; text-align: end">
-              Germany
-            </td>
-          </tr> -->
+        {{-- <tr>
+          <td style="border-bottom: none; border-top: none">1.</td>
+          <td style="border-bottom: none; border-top: none; text-align: end">
+            Maria Anders
+          </td>
+          <td style="border-bottom: none; border-top: none">Germany</td>
+          <td style="border-bottom: none; border-top: none">Maria Anders</td>
+          <td style="border-bottom: none; border-top: none">Germany</td>
+          <td style="border-bottom: none; border-top: none">Maria Anders</td>
+          <td style="border-bottom: none; border-top: none; text-align: end">
+            Germany
+          </td>
+        </tr> --}}
         <tr>
-          <td style="border-top: none; border-bottom: none">1.</td>
+          <td style="border-top: none; border-bottom: none"></td>
           <td style="border-top: none; border-bottom: none; text-align: end">
             SGST
           </td>
@@ -223,7 +205,6 @@
             {{$SGST}}
           </td>
         </tr>
-
         <tr>
           <td style="border-top: none; border-bottom: none"></td>
           <td style="border-top: none; border-bottom: none; text-align: end">
@@ -259,14 +240,18 @@
           <td colspan="2">State Tax</td>
           {{-- <td colspan="2"></td> --}}
           <td rowspan="2">Total <br>Tax amount</td>
+
         </tr>
         <tr>
           <td>Rate</td>
           <td>Amount</td>
           <td>Rate</td>
           <td>Amount</td>
-          <!-- <td>Rate</td>
-          <td>Amount</td> -->
+          {{-- <td></td>
+          <td></td> --}}
+
+
+
         </tr>
         <tr>
           <td>{{$HSNSAC}}</td>
@@ -278,8 +263,11 @@
           {{-- <td></td>
           <td></td> --}}
           <td>{{$TotalTaxAmount}}</td>
+
+
+
         </tr>
-        <!-- <tr>
+        {{-- <tr>
           <td>Rs 133</td>
           <td>Rs 133</td>
           <td>Rs 133</td>
@@ -290,9 +278,12 @@
           <td>Rs 133</td>
           <td>Rs 133</td>
           <td>Rs 133</td>
-        </tr> -->
+
+
+
+        </tr> --}}
       </table>
-      <table style="width: 100%; margin-top: 14px">
+      <table style="width: 100%;margin-top: 14px;">
         <tr>
           <td colspan="2" style="border: none;padding-bottom: 23px;">
             <u><b>Declaration:-</b></u>&nbsp; We declare that this invoice shows 
@@ -302,17 +293,18 @@
         </tr>
         <tr>
           <td style="border: none">
-            Balance (Amount to paid):{{$Amount - $Balance}}
+            {{-- Balance:40,67,434.00 CR --}}
           </td>
-          <td rowspan="3" style="width: 50%; text-align: end; font-weight: bold">
+          <td rowspan="3" style="width: 50%; text-align: end;font-weight: bold;">
             for Punjab Small Industries & Export Corp.
           </td>
         </tr>
         <tr>
-          <!-- <td style="border: none">Balance:40,67,434.00 CR</td> -->
+          {{-- <td style="border: none">Balance:40,67,434.00 CR</td> --}}
+
         </tr>
         <tr>
-          <!-- <td style="border: none">Balance:40,67,434.00 CR</td> -->
+          {{-- <td style="border: none">Balance:40,67,434.00 CR</td> --}}
         </tr>
       </table>
     </div>
