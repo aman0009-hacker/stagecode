@@ -42,9 +42,22 @@
                                 type: 'donut',
                                 toolbar: {
                                     show: true
+                                },
+
+                            },
+                            dataLabels: {
+                                enabled: true,
+                                style: {
+                                    fontSize: '10px',
                                 }
                             },
                             labels: month,
+                            options: {
+                                dataLabels: {
+                                    enabled: false,
+
+                                }
+                            },
                             legend: {
                                 position: 'bottom'
                             },
@@ -53,9 +66,14 @@
                                 options: {
                                     chart: {
                                         width: '100%'
+                                    },
+                                    dataLabels: {
+                                        enabled: true,
+
                                     }
+
                                 }
-                            }]
+                            }],
                         };
                         var chart = new ApexCharts(document.querySelector("#chart56"), options);
                         chart.render();
