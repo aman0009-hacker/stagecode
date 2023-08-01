@@ -378,6 +378,10 @@ class OrderController extends AdminController
                   padding: 0px 7px;
                   font-size: 16px;
               }
+              #OrderForm::before
+              {
+                display:none;
+              }
             </style>
             </head>
              <section>
