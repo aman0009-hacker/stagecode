@@ -92,6 +92,10 @@ class OrderDispatched extends RowAction
     public function form()
     {
         $data=OrderItem::where('order_id',$this->getKey())->get();
+        $order_id=Order::find($this->getKey());
+       $this->text('Total Amount')->default($order_id->amount);
+
+               
         foreach($data as $element)
         {
             $this->text('Item name')->rules('required')->default($element->category_name);
