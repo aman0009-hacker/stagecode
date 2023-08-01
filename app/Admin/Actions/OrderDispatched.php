@@ -2,6 +2,7 @@
 
 namespace App\Admin\Actions;
 
+use App\Models\OrderItem;
 use Encore\Admin\Actions\RowAction;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
@@ -11,15 +12,27 @@ use App\Models\Order;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Encore\Admin\Layout\Row;
 
 class OrderDispatched extends RowAction
 {
-    public $name = 'Dispatch';
-    //protected $selector = '.order-approved';
+    public $name = 'Payment Request';
+    protected $selector = '.order-approved';
 
-    public function handle(Model $model)
+    public function handle(Model $model,request $request)
     {
-        try {
+        $num=0;
+                try {
+            $order=OrderItem::where('order_id',$this->getKey())->get();
+
+            foreach($order as $item)
+            {
+              
+              
+                $item->quantity=$request->quantity[$num];
+                $item->save();
+                $num++;
+            }
             $id = $model->id;
             //dd($id);
             if (isset($id) && !empty($id)) {
@@ -56,7 +69,7 @@ class OrderDispatched extends RowAction
                             //'encryptedID' => $encryptedID,
                         ];
                         \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
-                        //\Mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
+                        //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
                         //dd("Email is Sent.");
                     } else {
                         return $this->response()->error('Oops! Kindly submit documents as required');
@@ -69,9 +82,25 @@ class OrderDispatched extends RowAction
         }
     }
 
-    public function dialog()
+    // public function dialog()
+    // {  
+        
+       
+
+    //     // $this->confirm('Are you sure for order dispatch?');
+    // }
+    public function form()
     {
-        $this->confirm('Are you sure for order dispatch?');
+        $data=OrderItem::where('order_id',$this->getKey())->get();
+        foreach($data as $element)
+        {
+            $this->text('Item name')->rules('required')->default($element->category_name);
+            $this->text('quantity[]','Quantity')->rules('required')->default($element->quantity);
+
+
+        }
+       
     }
+  
 
 }
