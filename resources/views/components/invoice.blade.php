@@ -174,7 +174,7 @@
         </tr>
         @foreach ($DescriptionofGoods as $index => $item)
         <tr>
-          <td style="height: 125px; border-bottom: none">{{ $index + 1 }}</td>
+          <td style="height: 70px; border-bottom: none">{{ $index + 1 }}</td>
           <td style="border-bottom: none">{{ $item['category_name'] }}</td>
           <td style="border-bottom: none">{{ $HSNSAC }}</td>
           <td style="border-bottom: none">{{ $item['quantity'] }}</td>
