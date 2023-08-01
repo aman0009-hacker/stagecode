@@ -18,11 +18,23 @@
     flex-wrap: wrap;
     justify-content: space-between;
 }
-.modal.in form .form-group:nth-child(1),.modal.in form .form-group:nth-child(2)
-{
-    margin-top:45px;
+.modal.in form .form-group:nth-child(2), .modal.in form .form-group:nth-child(3) {
+    margin-top: 60px;
 }
 .modal.in form .modal-body .form-group
 {
     flex: 0 0 45%;
+}
+
+.modal.in form .form-group:nth-child(1) {
+    position: absolute;
+    right: 22px;
+    display: flex;
+}
+.modal.in form .form-group:nth-child(1) label
+{
+
+    flex: 0 0 50%;
+       
+        margin-top: 10px;
 }
