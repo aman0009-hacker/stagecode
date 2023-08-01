@@ -141,7 +141,8 @@ class UserController extends AdminController
       //$grid->model()->orderBy('created_at', 'desc');
       $grid->column('created_at', __('Created At'))->display(function ($value) {
         //return Carbon::parse($value)->format('d-m-Y H:i:s');
-        return Carbon::parse($value)->format('Y-m-d H:i');
+        //return Carbon::parse($value)->format('Y-m-d H:i');
+        return Carbon::parse($value)->format('Y-m-d');
         //return Carbon::parse($value)->format('d-m-Y');
       });
       $grid->column('comment', __('Payment'))->display(function ($value) {
