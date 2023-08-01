@@ -99,7 +99,7 @@ class ProductCategoryController extends Controller
 
 
             //new code to generate invoice start
-            if ($order->save === true) {
+            if ($order->save() === true) {
                 $lastInvoice = Invoice::orderByDesc('invoice_id')->first();
                 $newInvoiceId = $lastInvoice ? $lastInvoice->invoice_id + 1 : 1;
                 $invoice = new Invoice();
@@ -306,7 +306,7 @@ class ProductCategoryController extends Controller
                     $order->save();
 
                     //new code to generate invoice start
-                    if ($order->save === true) {
+                    if ($order->save() === true) {
                         $lastInvoice = Invoice::orderByDesc('invoice_id')->first();
                         $newInvoiceId = $lastInvoice ? $lastInvoice->invoice_id + 1 : 1;
                         $invoice = new Invoice();
