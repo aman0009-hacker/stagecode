@@ -48,9 +48,11 @@ class InvoiceController extends Controller
                 //     $order->payments->where('data', 'Booking_Final_Amount')->where('payment_status', 'SUCCESS')->sum('transaction_amount')
                 //     ?: ($order->payment_mode === 'cheque' ? $order->check_amount : 0)
                 // );
-             $totalAmount=   $order->payments->where('data', 'Booking_Final_Amount')->where('payment_status', 'SUCCESS')->sum('transaction_amount')
-                 ?: ($order->payment_mode === 'cheque' ? $order->check_amount : 0);
-             $bookingAmount=$order->payments->where('data', 'Booking_Amount')->where('payment_status', 'SUCCESS')->sum('transaction_amount');
+             $totalAmount=   $order->payments
+             ->where('data', 'Booking_Final_Amount')
+             ->where('payment_status', 'SUCCESS')
+             ->value('transaction_amount') ?: ($order->payment_mode === 'cheque' ? $order->check_amount : 0);
+             $bookingAmount=$order->payments->where('data', 'Booking_Amount')->where('payment_status', 'SUCCESS')->value('transaction_amount');
              // ii- Find tax amount
             $cgstPercent = env('CGST', 9); // Set your CGST percentage here (e.g., 9%)
             $sgstPercent = env('SGST', 9);
