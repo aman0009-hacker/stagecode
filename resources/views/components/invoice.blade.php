@@ -302,7 +302,7 @@
         </tr>
         <tr>
           <td style="border: none">
-            {{-- Balance (Amount to paid):{{$Amount - $Balance}} --}}
+             Balance (Amount to paid):{{$Balance ?? ''}} 
           </td>
           <td rowspan="3" style="width: 50%; text-align: end; font-weight: bold">
             for Punjab Small Industries & Export Corp.
