@@ -605,7 +605,11 @@ class PaymentController extends Controller
         $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
         //dd($txtOrderGlobalModalCompleteID);
         Session::forget('txtOrderGlobalModalCompleteID');
-        Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
+        if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
+            Session::put('txtOrderGlobalModalCompleteID', Session::get('txtOrderGlobalModalCompleteIDAlternative') ?? '');
+        } else {
+            Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
+        }
         // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
         return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'address'));
         // }
@@ -657,15 +661,18 @@ class PaymentController extends Controller
                         'billing_gst_statecode' => 'required|min:2|max:2',
                     ]
                 );
-                    // return response()->json(['success'=>true,'message'=>"king",'data'=>'data'],200);
-            if ($validator2->fails()) {
-                // Validation failed, handle the error
-                return response()->json(['success' => false, 'message' => "error", 'data' => 'data'], 400);
-                // return redirect()->back()->withErrors($validator)->withInput();
+                // return response()->json(['success'=>true,'message'=>"king",'data'=>'data'],200);
+                if ($validator2->fails()) {
+                    // Validation failed, handle the error
+                    return response()->json(['success' => false, 'message' => "error", 'data' => 'data'], 400);
+                    // return redirect()->back()->withErrors($validator)->withInput();
+                }
             }
-            }
-        
+
             $orderId = $request->input('txtOrderGlobalModalCompleteIDValue') ?? '';
+            //save order id
+            Session::put('txtOrderGlobalModalCompleteIDAlternative', $orderId ?? '');
+            //save order id
             //$orderId = 25;
             if (isset($orderId) && !empty($orderId)) {
                 $address = new Address();
@@ -705,13 +712,11 @@ class PaymentController extends Controller
                 $addressId = Address::where('user_id', Auth::user()->id)->get()->last();
                 if (isset($orderId) && !empty($orderId)) {
                     $addressToOrder = Order::where('user_id', Auth::user()->id)->where('id', $orderId)->update(['address_id' => $addressId->id]);
-                    Alert::success('Address Save Successfully');
+                    //Alert::success('Address Save Successfully');
                     return redirect()->back();
+                } else {
+                    return response()->json(['success' => false, 'message' => "no_order", 'data' => 'data'], 400);
                 }
-                else
-            {
-                return response()->json(['success'=>false,'message'=>"no_order",'data'=>'data'],400);
-            }
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());

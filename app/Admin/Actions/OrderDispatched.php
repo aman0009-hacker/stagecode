@@ -26,7 +26,7 @@ class OrderDispatched extends RowAction
                 $data = Order::find($id);
                 $data->status = "Dispatched";
                 $data->save();
-                Session::put('txtOrderGlobalModalCompleteID',$id);
+                //Session::put('txtOrderGlobalModalCompleteID',$id);
                 //new code for update incoice table
                 $latestInvoice = Invoice::where('order_id', $id)
                     ->orderBy('updated_at', 'desc')
