@@ -24,6 +24,9 @@ class OrderDispatched extends RowAction
         $num=0;
                 try {
             $order=OrderItem::where('order_id',$this->getKey())->get();
+            $allorder= order::find($this->getKey());
+            $allorder->amount=$request->total;
+            $allorder->save();
 
             foreach($order as $item)
             {
