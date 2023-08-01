@@ -32,10 +32,10 @@ class InvoiceController extends Controller
             //     return redirect()->route('order')->with('error', 'Order not found.');
             // }
               // Check if related data exists
-        if (!$order->invoices || $order->invoices->isEmpty() ||
-        !$order->address || $order->address->isEmpty() ||
-        !$order->orderItems || $order->orderItems->isEmpty() ||
-        !$order->payments || $order->payments->isEmpty()
+        if (!isset($order->invoices) || $order->invoices()->count() === 0 ||
+        !isset($order->address)  || $order->address()->count() === 0 ||
+        !isset($order->orderItems) || $order->orderItems()->count() === 0 ||
+        !isset($order->payments) || $order->payments()->count() === 0
     ) {
         return redirect()->route('order')->with('error', 'Order not found.');
     }
@@ -62,7 +62,7 @@ class InvoiceController extends Controller
             $stateTaxAmount = ($totalAmount * $sgstPercent / 100) ?? 0;
             // iii- Find the complete amount
             $completeAmount = ($totalAmount + $totalTaxAmount) ?? 0;
-            $balance= $totalAmount-$bookingAmount;
+            $balance= $completeAmount-$bookingAmount;
             // Prepare the data for the response
             // $invoiceData = [
             //     'IRN' => env('IRN', ''),
