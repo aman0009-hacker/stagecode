@@ -57,12 +57,12 @@
       <?php 
       }
      }
-             else if(request('paymentMode')!=null && !empty(request('paymentMode')) && request('paymentMode')=="Cheque")
+             else if(request('paymentMode')!=null && !empty(request('paymentMode')) && request('paymentMode')=="cheque")
            {
             ?>
       <script>
         Swal.fire({
-      title: 'Payment Mode set Cheque successfully',
+      title: 'Payment Mode set cheque successfully',
       showClass: {
       popup: 'animate__animated animate__fadeInDown'
     },
