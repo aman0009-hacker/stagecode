@@ -31,6 +31,7 @@ use Encore\Admin\Grid\Filter\Equal;
 use App\Models\PaymentDataHandling;
 use App\Admin\Actions\RegisterWithPsiec;
 use App\Admin\Actions\AddYardSupervisor;
+use App\Models\Order;
 
 class UserController extends AdminController
 {
