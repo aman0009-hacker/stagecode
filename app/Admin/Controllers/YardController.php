@@ -14,6 +14,7 @@ use App\Models\Role;
 use App\Models\RoleUser;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use App\Admin\Actions\AddYardSupervisor;    
 
 class YardController extends AdminController
 {
@@ -75,8 +76,9 @@ class YardController extends AdminController
             // });
             $grid->actions(function ($actions) {
                 $actions->disableView();
-                // $actions->disableEdit();
-                // $actions->disableDelete();
+                $actions->add(new AddYardSupervisor);
+                $actions->disableEdit();
+                $actions->disableDelete();
             });
             //$grid->disableActions();
             //$grid->disableRowSelector();
