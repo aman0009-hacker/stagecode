@@ -30,6 +30,7 @@ use Encore\Admin\Grid\Filter\Like;
 use Encore\Admin\Grid\Filter\Equal;
 use App\Models\PaymentDataHandling;
 use App\Admin\Actions\RegisterWithPsiec;
+use App\Admin\Actions\AddYardSupervisor;
 
 class UserController extends AdminController
 {
@@ -127,6 +128,7 @@ class UserController extends AdminController
           //$actions->add(new Rejected);
         }
         $actions->add(new RegisterWithPsiec);
+       
 
 
 
@@ -160,7 +162,7 @@ class UserController extends AdminController
           if (isset($userID) && !empty($userID)) {
             $user = User::with([
               'paymentDataHandling' => function ($query) {
-                $query->where('payment_status', 'SUCCESS')
+                $query->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])
                   ->where("data", "Registration_Amount")
                   ->orderBy('updated_at', 'desc')
                   ->limit(1);
