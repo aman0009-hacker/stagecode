@@ -174,6 +174,11 @@ class UserController extends AdminController
                 $updatedAt = $user->paymentDataHandling->first()->updated_at;
                 //return $updatedAt;
                 $customerStartDate = Carbon::parse($updatedAt);
+                //insert member at in DB
+                // $user=User::find($userID); 
+                // $user->member_at=Carbon::parse($customerStartDate)->format('Y-m-d');
+                // $user->save();
+                //insert member at in DB
                 return Carbon::parse($customerStartDate)->format('Y-m-d');
               } else {
                 return "N/A";

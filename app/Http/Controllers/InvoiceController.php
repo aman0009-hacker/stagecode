@@ -46,7 +46,7 @@ class InvoiceController extends Controller
                     //     ->where('payment_status', 'SUCCESS')
                     //     ->value('transaction_amount') ?: ($order->payment_mode === 'cheque' ? $order->check_amount : 0);
                     $totalAmount = $order->amount;
-                    $bookingAmount = $order->payments->where('data', 'Booking_Amount')->where('payment_status', 'SUCCESS')->value('transaction_amount');
+                    $bookingAmount = $order->payments->where('data', 'Booking_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->value('transaction_amount');
                     // ii- Find tax amount
                     $cgstPercent = env('CGST', 9); // Set your CGST percentage here (e.g., 9%)
                     $sgstPercent = env('SGST', 9);
@@ -152,11 +152,53 @@ class InvoiceController extends Controller
                         return redirect()->route('order')->with('error', 'Order not found.');
                     }
                     $totalAmount = $order->check_amount;
+                    //new code to handle check amount start
+
+                    if (isset($totalAmount)) {
+                        $chequeAmount = $this->check_amount;
+                        $chequePaymentDate = Carbon::parse($this->Cheque_Date);
+                        $interestWithinAllowedPeriod = 0;
+                        $allowedDays = 20;
+                        $interestRateWithin20Days = 13; // 13% interest
+                        $maxAllowedDays = 60;
+                        $additionalInterestRateBeyond20Days = 15; // 15% interest
+                        // Calculate the due date to the controller (20 days from payment date)
+                        $dueDate = $chequePaymentDate->copy()->addDays($allowedDays);
+                        // Calculate the number of days within the allowed period
+                        $daysWithinAllowedPeriod = min($dueDate->diffInDays(Carbon::now()), $allowedDays);
+                        if ($daysWithinAllowedPeriod === 0) {
+                            // Calculate interest amount within the allowed period (0% interest)
+                            $interestWithinAllowedPeriod = 0;
+                        } else {
+                            // Calculate interest amount within the allowed period
+                            $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod * $interestRateWithin20Days * 0.01);
+                        }
+                        // Calculate the number of days beyond the allowed period
+                        $daysBeyondAllowedPeriod = max($dueDate->diffInDays(Carbon::now()) - $allowedDays, 0);
+                        // Calculate interest amount beyond the allowed period, up to a maximum of 60 days
+                        $interestBeyondAllowedPeriod = ($daysBeyondAllowedPeriod <= $maxAllowedDays)
+                            ? ($daysBeyondAllowedPeriod * $additionalInterestRateBeyond20Days * 0.01)
+                            : ($maxAllowedDays * $additionalInterestRateBeyond20Days * 0.01);
+                        // Total interest amount
+                        $totalInterestAmount = $interestWithinAllowedPeriod + $interestBeyondAllowedPeriod;
+                        $totalAmount = $chequeAmount + $totalInterestAmount;
+                        // Check if the max allowed days (60 days) are over
+                        if ($daysBeyondAllowedPeriod > $maxAllowedDays) {
+                            // Return a specific message or value for the case when max allowed days are over
+                            return 0;
+                        }
+                        return $totalAmount;
+                    } else {
+                        $totalAmount = 0;
+                    }
+
+
+                    //new code to handle check amount end
                     // $totalAmount = $order->payments
                     //     ->where('data', 'Booking_Final_Amount')
                     //     ->where('payment_status', 'SUCCESS')
                     //     ->value('transaction_amount') ?: ($order->payment_mode === 'cheque' ? $order->check_amount : 0);
-                    // $bookingAmount = $order->payments->where('data', 'Booking_Amount')->where('payment_status', 'SUCCESS')->value('transaction_amount');
+                    $bookingAmount = $order->payments->where('data', 'Booking_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->value('transaction_amount');
                     // ii- Find tax amount
                     $cgstPercent = env('CGST', 9); // Set your CGST percentage here (e.g., 9%)
                     $sgstPercent = env('SGST', 9);
