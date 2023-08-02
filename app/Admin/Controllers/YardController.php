@@ -41,16 +41,17 @@ class YardController extends AdminController
             $grid->column('yardplace', __('Place'));
             $grid->column('supervisorid', __('Yard Supervisor'))->display(function ($supervisorid) {
                 if ($supervisorid === 0 || $supervisorid === null) {
-                    return "Not Available";
+                    return "N/A";
                 } else {
-                    $supervisorName = AdminUser::where('id', $supervisorid)->first()->name;
-                    return $supervisorName ?? "Not Available";
+                    $supervisorName = AdminUser::where('id', $supervisorid)->first()->username;
+                    return $supervisorName ?? "N/A";
                 }
             });
             $grid->column('created_at', __('Created at'))->display(function ($value) {
                 //  return Carbon::parse($value)->format('Y-m-d H:i:s');
                 //   return Carbon::parse($value)->format('d-m-Y');
-                return Carbon::parse($value)->format('Y-m-d H:i');
+                //return Carbon::parse($value)->format('Y-m-d H:i');
+                return Carbon::parse($value)->format('Y-m-d');
             });
             $grid->filter(function ($filter) {
                 $filter->disableIdFilter();

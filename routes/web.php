@@ -189,3 +189,4 @@ Route::get("/totalUsers", [App\Admin\Controllers\CustomPageController::class, 'g
 Route::get("/totalYards", [App\Admin\Controllers\CustomPageController::class, 'getTotalYardCount'])->name('total.yards');
 /*Charts Route*/
 Route::get('imagestore/{maindata}',[FileUploadController::class, 'storeimagecomment']);
+Route::get('get-cities/{stateId}', [PaymentController::class, 'getCities']);

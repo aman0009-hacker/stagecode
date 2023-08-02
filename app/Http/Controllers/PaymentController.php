@@ -18,6 +18,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Address;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\City;
+use App\Models\State;
 
 
 
@@ -600,8 +602,11 @@ class PaymentController extends Controller
         // Session::forget('txtOrderGlobalModalCompleteID');
         // Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
         //     return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID'));
+
         $address = Address::where('user_id', Auth::user()->id)->latest()->first();
-        // dd($address);
+
+        $states = State::all();
+        
         $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
         //dd($txtOrderGlobalModalCompleteID);
         Session::forget('txtOrderGlobalModalCompleteID');
@@ -611,7 +616,7 @@ class PaymentController extends Controller
             Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
         }
         // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
-        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'address'));
+        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID','states','address'));
         // }
     }
 
@@ -628,6 +633,7 @@ class PaymentController extends Controller
 
     public function paymentCompleteProcessAddress(Request $request)
     {
+        // dd($request->all());
         try {
             $validator1 = Validator::make(
                 $request->all(),
@@ -673,14 +679,16 @@ class PaymentController extends Controller
             //save order id
             Session::put('txtOrderGlobalModalCompleteIDAlternative', $orderId ?? '');
             //save order id
-            //$orderId = 25;
+            // $orderId = 25;
+            $shippingState = State::where('id', $request->shipping_state)->first();
+
             if (isset($orderId) && !empty($orderId)) {
                 $address = new Address();
                 $address->user_id = Auth::user()->id ?? '';
                 $address->order_id = $orderId;
                 $address->shipping_name = $request->shipping_name;
                 $address->shipping_address = $request->shipping_address;
-                $address->shipping_state = $request->shipping_state;
+                $address->shipping_state = $shippingState->name;
                 $address->shipping_district = $request->shipping_district;
                 $address->shipping_city = $request->shipping_city;
                 $address->shipping_zipcode = $request->shipping_zipcode;
@@ -689,7 +697,7 @@ class PaymentController extends Controller
                 if (($request->has('is_same'))) {
                     $address->billing_name = $request->shipping_name;
                     $address->billing_address = $request->shipping_address;
-                    $address->billing_state = $request->shipping_state;
+                    $address->billing_state =  $shippingState->name;
                     $address->billing_district = $request->shipping_district;
                     $address->billing_city = $request->shipping_city;
                     $address->billing_zipcode = $request->shipping_zipcode;
@@ -697,15 +705,18 @@ class PaymentController extends Controller
                     $address->billing_gst_statecode = $request->shipping_gst_statecode;
                     $address->save();
                 } else {
+                    $billingState = State::where('id', $request->billing_state)->first();
+
                     $address->billing_name = $request->billing_name;
                     $address->billing_address = $request->billing_address;
-                    $address->billing_state = $request->billing_state;
+                    $address->billing_state = $billingState->name;
                     $address->billing_district = $request->billing_district;
                     $address->billing_city = $request->billing_city;
                     $address->billing_zipcode = $request->billing_zipcode;
                     $address->billing_gst_number = $request->billing_gst_number;
                     $address->billing_gst_statecode = $request->billing_gst_statecode;
                     $address->save();
+
                 }
             }
             if (Auth::check()) {
@@ -719,7 +730,8 @@ class PaymentController extends Controller
                 }
             }
         } catch (\Throwable $ex) {
-            Log::info($ex->getMessage());
+            // Log::info($ex->getMessage());
+            dd($ex->getMessage());
         }
     }
 
@@ -781,6 +793,19 @@ class PaymentController extends Controller
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
         }
+    }
+
+
+    public function getCities($stateId)
+    {
+        try{
+            $cities = City::where('state_id', $stateId)->get();
+            return response()->json($cities);
+            }
+        catch (\Throwable $ex)
+            {
+                Log::info($ex->getMessage());
+            }
     }
 
 }
