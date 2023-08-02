@@ -93,9 +93,9 @@
                   $transaction_id = $decryptedResponse['transaction_id'] ?? '';
                if( $paymentResponse!="" && $paymentResponse!=null && $paymentResponse=="SUCCESS")
                  {
-                $user=App\Models\User::find(Auth::user()->id); 
-                $user->member_at=Carbon\Carbon::now();
-                $user->save();
+                // $user=App\Models\User::find(Auth::user()->id); 
+                // $user->member_at=Carbon\Carbon::now();
+                // $user->save();
                  ?>
                   <div class="alert alert-success" role="alert">
                     <p>Congratulations!!! Payment has successfully submitted.</p>
