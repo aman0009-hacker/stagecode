@@ -96,13 +96,15 @@ class OrderDispatched extends RowAction
     {
         $data=OrderItem::where('order_id',$this->getKey())->get();
         $order_id=Order::find($this->getKey());
-       $this->text('Total Amount')->default($order_id->amount);
+
+       
+       $this->text('total','Total amount')->default($order_id->amount)->attribute('class', 'item_name');
 
                
         foreach($data as $element)
         {
-            $this->text('Item name')->rules('required')->default($element->category_name);
-            $this->text('quantity[]','Quantity')->rules('required')->default($element->quantity);
+            $this->text('Item name')->rules('required')->default($element->category_name)->readonly()->attribute('class', 'item_name');
+            $this->text('quantity[]','Quantity')->rules('required')->default($element->quantity)->attribute('class', 'item_name');
 
 
         }

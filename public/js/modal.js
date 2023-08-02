@@ -7,6 +7,12 @@ Array.from(document.getElementsByClassName('allbtn')).forEach(element => {
    })
 });
 
+let item=document.getElementsByClassName('item_name');
+Array.from(item).forEach(element=>{
+   element.parentNode.parentNode.classList.add('main');
+
+});
+
 document.addEventListener('DOMContentLoaded', function() {
    // Get the Chequedate input element
    const chequedateInput = document.getElementById('Chequedate');

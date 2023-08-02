@@ -1,9 +1,11 @@
-.modal.in form
-{
-    position:relative;
-
+.modal-body.main {
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
-.modal.in form::before {
+.modal-body.main::before
+{
     content: "Order Review";
     position: absolute;
     top: 10px;
@@ -12,29 +14,39 @@
     font-weight: 600;
     margin-bottom: 30px;
 }
-.modal.in form .modal-body
-{
-    display:flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-.modal.in form .form-group:nth-child(2), .modal.in form .form-group:nth-child(3) {
-    margin-top: 60px;
-}
-.modal.in form .modal-body .form-group
-{
-    flex: 0 0 45%;
-}
-
-.modal.in form .form-group:nth-child(1) {
+.modal-body.main .form-group:nth-child(1) {
     position: absolute;
     right: 22px;
+    justify-content: space-between;
     display: flex;
 }
-.modal.in form .form-group:nth-child(1) label
+.modal-body.main .form-group:not(:first-child)
 {
-
-    flex: 0 0 50%;
-       
-        margin-top: 10px;
+    flex:0 0 45%;
+}
+.modal-body.main .form-group:nth-child(2),.modal-body.main .form-group:nth-child(3)
+{
+    margin-top:60px;
+}
+.modal-body.main .form-group:not(:first-child) label
+{
+    display: block;
+}
+.modal-body.main .form-group:not(:first-child) input
+{
+    width: 100%;
+    padding: 5px;
+   
+    border: 1px solid #ccc;
+}
+.modal-body.main .form-group:nth-child(1) input
+{
+width: 50%;
+padding: 6px 12px;
+   
+border: 1px solid #ccc;
+}
+.modal-body.main .form-group:nth-child(1) label
+{
+    margin-top:7px;
 }
