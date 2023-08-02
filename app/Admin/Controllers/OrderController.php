@@ -56,7 +56,7 @@ class OrderController extends AdminController
             // $grid->column('quantity', __('Quantity'));
             // $grid->column('measurement', __('Measurement'));
             $grid->column('user_id', __('User'))->display(function ($user_id) {
-                return User::find($user_id)->name ?? '';
+                return User::find($user_id)->name.' '.User::find($user_id)->last_name ?? '';
             });
             $grid->column('id', __('Order Items'))->display(function ($id) {
                 //$count = count($comments);
@@ -182,7 +182,7 @@ class OrderController extends AdminController
                         } else {
                             $user = User::with([
                                 'paymentDataHandling' => function ($query) {
-                                    $query->where('payment_status', 'SUCCESS')
+                                    $query->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])
                                         ->where("data", "Registration_Amount")
                                         ->orderBy('updated_at', 'desc')
                                         ->limit(1);
@@ -250,27 +250,6 @@ class OrderController extends AdminController
                 }
                 //new code end
             });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             // $grid->column('firm', __('Firm'));
             $grid->column('created_at', __('Created at'))->display(function ($value) {
                 //  return Carbon::parse($value)->format('Y-m-d H:i:s');
