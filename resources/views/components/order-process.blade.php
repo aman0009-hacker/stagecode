@@ -87,9 +87,9 @@
                             @endphp --}}
                             <?php
                                 $encryptedResponse = request('encryptedResponse');
+                                dd($encryptedResponse);
                                 if(isset($encryptedResponse) && !empty($encryptedResponse)) {
                                 $decryptedResponse = Illuminate\Support\Facades\Crypt::decrypt($encryptedResponse);
-                                dd($decryptedResponse);
                                 $paymentResponse = $decryptedResponse['paymentResponse'] ?? '';
                                 $reference_no = $decryptedResponse['reference_no'] ?? '';
                                 $transaction_id = $decryptedResponse['transaction_id'] ?? '';

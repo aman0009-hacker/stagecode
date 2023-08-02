@@ -735,6 +735,66 @@ class PaymentController extends Controller
         }
     }
 
+    // public function paymentProcessOrderComplete(Request $request)
+    // {
+    //     try {
+    //         $paymentMode = $request->input('paymentMode');
+    //         $amountOrderFinal = $request->input('amountOrderFinal');
+    //         if (isset($paymentMode) && !empty($paymentMode) && $paymentMode == "online" && isset($amountOrderFinal) && !empty($amountOrderFinal)) {
+    //             try {
+    //                 $validator = Validator::make($request->all(), [
+    //                     'paymentMode' => 'required',
+    //                     'amountOrderFinal' => 'required',
+    //                 ]);
+    //                 if ($validator->fails()) {
+    //                     // Validation failed, handle the error
+    //                     return redirect()->back()->withErrors($validator)->withInput();
+    //                 }
+    //                 Session::forget('GLOBALUSERID');
+    //                 Session::put('GLOBALUSERID', Auth::user()->id ?? '');
+    //                 // $validator = Validator::make($request->all(), [
+    //                 //     'amountValue' => ['required', 'in:10000'],
+    //                 // ]);
+    //                 // if ($validator->fails()) {
+    //                 //     $amount = 10000;
+    //                 // } else {
+    //                 //     $amount = $request->input('amountValue');
+    //                 // }
+    //                 $amount = $amountOrderFinal;
+    //                 //$reference_no = rand(1111, 9999);
+    //                 $reference_no = time() . Str::random(5);
+    //                 $paymentDataHandling = new PaymentDataHandling();
+    //                 $paymentDataHandling->reference_no = $reference_no;
+    //                 $paymentDataHandling->user_id = Auth::user()->id ?? '';
+    //                 $paymentDataHandling->data = "Booking_Final_Amount";
+    //                 $paymentDataHandling->user_amount = $amount;
+    //                 $paymentDataHandling->order_id = Session::get('txtOrderGlobalModalCompleteID') ?? '';
+    //                 $paymentDataHandling->save();
+    //                 $optionalField = null;
+    //                 $base = new EazyPayController();
+    //                 $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
+    //                 return redirect()->to($url);
+    //             } catch (\Throwable $ex) {
+    //                 Log::info($ex->getMessage());
+    //             }
+    //         } else if (isset($paymentMode) && !empty($paymentMode) && $paymentMode == "cheque") {
+    //             $txtOrderGlobalModalCompleteID = Session::get('txtOrderGlobalModalCompleteID');
+    //             // dd($txtOrderGlobalModalCompleteID);
+    //             if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
+    //                 $value = Order::find($txtOrderGlobalModalCompleteID);
+    //                 $value->payment_mode = "cheque";
+    //                 $returnValue = $value->save();
+    //                 if ($returnValue) {
+    //                     $paymentMode = "cheque";
+    //                     return redirect()->route('order', compact('paymentMode'));
+    //                 }
+    //             }
+    //         }
+    //     } catch (\Throwable $ex) {
+    //         Log::info($ex->getMessage());
+    //     }
+    // }
+
     public function paymentProcessOrderComplete(Request $request)
     {
         try {
@@ -778,15 +838,42 @@ class PaymentController extends Controller
                     Log::info($ex->getMessage());
                 }
             } else if (isset($paymentMode) && !empty($paymentMode) && $paymentMode == "cheque") {
-                $txtOrderGlobalModalCompleteID = Session::get('txtOrderGlobalModalCompleteID');
-                // dd($txtOrderGlobalModalCompleteID);
-                if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
-                    $value = Order::find($txtOrderGlobalModalCompleteID);
-                    $value->payment_mode = "cheque";
-                    $returnValue = $value->save();
-                    if ($returnValue) {
-                        $paymentMode = "cheque";
-                        return redirect()->route('order', compact('paymentMode'));
+
+                $member_at=[];
+
+                $userID = Auth::user()->id ?? '';
+                if(isset($userID) && !empty($userID))
+                {
+                    $member_at = User::find($userID)->member_at;
+                }
+                else
+                {
+                    return redirect()->route('login');
+                }
+
+                if (isset($member_at) && !empty($member_at)) {
+
+                    $customerStartDate = Carbon::parse($member_at);
+                    $threeYearsAgo = Carbon::now()->subYears(3);
+                    if ($customerStartDate <= $threeYearsAgo)
+                    {
+
+                        $txtOrderGlobalModalCompleteID = Session::get('txtOrderGlobalModalCompleteID');
+                        // dd( $txtOrderGlobalModalCompleteID);
+                        if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
+                            $value = Order::find($txtOrderGlobalModalCompleteID);
+                            $value->payment_mode = "cheque";
+                            $returnValue = $value->save();
+                            if ($returnValue) {
+                                $paymentMode = "cheque";
+                                return redirect()->route('order', compact('paymentMode'));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Alert::warning('You are not eligible to avail cheque payment !');
+                        return redirect()->back();
                     }
                 }
             }
