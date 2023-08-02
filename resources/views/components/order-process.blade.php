@@ -99,7 +99,7 @@
                               ?>
                               <?php
                             }
-                           else if(request('paymentResponse')!="" && request('paymentResponse')!=null && request('paymentResponse')=="FAILURE")
+                           else if($paymentResponse!="" && $paymentResponse!=null && $paymentResponse=="FAILURE")
                                {
                                 ?>
                             <div class="alert alert-warning" role="alert">
