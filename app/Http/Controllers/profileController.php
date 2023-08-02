@@ -13,6 +13,7 @@ use Validator;
 use Illuminate\Support\Facades\Log;
 use DateTime;
 use Illuminate\Support\Facades\DB;
+use App\Models\State;
 
 class profileController extends Controller
 {
@@ -20,8 +21,9 @@ class profileController extends Controller
     {
         try {
             $user = Auth::user();
+            $states = State::all();
             $address = Address::where('user_id', $user->id)->get()->last();
-            return view('components.profile', compact('user', 'address'));
+            return view('components.profile', compact('user', 'address','states'));
         } catch (\Exception $ex) {
             Log::info($ex->getMessage());
         }
@@ -65,6 +67,7 @@ class profileController extends Controller
 
     public function addresssave(request $request)
     {
+        // dd($request->all());
         try {
             $address = new Address();
             $valid = Validator::make($request->all(), [
@@ -89,12 +92,14 @@ class profileController extends Controller
                 return redirect()->back()->withErrors($valid);
             }
             $user_id = Address::where('user_id', Auth::user()->id)->get()->last();
+            $shipState = State::where('id',$request->shipstate)->first();
+            $billState = State::where('id',$request->billstate)->first();
             if ($user_id != "") {
                 $user_id->user_id = Auth::user()->id;
                 $user_id->shipping_name = $request->shipname;
                 $user_id->shipping_gst_number = $request->shipgstnumber;
                 $user_id->shipping_gst_statecode = $request->shipgstcode;
-                $user_id->shipping_state = $request->shipstate;
+                $user_id->shipping_state = $shipState->name;
                 $user_id->shipping_city = $request->shipcity;
                 $user_id->shipping_district = $request->shipdistrict;
                 $user_id->shipping_zipcode = $request->shippincode;
@@ -102,7 +107,7 @@ class profileController extends Controller
                 $user_id->billing_name = $request->billname;
                 $user_id->billing_gst_number = $request->billgstnumber;
                 $user_id->billing_gst_statecode = $request->billgstcode;
-                $user_id->billing_state = $request->billstate;
+                $user_id->billing_state = $billState->name;
                 $user_id->billing_city = $request->billcity;
                 $user_id->billing_district = $request->billdistrict;
                 $user_id->billing_zipcode = $request->billpincode;
@@ -115,7 +120,7 @@ class profileController extends Controller
                 $address->shipping_name = $request->shipname;
                 $address->shipping_gst_number = $request->shipgstnumber;
                 $address->shipping_gst_statecode = $request->shipgstcode;
-                $address->shipping_state = $request->shipstate;
+                $address->shipping_state = $shipState->name;
                 $address->shipping_city = $request->shipcity;
                 $address->shipping_district = $request->shipdistrict;
                 $address->shipping_zipcode = $request->shippincode;
@@ -123,7 +128,7 @@ class profileController extends Controller
                 $address->billing_name = $request->billname;
                 $address->billing_gst_number = $request->billgstnumber;
                 $address->billing_gst_statecode = $request->billgstcode;
-                $address->billing_state = $request->billstate;
+                $address->billing_state = $billState->name;
                 $address->billing_city = $request->billcity;
                 $address->billing_district = $request->billdistrict;
                 $address->billing_zipcode = $request->billpincode;

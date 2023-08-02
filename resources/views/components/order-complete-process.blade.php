@@ -392,8 +392,14 @@
                             <div class="fields fields--2">
                                 <label class="field">
                                     <span class="field__label" for="country">State</span>
-                                    <input class="field__input" type="text" value="{{ $address->shipping_state ?? '' }}"
-                                        name="shipping_state" id="shipping_state" />
+                                    {{-- <input class="field__input" type="text" value="{{ $address->shipping_state ?? '' }}"
+                                        name="shipping_state" id="shipping_state" /> --}}
+                                    <select class="field__input" name="shipping_state" id="shipping_state">
+                                        <option value="">Select State</option>
+                                        @foreach ($states as $state)
+                                        <option value="{{$state->id}}"  {{(isset($address->shipping_state) && $state->name == $address->shipping_state) ? 'selected' : '' }}>{{$state->name}}</option>
+                                        @endforeach
+                                    </select>
                                 </label>
                                 <label class="field">
                                     <span class="field__label" for="country">District</span>
@@ -404,8 +410,17 @@
                             <div class="fields fields--2">
                                 <label class="field">
                                     <span class="field__label" for="city">City</span>
-                                    <input class="field__input" name="shipping_city" type="text" id="shipping_city"
-                                        value="{{ $address->shipping_city ?? '' }}" />
+                                    {{-- <input class="field__input" name="shipping_city" type="text" id="shipping_city"
+                                        value="{{ $address->shipping_city ?? '' }}" /> --}}
+                                        @if(isset($address->shipping_city))
+                                            <select class="field__input" name="shipping_city" id="shipping_city">
+                                                <option value="{{$address->shipping_city}}">{{$address->shipping_city}}</option>
+                                            </select>
+                                        @else
+                                            <select class="field__input" name="shipping_city" id="shipping_city">
+                                                <option value="">Select City</option>
+                                            </select>
+                                        @endif
                                 </label>
                                 <label class="field">
                                     <span class="field__label" for="zipcode">Zip code</span>
@@ -454,8 +469,14 @@
                                 <div class="fields fields--2">
                                     <label class="field">
                                         <span class="field__label" for="country">State</span>
-                                        <input class="field__input" type="text" name="billing_state" id="billing_state"
-                                            value="{{ $address->billing_state ?? '' }}" />
+                                        {{-- <input class="field__input" type="text" name="billing_state" id="billing_state"
+                                            value="{{ $address->billing_state ?? '' }}" /> --}}
+                                        <select class="field__input" name="billing_state" id="billing_state">
+                                            <option value="">Select State</option>
+                                            @foreach ($states as $state)
+                                            <option value="{{$state->id}}"  {{(isset($address->billing_state) && $state->name == $address->billing_state) ? 'selected' : '' }}>{{$state->name}}</option>
+                                            @endforeach
+                                        </select>
                                     </label>
                                     <label class="field">
                                         <span class="field__label" for="country">District</span>
@@ -466,8 +487,17 @@
                                 <div class="fields fields--2">
                                     <label class="field">
                                         <span class="field__label" for="city">City</span>
-                                        <input class="field__input" name="billing_city" type="text" id="billing_city"
-                                            value="{{ $address->billing_city ?? '' }}" />
+                                        {{-- <input class="field__input" name="billing_city" type="text" id="billing_city"
+                                            value="{{ $address->billing_city ?? '' }}" /> --}}
+                                        @if(isset($address->billing_city))
+                                            <select class="field__input" name="billing_city" id="billing_city">
+                                                <option value="{{$address->billing_city}}">{{$address->billing_city}}</option>
+                                            </select>
+                                        @else
+                                            <select class="field__input" name="billing_city" id="billing_city">
+                                                <option value="">Select City</option>
+                                            </select>
+                                        @endif
                                     </label>
                                     <label class="field">
                                         <span class="field__label" for="zipcode">Zip code</span>
@@ -610,7 +640,49 @@
                             icon: 'warning',
                         });
                     });
-              });
+            });
+                $('#shipping_state').on('change', function() {
+                var stateId = $(this).val();
+                if (stateId) {
+                    $.ajax({
+                        url: '/get-cities/' + stateId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $('#shipping_city').empty();
+                            $('#shipping_city').append('<option value="">Select City</option>');
+                            $.each(data, function(key, value) {
+                                $('#shipping_city').append('<option value="' + value.name + '">' + value.name + '</option>');
+                            });
+
+
+                        }
+                    });
+                } else {
+                    $('#shipping_city').empty();
+                    $('#shipping_city').append('<option value="">Select City</option>');
+                }
+            });
+            $('#billing_state').on('change', function() {
+                var stateId = $(this).val();
+                if (stateId) {
+                    $.ajax({
+                        url: '/get-cities/' + stateId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $('#billing_city').empty();
+                            $('#billing_city').append('<option value="">Select City</option>');
+                            $.each(data, function(key, value) {
+                                $('#billing_city').append('<option value="' + value.name + '">' + value.name + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#billing_city').empty();
+                    $('#billing_city').append('<option value="">Select City</option>');
+                }
+            });
         });
     </script>
 </body>
