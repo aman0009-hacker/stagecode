@@ -83,7 +83,7 @@
                     <div class="col-12 col-md-5 user-signUp">
                         <div class="user-signUp-form process-pending-form d-block">
                             {{-- @php
-                              echo  $txtOrderGlobalModalID;
+                            echo $txtOrderGlobalModalID;
                             @endphp --}}
                             <?php
                                 $encryptedResponse = request('encryptedResponse');
@@ -97,9 +97,18 @@
                              if( $paymentResponse!="" && $paymentResponse!=null && $paymentResponse=="SUCCESS")
                                {
                               ?>
-                              <?php
+                            <?php
                             }
                            else if($paymentResponse!="" && $paymentResponse!=null && $paymentResponse=="FAILURE")
+                               {
+                                ?>
+                            <div class="alert alert-warning" role="alert">
+                                <p>Payment has not verified. Kindly try again or contact system administrator for
+                                    further process.</p>
+                            </div>
+                            <?php
+                               }
+                               else 
                                {
                                 ?>
                             <div class="alert alert-warning" role="alert">
@@ -121,7 +130,7 @@
                                         <div class="input-group">
                                             <span class="input-group-text">₹</span>
                                             <input type="number" class="form-control" placeholder="Enter amount"
-                                                aria-label="Amount"  name="amountOrder" id="amountOrder" required>
+                                                aria-label="Amount" name="amountOrder" id="amountOrder" required>
                                             <span class="input-group-text">.00</span>
                                         </div>
                                     </div>
