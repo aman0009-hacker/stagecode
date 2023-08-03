@@ -104,7 +104,7 @@ class UserController extends AdminController
       //  });
       $grid->export(function ($export) {
         //$export->filename('Filename.csv');
-        $export->except(['approved', 'comments', 'attachment', 'otp']);
+        $export->except(['approved', 'comments', 'attachment', 'otp','Wallet']);
       });
       $grid->actions(function ($actions) {
         if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
@@ -209,7 +209,7 @@ class UserController extends AdminController
           return "Pending";
         }
       });
-      $grid->column("member_at", __("Member At"))->display(function ($value) {
+      $grid->column("member_at", __("Register Since"))->display(function ($value) {
         if (isset($value) && !empty($value)) {
           return Carbon::parse($value)->format('Y-m-d');
         } else {
