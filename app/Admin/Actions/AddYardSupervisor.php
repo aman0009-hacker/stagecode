@@ -43,7 +43,7 @@ class AddYardSupervisor extends RowAction
           ->pluck('username', 'id')
           ->toArray();
 
-          if(isset($supervisors))
+          if(isset($supervisors) && !empty($supervisors ))
           {
             dd($supervisors);
           }
