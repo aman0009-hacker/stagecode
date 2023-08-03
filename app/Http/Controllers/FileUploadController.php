@@ -21,7 +21,6 @@ class FileUploadController extends Controller
             $gst = $msme = $itr = $aadhar = $pan = $utility = 0;
             $gstValue = $msmeValue = $itrValue = $aadharValue = $panValue = $utilityValue = 0;
             $queryDocument = Attachment::where('user_id', $currentId)->get();
-
             foreach ($queryDocument as $data) {
                 if (isset($data->file_type) && $data->file_type != "" && $data->file_type == "gstfile" && isset($data->fileno) && !empty($data->fileno)) {
                     $gst = 1;
@@ -73,7 +72,6 @@ class FileUploadController extends Controller
             //         'panFile' => $panValue,
             //         'utilityFile' => $utilityValue,
             //     ]);
-
             //new code added
             $rules = [
                 'gstFile' => $gstValue,
@@ -85,7 +83,6 @@ class FileUploadController extends Controller
             ];
             // Create a Validator instance with the rules
             $validator = Validator::make($request->all(), $rules);
-
             // Check if validation fails
             if ($validator->fails()) {
                 // Redirect back with input data and errors
@@ -311,7 +308,6 @@ class FileUploadController extends Controller
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
-
         }
     }
 
@@ -341,73 +337,55 @@ class FileUploadController extends Controller
 
     public function store(Request $request)
     {
-
-
-        if ($request->hasFile('file')) {
-            $image = $request->file('file');
-            $imageName = time() . '.' . $image->getClientOriginalName();
-            $image->move(public_path('uploads'), $imageName);
-         
-            //return response()->json(['success'=>$imageName]);
-
-            $id = Auth::user()->id;
-          
-            $attachment = new Attachment([
-                'filename' => $imageName,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-                'file_type' => 'other',
-                'fileno' => 'additional files'
-            ]);
-
-            $user = User::find($id);
-            $user->attachment()->save($attachment);
-
+        try {
+            if ($request->hasFile('file')) {
+                $image = $request->file('file');
+                $imageName = time() . '.' . $image->getClientOriginalName();
+                $image->move(public_path('uploads'), $imageName);
+                //return response()->json(['success'=>$imageName]);
+                $id = Auth::user()->id;
+                $attachment = new Attachment([
+                    'filename' => $imageName,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                    'file_type' => 'other',
+                    'fileno' => 'additional files'
+                ]);
+                $user = User::find($id);
+                $user->attachment()->save($attachment);
+            }
+            return response()->json(['success' => $imageName]);
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
         }
-
-
-
-
-    
-
-return response()->json(['success'=>$imageName]);
-
-
-
-
-
-
-
-
-       
     }
 
     public function storeimagecomment($data)
     {
-        $messageData = $data;
-        // $queryData = DB::table('users')->join('comments', 'users.id', '=', 'comments.user_id')->
-        //     where('comments.user_id', Auth::user()->id)->orderBy('comments.created_at', 'desc')->select('comments.*')->first();
-        $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
-            ->where('comments.user_id', auth()->user()->id)
-            ->orderBy('comments.created_at', 'desc')
-            ->select('comments.*')
-            ->first();
-        $admin_id = $queryData->admin_id;
-        if (isset($messageData) && !empty($messageData)) {
-            $data = new Comments;
-            $data->admin_id = $admin_id;
-            $data->user_id = Auth::user()->id;
-            $data->comment = $messageData;
-            // $data->username=$adminusername;
-            $data->commented_by = "user";
-            $data->username = Auth::user()->name;
-            $data->save();
-
-            if ($data->save()) {
-                $latestData = Comments::latest()->where('admin_id', $admin_id)->where('user_id', Auth::user()->id)->get();
-                //$latestData=Comments::where('id',$lastInsertedId->id)->first();
-                return response()->json(["msg" => "success", 'latestData' => $latestData]);
+        try {
+            $messageData = $data;
+            $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
+                ->where('comments.user_id', auth()->user()->id)
+                ->orderBy('comments.created_at', 'desc')
+                ->select('comments.*')
+                ->first();
+            $admin_id = $queryData->admin_id;
+            if (isset($messageData) && !empty($messageData)) {
+                $data = new Comments;
+                $data->admin_id = $admin_id;
+                $data->user_id = Auth::user()->id;
+                $data->comment = $messageData;
+                // $data->username=$adminusername;
+                $data->commented_by = "user";
+                $data->username = Auth::user()->name;
+                $data->save();
+                if ($data->save()) {
+                    $latestData = Comments::latest()->where('admin_id', $admin_id)->where('user_id', Auth::user()->id)->get();
+                    return response()->json(["msg" => "success", 'latestData' => $latestData]);
+                }
             }
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
         }
     }
 }

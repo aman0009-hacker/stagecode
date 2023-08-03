@@ -21,9 +21,6 @@ use Illuminate\Support\Facades\Log;
 use Encore\Admin\Facades\Admin;
 use Illuminate\Support\Facades\Auth;
 
-
-
-
 class OrderController extends AdminController
 {
     /**
@@ -109,9 +106,6 @@ class OrderController extends AdminController
                     return "Pending";
                 }
             });
-
-
-
             $grid->column('Cheque_Date', __('Cheque Info'))->display(function () {
                 $value = "";
                 if (isset($this->Cheque_Date) && !empty($this->Cheque_Date)) {
@@ -126,7 +120,6 @@ class OrderController extends AdminController
                     return $value;
                 }
             });
-
             $grid->column('payable_amount', __('Payable Amount[Cheque]'))->display(function ($value) {
                 $order = Order::with('user')->find($this->id);
                 if ($order) {

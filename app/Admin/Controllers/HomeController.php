@@ -31,7 +31,6 @@ class HomeController extends Controller
                 });
             })
             ->row(function (Row $row) {
-
                 $row->class('justify-content-center align-items-center h-50');
                 $row->column(7, function (Column $column) {
                     $column->append(new Box('Order Amount Records', view('admin.charts.waveChart')));

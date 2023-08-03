@@ -13,7 +13,6 @@ class RegisterWithPsiec extends RowAction
     public function handle(Model $model, Request $request)
     {
         // $model ...
-
         $model->member_at = $request->member_at;
         $model->save();
         return $this->response()->success('Success message.')->refresh();
@@ -21,7 +20,7 @@ class RegisterWithPsiec extends RowAction
 
     public function form()
     {
-        $this->date('member_at', 'Register At');
+        $this->date('member_at', 'Register At')->required();
     }
 
 }

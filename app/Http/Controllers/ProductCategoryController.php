@@ -113,9 +113,6 @@ class ProductCategoryController extends Controller
                 $invoice->save();
             }
             //new code to generte invoice end
-
-
-
             if ($order->save()) {
                 $latestId = Order::latest()->first()->id;
                 if (isset($latestId) && !empty($latestId)) {

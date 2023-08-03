@@ -191,8 +191,6 @@ class InvoiceController extends Controller
                     } else {
                         $totalAmount = 0;
                     }
-
-
                     //new code to handle check amount end
                     // $totalAmount = $order->payments
                     //     ->where('data', 'Booking_Final_Amount')

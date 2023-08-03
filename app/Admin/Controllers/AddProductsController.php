@@ -18,9 +18,6 @@ class AddProductsController extends AdminController
         $content
             ->title('Yard Management')
             ->body(new AddProducts());
-            // if ($result = session('result')) {
-            //     $content->row('<pre>'.json_encode($result).'</pre>');
-            // }
             return $content;
     }
    public function saveData(Request $request)

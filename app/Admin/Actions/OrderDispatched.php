@@ -19,20 +19,16 @@ class OrderDispatched extends RowAction
     public $name = 'Payment Request';
     protected $selector = '.order-approved';
 
-    public function handle(Model $model,request $request)
+    public function handle(Model $model, request $request)
     {
-        $num=0;
-                try {
-            $order=OrderItem::where('order_id',$this->getKey())->get();
-            $allorder= order::find($this->getKey());
-            $allorder->amount=$request->total;
+        $num = 0;
+        try {
+            $order = OrderItem::where('order_id', $this->getKey())->get();
+            $allorder = order::find($this->getKey());
+            $allorder->amount = $request->total;
             $allorder->save();
-
-            foreach($order as $item)
-            {
-              
-              
-                $item->quantity=$request->quantity[$num];
+            foreach ($order as $item) {
+                $item->quantity = $request->quantity[$num];
                 $item->save();
                 $num++;
             }
@@ -51,11 +47,8 @@ class OrderDispatched extends RowAction
                     // You can access the attributes of the latest invoice like this:
                     $latestInvoice->invoice_date = Carbon::today()->format('Y-m-d');
                     $latestInvoice->save();
-
                 } else {
-
                 }
-
                 //new code for update imvoice table
                 if ($data->save() == true) {
                     $user_id = Order::find($model->id)->user_id;
@@ -85,31 +78,17 @@ class OrderDispatched extends RowAction
         }
     }
 
-    // public function dialog()
-    // {  
-        
-       
-
-    //     // $this->confirm('Are you sure for order dispatch?');
-    // }
     public function form()
     {
-        $data=OrderItem::where('order_id',$this->getKey())->get();
-        $order_id=Order::find($this->getKey());
-
-       
-       $this->text('total','Total amount')->default($order_id->amount)->attribute('class', 'item_name');
-
-               
-        foreach($data as $element)
-        {
+        $data = OrderItem::where('order_id', $this->getKey())->get();
+        $order_id = Order::find($this->getKey());
+        $this->text('total', 'Total amount')->default($order_id->amount)->attribute('class', 'item_name');
+        foreach ($data as $element) {
             $this->text('Item name')->rules('required')->default($element->category_name)->readonly()->attribute('class', 'item_name');
-            $this->text('quantity[]','Quantity')->rules('required')->default($element->quantity)->attribute('class', 'item_name');
-
-
+            $this->text('quantity[]', 'Quantity')->rules('required')->default($element->quantity)->attribute('class', 'item_name');
         }
-       
+
     }
-  
+
 
 }

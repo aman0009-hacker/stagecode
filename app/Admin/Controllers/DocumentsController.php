@@ -15,9 +15,6 @@ use App\ApproveByAdminAction;
 use App\Admin\Actions\Data;
 use Illuminate\Support\Facades\DB;
 
-
-
-
 class DocumentsController extends AdminController
 {
     /**
