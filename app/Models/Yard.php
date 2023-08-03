@@ -9,6 +9,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permisssion\Traits\HasRoles;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
+Use App\Models\AdminUser;
 
 class Yard extends Model
 {
@@ -42,6 +43,10 @@ class Yard extends Model
     }
     //new code for logActivity start 
 
+    public function supervisor()
+    {
+        return $this->belongsTo(AdminUser::class, 'supervisorid', 'id');
+    }
 
     protected static function boot()
     {
