@@ -551,9 +551,9 @@ class PaymentController extends Controller
                 $base = new EazyPayController();
                 $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
                 //return $url;
-                $decryptedUrl = openssl_decrypt($url, 'aes-128-ecb', "6000012704705020", OPENSSL_RAW_DATA);
-                return $decryptedUrl;
-                //return redirect()->to($url);
+                // $decryptedUrl = openssl_decrypt($url, 'aes-128-ecb', "6000012704705020", OPENSSL_RAW_DATA);
+                // return $decryptedUrl;
+                return redirect()->to($url);
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
