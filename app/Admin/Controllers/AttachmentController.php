@@ -35,7 +35,8 @@ class AttachmentController extends AdminController
         $currentRowId = session('current_row_id');
         $name = User::find($currentRowId)->name;
         $lastname = User::find($currentRowId)->last_name;
-        $fullname = $name . " " . $lastname . " " ?? '';
+        // $fullname = $name . " " . $lastname . " " ?? '';
+        $fullname =  ucfirst(trans($name)) . " " . ucfirst(trans($lastname)) . " " ?? '';
         return $content
             ->header($fullname . 'Document Information')
             ->body($this->grid());
