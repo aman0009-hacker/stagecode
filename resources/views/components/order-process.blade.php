@@ -87,7 +87,7 @@
                             @endphp --}}
                             <?php
                                 $encryptedResponse = request('encryptedResponse');
-                               
+                             
                                 if(isset($encryptedResponse) && !empty($encryptedResponse)) {
                                 $decryptedResponse = Illuminate\Support\Facades\Crypt::decrypt($encryptedResponse);
                                 $paymentResponse = $decryptedResponse['paymentResponse'] ?? '';
