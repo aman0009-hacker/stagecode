@@ -39,14 +39,9 @@ class AddYardSupervisor extends RowAction
         // })->pluck('username', 'id')->toArray();
         $supervisors = AdminUser::whereHas('roles', function ($query) {
             $query->where('name', 'administartor');
-        })->whereNotIn('id', Yard::pluck('supervisorid')->toArray())
+        })->whereNotIn('id', Yard::whereNotNull('supervisorid')->pluck('supervisorid')->toArray())
           ->pluck('username', 'id')
           ->toArray();
-
-          if(isset($supervisors) && !empty($supervisors ))
-          {
-            dd($supervisors);
-          }
 
           // Add the select field to the form
         $this->select('user', 'Supervisor Username')->options($supervisors);
