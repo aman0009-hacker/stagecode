@@ -164,6 +164,4 @@ class YardController extends AdminController
         });
         return $form;
     }
-
-
 }

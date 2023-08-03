@@ -98,8 +98,4 @@ class EazyPayController extends Controller
         // The $iv is just as important as the key for decrypting, so save it with our encrypted data using a unique separator (::)
         return base64_encode($encrypted);
     }
-
-
-   
-
 }

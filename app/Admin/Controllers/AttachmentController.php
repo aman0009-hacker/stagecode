@@ -86,24 +86,19 @@ class AttachmentController extends AdminController
         //     // $actions->setActionClassHeader('hidden');
         // });
         $grid->disableActions();
-      
-      
         $grid->tools(function ($tools) {
             $tools->append('<a class="btn btn-default" href="/admin/auth/user"><i class="fa fa-arrow-left"></i> Back</a>');
             $tools->append(new BatchReplicate());
 
         });
         $grid->disableFilter();
-
         $html = <<<HTML
         <head>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- <meta http-equiv="refresh" content="7"> -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
-       
         <link rel="stylesheet" href="../../css/chatbox.css">
         </head>
-     
         <section>
         <form id="commentForms">
          <input type="hidden" name="adminid" id="adminid"             value="$currentAdminId"              />
@@ -115,8 +110,7 @@ class AttachmentController extends AdminController
             <div class="image_chat">
                 <img src="../images/icon/reply.png">
             </div>
-               
-                    <div class="col-12 scroll-chat mt-4" style="margin-top:5px">
+                  <div class="col-12 scroll-chat mt-4" style="margin-top:5px">
                       <p class="note-text"></p>
                       <div class="msg-grp">
                           <p class="all_reply">
@@ -125,14 +119,11 @@ class AttachmentController extends AdminController
                             <hr class="mt-5">
                             <div id="submitDiv" >
                                 <div class="Data">
-
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                 
-                    
                     <div class="col-12 border-bottom">
                         <div class="my-4 row  text-head">
                           
@@ -142,10 +133,8 @@ class AttachmentController extends AdminController
 
                           </div>
                     </div>
-                   
                     <!-- <div class="mt-4"> -->
-                 
-                    </div>  
+                  </div>  
                  </div>
             </div>
        </div>

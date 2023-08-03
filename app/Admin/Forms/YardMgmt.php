@@ -49,17 +49,6 @@ class YardMgmt extends Form
                 return $products;
             })
             ->rules('required')->load('category_id', '/admin/load-categories');
-        // $this->select('category_id', 'Category')
-        //     ->options(function () {
-        //         // Retrieve the categories from the database
-        //         $categories = \App\Models\Category::pluck('name', 'id');
-
-        //         // Add a placeholder option
-        //         $categories->prepend('-- Select Category --', '');
-
-        //         return $categories;
-        //     })
-        //     ->rules('required');
         $this->select('category_id', 'Category')->rules('required')->load('entity_id', '/admin/load-entities');
         $this->select('entity_id', 'Entity')->rules('required');
     }

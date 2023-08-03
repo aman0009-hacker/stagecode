@@ -25,9 +25,6 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Records;
 use Illuminate\Database\QueryException;
 
-
-
-
 class CustomPageController extends AdminController
 {
     /**
@@ -197,11 +194,8 @@ class CustomPageController extends AdminController
 
     public function chatDataPost(Request $request)
     {
-
         // $queryData = DB::table('users')->join('comments', 'users.id', '=', 'comments.user_id')->
         //     where('comments.user_id', Auth::user()->id)->orderBy('comments.created_at', 'desc')->select('comments.*')->first();
-
-        
         $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
             ->where('comments.user_id', auth()->user()->id)
             ->orderBy('comments.created_at', 'desc')
@@ -215,9 +209,8 @@ class CustomPageController extends AdminController
         }
     }
 
- public function chatData(Request $request)
+    public function chatData(Request $request)
     {
-     
         //return response()->json(["msg"=>"success"]);
         $messageData = $request->input('textAreaMsg');
         // $queryData = DB::table('users')->join('comments', 'users.id', '=', 'comments.user_id')->
@@ -248,20 +241,18 @@ class CustomPageController extends AdminController
 
 
 
- public function checkurl(Request $request)
+    public function checkurl(Request $request)
     {
-
         $adminrole = $request->input('adminusername');
         $adminusername = $request->input('adminusername');
         $adminid = $request->input('adminid');
         $userid = $request->input('userid');
         $textAreaMsg = $request->input('textAreaMsg');
-
         $query = User::find($userid);
         if ($query) {
             $approvedStatus = $query->approved;
             // if ($approvedStatus == 2 || $approvedStatus == 0) {
-                if ($approvedStatus == 2 || $approvedStatus == 0 || $approvedStatus == 1) {
+            if ($approvedStatus == 2 || $approvedStatus == 0 || $approvedStatus == 1) {
                 if (isset($textAreaMsg) && isset($adminid) && isset($userid)) {
                     $data = new Comments;
                     $data->admin_id = $adminid;
@@ -271,7 +262,6 @@ class CustomPageController extends AdminController
                     $data->commented_by = "admin";
                     // $data->username= $adminusername;
                     // $data->save();
-
                     if ($data->save()) {
                         $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->get();
                         //$latestData=Comments::where('id',$lastInsertedId->id)->first();
@@ -301,39 +291,12 @@ class CustomPageController extends AdminController
         $userid = $request->input('userid');
         $textAreaMsg = $request->input('textAreaMsg');
         $query = User::find($userid);
-
-
-    //  $main_id=auth::user()->id;
-      $user_id=User::find($userid);
-
-
-    //     $arr=[];
-    //     $currentTime = Carbon::now();
-    //     $before15Seconds = $currentTime->subSeconds(10);
-    //     $image=\App\Models\Attachment::where('user_id', $userid)->where('created_at', '>=', $before15Seconds)->get();
-    //     if(count($image)>0)
-    //     {
-    //    foreach($image as $element)
-    //    {
-    //     $arr[]=$element->filename;
-    //    }
-     
-    //    foreach($arr as $element)
-    //    {
-    //     $data = new Comments;
-    //     $data->admin_id = $adminid;
-    //     $data->user_id = $userid;
-    //     $data->comment = $element;
-    //     $data->username = $user_id->name;
-    //     $data->commented_by = "user";
-    //     $data->save();
-    // }
-    //     }
-      
+        //  $main_id=auth::user()->id;
+        $user_id = User::find($userid);
         if ($query) {
             $status = $query->approved;
             //if ($status == 2 || $status == 0) {
-                if ($status == 2 || $status == 0 || $status == 1) {
+            if ($status == 2 || $status == 0 || $status == 1) {
                 if (isset($adminid) && isset($userid)) { {
                         $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->get();
                         //$latestData=Comments::where('id',$lastInsertedId->id)->first();
@@ -346,15 +309,11 @@ class CustomPageController extends AdminController
                             "textAreaMsg" => $textAreaMsg,
                             'latestData' => $latestData
                         ]);
-
                     }
                 }
             }
         }
-
-
     }
-
 
 
     public function start(Request $request)
@@ -373,204 +332,140 @@ class CustomPageController extends AdminController
             Log::info($ex->getMessage());
         }
     }
+    /* chart function Start*/
 
-
-       /* chart function Start*/
-
-       public function getTotalYardCount()
-       {
-           try
-           {
-               $Yards = Records::selectRaw('COUNT(id)
+    public function getTotalYardCount()
+    {
+        try {
+            $Yards = Records::selectRaw('COUNT(id)
     as total_yards, YEAR(date) as year, MONTH(date) as month')
-               ->groupBy('year', 'month')
-               ->orderBy('month')
-               ->get();
-   
-               $charmonth=[];
-               $chardate=[];
-   
-               if($Yards->isEmpty())
-               {
-                   return response()->json(['msg' => "empty", 'data' =>[]], 200);
-               }
-               else
-               {
-                   foreach($Yards as $month)
-                   {
-                       $order_m=\DateTime::createFromFormat('!m',$month->month);
-                       $charmonth[]=$order_m->format('F');
-                   }
-   
-                   foreach($Yards as $month)
-                   {
-                       $chardate[]=$month->total_yards;
-                   }
-   
-                   $myData=[
-                       'month'=>$charmonth,
-                       'numberOf'=>$chardate
-                   ];
-   
-                   return response()->json(['msg' => "success", 'data' => $myData], 200);
-               }
-           }
-           catch (QueryException $e)
-           {
-               return response()->json(['error' => 'Database Error: '.$e->getMessage()], 500);
-           }
-           catch (Exception $e)
-           {
-               return response()->json(['error' => $e->getMessage()], 404);
-           }
-       }
-       public function getTotalUsersCount()
-       {
-           try
-           {
-               $user_per_month = User::selectRaw('COUNT(id)
+                ->groupBy('year', 'month')
+                ->orderBy('month')
+                ->get();
+            $charmonth = [];
+            $chardate = [];
+            if ($Yards->isEmpty()) {
+                return response()->json(['msg' => "empty", 'data' => []], 200);
+            } else {
+                foreach ($Yards as $month) {
+                    $order_m = \DateTime::createFromFormat('!m', $month->month);
+                    $charmonth[] = $order_m->format('F');
+                }
+
+                foreach ($Yards as $month) {
+                    $chardate[] = $month->total_yards;
+                }
+                $myData = [
+                    'month' => $charmonth,
+                    'numberOf' => $chardate
+                ];
+                return response()->json(['msg' => "success", 'data' => $myData], 200);
+            }
+        } catch (QueryException $e) {
+            return response()->json(['error' => 'Database Error: ' . $e->getMessage()], 500);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
+    }
+    public function getTotalUsersCount()
+    {
+        try {
+            $user_per_month = User::selectRaw('COUNT(id)
     as total_users, YEAR(created_at) as year, MONTH(created_at) as month')
-               ->groupBy('year', 'month')
-               ->orderBy('month')
-               ->get();
-   
-               $charmonth=[];
-               $chardate=[];
-   
-               if($user_per_month->isEmpty())
-               {
-   
-                   return response()->json(['msg' => "empty", 'data' =>[]], 200);
-               }
-               else
-               {
-                   foreach($user_per_month as $month)
-                   {
-                       $order_m=\DateTime::createFromFormat('!m',$month->month);
-                       $charmonth[]=$order_m->format('F');
-                   }
-   
-                   foreach($user_per_month as $month)
-                   {
-                       $chardate[]=$month->total_users;
-                   }
-                   $myData=[
-                       'month'=>$charmonth,
-                       'numberOf'=>$chardate
-                   ];
-   
-                   return response()->json(['msg' => "success", 'data' => $myData], 200);
-               }
-           }
-           catch (QueryException $e)
-           {
-               return response()->json(['error' => 'Database Error: '.$e->getMessage()], 500);
-           }
-           catch (Exception $e)
-           {
-               return response()->json(['error' => $e->getMessage()], 404);
-           }
-       }
-       public function getTotalOrdersCount()
-       {
-   
-           try
-           {
-               $order_per_month = Order::selectRaw('COUNT(id)
+                ->groupBy('year', 'month')
+                ->orderBy('month')
+                ->get();
+            $charmonth = [];
+            $chardate = [];
+            if ($user_per_month->isEmpty()) {
+                return response()->json(['msg' => "empty", 'data' => []], 200);
+            } else {
+                foreach ($user_per_month as $month) {
+                    $order_m = \DateTime::createFromFormat('!m', $month->month);
+                    $charmonth[] = $order_m->format('F');
+                }
+
+                foreach ($user_per_month as $month) {
+                    $chardate[] = $month->total_users;
+                }
+                $myData = [
+                    'month' => $charmonth,
+                    'numberOf' => $chardate
+                ];
+
+                return response()->json(['msg' => "success", 'data' => $myData], 200);
+            }
+        } catch (QueryException $e) {
+            return response()->json(['error' => 'Database Error: ' . $e->getMessage()], 500);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
+    }
+    public function getTotalOrdersCount()
+    {
+        try {
+            $order_per_month = Order::selectRaw('COUNT(id)
     as total_orders, YEAR(created_at) as year, MONTH(created_at) as month')
-               ->groupBy('year', 'month')
-               ->orderBy('month')
-               ->get();
-   
-               $charmonth=[];
-               $chardate=[];
-   
-               if($order_per_month->isEmpty())
-               {
-   
-                   return response()->json(['msg' => "empty", 'data' =>[]],200);
-               }
-               else
-               {
-   
-               foreach($order_per_month as $month)
-               {
-               $order_m=\DateTime::createFromFormat('!m',$month->month);
-               $charmonth[]=$order_m->format('F');
-               }
-   
-               foreach($order_per_month as $month)
-               {
-                   $chardate[]=$month->total_orders;
-               }
-   
-               $myData=[
-                   'month'=>$charmonth,
-                   'numberOf'=>$chardate
-               ];
-   
-               return response()->json(['msg' => "success", 'data' => $myData],200);
-   
-               }
-           }
-           catch (QueryException $e)
-           {
-               return response()->json(['error' => 'Database Error: '.$e->getMessage()], 500);
-           }
-           catch (Exception $e)
-           {
-               return response()->json(['error' => $e->getMessage()], 404);
-           }
-       }
-   
-       public function getTotalOrdersAmount()
-       {
-           try
-           {
-               $amount_per_month=\DB::table('orders')
-               ->selectRaw('SUM(amount) as total_orders, YEAR(created_at) as year, MONTH(created_at) as month')
-               ->orderBy('month')
-               ->groupBy('year','month')->get();
-   
-               $charmonth=[];
-               $chardate=[];
-   
-               if($amount_per_month->isEmpty())
-               {
-                   return response()->json(['msg' => "empty", 'data' =>[]],200);
-               }
-               else
-               {
-                   foreach($amount_per_month as $month)
-                   {
-                   $order_m=\DateTime::createFromFormat('!m',$month->month);
-   
-                   $charmonth[]=$order_m->format('F');
-   
-                   }
-                   foreach($amount_per_month as $month)
-                   {
-                       $chardate[]=$month->total_orders;
-                   }
-   
-                   $myData=[
-                       'month'=>$charmonth,
-                       'total'=>$chardate
-                    ];
-   
-                   return response()->json(['msg' => "success", 'data' => $myData],200);
-               }
-   
-           }
-           catch (QueryException $e)
-           {
-               return response()->json(['error' => 'Database Error: '.$e->getMessage()], 500);
-           }
-           catch (Exception $e)
-           {
-               return response()->json(['error' => $e->getMessage()], 404);
-           }
-       }
-   
-       /* charts function End*/
+                ->groupBy('year', 'month')
+                ->orderBy('month')
+                ->get();
+            $charmonth = [];
+            $chardate = [];
+            if ($order_per_month->isEmpty()) {
+                return response()->json(['msg' => "empty", 'data' => []], 200);
+            } else {
+                foreach ($order_per_month as $month) {
+                    $order_m = \DateTime::createFromFormat('!m', $month->month);
+                    $charmonth[] = $order_m->format('F');
+                }
+                foreach ($order_per_month as $month) {
+                    $chardate[] = $month->total_orders;
+                }
+                $myData = [
+                    'month' => $charmonth,
+                    'numberOf' => $chardate
+                ];
+                return response()->json(['msg' => "success", 'data' => $myData], 200);
+            }
+        } catch (QueryException $e) {
+            return response()->json(['error' => 'Database Error: ' . $e->getMessage()], 500);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
+    }
+
+    public function getTotalOrdersAmount()
+    {
+        try {
+            $amount_per_month = \DB::table('orders')
+                ->selectRaw('SUM(amount) as total_orders, YEAR(created_at) as year, MONTH(created_at) as month')
+                ->orderBy('month')
+                ->groupBy('year', 'month')->get();
+            $charmonth = [];
+            $chardate = [];
+            if ($amount_per_month->isEmpty()) {
+                return response()->json(['msg' => "empty", 'data' => []], 200);
+            } else {
+                foreach ($amount_per_month as $month) {
+                    $order_m = \DateTime::createFromFormat('!m', $month->month);
+                    $charmonth[] = $order_m->format('F');
+                }
+                foreach ($amount_per_month as $month) {
+                    $chardate[] = $month->total_orders;
+                }
+                $myData = [
+                    'month' => $charmonth,
+                    'total' => $chardate
+                ];
+                return response()->json(['msg' => "success", 'data' => $myData], 200);
+            }
+
+        } catch (QueryException $e) {
+            return response()->json(['error' => 'Database Error: ' . $e->getMessage()], 500);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
+    }
+
+    /* charts function End*/
 }
