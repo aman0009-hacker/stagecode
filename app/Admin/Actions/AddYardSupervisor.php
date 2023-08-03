@@ -43,6 +43,8 @@ class AddYardSupervisor extends RowAction
           ->pluck('username', 'id')
           ->toArray();
 
+          dd($supervisors);
+
           // Add the select field to the form
         $this->select('user', 'Supervisor Username')->options($supervisors);
     }
