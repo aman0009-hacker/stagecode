@@ -50,14 +50,7 @@ class UserController extends AdminController
   {
     try {
       $grid = new Grid(new User());
-      // Add a column for the serial number
-      // Initialize a counter variable
-      $counter = 1;
-      // Add a column for the serial number
-      $grid->column('#', 'Sr. No.')->display(function () use (&$counter) {
-        return $counter++;
-      });
-      // $grid->column('id', __('Id'));
+      //$grid->column('id', __('Id'));
       $grid->column('name', __('First Name'));
       //   $grid->column('name', __('First Name'))->display(function ($value) {
       //     return $this->getNameAttribute($value);
