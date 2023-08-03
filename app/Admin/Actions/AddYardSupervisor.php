@@ -29,6 +29,8 @@ class AddYardSupervisor extends RowAction
             Log::info($ex->getMessage());
         }
     }
+
+
     public function form()
     {
         // Fetch supervisors with the role "YardCreator" and map them to id => username array
@@ -36,13 +38,16 @@ class AddYardSupervisor extends RowAction
         //     $query->where('name', 'administrator');
         // })->pluck('username', 'id')->toArray();
         $supervisors = AdminUser::whereHas('roles', function ($query) {
-            $query->where('name', 'YardCreator');
+            $query->where('name', 'administartor');
         })->whereNotIn('id', Yard::pluck('supervisorid')->toArray())
           ->pluck('username', 'id')
           ->toArray();
-        // Add the select field to the form
+
+          // Add the select field to the form
         $this->select('user', 'Supervisor Username')->options($supervisors);
     }
 }
+
+
 
 
