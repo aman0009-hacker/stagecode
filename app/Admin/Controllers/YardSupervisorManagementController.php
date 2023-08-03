@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Auth\Permission;
 use Illuminate\Support\Facades\Log;
+use App\Models\Yard;
 
 
 
@@ -25,7 +26,7 @@ class YardSupervisorManagementController extends AdminController
    *
    * @var string
    */
-  protected $title = 'Records';
+  protected $title = 'Yard Records';
 
   /**
    * Make a grid builder.
@@ -85,9 +86,21 @@ class YardSupervisorManagementController extends AdminController
       //$grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
       if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
         // If user has one of the specified roles, show all records
+        $yardRecords = Yard::where('supervisorid', Admin::user()->id)->value('yardplace');
+        if (isset($yardRecords)) {
+          $grid->setTitle($yardRecords." Yard");
+        } else {
+          $grid->setTitle("");
+        }
         $grid->model()->orderBy('created_at', 'desc');
       } else {
         // Otherwise, show only records where supervisorid matches the login ID
+        $yardRecords = Yard::where('supervisorid', Admin::user()->id)->value('yardplace');
+        if (isset($yardRecords)) {
+          $grid->setTitle($yardRecords." Yard");
+        } else {
+          $grid->setTitle("");
+        }
         $grid->model()->where('supervisor_id', Admin::user()->id)->orderBy('created_at', 'desc');
       }
       //new code

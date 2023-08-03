@@ -26,15 +26,9 @@ class Yard extends Model
     public function getActivitylogOptions(): LogOptions
     {
         $logOptions = LogOptions::defaults();
-
         $logOptions->logAttributes = static::$logAttributes;
         $logOptions->logOnlyDirty = static::$logOnlyDirty;
         $logOptions->logName = static::$logName;
-        // The getDescriptionForEvent method allows you to customize the description of logged events.
-        // It is defined in your User model, and here's how you can use it:
-        // $logOptions->setDescriptionForEvent(function (string $eventName) {
-        //     return "you have {$eventName} user";
-        // });
         return $logOptions;
     }
     public function getDescriptionForEvent(string $eventName): string

@@ -17,12 +17,11 @@ class AddYardSupervisor extends RowAction
     {
         try {
             $id = $request->user;
-            if(isset($id) && !empty($id))
-            {
-            $yard=Yard::find($model->id);
-            $yard->supervisorid=$id ;
-            $yard->save();
-            return $this->response()->success("Saved Successfully")->refresh();
+            if (isset($id) && !empty($id)) {
+                $yard = Yard::find($model->id);
+                $yard->supervisorid = $id;
+                $yard->save();
+                return $this->response()->success("Saved Successfully")->refresh();
             }
         } catch (\Throwable $ex) {
             //return $this->response()->error('Oops! Sending mail has encountered some internal problem');
@@ -33,21 +32,12 @@ class AddYardSupervisor extends RowAction
 
     public function form()
     {
-        // Fetch supervisors with the role "YardCreator" and map them to id => username array
-        // $supervisors = AdminUser::whereHas('roles', function ($query) {
-        //     $query->where('name', 'administrator');
-        // })->pluck('username', 'id')->toArray();
         $supervisors = AdminUser::whereHas('roles', function ($query) {
             $query->where('name', 'YardCreator');
         })->whereNotIn('id', Yard::whereNotNull('supervisorid')->pluck('supervisorid')->toArray())
-          ->pluck('username', 'id')
-          ->toArray();
-
-          // Add the select field to the form
+            ->pluck('username', 'id')
+            ->toArray();
+        // Add the select field to the form
         $this->select('user', 'Supervisor Username')->options($supervisors);
     }
 }
-
-
-
-
