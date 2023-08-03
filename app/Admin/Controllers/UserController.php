@@ -50,6 +50,13 @@ class UserController extends AdminController
   {
     try {
       $grid = new Grid(new User());
+      // Add a column for the serial number
+      // Initialize a counter variable
+      $counter = 1;
+      // Add a column for the serial number
+      $grid->column('#', 'Sr. No.')->display(function () use (&$counter) {
+        return $counter++;
+      });
       // $grid->column('id', __('Id'));
       $grid->column('name', __('First Name'));
       //   $grid->column('name', __('First Name'))->display(function ($value) {
@@ -104,7 +111,7 @@ class UserController extends AdminController
       //  });
       $grid->export(function ($export) {
         //$export->filename('Filename.csv');
-        $export->except(['approved', 'comments', 'attachment', 'otp','Wallet']);
+        $export->except(['approved', 'comments', 'attachment', 'otp', 'Wallet']);
       });
       $grid->actions(function ($actions) {
         if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
