@@ -550,8 +550,8 @@ class PaymentController extends Controller
                 $optionalField = null;
                 $base = new EazyPayController();
                 $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
-                dd($url);
-                return redirect()->to($url);
+                return $url;
+                //return redirect()->to($url);
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
