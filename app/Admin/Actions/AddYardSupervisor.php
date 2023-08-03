@@ -38,7 +38,7 @@ class AddYardSupervisor extends RowAction
         //     $query->where('name', 'administrator');
         // })->pluck('username', 'id')->toArray();
         $supervisors = AdminUser::whereHas('roles', function ($query) {
-            $query->where('name', 'administartor');
+            $query->where('name', 'YardCreator');
         })->whereNotIn('id', Yard::whereNotNull('supervisorid')->pluck('supervisorid')->toArray())
           ->pluck('username', 'id')
           ->toArray();
