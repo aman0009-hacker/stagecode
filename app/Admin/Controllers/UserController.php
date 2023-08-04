@@ -234,14 +234,14 @@ class UserController extends AdminController
                     }
 
                     $initial_amount = PaymentDataHandling::where('order_id', $order->id)->where('user_id', $user_id)->where('data', 'Booking_Amount')->get()->last();
-                    if (isset($initial_amount) && !empty($initial_amount)) {
+                    if (isset($initial_amount) && !empty($initial_amount) && isset($initial_amount->transaction_amount) && !empty($initial_amount->transaction_amount)) {
                         $orderData['Booking Initial Amount'] = $initial_amount->transaction_amount . "   <span style='color:green;font-weight:600'>(Outstanding Amount)</span>";
                     } else {
                         $orderData['Booking Initial Amount'] = "<span style='color:red;font-weight:600'>(Unpaid)</span>";
                     }
 
                     $final_amount = PaymentDataHandling::where('order_id', $order->id)->where('user_id', $user_id)->where('data', 'Booking_Final_Amount')->get()->last();
-                    if (isset($final_amount) && !empty($final_amount)) {
+                    if (isset($final_amount) && !empty($final_amount) && isset($final_amount->payment_status) && !empty($final_amount->payment_status)) {
                         if (strtolower($final_amount->payment_status) === strtolower('success')) {
                             $totalAmount = $final_amount->transaction_amount;
                             $cgstPercent = env('CGST', 9);
