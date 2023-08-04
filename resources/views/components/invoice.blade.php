@@ -247,9 +247,9 @@
           <td></td>
           <td>Rs. {{$Taxablevalue}}</td>
         </tr>
-        <tr>
+        {{-- <tr>
           <td colspan="7">Amount Chargeable(In Words)</td>
-        </tr>
+        </tr> --}}
       </table>
       <table class="tax-table" style="width: 100%">
         <tr>
