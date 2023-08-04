@@ -91,6 +91,7 @@ class EntityController extends AdminController
             });
             $grid->disableActions();
             $grid->disableRowSelector();
+            $grid->disableCreateButton();
             //$grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
             // if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
             //     // If user has one of the specified roles, show all records

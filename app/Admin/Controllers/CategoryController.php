@@ -68,6 +68,7 @@ class CategoryController extends AdminController
             });
             $grid->disableActions();
             $grid->disableRowSelector();
+            $grid->disableCreateButton();
             $grid->model()->orderBy('created_at', 'desc');
             return $grid;
         } catch (\Throwable $ex) {
