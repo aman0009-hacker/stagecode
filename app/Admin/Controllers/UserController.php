@@ -51,6 +51,7 @@ class UserController extends AdminController
     try {
       $grid = new Grid(new User());
       //$grid->column('id', __('Id'));
+     
       $grid->column('name', __('First Name'));
       //   $grid->column('name', __('First Name'))->display(function ($value) {
       //     return $this->getNameAttribute($value);

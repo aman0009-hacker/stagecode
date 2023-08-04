@@ -307,7 +307,7 @@ class OrderController extends AdminController
             });
             $grid->export(function ($export) {
                 //$export->filename('Filename.csv');
-                $export->except(['id']);
+                $export->except(['id','payment_mode','Cheque_Date','payable_amount']);
             });
             //$grid->disableRowSelector();
             $grid->disableCreateButton();
