@@ -261,13 +261,17 @@
                             }
                            ?>
                             <form method="post" action="{{ route('payment.process.data.order.complete') }}">
+                                {{-- {{dd($txtOrderGlobalModalCompleteID)}} --}}
                                 @csrf
                                 <div class="row text-center">
                                     <div class="col-12">
                                         <img src="{{ asset('images/login-signup/doc-success.png') }}"
                                             alt="process-pending" class="img-fluid process-pending" width="220"
                                             height="220">
-                                        <h1 class="sign-up-text document-text">Payment Process</h1>
+                                            <h1 class="sign-up-text document-text">Payment Process</h1>
+                                            <div class="action" id="invoiceDownload" style="display: none" >
+                                                <a class="btn continue-btn w-45 mb-3 " href="{{ route('invoice') }}?orderIDInvoice={{Crypt::encrypt($txtOrderGlobalModalCompleteID ?? '')}}" class="link-success" id="download-invoice-link">Show Invoice</a>
+                                            </div>
                                         <div class="col-12">
                                             {{-- error handling --}}
                                             @error('paymentMode')
