@@ -94,8 +94,10 @@ class EazyPayController extends Controller
     // use @ to avoid php warning php throw warning while using mcrypt functions
     protected function getEncryptValue($str)
     {
-       $encrypted = openssl_encrypt($str, 'aes-128-ecb', $this->encryption_key, OPENSSL_RAW_DATA);
+        //return $str;
+        $encrypted = openssl_encrypt($str, 'aes-128-ecb', $this->encryption_key, OPENSSL_RAW_DATA);
         // The $iv is just as important as the key for decrypting, so save it with our encrypted data using a unique separator (::)
         return base64_encode($encrypted);
+    
     }
 }

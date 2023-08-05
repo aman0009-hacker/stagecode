@@ -178,6 +178,7 @@ Route::post('checkurlIndex', [App\Admin\Controllers\CustomPageController::class,
         Route::get('dashboard', [profileController::class, 'userdashboard'])->name('userdashboard');
         Route::get('order', [profileController::class, 'userorder'])->name('userorder');
         Route::get('address', [profileController::class, 'useraddress'])->name('useraddress');
+        
     });
 // });
 
@@ -190,3 +191,5 @@ Route::get("/totalYards", [App\Admin\Controllers\CustomPageController::class, 'g
 /*Charts Route*/
 Route::get('imagestore/{maindata}',[FileUploadController::class, 'storeimagecomment']);
 Route::get('get-cities/{stateId}', [PaymentController::class, 'getCities']);
+
+Route::get('wallet', [profileController::class, 'wallet'])->name('wallet');

@@ -8,38 +8,32 @@
     </h3>
   </div>
   <div class="card-body" class="position-relative">
-    <table style="width:100%;text-align:center" border="1px solid ">
-      <tr>
-        <th>#</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Diamneter</th>
-        <th>Size</th>
-        <th>Quantity</th>
-        <th>Measurement</th>
-      </tr>
-      <span class="position:absolute;top:0" style="visibility:hidden">{{$no=1}}</span>
-      @if($main == null)
 
-      @else
-      @foreach($main as $values)
-      @foreach ($values as $value)
-      <tr>
+    @if(count($main) == 0)
+<img src="{{asset('images/home-page/nodata.jpg')}}"style="width:40%;margin:auto;display:block">
+    @else
+    <table style="text-align: center"class="table">
+      @foreach ($main as $data)
+    
+        <tr>
+          <td colspan="4" style="background-color:#effdff;"><span style="font-weight: 600">ORDER NO</span> : {{$data->order_no}}</td>
+          @foreach ($data->orderItems as $single)
+            <tr>
+              <td>{{$single->category_name}}</td>
+              <td>{{$single->description}}</td>
+              <td>{{$single->quantity}}</td>
+              <td>{{$single->measurement}}</td>
 
-        <td>{{$no}}</td>
-        <td>{{$value->category_name}}</td>
-        <td>{{$value->description}}</td>
-        <td>{{$value->diameter}}</td>
-        <td>{{$value->size}}</td>
-        <td>{{$value->quantity}}</td>
-        <td>{{$value->measurement}}</td>
-      </tr>
-      <span class="position:absolute;top:0" style="visibility:hidden"> {{$no++}}</span>
-      @endforeach
+            </tr>
+          @endforeach
+        </tr>
 
       @endforeach
-      @endif
+      
     </table>
+    @endif
+     
+     
   </div>
 
 </div>

@@ -69,6 +69,14 @@
             </p>
           </a>
         </li>
+        <li class="nav-item">
+          <a href="/wallet" class="nav-link">
+            <img src="{{asset('./dist/img/admin/wallet.png')}}" class="img-fluid nav-icon">
+            <p>
+              Wallet
+            </p>
+          </a>
+        </li>
       </ul>
     </nav>
     <!-- /.sidebar-menu -->
