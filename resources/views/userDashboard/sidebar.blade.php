@@ -71,7 +71,7 @@
         </li>
         <li class="nav-item">
           <a href="/wallet" class="nav-link">
-            <img src="{{asset('./dist/img/admin/wallet.png')}}" class="img-fluid nav-icon">
+            <img src="{{asset('images/home-page/wallet.png')}}" class="img-fluid nav-icon">
             <p>
               Wallet
             </p>
