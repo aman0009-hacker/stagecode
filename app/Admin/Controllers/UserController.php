@@ -254,22 +254,35 @@ class UserController extends AdminController
                         } else {
                             $orderData['Final Amount'] = "<span style='color:green;font-weight:600'>(Paid)</span>";
                         }
-                    }
+                    } else {
+                        $final_check_amount = Order::where('user_id', $user_id)->where('id', $order->id)->where('payment_mode', 'cheque')->get()->last();
 
+                        if (isset($final_check_amount) &&
+                            !empty($final_check_amount) &&
+                            isset($final_check_amount->final_payment_status) &&
+                            !empty($final_check_amount->final_payment_status) &&
+                            $final_check_amount->final_payment_status === 'verified')
+                        {
+                            $orderData['Final Amount'] = "<span style='color:green;font-weight:600'>(Paid With Cheque)</span>";
+                        }
+                        else
+                        {
+                            $orderData['Final Amount'] = "<span style='color:red;font-weight:600'>(Unpaid)</span>";
+                        }
+                    }
 
                     $paymentMode = $order->payment_mode;
                     if (isset($paymentMode) && !empty($paymentMode)) {
-                        $orderData['Final Payment Mode'] = $paymentMode ;
+                        $orderData['Final Payment Mode'] = $paymentMode;
                     } else {
                         $orderData['Final Payment Mode'] = "<span style='color:red;font-weight:600'>(N/A)</span>";
                     }
-
 
                     if ($order->payment_mode === 'cheque') {
                         $chequeDate = $order->Cheque_Date ?? '';
                         $chequeAmount = $order->check_amount ?? '';
                         $chequeNumber = $order->cheque_number ?? '';
-                        $orderData['Cheque Info'] = "[Cheque Date: ".$chequeDate."]" ." ". "[Cheque Number: ".$chequeNumber."]" ."  "." [Cheque Amount: ". $chequeAmount."]";
+                        $orderData['Cheque Info'] = "[Cheque Date: " . $chequeDate . "]" . " " . "[Cheque Number: " . $chequeNumber . "]" . "  " . " [Cheque Amount: " . $chequeAmount . "]";
                     } else {
                         $orderData['Cheque Info'] = "<span style='color:black;font-weight:600'>(N/A)</span>";
                     }
@@ -281,7 +294,7 @@ class UserController extends AdminController
         }
 
         // Define the column headers explicitly
-        $headers = ['Order No', 'Booking Initial Amount', 'Final Amount',' Final Payment Mode','Cheque Info'];
+        $headers = ['Order No', 'Booking Initial Amount', 'Final Amount', ' Final Payment Mode', 'Cheque Info'];
 
         // Return the Table instance with all order data and headers
         return new Table($headers, $orderDetails);

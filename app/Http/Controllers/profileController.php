@@ -8,6 +8,7 @@ use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\PaymentDataHandling;
 use App\Models\Address;
 use Validator;
 use Illuminate\Support\Facades\Log;
@@ -202,18 +203,112 @@ class profileController extends Controller
     {
         try {
             $data = auth::user();
-            $mainItem = Order::where('user_id', $data->id)->get();
-            if (count($mainItem) == 0) {
-                $main = null;
-            } else {
-                foreach ($mainItem as $order_main) {
-                    $main[] = OrderItem::where('order_id', $order_main->id)->get();
-                }
-            }
+           
+            $main=Order::with('orderItems')->where('user_id',$data->id)->get();
             return view('userDashboard.order', compact('data', 'main'));
         } catch (\Exception $ex) {
             Log::info($ex->getMessage());
         }
+    }
+
+    public function wallet()
+    {
+        $user_id = Auth::user()->id;
+        $allorders = Order::where('user_id', $user_id)->get();
+        // dd($allorders);
+        $orderDetails = [];
+        $counter = 0;
+        $orderData = [
+            "Order_No" => [], // Changed to an empty array
+            "Booking_Initial_Amount" => [], // Changed to an empty array
+            "Final_Amount" => [], // Changed to an empty array
+            "Final_Payment_Mode" => [], // Changed to an empty array
+            "Cheque_Info" => [], // Changed to an empty array
+        ];
+        foreach ($allorders as $order) {
+            if (isset($order->id) && !empty($order->id)) {
+                $order_id = $order->order_no;
+                if (isset($order_id) && !empty($order_id)) {
+                    // Append the order_id to the "Order No" array
+                    $orderData["Order_No"][] = $order_id;
+                } else {
+                    $orderData["Order_No"][] = "(N/A)";
+                }
+
+                // Append the other data to their respective arrays based on your business logic
+                $initial_amount = PaymentDataHandling::where('order_id', $order->id)
+                    ->where('user_id', $user_id)
+                    ->where('data', 'Booking_Amount')
+                    ->get()
+                    ->last();
+                if (isset($initial_amount) && !empty($initial_amount) && isset($initial_amount->transaction_amount) && !empty($initial_amount->transaction_amount)) {
+                    $orderData['Booking_Initial_Amount'][] = $initial_amount->transaction_amount . "   <span style='color:green;font-weight:600'>(Outstanding Amount)</span>";
+                } else {
+                    $orderData['Booking_Initial_Amount'][] = "<span style='color:red;font-weight:600'>(Unpaid)</span>";
+                }
+
+                $final_amount = PaymentDataHandling::where('order_id', $order->id)
+                    ->where('user_id', $user_id)
+                    ->where('data', 'Booking_Final_Amount')
+                    ->get()
+                    ->last();
+
+                if (isset($final_amount) && !empty($final_amount) && isset($final_amount->payment_status) && !empty($final_amount->payment_status))
+                {
+                    if (strtolower($final_amount->payment_status) === strtolower('success')) {
+                        $totalAmount = $final_amount->transaction_amount;
+                        $cgstPercent = env('CGST', 9);
+                        $sgstPercent = env('SGST', 9);
+                        $totalTaxAmount = ($totalAmount * ($cgstPercent + $sgstPercent) / 100) ?? 0;
+                        $centralTaxAmount = ($totalAmount * $cgstPercent / 100) ?? 0;
+                        $stateTaxAmount = ($totalAmount * $sgstPercent / 100) ?? 0;
+                        $completeAmount = ($totalAmount + $totalTaxAmount) ?? 0;
+                        $orderData['Final_Amount'][] = $completeAmount . "   <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+                    } else {
+                        $orderData['Final_Amount'][] = "<span style='color:red;font-weight:600'>(Unpaid)</span>";
+                    }
+                } else
+                {
+                    $final_check_amount = Order::where('user_id', $user_id)->where('id', $order->id)->where('payment_mode', 'cheque')->get()->last();
+
+                    if (isset($final_check_amount) &&
+                        !empty($final_check_amount) &&
+                        isset($final_check_amount->final_payment_status) &&
+                        !empty($final_check_amount->final_payment_status) &&
+                        $final_check_amount->final_payment_status === 'verified' )
+                    {
+                            $orderData['Final_Amount'][] = "<span style='color:green;font-weight:600'>(Paid With Cheque)</span>";
+                    }
+                    else
+                    {
+                        $orderData['Final_Amount'][] = "<span style='color:red;font-weight:600'>(Unpaid)</span>";
+                    }
+                }
+
+                $paymentMode = $order->payment_mode;
+                if (isset($paymentMode) && !empty($paymentMode)) {
+                    $orderData['Final_Payment_Mode'][] = $paymentMode;
+                } else {
+                    $orderData['Final_Payment_Mode'][] = "<span style='color:red;font-weight:600'>(N/A)</span>";
+                }
+
+                if ($order->payment_mode === 'cheque') {
+                    $chequeDate = $order->Cheque_Date ?? '';
+                    $chequeAmount = $order->check_amount ?? '';
+                    $chequeNumber = $order->cheque_number ?? '';
+                    $orderData['Cheque_Info'][] = "[Cheque Date: " . $chequeDate . "]" . " " . "[Cheque Number: " . $chequeNumber . "]" . "  " . " [Cheque Amount: " . $chequeAmount . "]";
+                } else {
+                    $orderData['Cheque_Info'][] = "<span style='color:black;font-weight:600'>(N/A)</span>";
+                }
+            }
+
+            $orderDetails[] = $orderData;
+            $data = auth::user();
+
+        }
+
+        $registration_data = PaymentDataHandling::where('user_id',$user_id)->where('data','Registration_Amount')->first();
+        return view('userDashboard.wallet', compact('orderData','registration_data','data'));
     }
 
     public function useraddress()
