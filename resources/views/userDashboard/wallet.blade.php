@@ -31,7 +31,7 @@
                                     @if($registration_data->payment_status === "SUCCESS")
                                     <td><span style='color:green ;font-weight:600'>(Paid)</span></td>
                                     @else
-                                    <td><span style='color:red;font-weight:600'>(UnPaid)</span></td>
+                                    <td><span  style='color:red;font-weight:600'>(UnPaid)</span></td>
                                     @endif
                                 </tr>
 
