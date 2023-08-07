@@ -29,6 +29,65 @@
   <link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.min.css')}}">
   <!-- sctylesheet -->
   <link rel="stylesheet" href="{{asset('./dist/css/index.css')}}">
+
+  <style>
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(.sidebar-no-expand).sidebar-focused,
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(.sidebar-no-expand):hover {
+      width: 4.6rem !important;
+    }
+
+    .sidebar-collapse.sidebar-mini .main-sidebar.sidebar-focused:not(.sidebar-no-expand) .nav-link,
+    .sidebar-collapse.sidebar-mini .main-sidebar:hover:not(.sidebar-no-expand) .nav-link,
+    .sidebar-collapse.sidebar-mini-md .main-sidebar.sidebar-focused:not(.sidebar-no-expand) .nav-link,
+    .sidebar-collapse.sidebar-mini-md .main-sidebar:hover:not(.sidebar-no-expand) .nav-link,
+    .sidebar-collapse.sidebar-mini-xs .main-sidebar.sidebar-focused:not(.sidebar-no-expand) .nav-link,
+    .sidebar-collapse.sidebar-mini-xs .main-sidebar:hover:not(.sidebar-no-expand) .nav-link {
+      width: 3.6rem !important;
+    }
+
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(.sidebar-no-expand).sidebar-focused .brand-text,
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(.sidebar-no-expand).sidebar-focused .logo-xl,
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(.sidebar-no-expand).sidebar-focused .sidebar .nav-sidebar .nav-link p,
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(.sidebar-no-expand).sidebar-focused .user-panel>.info,
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(.sidebar-no-expand):hover .brand-text,
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(.sidebar-no-expand):hover .logo-xl,
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(.sidebar-no-expand):hover .sidebar .nav-sidebar .nav-link p,
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(.sidebar-no-expand):hover .user-panel>.info {
+      visibility: hidden !important;
+    }
+
+    .sidebar-collapse .square {
+      width: 60px;
+      height: 60px;
+      transition: width 0.5s, height 0.5s;
+    }
+
+    .sidebar-collapse #user_name {
+      font-size: 16px;
+      transition: font-size 0.5s;
+    }
+
+    .sidebar-collapse .user-panels p {
+      opacity: 0;
+      transition: opacity 0.1s ease-out;
+    }
+
+    .sidebar-collapse .square i {
+      font-size: 40px;
+      transition: font-size 0.5s;
+    }
+
+    .square i {
+      font-size: 80px;
+      transition: font-size 0.5s;
+    }
+
+    .sidebar-collapse .user_profile span {
+      opacity: 0;
+      transition: opacity 0.1s ease-out;
+    }
+  </style>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
     integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>

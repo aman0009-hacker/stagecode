@@ -22,4 +22,14 @@
     {
       padding:10px;
     }
+    #user_name 
+    {
+      font-size: 1.75rem;
+      transition: font-size 0.5s;
+    }
+    .user-panels p
+    {
+      opacity: 1;
+      transition: opacity 1s ease-out;
+    }
       </style>
