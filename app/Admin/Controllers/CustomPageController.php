@@ -49,21 +49,30 @@ class CustomPageController extends AdminController
     public function PaymentDetails(Request $request, $id)
     {
         try {
-            $id = (Crypt::decryptString($id));
-            //   dd($id);
-            $count = 0;
-            if (isset($id) && !empty($id)) {
-                $query = User::all();
-                foreach ($query as $data) {
-                    if ($data->id == ($id)) {
-                        $count++;
-                        break;
+
+            if(auth::user())
+            {
+                $id = (Crypt::decryptString($id));
+                //   dd($id);
+                $count = 0;
+                if (isset($id) && !empty($id)) {
+                    $query = User::all();
+                    foreach ($query as $data) {
+                        if ($data->id == ($id)) {
+                            $count++;
+                            break;
+                        }
+                    }
+                    if ($count == 1) {
+                        return view('components.payment-process');
                     }
                 }
-                if ($count == 1) {
-                    return view('components.payment-details');
-                }
             }
+            else
+            {
+                return view('auth.login');
+            }
+        
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
             return view('auth.login');
