@@ -17,6 +17,7 @@ use App\Models\Order;
 use App\Admin\Actions\OrderDispatched;
 use App\Admin\Actions\OrderPayment;
 use App\Admin\Actions\OrderApproved;
+use App\Admin\Actions\OrderDelivered;
 use Illuminate\Support\Facades\Log;
 use Encore\Admin\Facades\Admin;
 use Illuminate\Support\Facades\Auth;
@@ -273,25 +274,34 @@ class OrderController extends AdminController
                     $actions->add(new OrderDispatched);
                     $actions->add(new OrderRejected);
                     $actions->add(new OrderPayment);
+                    $actions->add(new OrderDelivered);
                 } else if ($actions->row->status == "Rejected") {
                     $actions->add(new OrderApproved);
                     $actions->add(new OrderDispatched);
                     $actions->add(new OrderPayment);
+                    $actions->add(new OrderDelivered);
                 } else if ($actions->row->status == "Dispatched") {
                     $actions->add(new OrderApproved);
                     $actions->add(new OrderRejected);
                     $actions->add(new OrderPayment);
+                    $actions->add(new OrderDelivered);
                 } else if ($actions->row->status == "New") {
                     $actions->add(new OrderApproved);
                     $actions->add(new OrderDispatched);
                     $actions->add(new OrderRejected);
                     $actions->add(new OrderPayment);
+                    $actions->add(new OrderDelivered);
                 } else if ($actions->row->status == "Payment_Done") {
                     $actions->add(new OrderApproved);
                     $actions->add(new OrderDispatched);
                     $actions->add(new OrderRejected);
+                    $actions->add(new OrderDelivered);
+                    
                 }
             });
+
+
+
             $grid->filter(function ($filter) {
                 // $filter->notIn('id', __('Id'));
                 $filter->disableIdFilter();
