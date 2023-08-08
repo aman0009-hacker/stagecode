@@ -47,11 +47,12 @@ class Rejected extends RowAction
                 if (isset($emailData)) {
                     $emailDataName = $emailData->email;
                     $details = [
-                        'email' => 'Mail from PSIEC Admin Panel',
-                        'body' => 'Your account has not verified due to issue in your documents' . "  " . $request->get('reason') ?? ''
+                        'email' => 'Account Verification Status - Action Required',
+                        // 'body' => 'Your account has not verified due to issue in your documents' . "  " . $request->get('reason') ?? ''
+                        'body' => 'We regret to inform that your account verification process could not be completed due to issues in the provided documents:' . "  " . $request->get('reason') ?? ''
                     ];
                     \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
-                    //\Mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
+                    //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
                 } else {
                     return $this->response()->error('Oops! Kindly submit documents as required');
                 }

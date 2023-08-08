@@ -46,14 +46,15 @@ class Data extends RowAction
                         $emailDataName = $emailData->email;
                         //het current user emailid end
                         $details = [
-                            'email' => 'Mail from PSIEC Admin Panel (Payment Link)',
-                            'body' => 'Congratulations!!! Your account has successfully verified.',
+                            'email' => 'Account Verification Successful - Access Your Payment Link',
+                            'body' => 'We are pleased to inform you that your account verification process has been successfully completed.',
+                            'status' => 'account approved',
                             'encryptedID' => $encryptedID,
 
 
                         ];
                         \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
-                        //\Mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
+                        //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
                         //dd("Email is Sent.");
                     } else {
                         return $this->response()->error('Oops! Kindly submit documents as required');

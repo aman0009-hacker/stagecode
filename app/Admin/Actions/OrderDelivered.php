@@ -28,18 +28,20 @@ class OrderDelivered extends RowAction
                     $data->save();
                     if ($data->save() == true) {
                         $user_id = Order::find($model->id)->user_id;
+                        $order_no = Order::find($model->id)->order_no;
                         $emailData = User::join('orders', 'users.id', '=', 'orders.user_id')
                             ->where('orders.user_id', $user_id)
                             ->select('users.email')
                             ->first();
-                    
+
                         // $user_id=Order::find($model->id)->user_id;
                         if (isset($emailData)) {
                             $emailDataName = $emailData->email;
                             //het current user emailid end
                             $details = [
-                                'email' => 'PSIEC ADMIN PANEL',
-                                'body' => 'Congratulations!!! Your order has been deleivered',
+                                'email' => 'Order Delivered for Order number '.$order_no .'.',
+                                // 'body' => 'Congratulations!!! Your order has been deleivered',
+                                'body' => 'We are pleased to inform you that your order with order number '. $order_no.' has been successfully delivered.',
                                 'encryptedID' => $encryptedID,
                                 'status' => 'OrderDelivered'
                             ];
@@ -55,7 +57,7 @@ class OrderDelivered extends RowAction
                 {
                     return $this->response()->error('Please first pay the order price');
                 }
-              
+
                 return $this->response()->success('Congratulations!!! Your order has been delivered')->refresh();
             }
         } catch (\Throwable $ex) {
