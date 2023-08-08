@@ -72,16 +72,23 @@
                                             </h1>
                                             <h1>{{ $details['email'] }}</h1>
                                             <p>{{ $details['body'] }}</p>
-                                            @if (  isset($details['body']) && $details['body'] =="Congratulations!!! Your account has successfully verified.")
+                                            @if (  isset($details['status']) && $details['status'] == 'account approved')
+                                            <p>To proceed with the next steps, kindly click on the following link:</p>
                                             <a href="{{ env('APP_URL') }}PaymentDetails/{{$details['encryptedID']}}">click here</a>
                                             @endif
                                             @if ( isset($details['status']) && $details['status']=="OrderApprove")
-                                            <a href="{{ env('APP_URL') }}PaymentDetailsOrder/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>  
+                                            <p>To facilitate the booking payment process, please click the following link:</p>
+                                            <a href="{{ env('APP_URL') }}PaymentDetailsOrder/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>
                                             @endif
                                             @if ( isset($details['status']) && $details['status']=="OrderPayment")
-                                            <a href="{{ env('APP_URL') }}PaymentDetailsOrder/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>  
+                                            <a href="{{ env('APP_URL') }}PaymentDetailsOrder/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>
                                             @endif
-                                            <p>Thank you</p>
+                                            @if(isset($details['status']) && $details['status']==='Dispatched')
+                                            <a href="{{ env('APP_URL') }}:8000/payment/complete/process/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>
+                                            @endif
+                                            <p>Thank you once again for choosing our services.</p>
+                                            <p>Best regards,</p>
+                                            <p>PSIEC Admin Panel</p>
                                         {{-- <span
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"></span> --}}
                                         {{-- <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
