@@ -193,3 +193,4 @@ Route::get('imagestore/{maindata}',[FileUploadController::class, 'storeimagecomm
 Route::get('get-cities/{stateId}', [PaymentController::class, 'getCities']);
 
 Route::get('wallet', [profileController::class, 'wallet'])->name('wallet');
+Route::get("/payment/complete/process/{id}/{status}", [PaymentController::class, 'paymentCompletion'])->name('payment.complete.process');

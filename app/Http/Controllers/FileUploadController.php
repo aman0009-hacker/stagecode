@@ -21,6 +21,7 @@ class FileUploadController extends Controller
             $gst = $msme = $itr = $aadhar = $pan = $utility = 0;
             $gstValue = $msmeValue = $itrValue = $aadharValue = $panValue = $utilityValue = 0;
             $queryDocument = Attachment::where('user_id', $currentId)->get();
+
             foreach ($queryDocument as $data) {
                 if (isset($data->file_type) && $data->file_type != "" && $data->file_type == "gstfile" && isset($data->fileno) && !empty($data->fileno)) {
                     $gst = 1;
@@ -72,6 +73,7 @@ class FileUploadController extends Controller
             //         'panFile' => $panValue,
             //         'utilityFile' => $utilityValue,
             //     ]);
+
             //new code added
             $rules = [
                 'gstFile' => $gstValue,
@@ -83,6 +85,7 @@ class FileUploadController extends Controller
             ];
             // Create a Validator instance with the rules
             $validator = Validator::make($request->all(), $rules);
+
             // Check if validation fails
             if ($validator->fails()) {
                 // Redirect back with input data and errors
@@ -160,11 +163,20 @@ class FileUploadController extends Controller
             if (isset($query) && $query > 0) {
                 // $stateUpdate = DB::table('users')->where('id', $currentId)->update(['state' => 4]);
                 $stateUpdate = User::find($currentId);
+                $email = User::find($currentId)->email;
                 if ($stateUpdate) {
                     $stateUpdate->state = 4;
                     $stateUpdate->save();
                 }
                 if (isset($stateUpdate)) {
+                    $details=[
+                        'email' => 'Registration Successful',
+                        'body' => 'We are pleased to inform you that your account registration process has initiated. Your Registration is Pending for
+                        approval within 7 days. After
+                        approval you can pay the
+                        Registration fee Rupees 10,000/-',
+                    ];
+                    \Mail::to($email)->send(new \App\Mail\PSIECMail($details));
                     return redirect()->route('updatedDocument')->with(['currentId' => $currentId, "data" => "success"]);
                 }
             } else {

@@ -11,7 +11,7 @@
         $("#myid").show();
         $("#logoutid").show();
         $("#myOrder").show();
-        
+
 </script>
 <?php
  }
@@ -32,7 +32,7 @@
       {{-- New Code to show Payment Success Page --}}
       <?php
       $encryptedResponse = request('encryptedResponse');
-      if(isset($encryptedResponse) && !empty($encryptedResponse)) 
+      if(isset($encryptedResponse) && !empty($encryptedResponse))
       {
       $decryptedResponse = Illuminate\Support\Facades\Crypt::decrypt($encryptedResponse);
       $paymentResponse = $decryptedResponse['paymentResponse'] ?? '';
@@ -40,6 +40,12 @@
       $transaction_id = $decryptedResponse['transaction_id'] ?? '';
      if( $paymentResponse!="" && $paymentResponse!=null && $paymentResponse=="SUCCESS")
      {
+        $email = Auth::user()->email;
+                  $details=[
+                      'email' => 'Booking Amount Payment Successful,',
+                      'body' => 'We are pleased to inform you that booking amount of your order with order number '.$reference_no.' has been successfully processed . Please anticipate the dispatch of your order shortly.',
+                  ];
+                \Mail::to($email)->send(new \App\Mail\PSIECMail($details));
       ?>
       <script>
         Swal.fire({
@@ -52,7 +58,7 @@
           }
         })
       </script>
-      <?php 
+      <?php
      }
     }
      ?>

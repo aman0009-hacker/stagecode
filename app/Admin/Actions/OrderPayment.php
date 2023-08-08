@@ -36,13 +36,14 @@ class OrderPayment extends RowAction
                     $emailDataName = $emailData->email;
                     //het current user emailid end
                     $details = [
-                        'email' => 'PSIEC ADMIN PANEL (Payment Link)',
-                        'body' => 'Congratulations!!! Your order no '. $model->order_no . ' payment has successfully received. Orders has delivered soon.',
+                        'email' => 'Final Booking Amount Payment Successful',
+                        // 'body' => 'Congratulations!!! Your order no '. $model->order_no . ' payment has successfully received. Orders has delivered soon.',
+                        'body' => 'We are pleased to inform you that final booking amount of your order with order number '.$model->order_no.' has been successfully processed and will be delivered to you soon.',
                         'encryptedID' => $encryptedID,
                         'status'=>'OrderPayment'
                     ];
                     \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
-                    //\Mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
+                    //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
                     //dd("Email is Sent.");
                 } else {
                     return $this->response()->error('Oops! Kindly submit documents as required');

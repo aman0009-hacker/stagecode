@@ -34,13 +34,14 @@ class OrderApproved extends RowAction
                         $emailDataName = $emailData->email;
                         //het current user emailid end
                         $details = [
-                            'email' => 'PSIEC ADMIN PANEL (Payment Link)',
-                            'body' => 'Congratulations!!! Your order no ' . $model->order_no . ' has successfully approved. Kindly wait till dispatching of order.',
+                            'email' => 'Order Confirmation',
+                            // 'body' => 'Congratulations!!! Your order no ' . $model->order_no . ' has successfully approved. Kindly wait till dispatching of order.',
+                            'body' => 'We are pleased to inform you that your order with order number ' . $model->order_no . ' has been successfully approved. Please anticipate the dispatch of your order shortly.',
                             'encryptedID' => $encryptedID,
                             'status' => 'OrderApprove'
                         ];
                         \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
-                        //\Mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
+                        //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
                         //dd("Email is Sent.");
                     } else {
                         return $this->response()->error('Oops! Kindly submit documents as required');

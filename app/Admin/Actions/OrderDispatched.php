@@ -36,6 +36,7 @@ class OrderDispatched extends RowAction
             //dd($id);
             if (isset($id) && !empty($id)) {
                 $data = Order::find($id);
+                $encryptedID=Crypt::encryptString($data->id);
                 $data->status = "Dispatched";
                 $data->save();
                 //Session::put('txtOrderGlobalModalCompleteID',$id);
@@ -60,9 +61,10 @@ class OrderDispatched extends RowAction
                         $emailDataName = $emailData->email;
                         //het current user emailid end
                         $details = [
-                            'email' => 'PSIEC ADMIN PANEL',
-                            'body' => 'Congratulations!!! Your order no ' . $model->order_no . ' is ready for dispatch. kindly make a full payment against invoice',
-                            //'encryptedID' => $encryptedID,
+                            'email' => 'Payment Required for Order '.$model->order_no,
+                            'body' => 'We are pleased to inform you that your order with order number ' . $model->order_no . ' is now ready for dispatch. To facilitate the completion of this process, we kindly request that you make the full payment against the invoice.',
+                            'encryptedID' => $encryptedID,
+                            'status'=>'Dispatched'
                         ];
                         \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
                         //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));

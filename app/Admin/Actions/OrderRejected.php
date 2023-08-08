@@ -34,14 +34,15 @@ class OrderRejected extends RowAction
                     $emailDataName = $emailData->email;
                     //het current user emailid end
                     $details = [
-                        'email' => 'PSIEC ADMIN PANEL',
-                        'body' => 'Oops!!! Your order no '. $model->order_no . ' has rejected due to following cause '. $request->get('reason') ?? ''.'.'
+                        'email' => 'Order Rejection ',
+                        // 'body' => 'Oops!!! Your order no '. $model->order_no . ' has rejected due to following cause '. $request->get('reason') ?? ''.'.'
+                        'body' => 'We regret to inform you that your order with order number '.$model->order_no .' has been rejected due to '. $request->get('reason') ?? ''.'.'
                         //'encryptedID' => $encryptedID,
 
 
                     ];
                     \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
-                    //\Mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
+                    //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
                     //dd("Email is Sent.");
                 } else {
                     return $this->response()->error('Oops! Kindly submit documents as required');
