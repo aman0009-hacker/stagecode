@@ -13,6 +13,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Encore\Admin\Layout\Row;
+use Illuminate\Support\Facades\Crypt;
 
 class OrderDispatched extends RowAction
 {
