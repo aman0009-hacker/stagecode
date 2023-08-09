@@ -84,7 +84,7 @@
                                             <a href="{{ env('APP_URL') }}PaymentDetailsOrder/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>
                                             @endif
                                             @if(isset($details['status']) && $details['status']==='Dispatched')
-                                            <a href="{{ env('APP_URL') }}:8000/payment/complete/process/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>
+                                            <a href="{{ env('APP_URL') }}payment/complete/process/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>
                                             @endif
                                             <p>Thank you once again for choosing our services.</p>
                                             <p>Best regards,</p>
