@@ -525,7 +525,7 @@ class PaymentController extends Controller
 
     public function paymentProcess(Request $request)
     {
-           
+
         try {
             if (Auth::check()) {
                 Session::forget('GLOBALUSERID');
@@ -618,7 +618,7 @@ class PaymentController extends Controller
             Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
         }
         // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
-        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID','states','address'));
+        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address'));
         // }
     }
 
@@ -692,7 +692,7 @@ class PaymentController extends Controller
                 if (($request->has('is_same'))) {
                     $address->billing_name = $request->shipping_name;
                     $address->billing_address = $request->shipping_address;
-                    $address->billing_state =  $shippingState->name;
+                    $address->billing_state = $shippingState->name;
                     $address->billing_district = $request->shipping_district;
                     $address->billing_city = $request->shipping_city;
                     $address->billing_zipcode = $request->shipping_zipcode;
@@ -730,7 +730,7 @@ class PaymentController extends Controller
         }
     }
 
-   public function paymentProcessOrderComplete(Request $request)
+    public function paymentProcessOrderComplete(Request $request)
     {
         try {
             $paymentMode = $request->input('paymentMode');
@@ -773,21 +773,17 @@ class PaymentController extends Controller
                     Log::info($ex->getMessage());
                 }
             } else if (isset($paymentMode) && !empty($paymentMode) && $paymentMode == "cheque") {
-                $member_at="";
+                $member_at = "";
                 $userID = Auth::user()->id ?? '';
-                if(isset($userID) && !empty($userID))
-                {
+                if (isset($userID) && !empty($userID)) {
                     $member_at = User::find($userID)->member_at;
-                }
-                else
-                {
+                } else {
                     return redirect()->route('login');
                 }
                 if (isset($member_at) && !empty($member_at)) {
                     $customerStartDate = Carbon::parse($member_at);
                     $threeYearsAgo = Carbon::now()->subYears(3);
-                    if ($customerStartDate <= $threeYearsAgo)
-                    {
+                    if ($customerStartDate <= $threeYearsAgo) {
                         $txtOrderGlobalModalCompleteID = Session::get('txtOrderGlobalModalCompleteID');
                         // dd( $txtOrderGlobalModalCompleteID);
                         if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
@@ -799,15 +795,11 @@ class PaymentController extends Controller
                                 return redirect()->route('order', compact('paymentMode'));
                             }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         Alert::warning('You are not eligible to avail cheque payment !');
                         return redirect()->back();
                     }
-                }
-                else
-                {
+                } else {
                     $user = User::with([
                         'paymentDataHandling' => function ($query) {
                             $query->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])
@@ -837,16 +829,12 @@ class PaymentController extends Controller
                                         return redirect()->route('order', compact('paymentMode'));
                                     }
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 Alert::warning('You are not eligible to avail cheque payment !');
                                 return redirect()->back();
                             }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         Alert::warning('You are not eligible to avail cheque payment !');
                         return redirect()->back();
                     }
@@ -860,40 +848,43 @@ class PaymentController extends Controller
 
     public function getCities($stateId)
     {
-        try{
+        try {
             $cities = City::where('state_id', $stateId)->get();
             return response()->json($cities);
-            }
-        catch (\Throwable $ex)
-            {
-                Log::info($ex->getMessage());
-            }
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+        }
     }
 
-    public function paymentCompletion(Request $request,$id,$status)
+    public function paymentCompletion(Request $request, $id, $status)
     {
+        try {
+            if (Auth::check()) {
+                $order_id = Crypt::decryptString($id);
+                // $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
+                // Session::forget('txtOrderGlobalModalCompleteID');
+                // Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
+                //     return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID'));
+                $address = Address::where('user_id', Auth::user()->id)->latest()->first() ?? '';
+                $states = State::all();
+                $txtOrderGlobalModalCompleteID = $order_id;
+                //dd($txtOrderGlobalModalCompleteID);
+                Session::forget('txtOrderGlobalModalCompleteID');
+                if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
+                    Session::put('txtOrderGlobalModalCompleteID', Session::get('txtOrderGlobalModalCompleteIDAlternative') ?? '');
+                } else {
+                    Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
+                }
+                // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
+                return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address'));
+                // }
+            } else {
 
-        $order_id=Crypt::decryptString($id);
-
-
-         // $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
-        // Session::forget('txtOrderGlobalModalCompleteID');
-        // Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
-        //     return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID'));
-        $address = Address::where('user_id', Auth::user()->id)->latest()->first() ?? '';
-        $states = State::all();
-        $txtOrderGlobalModalCompleteID =  $order_id;
-        //dd($txtOrderGlobalModalCompleteID);
-        Session::forget('txtOrderGlobalModalCompleteID');
-        if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
-            Session::put('txtOrderGlobalModalCompleteID', Session::get('txtOrderGlobalModalCompleteIDAlternative') ?? '');
-        } else {
-            Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
+            return view('auth.login');
+            }
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
         }
-        // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
-        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID','states','address'));
-        // }
-
 
     }
 
