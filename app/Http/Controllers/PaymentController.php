@@ -880,7 +880,7 @@ class PaymentController extends Controller
         // Session::forget('txtOrderGlobalModalCompleteID');
         // Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
         //     return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID'));
-        $address = Address::where('user_id', Auth::user()->id)->latest()->first();
+        $address = Address::where('user_id', Auth::user()->id)->latest()->first() ?? '';
         $states = State::all();
         $txtOrderGlobalModalCompleteID =  $order_id;
         //dd($txtOrderGlobalModalCompleteID);
