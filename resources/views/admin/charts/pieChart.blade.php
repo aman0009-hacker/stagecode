@@ -118,7 +118,7 @@
     <!--Div that will hold the pie chart-->
     {{-- <div id="chart_div"></div> --}}
     <div id="chart123"></div>
-    <div id="error_pieChart"><img src="{{ asset('images/error/empty.svg') }}" alt="" width="300"></div>
+    <div id="error_pieChart"><img src="{{ asset('images/error/empty1.png') }}" alt="" width="300"></div>
     <script>
         $(function() {
             $.ajax({
