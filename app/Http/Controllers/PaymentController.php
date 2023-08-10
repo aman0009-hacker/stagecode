@@ -603,6 +603,7 @@ class PaymentController extends Controller
 
     public function paymentComplete(Request $request)
     {
+        // dd($request);
         // $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
         // Session::forget('txtOrderGlobalModalCompleteID');
         // Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
@@ -610,7 +611,7 @@ class PaymentController extends Controller
         $address = Address::where('user_id', Auth::user()->id)->latest()->first();
         $states = State::all();
         $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
-        //dd($txtOrderGlobalModalCompleteID);
+        $amount= Order::where('id',$txtOrderGlobalModalCompleteID)->pluck('amount');
         Session::forget('txtOrderGlobalModalCompleteID');
         if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
             Session::put('txtOrderGlobalModalCompleteID', Session::get('txtOrderGlobalModalCompleteIDAlternative') ?? '');
@@ -618,7 +619,7 @@ class PaymentController extends Controller
             Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
         }
         // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
-        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address'));
+        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address','amount'));
         // }
     }
 
@@ -869,6 +870,7 @@ class PaymentController extends Controller
                 $states = State::all();
                 $txtOrderGlobalModalCompleteID = $order_id;
                 //dd($txtOrderGlobalModalCompleteID);
+                $amount= Order::where('id',$txtOrderGlobalModalCompleteID)->pluck('amount');
                 Session::forget('txtOrderGlobalModalCompleteID');
                 if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
                     Session::put('txtOrderGlobalModalCompleteID', Session::get('txtOrderGlobalModalCompleteIDAlternative') ?? '');
@@ -876,7 +878,7 @@ class PaymentController extends Controller
                     Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
                 }
                 // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
-                return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address'));
+                return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address','amount'));
                 // }
             } else {
 

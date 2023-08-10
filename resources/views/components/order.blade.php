@@ -77,6 +77,7 @@
       {{-- New Code to show Payment Success Page --}}
       <div class="row orderhistoryOne-section">
         <div class="col-md-12">
+            {{-- {{dd($orders)}} --}}
           @foreach ($orders as $index => $order)
           <div class="row historyBox mb-3">
             <div class="col-12 col-sm-12 col-md-3 col-lg-3">
@@ -97,7 +98,7 @@
 
 
 
-            @if ($order->status=="Dispatched" || $order->status=="Payment_Done")
+            @if ($order->status=="Dispatched" || $order->status=="Payment_Done" || $order->status=="Delivered")
             <div class="col-12 col-sm-12 col-md-3 col-lg-3">
               <!-- Display additional order information if needed -->
               <h4 class="orderid mb-0"><span></span>

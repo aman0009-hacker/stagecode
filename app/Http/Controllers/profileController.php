@@ -239,6 +239,7 @@ class profileController extends Controller
                 $initial_amount = PaymentDataHandling::where('order_id', $order->id)
                     ->where('user_id', $user_id)
                     ->where('data', 'Booking_Amount')
+                    ->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])
                     ->get()
                     ->last();
                 if (isset($initial_amount) && !empty($initial_amount) && isset($initial_amount->transaction_amount) && !empty($initial_amount->transaction_amount)) {
@@ -255,7 +256,7 @@ class profileController extends Controller
 
                 if (isset($final_amount) && !empty($final_amount) && isset($final_amount->payment_status) && !empty($final_amount->payment_status))
                 {
-                    if (strtolower($final_amount->payment_status) === strtolower('success')) {
+                    if (strtolower($final_amount->payment_status) === strtolower('success') || strtolower($final_amount->payment_status) === strtolower('rip') || strtolower($final_amount->payment_status) === strtolower('sip'))  {
                         $totalAmount = $final_amount->transaction_amount;
                         $cgstPercent = env('CGST', 9);
                         $sgstPercent = env('SGST', 9);
@@ -303,10 +304,10 @@ class profileController extends Controller
             }
 
             $orderDetails[] = $orderData;
-            $data = auth::user();
 
         }
 
+        $data = auth::user();
         $registration_data = PaymentDataHandling::where('user_id',$user_id)->where('data','Registration_Amount')->first();
         return view('userDashboard.wallet', compact('orderData','registration_data','data'));
     }

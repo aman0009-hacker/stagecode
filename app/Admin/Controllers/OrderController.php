@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 
+use App\Admin\Actions\OrderDelivered;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -17,7 +18,6 @@ use App\Models\Order;
 use App\Admin\Actions\OrderDispatched;
 use App\Admin\Actions\OrderPayment;
 use App\Admin\Actions\OrderApproved;
-use App\Admin\Actions\OrderDelivered;
 use Illuminate\Support\Facades\Log;
 use Encore\Admin\Facades\Admin;
 use Illuminate\Support\Facades\Auth;
@@ -80,6 +80,7 @@ class OrderController extends AdminController
             // {
             // });
             $grid->column('status', __('Status'));
+            $grid->column('order_no',__('Order_no'));
             // $grid->column('payment_mode', __('Payment Mode'));
 
             $grid->column('payment_mode', __('Payment Mode'))->display(function ($title) {
@@ -98,7 +99,7 @@ class OrderController extends AdminController
                     return $value->transaction_amount ?? "Done";
                 } else {
                     return "Pending";
-                }
+                }   
             });
             $grid->column('final_payment_status', __('Final Payment'))->display(function ($value) {
                 if ($value == "verified") {
@@ -299,9 +300,6 @@ class OrderController extends AdminController
                     
                 }
             });
-
-
-
             $grid->filter(function ($filter) {
                 // $filter->notIn('id', __('Id'));
                 $filter->disableIdFilter();
@@ -483,6 +481,5 @@ class OrderController extends AdminController
         return $form;
     }
 }
-
 
 
