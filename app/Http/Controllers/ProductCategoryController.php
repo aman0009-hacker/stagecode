@@ -158,7 +158,7 @@ class ProductCategoryController extends Controller
                 //$orders = Order::where('user_id', Auth::user()->id)->where('status', 'Dispatched')->orderBy('created_at', 'desc')->get();
                 $orders = Order::where('user_id', Auth::user()->id)
                     ->where(function ($query) {
-                        $query->whereIn('status', ['Dispatched', 'Payment_Done', 'Rejected']);
+                        $query->whereIn('status', ['Dispatched', 'Payment_Done', 'Rejected','Delivered']);
                     })
                     ->orderBy('created_at', 'desc')
                     ->get();

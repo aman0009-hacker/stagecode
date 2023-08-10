@@ -18,11 +18,11 @@ use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 
 // use Illuminate\Database\Eloquent\Concerns\HasUuids;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, LogsActivity;
 
