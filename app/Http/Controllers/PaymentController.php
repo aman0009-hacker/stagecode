@@ -121,14 +121,15 @@ class PaymentController extends Controller
                         'merchantId' => $request['ID'],
                         'referenceNo' => $request['ReferenceNo'],
                         'transactionId' => $request['Unique_Ref_Number'],
-                        'transactionAmount'=> $request['Transaction_Amount']
+                       
                     ]);
                     $returnVal = $this->paymentProcessVerify($request);
                     if (isset($returnVal) && $returnVal == "SUCCESS") {
                         $encryptedResponse = Crypt::encrypt([
                             'paymentResponse' => 'SUCCESS',
                             'reference_no' => $data['ReferenceNo'],
-                            'transaction_id' => $data['Unique_Ref_Number']
+                            'transaction_id' => $data['Unique_Ref_Number'],
+                            'transactionAmount'=> $data['Transaction_Amount']
                         ]);
                         $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
                             ->where('data', 'Registration_Amount')
@@ -243,14 +244,15 @@ class PaymentController extends Controller
                         'merchantId' => $request['ID'],
                         'referenceNo' => $request['ReferenceNo'],
                         'transactionId' => $request['Unique_Ref_Number'],
-                        'transactionAmount'=> $request['Transaction_Amount']
+                        
                     ]);
                     $returnVal = $this->paymentProcessVerify($request);
                     if (isset($returnVal) && $returnVal == "SUCCESS") {
                         $encryptedResponse = Crypt::encrypt([
                             'paymentResponse' => 'SUCCESS',
                             'reference_no' => $data['ReferenceNo'],
-                            'transaction_id' => $data['Unique_Ref_Number']
+                            'transaction_id' => $data['Unique_Ref_Number'],
+                            'transactionAmount'=> $data['Transaction_Amount']
                         ]);
                         $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
                             ->where('data', 'Registration_Amount')
