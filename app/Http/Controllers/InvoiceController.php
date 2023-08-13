@@ -44,7 +44,7 @@ class InvoiceController extends Controller
                     ) {
                         return redirect()->route('order')->with('error', 'Order not found.');
                     } 
-                    dd($order);                
+                    //dd($order);                
                     // $totalAmount = $order->payments
                     //     ->where('data', 'Booking_Final_Amount')
                     //     ->where('payment_status', 'SUCCESS')
