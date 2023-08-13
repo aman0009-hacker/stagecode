@@ -32,6 +32,7 @@ use App\Models\PaymentDataHandling;
 use App\Admin\Actions\RegisterWithPsiec;
 use App\Admin\Actions\AddYardSupervisor;
 use App\Models\Order;
+use App\Models\Invoice;
 
 class UserController extends AdminController
 {
@@ -250,9 +251,17 @@ class UserController extends AdminController
                             // $centralTaxAmount = ($totalAmount * $cgstPercent / 100) ?? 0;
                             // $stateTaxAmount = ($totalAmount * $sgstPercent / 100) ?? 0;
                             // $completeAmount = ($totalAmount + $totalTaxAmount) ?? 0;
-                            $orderData['Final Amount'] = $totalAmount . "   <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+                            //find tax
+                            $invoice=Invoice::where('order_id', $order->id)->orderBy('created_at', 'desc')->first();
+                            //find tax
+                            if (isset($invoice) && isset($invoice->amount) && isset($invoice->totaltax)) {
+                              $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})" . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+                          } else {
+                              $orderData['Final Amount'] = $totalAmount . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+                          }
+                            //$orderData['Final Amount'] = $totalAmount . "   <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
                         } else {
-                            $orderData['Final Amount'] = "<span style='color:green;font-weight:600'>(Paid)</span>";
+                            $orderData['Final Amount'] = "<span style='color:red;font-weight:600'>(Unpaid)</span>";
                         }
                     } else {
                         $final_check_amount = Order::where('user_id', $user_id)->where('id', $order->id)->where('payment_mode', 'cheque')->get()->last();
