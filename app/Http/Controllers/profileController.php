@@ -12,6 +12,7 @@ use App\Models\PaymentDataHandling;
 use App\Models\Address;
 use Validator;
 use Illuminate\Support\Facades\Log;
+use App\Models\Invoice;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 use App\Models\State;
@@ -265,7 +266,15 @@ class profileController extends Controller
                         // $centralTaxAmount = ($totalAmount * $cgstPercent / 100) ?? 0;
                         // $stateTaxAmount = ($totalAmount * $sgstPercent / 100) ?? 0;
                         // $completeAmount = ($totalAmount + $totalTaxAmount) ?? 0;
-                        $orderData['Final_Amount'][] = $totalAmount . "   <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+                        //find tax
+                        $invoice=Invoice::where('order_id', $order->id)->orderBy('created_at', 'desc')->first();
+                        //find tax
+                        if (isset($invoice) && isset($invoice->amount) && isset($invoice->totaltax)) {
+                          $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})" . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+                      } else {
+                          $orderData['Final Amount'] = $totalAmount . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+                      }
+                        //$orderData['Final Amount'] = $totalAmount . "   <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
                     } else {
                         $orderData['Final_Amount'][] = "<span style='color:red;font-weight:600'>(Unpaid)</span>";
                     }
