@@ -366,6 +366,10 @@ class InvoiceController extends Controller
                     return $pdf->download('invoice.pdf');
                 }
             }
+            else 
+            {
+                return redirect()->back()->withInput();
+            }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
         }

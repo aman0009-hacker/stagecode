@@ -121,6 +121,7 @@ class PaymentController extends Controller
                         'merchantId' => $request['ID'],
                         'referenceNo' => $request['ReferenceNo'],
                         'transactionId' => $request['Unique_Ref_Number'],
+                        'transactionAmount'=> $request['Transaction_Amount']
                     ]);
                     $returnVal = $this->paymentProcessVerify($request);
                     if (isset($returnVal) && $returnVal == "SUCCESS") {
@@ -242,6 +243,7 @@ class PaymentController extends Controller
                         'merchantId' => $request['ID'],
                         'referenceNo' => $request['ReferenceNo'],
                         'transactionId' => $request['Unique_Ref_Number'],
+                        'transactionAmount'=> $request['Transaction_Amount']
                     ]);
                     $returnVal = $this->paymentProcessVerify($request);
                     if (isset($returnVal) && $returnVal == "SUCCESS") {

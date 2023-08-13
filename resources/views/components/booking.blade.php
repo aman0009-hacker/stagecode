@@ -37,19 +37,20 @@
       $decryptedResponse = Illuminate\Support\Facades\Crypt::decrypt($encryptedResponse);
       $paymentResponse = $decryptedResponse['paymentResponse'] ?? '';
       $reference_no = $decryptedResponse['reference_no'] ?? '';
-      $transaction_id = $decryptedResponse['transaction_id'] ?? '';
+      $transaction_id = $decryptedResponse['transaction_id'] ?? '';  
+      $transactionAmount = $decryptedResponse['transactionAmount'] ?? '';
      if( $paymentResponse!="" && $paymentResponse!=null && $paymentResponse=="SUCCESS")
      {
         $email = Auth::user()->email;
                   $details=[
-                      'email' => 'Booking Amount Payment Successful,',
+                      'email' => 'Booking Amount Paid Successfully,',
                       'body' => 'We are pleased to inform you that booking amount of your order with order number '.$reference_no.' has been successfully processed . Please anticipate the dispatch of your order shortly.',
                   ];
                 \Mail::to($email)->send(new \App\Mail\PSIECMail($details));
       ?>
       <script>
         Swal.fire({
-          title: 'Payment Done Succesfully.Your Payment Reference No is <?php echo $reference_no; ?>',
+          title: 'Payment Done Succesfully.Your Payment Reference No is <?php echo $reference_no; ?> and Amount is ₹ '.$transactionAmount,
           showClass: {
             popup: 'animate__animated animate__fadeInDown'
           },
