@@ -240,17 +240,17 @@ class UserController extends AdminController
                         $orderData['Booking Initial Amount'] = "<span style='color:red;font-weight:600'>(Unpaid)</span>";
                     }
 
-                    $final_amount = PaymentDataHandling::where('order_id', $order->id)->where('user_id', $user_id)->where('data', 'Booking_Final_Amount')->get()->last();
+                    $final_amount = PaymentDataHandling::where('order_id', $order->id)->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->where('user_id', $user_id)->where('data', 'Booking_Final_Amount')->get()->last();
                     if (isset($final_amount) && !empty($final_amount) && isset($final_amount->payment_status) && !empty($final_amount->payment_status)) {
-                        if (strtolower($final_amount->payment_status) === strtolower('success')) {
+                      if (strtolower($final_amount->payment_status) === strtolower('success') || strtolower($final_amount->payment_status) === strtolower('rip') || strtolower(strtolower($final_amount->payment_status)) === strtolower('sip'))  {
                             $totalAmount = $final_amount->transaction_amount;
-                            $cgstPercent = env('CGST', 9);
-                            $sgstPercent = env('SGST', 9);
-                            $totalTaxAmount = ($totalAmount * ($cgstPercent + $sgstPercent) / 100) ?? 0;
-                            $centralTaxAmount = ($totalAmount * $cgstPercent / 100) ?? 0;
-                            $stateTaxAmount = ($totalAmount * $sgstPercent / 100) ?? 0;
-                            $completeAmount = ($totalAmount + $totalTaxAmount) ?? 0;
-                            $orderData['Final Amount'] = $completeAmount . "   <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+                            // $cgstPercent = env('CGST', 9);
+                            // $sgstPercent = env('SGST', 9);
+                            // $totalTaxAmount = ($totalAmount * ($cgstPercent + $sgstPercent) / 100) ?? 0;
+                            // $centralTaxAmount = ($totalAmount * $cgstPercent / 100) ?? 0;
+                            // $stateTaxAmount = ($totalAmount * $sgstPercent / 100) ?? 0;
+                            // $completeAmount = ($totalAmount + $totalTaxAmount) ?? 0;
+                            $orderData['Final Amount'] = $totalAmount . "   <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
                         } else {
                             $orderData['Final Amount'] = "<span style='color:green;font-weight:600'>(Paid)</span>";
                         }
