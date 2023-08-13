@@ -255,6 +255,9 @@ class profileController extends Controller
                     ->get()
                     ->last();
 
+
+                    dd($final_amount);
+
                 if (isset($final_amount) && !empty($final_amount) && isset($final_amount->payment_status) && !empty($final_amount->payment_status))
                 {
                     if (strtolower($final_amount->payment_status) === strtolower('success') || strtolower($final_amount->payment_status) === strtolower('rip') || strtolower(strtolower($final_amount->payment_status)) === strtolower('sip'))  {
