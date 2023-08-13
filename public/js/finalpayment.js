@@ -7,7 +7,11 @@ $(document).ready(function () {
             $("#divPayment").show();
             $("#invoiceDownload").show();
             $("#Payment").modal('show');
-        } else {
+        } else if ($(this).val() === "cheque") {
+            $("#divPayment").hide();
+            $("#invoiceDownload").show();
+            $("#Payment").modal('show');
+        } {
             $("#divPayment").hide();
             $("#invoiceDownload").hide();
         }

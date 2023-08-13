@@ -13,15 +13,21 @@ use Illuminate\Support\Facades\Log;
 class OrderPayment extends RowAction
 {
     public $name = 'Payment Done';
-    public function handle(Model $model)
+    public function handle(Model $model , Request $request)
     {
         try {
             $id = $model->id;
             $encryptedID = Crypt::encryptString($model->id);
+            //new code for cheque start
+            $cheque_arrival_date = $request->cheque_arrival_date ?? '';
+            $cheque_final_amount = $request->cheque_final_amount ?? '';
+            //new code for cheque end
             if (isset($id) && !empty($id)) {
                 $data = Order::find($id);
                 $data->status = "Payment_Done";
                 $data->final_payment_status="verified";
+                $data->cheque_arrival_date= $cheque_arrival_date;
+                $data->cheque_final_amount= $cheque_final_amount;
                 $data->save();
 
                 if($data->save()==true)
@@ -56,9 +62,15 @@ class OrderPayment extends RowAction
         }
     }
 
-    public function dialog()
+    // public function dialog()
+    // {
+    //     $this->confirm('Are you sure for payment approval?');
+    // }
+
+    public function form()
     {
-        $this->confirm('Are you sure for payment approval?');
+        $this->date('cheque_arrival_date', 'Cheque Completion Date');
+        $this->text('cheque_final_amount','Cheque Final Amount');
     }
 
 
