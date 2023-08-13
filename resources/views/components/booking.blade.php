@@ -50,7 +50,7 @@
       ?>
       <script>
         Swal.fire({
-          title: 'Payment Done Succesfully.Your Payment Reference No is <?php echo $reference_no; ?> and Amount is ₹ '.$transactionAmount,
+          title: 'Payment Done Successfully. Your Payment Reference No is <?php echo $reference_no; ?> and Amount is ₹ <?php echo $transactionAmount; ?>',
           showClass: {
             popup: 'animate__animated animate__fadeInDown'
           },
