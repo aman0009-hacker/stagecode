@@ -53,6 +53,7 @@ class OrderController extends AdminController
             // $grid->column('size', __('Size'));
             // $grid->column('quantity', __('Quantity'));
             // $grid->column('measurement', __('Measurement'));
+            $grid->column('order_no', __('Order No'));
             $grid->column('user_id', __('User'))->display(function ($user_id) {
                 return User::find($user_id)->name . ' ' . User::find($user_id)->last_name ?? '';
             });
@@ -80,7 +81,7 @@ class OrderController extends AdminController
             // {
             // });
             $grid->column('status', __('Status'));
-            $grid->column('order_no', __('Order_no'));
+          
             // $grid->column('payment_mode', __('Payment Mode'));
 
             $grid->column('payment_mode', __('Payment Mode'))->display(function ($title) {

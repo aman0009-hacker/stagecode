@@ -83,7 +83,8 @@
             </div>
             <div class="col-12 col-sm-12 col-md-4 col-lg-4">
               <h4 class="orderplaced mb-0">
-                <span>Booking Date: </span><span class="order-status">{{ $order->created_at ?? '' }}</span>
+                {{-- <span>Booking Date: </span><span class="order-status">{{ $order->created_at ?? '' }}</span> --}}
+                <span>Booking Date: </span><span class="order-status">{{ $order->created_at ? $order->created_at->format('Y-m-d') : '' }}</span>
               </h4>
             </div>
           </div>
