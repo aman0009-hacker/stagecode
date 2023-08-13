@@ -19,8 +19,8 @@ class InvoiceController extends Controller
     {
         try {
             $orderId = Crypt::decrypt($request->input('orderIDInvoice'));
-            dd($orderId);
-            return $orderId;
+            //dd($orderId);
+            //return $orderId;
             if (isset($orderId) && !empty($orderId)) {
                 //dd(Crypt::decrypt($orderIDInvoice));
                 $PaymentMode = Order::find($orderId)->payment_mode;
@@ -43,7 +43,8 @@ class InvoiceController extends Controller
                         !isset($order->payments) || $order->payments()->count() === 0
                     ) {
                         return redirect()->route('order')->with('error', 'Order not found.');
-                    }                 
+                    } 
+                    dd($order);                
                     // $totalAmount = $order->payments
                     //     ->where('data', 'Booking_Final_Amount')
                     //     ->where('payment_status', 'SUCCESS')
