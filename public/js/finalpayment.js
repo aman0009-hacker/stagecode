@@ -11,7 +11,7 @@ $(document).ready(function () {
             $("#divPayment").hide();
             $("#invoiceDownload").show();
             $("#Payment").modal('show');
-        } {
+        } else {
             $("#divPayment").hide();
             $("#invoiceDownload").hide();
         }
