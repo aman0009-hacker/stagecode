@@ -62,7 +62,7 @@ class InvoiceController extends Controller
                     $invoice = Invoice::where('order_id', $orderId)->orderBy('created_at', 'desc')->first();
                     $invoice->amount = $totalAmount;
                     $invoice->totaltax = $totalTaxAmount;
-                    $invoice->iniial_amount = $bookingAmount;
+                    $invoice->initial_amount = $bookingAmount;
                     $invoice->balance = $balance;
                     $invoice->save();
                     //insert in invoice table
