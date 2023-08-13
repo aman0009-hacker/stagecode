@@ -9,6 +9,7 @@ use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PaymentDataHandling;
 use PDF;
+use App\Models\Invoice;
 use Carbon\Carbon;
 
 class InvoiceController extends Controller
@@ -57,6 +58,14 @@ class InvoiceController extends Controller
                     // iii- Find the complete amount
                     $completeAmount = ($totalAmount + $totalTaxAmount) ?? 0;
                     $balance = $completeAmount - $bookingAmount;
+                    //insert in invoice table
+                    $invoice = Invoice::where('order_id', $orderId)->orderBy('created_at', 'desc')->first();
+                    $invoice->amount = $totalAmount;
+                    $invoice->totaltax = $totalTaxAmount;
+                    $invoice->iniial_amount = $bookingAmount;
+                    $invoice->balance = $balance;
+                    $invoice->save();
+                    //insert in invoice table
                     $pdf = PDF::loadView('components.invoice', [
                         'IRN' => env('IRN', ''),
                         'AckNo' => $order->invoices->pluck('invoice_id')[0],
@@ -151,21 +160,76 @@ class InvoiceController extends Controller
                     ) {
                         return redirect()->route('order')->with('error', 'Order not found.');
                     }
-                    $totalAmount = $order->check_amount;
+                    // $totalAmount = $order->check_amount;
                     //new code to handle check amount start
 
+                    $checkfinalamount = $order->cheque_final_amount;
+                    if (isset($checkfinalamount) && !empty($checkfinalamount)) {
+                        $totalAmount = $checkfinalamount;
+                    } else {
+                        $totalAmount = $order->check_amount;
+                    }
+
+                    // if (isset($totalAmount)) {
+                    //     $chequeAmount = $this->check_amount;
+                    //     $chequePaymentDate = Carbon::parse($this->Cheque_Date);
+                    //     $interestWithinAllowedPeriod = 0;
+                    //     $allowedDays = 20;
+                    //     $interestRateWithin20Days = 13; // 13% interest
+                    //     $maxAllowedDays = 60;
+                    //     $additionalInterestRateBeyond20Days = 15; // 15% interest
+                    //     // Calculate the due date to the controller (20 days from payment date)
+                    //     $dueDate = $chequePaymentDate->copy()->addDays($allowedDays);
+                    //     // Calculate the number of days within the allowed period
+                    //     $daysWithinAllowedPeriod = min($dueDate->diffInDays(Carbon::now()), $allowedDays);
+                    //     if ($daysWithinAllowedPeriod === 0) {
+                    //         // Calculate interest amount within the allowed period (0% interest)
+                    //         $interestWithinAllowedPeriod = 0;
+                    //     } else {
+                    //         // Calculate interest amount within the allowed period
+                    //         $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod * $interestRateWithin20Days * 0.01);
+                    //     }
+                    //     // Calculate the number of days beyond the allowed period
+                    //     $daysBeyondAllowedPeriod = max($dueDate->diffInDays(Carbon::now()) - $allowedDays, 0);
+                    //     // Calculate interest amount beyond the allowed period, up to a maximum of 60 days
+                    //     $interestBeyondAllowedPeriod = ($daysBeyondAllowedPeriod <= $maxAllowedDays)
+                    //         ? ($daysBeyondAllowedPeriod * $additionalInterestRateBeyond20Days * 0.01)
+                    //         : ($maxAllowedDays * $additionalInterestRateBeyond20Days * 0.01);
+                    //     // Total interest amount
+                    //     $totalInterestAmount = $interestWithinAllowedPeriod + $interestBeyondAllowedPeriod;
+                    //     $totalAmount = $chequeAmount + $totalInterestAmount;
+                    //     // Check if the max allowed days (60 days) are over
+                    //     if ($daysBeyondAllowedPeriod > $maxAllowedDays) {
+                    //         // Return a specific message or value for the case when max allowed days are over
+                    //         return 0;
+                    //     }
+                    //     return $totalAmount;
+                    // } else {
+                    //     $totalAmount = 0;
+                    // }
                     if (isset($totalAmount)) {
-                        $chequeAmount = $this->check_amount;
-                        $chequePaymentDate = Carbon::parse($this->Cheque_Date);
+                        $chequeAmount = $order > check_amount;
+                        $chequePaymentDate = Carbon::parse($order->Cheque_Date);
                         $interestWithinAllowedPeriod = 0;
                         $allowedDays = 20;
                         $interestRateWithin20Days = 13; // 13% interest
                         $maxAllowedDays = 60;
                         $additionalInterestRateBeyond20Days = 15; // 15% interest
+
+                        $orderChequeArrivalDate = null;
+                        $chequeArrivalDateWithinAllowedPeriod = false;
+                        if ($order->cheque_arrival_date !== null && trim($order->cheque_arrival_date) !== '') {
+                            $orderChequeArrivalDate = Carbon::parse($order->cheque_arrival_date);
+                            $chequeArrivalDateWithinAllowedPeriod = $orderChequeArrivalDate->greaterThanOrEqualTo($chequePaymentDate) &&
+                                $orderChequeArrivalDate->diffInDays($chequePaymentDate) <= $maxAllowedDays;
+                        }
+
                         // Calculate the due date to the controller (20 days from payment date)
                         $dueDate = $chequePaymentDate->copy()->addDays($allowedDays);
+
                         // Calculate the number of days within the allowed period
                         $daysWithinAllowedPeriod = min($dueDate->diffInDays(Carbon::now()), $allowedDays);
+
                         if ($daysWithinAllowedPeriod === 0) {
                             // Calculate interest amount within the allowed period (0% interest)
                             $interestWithinAllowedPeriod = 0;
@@ -173,24 +237,32 @@ class InvoiceController extends Controller
                             // Calculate interest amount within the allowed period
                             $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod * $interestRateWithin20Days * 0.01);
                         }
+
                         // Calculate the number of days beyond the allowed period
-                        $daysBeyondAllowedPeriod = max($dueDate->diffInDays(Carbon::now()) - $allowedDays, 0);
+                        $daysBeyondAllowedPeriod = $chequeArrivalDateWithinAllowedPeriod
+                            ? max($orderChequeArrivalDate->diffInDays(Carbon::now()) - $allowedDays, 0)
+                            : 0;
+
                         // Calculate interest amount beyond the allowed period, up to a maximum of 60 days
                         $interestBeyondAllowedPeriod = ($daysBeyondAllowedPeriod <= $maxAllowedDays)
                             ? ($daysBeyondAllowedPeriod * $additionalInterestRateBeyond20Days * 0.01)
                             : ($maxAllowedDays * $additionalInterestRateBeyond20Days * 0.01);
+
                         // Total interest amount
                         $totalInterestAmount = $interestWithinAllowedPeriod + $interestBeyondAllowedPeriod;
                         $totalAmount = $chequeAmount + $totalInterestAmount;
+
                         // Check if the max allowed days (60 days) are over
                         if ($daysBeyondAllowedPeriod > $maxAllowedDays) {
                             // Return a specific message or value for the case when max allowed days are over
                             return 0;
                         }
+
                         return $totalAmount;
                     } else {
                         $totalAmount = 0;
                     }
+
                     //new code to handle check amount end
                     // $totalAmount = $order->payments
                     //     ->where('data', 'Booking_Final_Amount')
@@ -208,6 +280,14 @@ class InvoiceController extends Controller
                     $completeAmount = ($totalAmount + $totalTaxAmount) ?? 0;
                     $balance = $completeAmount - $bookingAmount;
                     //code for cheque end
+                    //insert in invoice table
+                    $invoice = Invoice::where('order_id', $orderId)->orderBy('created_at', 'desc')->first();
+                    $invoice->amount = $totalAmount;
+                    $invoice->totaltax = $totalTaxAmount;
+                    $invoice->iniial_amount = $bookingAmount;
+                    $invoice->balance = $balance;
+                    $invoice->save();
+                    //insert in invoice table
                     $pdf = PDF::loadView('components.invoice', [
                         'IRN' => env('IRN', ''),
                         'AckNo' => $order->invoices->pluck('invoice_id')[0],
