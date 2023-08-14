@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
+use App\Models\Order;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
-use App\Models\Order;
-use Illuminate\Support\Facades\Auth;
-use App\Models\PaymentDataHandling;
 use PDF;
-use App\Models\Invoice;
-use Carbon\Carbon;
 
 class InvoiceController extends Controller
 {
@@ -190,14 +189,14 @@ class InvoiceController extends Controller
                     //         $interestWithinAllowedPeriod = 0;
                     //     } else {
                     //         // Calculate interest amount within the allowed period
-                    //         $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod  $interestRateWithin20Days  0.01);
+                    //         $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod * $interestRateWithin20Days * 0.01);
                     //     }
                     //     // Calculate the number of days beyond the allowed period
                     //     $daysBeyondAllowedPeriod = max($dueDate->diffInDays(Carbon::now()) - $allowedDays, 0);
                     //     // Calculate interest amount beyond the allowed period, up to a maximum of 60 days
                     //     $interestBeyondAllowedPeriod = ($daysBeyondAllowedPeriod <= $maxAllowedDays)
-                    //         ? ($daysBeyondAllowedPeriod  $additionalInterestRateBeyond20Days  0.01)
-                    //         : ($maxAllowedDays  $additionalInterestRateBeyond20Days  0.01);
+                    //         ? ($daysBeyondAllowedPeriod * $additionalInterestRateBeyond20Days * 0.01)
+                    //         : ($maxAllowedDays * $additionalInterestRateBeyond20Days * 0.01);
                     //     // Total interest amount
                     //     $totalInterestAmount = $interestWithinAllowedPeriod + $interestBeyondAllowedPeriod;
                     //     $totalAmount = $chequeAmount + $totalInterestAmount;
@@ -240,7 +239,7 @@ class InvoiceController extends Controller
                             $interestWithinAllowedPeriod = 0;
                         } else {
                             // Calculate interest amount within the allowed period
-                            $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod  $interestRateWithin20Days  0.01);
+                            $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod * $interestRateWithin20Days * 0.01);
                         }
 
                         // Calculate the number of days beyond the allowed period
@@ -250,8 +249,8 @@ class InvoiceController extends Controller
 
                         // Calculate interest amount beyond the allowed period, up to a maximum of 60 days
                         $interestBeyondAllowedPeriod = ($daysBeyondAllowedPeriod <= $maxAllowedDays)
-                        ? ($daysBeyondAllowedPeriod  $additionalInterestRateBeyond20Days  0.01)
-                        : ($maxAllowedDays  $additionalInterestRateBeyond20Days  0.01);
+                        ? ($daysBeyondAllowedPeriod * $additionalInterestRateBeyond20Days * 0.01)
+                        : ($maxAllowedDays * $additionalInterestRateBeyond20Days * 0.01);
 
                         // Total interest amount
                         $totalInterestAmount = $interestWithinAllowedPeriod + $interestBeyondAllowedPeriod;
