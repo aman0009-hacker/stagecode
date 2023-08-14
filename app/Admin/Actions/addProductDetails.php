@@ -4,7 +4,7 @@ namespace App\Admin\Actions;
 
 use Encore\Admin\Actions\RowAction;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class addProductDetails extends RowAction
 {
