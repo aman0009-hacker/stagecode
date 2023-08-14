@@ -63,7 +63,7 @@
                                 <tr>
                                     <td>{{ $orderNo }}</td>
                                     <td>{!! $orderData["Booking_Initial_Amount"][$index] ?? "<span style='color:red;font-weight:600'>(Unpaid)</span>" !!}</td>
-                                    <td>{!! $orderData["Final_Amount"][$index] ?? "<span style='color:red;font-weight:600'>(Unpaid)</span>" !!}</td>
+                                    <td>{!! $orderData["Final_Amount"]?? "<span style='color:red;font-weight:600'>(Unpaid)</span>" !!}</td>
                                     <td>{{ $orderData["Final_Payment_Mode"][$index] ?? "<span style='color:red;font-weight:600'>(N/A)</span>" }}</td>
                                     <td>{!! $orderData["Cheque_Info"][$index] ?? "<span style='color:red;font-weight:600'>(N/A)</span>" !!}</td>
                                 </tr>

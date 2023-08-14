@@ -32,7 +32,7 @@ class InvoiceController extends Controller
                         'invoices',
                         'address',
                         'orderItems',
-                        'payments'
+                        'payments',
                     ])->where('id', $orderId)
                         ->where('user_id', $userId)
                         ->first();
@@ -43,8 +43,8 @@ class InvoiceController extends Controller
                         !isset($order->payments) || $order->payments()->count() === 0
                     ) {
                         return redirect()->route('order')->with('error', 'Order not found.');
-                    } 
-                    //dd($order);                
+                    }
+                    //dd($order);
                     // $totalAmount = $order->payments
                     //     ->where('data', 'Booking_Final_Amount')
                     //     ->where('payment_status', 'SUCCESS')
@@ -54,7 +54,7 @@ class InvoiceController extends Controller
                     // ii- Find tax amount
                     $cgstPercent = env('CGST', 9); // Set your CGST percentage here (e.g., 9%)
                     $sgstPercent = env('SGST', 9);
-                    ; // Set your SGST percentage here (e.g., 9%)
+                    // Set your SGST percentage here (e.g., 9%)
                     $totalTaxAmount = ($totalAmount * ($cgstPercent + $sgstPercent) / 100) ?? 0;
                     $centralTaxAmount = ($totalAmount * $cgstPercent / 100) ?? 0;
                     $stateTaxAmount = ($totalAmount * $sgstPercent / 100) ?? 0;
@@ -151,7 +151,7 @@ class InvoiceController extends Controller
                         'invoices',
                         'address',
                         'orderItems',
-                        'payments'
+                        'payments',
                     ])->where('id', $orderId)
                         ->where('user_id', $userId)
                         ->first();
@@ -190,14 +190,14 @@ class InvoiceController extends Controller
                     //         $interestWithinAllowedPeriod = 0;
                     //     } else {
                     //         // Calculate interest amount within the allowed period
-                    //         $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod * $interestRateWithin20Days * 0.01);
+                    //         $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod  $interestRateWithin20Days  0.01);
                     //     }
                     //     // Calculate the number of days beyond the allowed period
                     //     $daysBeyondAllowedPeriod = max($dueDate->diffInDays(Carbon::now()) - $allowedDays, 0);
                     //     // Calculate interest amount beyond the allowed period, up to a maximum of 60 days
                     //     $interestBeyondAllowedPeriod = ($daysBeyondAllowedPeriod <= $maxAllowedDays)
-                    //         ? ($daysBeyondAllowedPeriod * $additionalInterestRateBeyond20Days * 0.01)
-                    //         : ($maxAllowedDays * $additionalInterestRateBeyond20Days * 0.01);
+                    //         ? ($daysBeyondAllowedPeriod  $additionalInterestRateBeyond20Days  0.01)
+                    //         : ($maxAllowedDays  $additionalInterestRateBeyond20Days  0.01);
                     //     // Total interest amount
                     //     $totalInterestAmount = $interestWithinAllowedPeriod + $interestBeyondAllowedPeriod;
                     //     $totalAmount = $chequeAmount + $totalInterestAmount;
@@ -211,7 +211,9 @@ class InvoiceController extends Controller
                     //     $totalAmount = 0;
                     // }
                     if (isset($totalAmount)) {
-                        $chequeAmount = $order > check_amount;
+
+                        $chequeAmount = $order->check_amount;
+                        // dd($chequeAmount);
                         $chequePaymentDate = Carbon::parse($order->Cheque_Date);
                         $interestWithinAllowedPeriod = 0;
                         $allowedDays = 20;
@@ -224,7 +226,7 @@ class InvoiceController extends Controller
                         if ($order->cheque_arrival_date !== null && trim($order->cheque_arrival_date) !== '') {
                             $orderChequeArrivalDate = Carbon::parse($order->cheque_arrival_date);
                             $chequeArrivalDateWithinAllowedPeriod = $orderChequeArrivalDate->greaterThanOrEqualTo($chequePaymentDate) &&
-                                $orderChequeArrivalDate->diffInDays($chequePaymentDate) <= $maxAllowedDays;
+                            $orderChequeArrivalDate->diffInDays($chequePaymentDate) <= $maxAllowedDays;
                         }
 
                         // Calculate the due date to the controller (20 days from payment date)
@@ -238,18 +240,18 @@ class InvoiceController extends Controller
                             $interestWithinAllowedPeriod = 0;
                         } else {
                             // Calculate interest amount within the allowed period
-                            $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod * $interestRateWithin20Days * 0.01);
+                            $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod  $interestRateWithin20Days  0.01);
                         }
 
                         // Calculate the number of days beyond the allowed period
                         $daysBeyondAllowedPeriod = $chequeArrivalDateWithinAllowedPeriod
-                            ? max($orderChequeArrivalDate->diffInDays(Carbon::now()) - $allowedDays, 0)
-                            : 0;
+                        ? max($orderChequeArrivalDate->diffInDays(Carbon::now()) - $allowedDays, 0)
+                        : 0;
 
                         // Calculate interest amount beyond the allowed period, up to a maximum of 60 days
                         $interestBeyondAllowedPeriod = ($daysBeyondAllowedPeriod <= $maxAllowedDays)
-                            ? ($daysBeyondAllowedPeriod * $additionalInterestRateBeyond20Days * 0.01)
-                            : ($maxAllowedDays * $additionalInterestRateBeyond20Days * 0.01);
+                        ? ($daysBeyondAllowedPeriod  $additionalInterestRateBeyond20Days  0.01)
+                        : ($maxAllowedDays  $additionalInterestRateBeyond20Days  0.01);
 
                         // Total interest amount
                         $totalInterestAmount = $interestWithinAllowedPeriod + $interestBeyondAllowedPeriod;
@@ -260,8 +262,7 @@ class InvoiceController extends Controller
                             // Return a specific message or value for the case when max allowed days are over
                             return 0;
                         }
-
-                        return $totalAmount;
+                        //return $totalAmount;
                     } else {
                         $totalAmount = 0;
                     }
@@ -272,10 +273,11 @@ class InvoiceController extends Controller
                     //     ->where('payment_status', 'SUCCESS')
                     //     ->value('transaction_amount') ?: ($order->payment_mode === 'cheque' ? $order->check_amount : 0);
                     $bookingAmount = $order->payments->where('data', 'Booking_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->value('transaction_amount');
+                    // dd($bookingAmount);
                     // ii- Find tax amount
                     $cgstPercent = env('CGST', 9); // Set your CGST percentage here (e.g., 9%)
                     $sgstPercent = env('SGST', 9);
-                    ; // Set your SGST percentage here (e.g., 9%)
+                    // Set your SGST percentage here (e.g., 9%)
                     $totalTaxAmount = ($totalAmount * ($cgstPercent + $sgstPercent) / 100) ?? 0;
                     $centralTaxAmount = ($totalAmount * $cgstPercent / 100) ?? 0;
                     $stateTaxAmount = ($totalAmount * $sgstPercent / 100) ?? 0;
@@ -365,9 +367,7 @@ class InvoiceController extends Controller
                     ]);
                     return $pdf->download('invoice.pdf');
                 }
-            }
-            else 
-            {
+            } else {
                 return redirect()->back()->withInput();
             }
         } catch (\Throwable $ex) {
