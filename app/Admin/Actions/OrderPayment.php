@@ -19,16 +19,19 @@ class OrderPayment extends RowAction
             $id = $model->id;
             $encryptedID = Crypt::encryptString($model->id);
             //new code for cheque start
-            $cheque_arrival_date = $request->cheque_arrival_date ?? '';
-            $cheque_final_amount = $request->cheque_final_amount ?? '';
+            $cheque_arrival_date = $request->cheque_arrival_date ?? null;
+            $cheque_final_amount = $request->cheque_final_amount ?? null;
+
             //new code for cheque end
             if (isset($id) && !empty($id)) {
                 $data = Order::find($id);
+
                 $data->status = "Payment_Done";
                 $data->final_payment_status="verified";
                 $data->cheque_arrival_date= $cheque_arrival_date;
                 $data->cheque_final_amount= $cheque_final_amount;
-                $data->save();
+
+                $main=$data->save();
 
                 if($data->save()==true)
                 {
@@ -57,6 +60,7 @@ class OrderPayment extends RowAction
                 }
                 return $this->response()->success('Congratulations!!! Your order no '. $model->order_no . ' payment has successfully received. Orders has delivered soon.')->refresh();
             }
+
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
         }
