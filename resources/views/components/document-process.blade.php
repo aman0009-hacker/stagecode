@@ -8,7 +8,7 @@
           <div class="background-image d-flex align-items-center">
             <div class="row">
               <div class="col-12">
-                <div class="row">
+                <div class="row">+
                   <div class="col-12">
                     <div class="user-welocme">
                       <div class="row">
@@ -26,6 +26,7 @@
                       <div class="row">
                         <div class="col-12">
                           <span class="state-text">(A State Government Undertaking)</span>
+                          
                         </div>
                       </div>
                     </div>
@@ -109,9 +110,13 @@
                 value="{{json_encode(Session::get('dataDocuments'),TRUE) ?? ''}}" /> --}}
               <div class="row mb-4">
                 <input type="hidden" name="txtIds" id="txtIds" value="{{ $userCurrentId ?? '' }}" />
-                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="gstDataId">
+                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="gstDataId" style="position:relative" >
+                  @if($allValues['gstfile']==0)
+
+                  <img src="images/error/close.png" style="width: 29px; position: absolute;top: 28px;left: 49%;">
+                  @endif
                   <div class="mb-3">
-                    <input type="file" id="gstFile" name="gstFile" hidden>
+                    <input type="file" id="gstFile"  name="gstFile" hidden {{$allValues['gstfile']=="1"?'':"disabled"}}>
                     <label for="gstFile" class="upload-files" class="gstlabel">
                       <div class="row text-center">
                         <div class="col-12">
@@ -123,9 +128,13 @@
                     </label>
                   </div>
                 </div>
-                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="msmeDataId">
+                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="msmeDataId" style="position:relative" >
+                  @if($allValues['msmefile']==0)
+
+                  <img src="images/error/close.png" style="width: 29px; position: absolute;top: 28px;left: 49%;">
+                  @endif
                   <div class="mb-3">
-                    <input type="file" id="msmeFile" name="msmeFile" hidden>
+                    <input type="file" id="msmeFile" name="msmeFile" hidden {{$allValues['msmefile']=="1"?'':"disabled"}}>
                     <label for="msmeFile" class="upload-files">
                       <div class="row text-center">
                         <div class="col-12">
@@ -137,9 +146,13 @@
                     </label>
                   </div>
                 </div>
-                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="itrDataId">
+                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="itrDataId" style="position:relative" >
+                  @if($allValues['itrfile']==0)
+
+                  <img src="images/error/close.png" style="width: 29px; position: absolute;top: 28px;left: 49%;">
+                  @endif
                   <div class="mb-3">
-                    <input type="file" id="itrFile" name="itrFile" hidden>
+                    <input type="file" id="itrFile" name="itrFile" hidden {{$allValues['itrfile']=="1"?'':"disabled"}}>
                     <label for="itrFile" class="upload-files">
                       <div class="row text-center">
                         <div class="col-12">
@@ -153,9 +166,14 @@
                 </div>
               </div>
               <div class="row mb-3">
-                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="aadharDataId">
+                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="aadharDataId" style="position:relative" >
+                 
+                  @if($allValues['aadharfile']==0)
+
+                  <img src="images/error/close.png" style="width: 29px; position: absolute;top: 28px;left: 49%;">
+                  @endif
                   <div class="mb-3">
-                    <input type="file" id="aadharFile" name="aadharFile" hidden>
+                    <input type="file" id="aadharFile" name="aadharFile" hidden {{$allValues['aadharfile']=="1"?'':"disabled"}}>
                     <label for="aadharFile" class="upload-files">
                       <div class="row text-center">
                         <div class="col-12">
@@ -167,9 +185,14 @@
                     </label>
                   </div>
                 </div>
-                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="panDataId">
+                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="panDataId"style="position:relative" >
+                  @if($allValues['panfile']==0)
+
+                  <img src="images/error/close.png" style="width: 29px; position: absolute;top: 28px;left: 49%;">
+                  @endif
+                  
                   <div class="mb-3">
-                    <input type="file" id="panFile" name="panFile" hidden>
+                    <input type="file" id="panFile" name="panFile" hidden  {{$allValues['panfile']=="1"?'':"disabled"}}>
                     <label for="panFile" class="upload-files">
                       <div class="row text-center">
                         <div class="col-12">
@@ -181,9 +204,13 @@
                     </label>
                   </div>
                 </div>
-                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="utilityDataId">
+                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="utilityDataId" style="position:relative" >
+                  @if($allValues['utilityfile']==0)
+
+                  <img src="images/error/close.png" style="width: 29px; position: absolute;top: 28px;left: 49%;">
+                  @endif
                   <div class="mb-3">
-                    <input type="file" id="utilityFile" name="utilityFile" hidden>
+                    <input type="file" id="utilityFile" name="utilityFile" hidden {{$allValues['utilityfile']=="1"?'':"disabled"}}>
                     <label for="utilityFile" class="upload-files">
                       <div class="row text-center">
                         <div class="col-12">

@@ -16,6 +16,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\OrderProcessController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\NewUpdatedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,9 +76,10 @@ Route::post('checkurlIndex', [App\Admin\Controllers\CustomPageController::class,
     Route::get('updatedDocument', function () {
         return view('components.updated-documents');
     })->name('updatedDocument');
-    Route::get('documentProcess', function () {
-        return view('components.document-process');
-    })->name('documentProcess');
+    // Route::get('documentProcess', function () {
+    //     return view('components.document-process');
+    // })->name('documentProcess');
+    Route::get('documentProcess',[NewUpdatedController::class,'main'])->name('documentProcess');
     Route::get('signUpSubmit', function () {
         return view('auth.signUpSubmit');
     })->name('signUpSubmit');

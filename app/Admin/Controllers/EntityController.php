@@ -9,6 +9,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use App\Models\Product;
 use App\Models\Category;
+use App\Admin\Actions\addProductDetails;
 use App\Admin\Actions\excelfile;
 use Carbon\Carbon;
 use Encore\Admin\Facades\Admin;
@@ -80,7 +81,8 @@ class EntityController extends AdminController
                 //  });
             });
             $grid->actions(function ($actions) {
-                //$actions->disableEdit();
+                $actions->disableEdit();
+                $actions->add(new addProductDetails);
                 $actions->disableView();
                 if (Admin::user()->can('create-post')) {
                     Permission::check('create-post');
@@ -88,8 +90,9 @@ class EntityController extends AdminController
             });
             $grid->tools(function ($tools) {
                 $tools->append(new excelfile());
+
             });
-            $grid->disableActions();
+            //$grid->disableActions();
             $grid->disableRowSelector();
             $grid->disableCreateButton();
             //$grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
