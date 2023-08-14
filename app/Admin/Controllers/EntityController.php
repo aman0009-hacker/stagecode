@@ -82,6 +82,7 @@ class EntityController extends AdminController
             });
             $grid->actions(function ($actions) {
                 $actions->disableEdit();
+                $actions->disableDelete();
                 $actions->add(new addProductDetails);
                 $actions->disableView();
                 if (Admin::user()->can('create-post')) {
