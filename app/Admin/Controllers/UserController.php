@@ -324,7 +324,7 @@ class UserController extends AdminController
 
       $grid->column('comment', __('Payment'))->display(function ($value) {
         if (isset($value) && !empty($value) && $value == "Done") {
-          return "Done"."  [10000]";
+          return "Done"."  [₹ 10000]";
         } else {
           return "Pending";
         }
