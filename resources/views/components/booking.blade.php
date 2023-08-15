@@ -135,7 +135,7 @@
               {{-- <a href="" class="btn btn-secondary order-btn" id="bookingUserStatus">View Order Details</a> --}}
               {{-- <input type="text" name="txtOrderGlobalID" id="txtOrderGlobalID" value="{{ $order->id }}"> --}}
               <button type="button" class="btn btn-secondary order-btn bookingUserStatus"
-                id="bookingUserStatus{{ $order->id }}" data-status="{{ $order->status }}"
+                id="bookingUserStatus{{ $order->id }}" data-status="{{ $order->status }}" data-orderid="{{$order->id}}"
                 data-order-id="{{ $order->id }}">View Order Details</button>
               {{-- <button type="button" class="btn btn-secondary order-btn bookingUserStatus">View Order
                 Details</button> --}}

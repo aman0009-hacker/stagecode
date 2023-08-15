@@ -11,6 +11,7 @@ $(document).ready(function()
     });
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     var status = $(this).data('status');
+    var dataorderid= $(this).data('orderid');
     var form = document.getElementById("userBookingFormData");
     var currentOrderIDValue=$(this).data('order-id');
     if(currentOrderIDValue)
@@ -25,7 +26,7 @@ $(document).ready(function()
             headers: {
                 'X-CSRF-TOKEN': csrfToken // Include the CSRF token in the request headers
             },
-            data: { adminStatus:status },
+            data: { adminStatus:status , dataorderid:dataorderid },
             dataType: 'JSON',
             success:function(data)
             {

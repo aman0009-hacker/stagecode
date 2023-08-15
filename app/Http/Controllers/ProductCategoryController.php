@@ -243,12 +243,13 @@ class ProductCategoryController extends Controller
         try {
             if (Auth::check()) {
                 $adminStatus = $request->input('adminStatus');
+                $dataorderid = $request->input('dataorderid');
 
-                if (isset($adminStatus) && !empty($adminStatus)) {
+                if (isset($adminStatus) && !empty($adminStatus) && isset($dataorderid) && !empty($dataorderid)) {
                     $id = Auth::user()->id;
                     if (isset($id)) {
                         //$status = Order::where('user_id', $id)->where('status', $adminStatus)->value('status');
-                        $status = Order::where('user_id', $id)->where('status', $adminStatus)->get();
+                        $status = Order::where('user_id', $id)->where('id',$dataorderid)->where('status', $adminStatus)->get();
                         return response()->json(["msg" => "success", "statusCode" => "200", "orderStatus" => $status]);
                     }
                 }
