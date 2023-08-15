@@ -97,7 +97,12 @@ class OrderController extends AdminController
             $grid->column('payment_status', __('Booking Amount'))->display(function ($value) {
                 if ($value == "verified") {
                     $value = PaymentDataHandling::where('order_id', $this->id)->where('data', "Booking_Amount")->orderBy('created_at', 'desc')->first();
-                    return $value->transaction_amount ?? "Done";
+                    //return $value->transaction_amount ?? "Done";
+                    if (isset($value->transaction_amount) && $value->transaction_amount !== "") {
+                        return "₹ ".$value->transaction_amount;
+                    } else {
+                        return "N/A";
+                    }
                 } else {
                     return "Pending";
                 }

@@ -19,7 +19,7 @@ class addProductDetails extends RowAction
         $model->save();
 
 
-        return $this->response()->success('Success message.')->refresh();
+        return $this->response()->success('Details Added Successfully')->refresh();
     }
     public function form()
     {
