@@ -107,7 +107,7 @@ class ProductCategoryController extends Controller
                 $invoice->delivery_terms = 'This information has been provided as a resource to familiarize PSIEC rules';
                 $invoice->invoice_date = now();
                 //$invoice->order_id = Order::latest('id')->value('id'); // Replace $order with the actual Order model instance
-                $invoice->order_id = $order->id; 
+                $invoice->order_id = $order->id;
                 $invoice->invoice_id = $newInvoiceId;
                 $invoice->created_at = now();
                 $invoice->updated_at = now();
@@ -159,7 +159,7 @@ class ProductCategoryController extends Controller
                 //$orders = Order::where('user_id', Auth::user()->id)->where('status', 'Dispatched')->orderBy('created_at', 'desc')->get();
                 $orders = Order::where('user_id', Auth::user()->id)
                     ->where(function ($query) {
-                        $query->whereIn('status', ['Dispatched', 'Payment_Done', 'Rejected','Delivered']);
+                        $query->whereIn('status', ['Dispatched', 'Payment_Done', 'Rejected', 'Delivered']);
                     })
                     ->orderBy('created_at', 'desc')
                     ->get();
@@ -222,10 +222,12 @@ class ProductCategoryController extends Controller
         try {
             if (Auth::check()) {
                 $adminStatus = $request->input('adminStatus');
-                if (isset($adminStatus) && !empty($adminStatus)) {
+                $dataorderid = $request->input('dataorderid');
+
+                if (isset($adminStatus) && !empty($adminStatus) && isset($dataorderid) && !empty($dataorderid)) {
                     $id = Auth::user()->id;
                     if (isset($id)) {
-                        $status = Order::where('user_id', $id)->where('status', $adminStatus)->get();
+                        $status = Order::where('user_id', $id)->where('id',$dataorderid)->where('status', $adminStatus)->get();
                         return response()->json(["msg" => "success", "statusCode" => "200", "orderStatus" => $status]);
                     }
                 }
@@ -320,7 +322,7 @@ class ProductCategoryController extends Controller
                     }
                     //new code to generte invoice end
 
-                    
+
                     if ($order->save()) {
                         $latestId = Order::latest()->first()->id;
                         foreach ($rowsValues as $data) {

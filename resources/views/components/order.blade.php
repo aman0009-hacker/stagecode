@@ -232,7 +232,7 @@
             <div class="col-md-12 text-center">
               {{-- <a href="" class="btn btn-secondary order-btn" id="bookingUserStatus">View Order Details</a> --}}
               <button type="button" class="btn btn-secondary order-btn bookingUserStatusOrder"
-                id="bookingUserStatus{{ $order->id }}" data-status="{{ $order->status }}"
+                id="bookingUserStatus{{ $order->id }}" data-status="{{ $order->status }}"  data-orderid="{{$order->id}}"
                 data-order-ids="{{ $order->id }}">View Order Details</button>
               {{-- <button type="button" class="btn btn-secondary order-btn bookingUserStatus">View Order
                 Details</button> --}}
