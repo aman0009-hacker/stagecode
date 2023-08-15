@@ -27,6 +27,8 @@ $(document).ready(function () {
                 // processData: false,
                 // contentType: false,
                 success: function (data) {
+                    
+                    console.log(data);
                     if ((data.orderStatus[0]["status"] == "Dispatched" || data.orderStatus[0]["status"] == "Payment_Done") && data.orderStatus[0]["final_payment_status"] == "verified") {
                         $('#makepaymentnModalRejectionAdmin').modal('show');
 
