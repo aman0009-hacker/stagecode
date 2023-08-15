@@ -45,11 +45,11 @@ $(document).ready(function () {
                         $('#alreadyPaidTotalAmount').modal('show');
                     }
                     else if (data.orderStatus[0]["status"] == "Rejected") {
-                        //$('#makepaymentnModalRejection').modal('show');
-                        $(".bookingUserStatusOrder").hide();
+                        $('#makepaymentnModalRejection').modal('show');
+                        //$(".bookingUserStatusOrder").hide();
                     }
                     else if (data.orderStatus[0]["status"] == "Delivered") {
-                        $(".bookingUserStatusOrder").hide();
+                        //$(".bookingUserStatusOrder").hide();
                     }
                     // else
                     // {
