@@ -181,6 +181,10 @@ class OrderController extends AdminController
                                         return $this->cheque_final_amount;
                                     }
                                     $chequeAmount = $this->check_amount;
+                                    if($chequeAmount===null || $chequeAmount==="")
+                                    {
+                                        return "N/A";
+                                    }
                                     $chequePaymentDate = Carbon::parse($this->Cheque_Date);
                                     $interestWithinAllowedPeriod = 0;
                                     $allowedDays = 20;
@@ -262,6 +266,10 @@ class OrderController extends AdminController
                                     if ($customerStartDate <= $threeYearsAgo) {
                                         if ($this->payment_mode == "cheque") {
                                             $chequeAmount = $this->check_amount;
+                                            if($chequeAmount===null || $chequeAmount==="")
+                                            {
+                                                return "N/A";
+                                            }
                                             $chequePaymentDate = Carbon::parse($this->Cheque_Date);
                                             $interestWithinAllowedPeriod = 0;
                                             $allowedDays = 20;
