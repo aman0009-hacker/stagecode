@@ -45,6 +45,11 @@ class Records extends Model
     }
     //new code for logActivity start 
 
+    public function adminUser()
+    {
+        return $this->belongsTo(AdminUser::class, 'supervisor_id', 'id');
+    }
+
     protected static function boot()
     {
         parent::boot();

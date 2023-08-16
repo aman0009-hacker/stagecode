@@ -270,7 +270,7 @@ class profileController extends Controller
                         $invoice=Invoice::where('order_id', $order->id)->orderBy('created_at', 'desc')->first();
                         if (isset($invoice) && isset($invoice->amount) && isset($invoice->totaltax)) {
                         //   $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})" . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
-                          $orderData['Final_Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})" . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+                          $orderData['Final_Amount'][] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})" . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
                         //   dd($orderData['Final_Amount']);
                       } else {
                           $orderData['Final_Amount'] = $totalAmount . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";

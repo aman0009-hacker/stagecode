@@ -894,4 +894,54 @@ class PaymentController extends Controller
 
     }
 
+      public function paymentMethodChange($paymentMode)
+    {
+        try{
+            $member_at = "";
+            $userID = Auth::user()->id ?? '';
+            if ($paymentMode == 'cheque') {
+                if (isset($userID) && !empty($userID)) {
+                    $member_at = User::find($userID)->member_at;
+                } else {
+                    return redirect()->route('login');
+                }
+                if (isset($member_at) && !empty($member_at)) {
+                    $customerStartDate = Carbon::parse($member_at);
+                    $threeYearsAgo = Carbon::now()->subYears(3);
+                    if ($customerStartDate <= $threeYearsAgo) {
+                        $txtOrderGlobalModalCompleteID = Session::get('txtOrderGlobalModalCompleteID');
+
+                        if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
+                            $value = Order::find($txtOrderGlobalModalCompleteID);
+                            $value->payment_mode = "cheque";
+                            $value->save();
+                            // dd( $value->save());
+                            return response()->json(['data' => 'success']);
+                        }
+                    } else {
+                        return response()->json(['data' => 'error']);
+                    }
+                } else {
+                    return response()->json(['data' => 'error']);
+                }
+
+            } elseif ($paymentMode == 'online') {
+                $txtOrderGlobalModalCompleteID = Session::get('txtOrderGlobalModalCompleteID');
+                if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
+                    $value = Order::find($txtOrderGlobalModalCompleteID);
+                    $value->payment_mode = "online";
+                    $value->save();
+                    return response()->json(['data' => 'success']);
+                }
+                else
+                {
+                    return response()->json(['data' => 'error']);
+                }
+            }
+        }
+        catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+        }
+    }
+
 }
