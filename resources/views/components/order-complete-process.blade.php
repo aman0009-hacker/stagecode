@@ -268,17 +268,19 @@
                                         <img src="{{ asset('images/login-signup/doc-success.png') }}"
                                             alt="process-pending" class="img-fluid process-pending" width="220"
                                             height="220">
-                                            <h1 class="sign-up-text document-text">Payment Process</h1>
-                                            <div class="action" id="invoiceDownload" style="display: none" >
-                                                <a class="btn continue-btn w-45 mb-3 " href="{{ route('invoice') }}?orderIDInvoice={{Crypt::encrypt($txtOrderGlobalModalCompleteID ?? '')}}" class="link-success" id="download-invoice-link">Show Invoice</a>
-                                            </div>
+                                        <h1 class="sign-up-text document-text">Payment Process</h1>
+                                        <div class="action" id="invoiceDownload" style="display: none">
+                                            <a class="btn continue-btn w-45 mb-3 "
+                                                href="{{ route('invoice') }}?orderIDInvoice={{ Crypt::encrypt($txtOrderGlobalModalCompleteID ?? '') }}"
+                                                class="link-success" id="download-invoice-link">Show Invoice</a>
+                                        </div>
                                         <div class="col-12">
                                             {{-- error handling --}}
                                             @error('paymentMode')
-                                            <div class="alert alert-danger">{{ $message }}</div>
+                                                <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
                                             @error('amountOrderFinal')
-                                            <div class="alert alert-danger">{{ $message }}</div>
+                                                <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
                                             {{-- error handling --}}
                                             <div class="input-group mb-3 mt-2">
@@ -293,7 +295,7 @@
                                             <div class="input-group mt-2" id="divPayment">
                                                 <span class="input-group-text">₹</span>
                                                 <input type="number" class="form-control" placeholder="Enter amount"
-                                                 aria-label="Amount" name="amountOrderFinal" id="amountOrderFinal">
+                                                    aria-label="Amount" name="amountOrderFinal" id="amountOrderFinal">
                                                 <span class="input-group-text">.00</span>
                                             </div>
                                         </div>
@@ -354,17 +356,17 @@
                     <div class="container">
                         <input type="hidden" name="txtOrderGlobalModalCompleteIDValue"
                             id="txtOrderGlobalModalCompleteIDValue"
-                            value="{{ Session::get('txtOrderGlobalModalCompleteID') ?? ''}}">
+                            value="{{ Session::get('txtOrderGlobalModalCompleteID') ?? '' }}">
                         <h1>Shipping</h1>
                         <p>Please enter your shipping details.</p>
                         @if (count($errors))
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li class="mt-2">{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li class="mt-2">{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         @endif
                         <hr />
                         <div class="form">
@@ -380,7 +382,8 @@
                             </label>
                             <div class="fields fields--2 ">
                                 <label class="field">
-                                    <span class="field__label" for="lastname">GST IN/UIN<span style="color:red">★</span>
+                                    <span class="field__label" for="lastname">GST IN/UIN<span
+                                            style="color:red">★</span>
                                         (15 digits)</span>
                                     <input class="field__input" name="shipping_gst_number"
                                         value="{{ $address->shipping_gst_number ?? '' }}" type="text"
@@ -401,7 +404,9 @@
                                     <select class="field__input" name="shipping_state" id="shipping_state">
                                         <option value="">Select State</option>
                                         @foreach ($states as $state)
-                                        <option value="{{$state->id}}"  {{(isset($address->shipping_state) && $state->name == $address->shipping_state) ? 'selected' : '' }}>{{$state->name}}</option>
+                                            <option value="{{ $state->id }}"
+                                                {{ isset($address->shipping_state) && $state->name == $address->shipping_state ? 'selected' : '' }}>
+                                                {{ $state->name }}</option>
                                         @endforeach
                                     </select>
                                 </label>
@@ -416,15 +421,16 @@
                                     <span class="field__label" for="city">City</span>
                                     {{-- <input class="field__input" name="shipping_city" type="text" id="shipping_city"
                                         value="{{ $address->shipping_city ?? '' }}" /> --}}
-                                        @if(isset($address->shipping_city))
-                                            <select class="field__input" name="shipping_city" id="shipping_city">
-                                                <option value="{{$address->shipping_city}}">{{$address->shipping_city}}</option>
-                                            </select>
-                                        @else
-                                            <select class="field__input" name="shipping_city" id="shipping_city">
-                                                <option value="">Select City</option>
-                                            </select>
-                                        @endif
+                                    @if (isset($address->shipping_city))
+                                        <select class="field__input" name="shipping_city" id="shipping_city">
+                                            <option value="{{ $address->shipping_city }}">
+                                                {{ $address->shipping_city }}</option>
+                                        </select>
+                                    @else
+                                        <select class="field__input" name="shipping_city" id="shipping_city">
+                                            <option value="">Select City</option>
+                                        </select>
+                                    @endif
                                 </label>
                                 <label class="field">
                                     <span class="field__label" for="zipcode">Zip code</span>
@@ -453,15 +459,16 @@
                                 </label>
                                 <label class="field">
                                     <span class="field__label" for="state">Billing Address</span>
-                                    <input class="field__input" type="text" name="billing_address" id="billing_address"
-                                        value="{{ $address->billing_address ?? '' }}" />
+                                    <input class="field__input" type="text" name="billing_address"
+                                        id="billing_address" value="{{ $address->billing_address ?? '' }}" />
                                 </label>
                                 <div class="fields fields--2 ">
                                     <label class="field">
                                         <span class="field__label" for="lastname">GST IN/UIN<span
                                                 style="color:red">★</span> (15 digits)</span>
                                         <input class="field__input" name="billing_gst_number" type="text"
-                                            id="billing_gst_number" value="{{ $address->billing_gst_number ?? '' }}" />
+                                            id="billing_gst_number"
+                                            value="{{ $address->billing_gst_number ?? '' }}" />
                                     </label>
                                     <label class="field">
                                         <span class="field__label" for="address">GST state code</span>
@@ -478,7 +485,9 @@
                                         <select class="field__input" name="billing_state" id="billing_state">
                                             <option value="">Select State</option>
                                             @foreach ($states as $state)
-                                            <option value="{{$state->id}}"  {{(isset($address->billing_state) && $state->name == $address->billing_state) ? 'selected' : '' }}>{{$state->name}}</option>
+                                                <option value="{{ $state->id }}"
+                                                    {{ isset($address->billing_state) && $state->name == $address->billing_state ? 'selected' : '' }}>
+                                                    {{ $state->name }}</option>
                                             @endforeach
                                         </select>
                                     </label>
@@ -493,9 +502,10 @@
                                         <span class="field__label" for="city">City</span>
                                         {{-- <input class="field__input" name="billing_city" type="text" id="billing_city"
                                             value="{{ $address->billing_city ?? '' }}" /> --}}
-                                        @if(isset($address->billing_city))
+                                        @if (isset($address->billing_city))
                                             <select class="field__input" name="billing_city" id="billing_city">
-                                                <option value="{{$address->billing_city}}">{{$address->billing_city}}</option>
+                                                <option value="{{ $address->billing_city }}">
+                                                    {{ $address->billing_city }}</option>
                                             </select>
                                         @else
                                             <select class="field__input" name="billing_city" id="billing_city">
@@ -612,22 +622,43 @@
                     'billing_gst_statecode': "Please enter a valid Billing GST Code.",
                 }
             });
+            $('#paymentMode').on('change', function() {
+                var paymentMode = $(this).val();
+                if (paymentMode) {
+                    $.ajax({
+                        url: '/payment/method/change/' + paymentMode,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.data === 'error') {
+                                swal.fire({
+                                    title: 'You are not eligible to avail cheque payment !',
+                                    icon: 'warning',
+                                });
+                            }
+                            else
+                            {
+                                $("#invoiceDownload").show();
+                                $("#Payment").modal('show');
+                            }
+                        }
+                    })
+                }
+            })
             $('#form').submit(function(event) {
                 event.preventDefault(); // Prevent the default form submission
                 var formData = $(this).serialize();
                 // Send AJAX request
                 $.post('/payment/complete/process/address', formData)
                     .done(function(response) {
-                        if(response.success==false)
-                        {
+                        if (response.success == false) {
                             swal.fire({
-                            title: 'Address Not Saved',
-                            icon: 'warning',
-                        });
-                        }
-                        else
-                        {
+                                title: 'Address Not Saved',
+                                icon: 'warning',
+                            });
+                        } else {
                             $('#Payment').modal('hide').remove();
+
                             console.log('done')
                             swal.fire({
                                 title: 'Address Saved Successfully',
@@ -640,12 +671,12 @@
                         console.log('Error:', error);
                         swal.fire({
                             title: 'Order Not Found',
-                            text:'Please placed order first',
+                            text: 'Please placed order first',
                             icon: 'warning',
                         });
                     });
             });
-                $('#shipping_state').on('change', function() {
+            $('#shipping_state').on('change', function() {
                 var stateId = $(this).val();
                 if (stateId) {
                     $.ajax({
@@ -656,7 +687,8 @@
                             $('#shipping_city').empty();
                             $('#shipping_city').append('<option value="">Select City</option>');
                             $.each(data, function(key, value) {
-                                $('#shipping_city').append('<option value="' + value.name + '">' + value.name + '</option>');
+                                $('#shipping_city').append('<option value="' + value
+                                    .name + '">' + value.name + '</option>');
                             });
 
 
@@ -678,7 +710,8 @@
                             $('#billing_city').empty();
                             $('#billing_city').append('<option value="">Select City</option>');
                             $.each(data, function(key, value) {
-                                $('#billing_city').append('<option value="' + value.name + '">' + value.name + '</option>');
+                                $('#billing_city').append('<option value="' + value
+                                    .name + '">' + value.name + '</option>');
                             });
                         }
                     });

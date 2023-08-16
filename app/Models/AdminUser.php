@@ -25,15 +25,24 @@ class AdminUser extends Model
         'avatar',
     ];
 
+    public function records()
+    {
+        return $this->hasMany(Records::class,'supervisor_id','id');
+    }
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+
+
     public function roles()
     {
         return $this->belongsToMany(Role::class, config('admin.database.role_users_table'), 'user_id', 'role_id')->withTimestamps();
     }
+
+
 
     public function yards()
     {
