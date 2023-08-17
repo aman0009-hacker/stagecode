@@ -13,11 +13,11 @@
 <img src="{{asset('images/home-page/nodata.jpg')}}"style="width:40%;margin:auto;display:block">
     @else
     <table style="text-align: center"class="table">
-      @foreach ($main as $data)
-    
+      @foreach ($main as $joker)
+
         <tr>
           <td colspan="4" style="background-color:#effdff;"><span style="font-weight: 600">ORDER NO</span> : {{$data->order_no}}</td>
-          @foreach ($data->orderItems as $single)
+          @foreach ($joker->orderItems as $single)
             <tr>
               <td>{{$single->category_name}}</td>
               <td>{{$single->description}}</td>
@@ -29,11 +29,11 @@
         </tr>
 
       @endforeach
-      
+
     </table>
     @endif
-     
-     
+
+
   </div>
 
 </div>
