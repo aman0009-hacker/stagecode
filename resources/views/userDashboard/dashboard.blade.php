@@ -23,7 +23,7 @@
     font-size: 11px!important;
     top: 1px;
     left: 40px;
-} 
+}
 #donut_single text:nth-child(2)
 {
   display: none!important;
@@ -35,7 +35,7 @@
     left: 50%;
     transform: translateX(-50%);
     background: #f1f3f4;
-}  
+}
 .donut_single svg g:nth-child(3)
 {
   display: none!important;
@@ -84,12 +84,12 @@
                   <h3>Total purchase </h3>
                   <h5>No data</h5>
                   @else
-                 
-                    
+
+
                       <h3>Total purchase : {{count($order)}}</h3>
-                    
+
                     @endif
-                  
+
                   <div id="curve_chart"style="width:100%"></div>
                 </div>
                   {{-- <div class="col-md-6 compare">
@@ -109,9 +109,9 @@
               <div class="row">
                 <div class="col-md-12 sales position-relative">
                   {{-- <p>Total Cost</p> --}}
-                 <span style="visibility:hidden"class="position-absolute top-0">{{$items=0}} </span>   
+                 <span style="visibility:hidden"class="position-absolute top-0">{{$items=0}} </span>
                   <div id="donut_single"style="width:100% ; height: 200px;"></div>
-                                
+
                    @foreach($order as $item)
                        <span style="visibility: hidden"class="position-absolute top-0"> {{$items+=$item->amount}}</span>
                   @endforeach
@@ -139,12 +139,12 @@
                 <div class="col-md-12 sales sale1">
                   {{-- <p>Total delivery</p> --}}
 
-                  
+
                   @if($perday_trim=="")
-                  
+
                     <h3>Orders per day</h3>
                     <h5>No data</h5>
-                  
+
                   @endif
                   <div id="chart_div" style="width: 100%;"></div>
                 </div>
@@ -172,39 +172,41 @@
           <div class="card-body">
             <table style="width:100%;text-align:center"class="position-relative table table-striped">
              <tr>
-              <th>#</th>
+              <th>Order No.</th>
               <th style="width:24%">Category</th>
               <th>Amount</th>
               <th>Transaction Date</th>
               <th>Order Date</th>
-              
+
               <th>Payment Status</th>
               <th>Payment Mode</th>
              </tr>
-             <span class="position:absolute;top:0"style="visibility:hidden">{{$num=1}}</span>
-             <span class="position:absolute;top:0"style="visibility:hidden">{{$categories_relation=""}}</span>
+             <span class="position:absolute;top:0"style="display:none">{{$num=1}}</span>
+             <span class="position:absolute;top:0"style="display:none">{{$categories_relation=""}}</span>
              @foreach ($order as $value)
+             {{-- {{dd($order)}} --}}
+             {{$categories_relation=""}}
              @foreach ($value->orderItems as $main )
-             <span  class="position:absolute;top:0"style="visibility:hidden">{{$categories_relation.=$main->category_name.','}}</span>
+             <span  class="position:absolute;top:0"style="display:none">{{$categories_relation.=$main->category_name.','}}</span>
              @endforeach
                <tr>
-                 <td>{{$num}}</td>
+                 <td>{{$value->order_no}}</td>
                  <td>{{rtrim($categories_relation,",")}}</td>
                  <td> {{$value->amount}}</td>
                  <td> {{ \Carbon\Carbon::parse($value->transaction_date)->format('d F Y')}} </td>
                  <td> {{ \Carbon\Carbon::parse($value->created_at)->format('d F Y')}}</td>
                  <td> {{$value->payment_status}}</td>
-                 <td> {{$value->payment_node}}</td>
-                 <span class="position:absolute;top:0"style="visibility:hidden"> {{$num++}}</span>
+                 <td> {{$value->payment_mode}}</td>
+                 <span class="position:absolute;top:0"style="display:none"> {{$num++}}</span>
                 </tr>
                 @endforeach
-        
+
 
             </table>
           </div>
         </div>
         <!-- Left col -->
-        {{-- {{-- {{-- <section class="col-lg-7 connectedSortable"> 
+        {{-- {{-- {{-- <section class="col-lg-7 connectedSortable">
           <!-- Custom tabs (Charts with tabs)-->
           <div class="card">
             <div class="card-header">
@@ -329,12 +331,12 @@
       </div>
       <div class="row">
         <div class="col-lg-6"style="overflow:hidden">
-          
+
           <div class="regions_data"style="position:relative">
 
             <div id="regions_div" style="width:100%; height: 500px"></div>
-              <span class="popular">Popularity in country</span> 
-          
+              <span class="popular">Popularity in country</span>
+
           </div>
         </div>
         <div class="col-lg-6">
@@ -349,12 +351,12 @@
       <script type="text/javascript">
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
-  
+
         function drawChart() {
-  
+
           var data = google.visualization.arrayToDataTable([
             ['Task', 'Hours per Day'],
-          
+
             // ['Work',     1],
             // ['Eat',      2],
             // ['Commute',  2],
@@ -362,14 +364,14 @@
             // ['Sleep',    7],
             <?php echo $chartrim ?>
           ]);
-  
+
           var options = {
             title: 'Total amount of per month order',
             is3D: true,
           };
-  
+
           var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-  
+
           chart.draw(data, options);
         }
 
@@ -378,12 +380,12 @@
         'packages':['geochart'],
         });
         google.charts.setOnLoadCallback(drawRegionsMap);
-  
+
          function drawRegionsMap() {
         var data = google.visualization.arrayToDataTable([
           ['Country', 'Popularity'],
           ['india', 1000],
-      
+
         ]);
 
         var options = {
@@ -394,12 +396,12 @@
 
         chart.draw(data, options);
         }
-       
+
       </script>
 
 
       <script type="text/javascript">
-      
+
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
@@ -411,7 +413,7 @@
         ]);
 
         var options = {
-         
+
           curveType: 'function',
           legend: { position: 'bottom' }
         };
@@ -452,7 +454,7 @@
         var chart = new google.visualization.PieChart(document.getElementById('donut_single'));
         chart.draw(data, options);
       }
-          
+
           </script>
 
 
@@ -480,7 +482,7 @@
               vAxis: {title: 'Amount'},
               legend: 'none',
               tooltip: { isHtml: true }
-              
+
             }
 
           var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
@@ -488,8 +490,8 @@
           chart.draw(data, options);
         }
       </script>
-            
 
-  
+
+
 
 @endsection
