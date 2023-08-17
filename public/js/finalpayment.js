@@ -9,8 +9,8 @@ $(document).ready(function () {
             $("#Payment").modal('show');
         } else if ($(this).val() === "cheque") {
             $("#divPayment").hide();
-            $("#invoiceDownload").show();
-            $("#Payment").modal('show');
+            // $("#invoiceDownload").show();
+            // $("#Payment").modal('show');
         } else {
             $("#divPayment").hide();
             $("#invoiceDownload").hide();
