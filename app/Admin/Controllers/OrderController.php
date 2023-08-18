@@ -358,8 +358,8 @@ class OrderController extends AdminController
                     $actions->add(new OrderPayment);
                     $actions->add(new OrderDelivered);
                 } else if ($actions->row->status == "Dispatched") {
-                    $actions->add(new OrderApproved);
-                    $actions->add(new OrderRejected);
+                    // $actions->add(new OrderApproved);
+                    // $actions->add(new OrderRejected);
                     $actions->add(new OrderPayment);
                     $actions->add(new OrderDelivered);
                 } else if ($actions->row->status == "New") {
@@ -369,9 +369,9 @@ class OrderController extends AdminController
                     $actions->add(new OrderPayment);
                     $actions->add(new OrderDelivered);
                 } else if ($actions->row->status == "Payment_Done") {
-                    $actions->add(new OrderApproved);
-                    $actions->add(new OrderDispatched);
-                    $actions->add(new OrderRejected);
+                    // $actions->add(new OrderApproved);
+                    // $actions->add(new OrderDispatched);
+                    // $actions->add(new OrderRejected);
                     $actions->add(new OrderDelivered);
 
                 }

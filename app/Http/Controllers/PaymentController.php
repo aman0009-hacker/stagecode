@@ -121,7 +121,7 @@ class PaymentController extends Controller
                         'merchantId' => $request['ID'],
                         'referenceNo' => $request['ReferenceNo'],
                         'transactionId' => $request['Unique_Ref_Number'],
-                       
+
                     ]);
                     $returnVal = $this->paymentProcessVerify($request);
                     if (isset($returnVal) && $returnVal == "SUCCESS") {
@@ -244,7 +244,7 @@ class PaymentController extends Controller
                         'merchantId' => $request['ID'],
                         'referenceNo' => $request['ReferenceNo'],
                         'transactionId' => $request['Unique_Ref_Number'],
-                        
+
                     ]);
                     $returnVal = $this->paymentProcessVerify($request);
                     if (isset($returnVal) && $returnVal == "SUCCESS") {
@@ -543,7 +543,7 @@ class PaymentController extends Controller
                 } else {
                     $amount = $request->input('amountValue');
                 }
-                //$reference_no = rand(1111, 9999); 
+                //$reference_no = rand(1111, 9999);
                 //$amount = 10000;
                 $reference_no = time() . Str::random(5);
                 $paymentDataHandling = new PaymentDataHandling();
@@ -617,11 +617,11 @@ class PaymentController extends Controller
         $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
         $amount= Order::where('id',$txtOrderGlobalModalCompleteID)->pluck('amount');
         Session::forget('txtOrderGlobalModalCompleteID');
-        if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
-            Session::put('txtOrderGlobalModalCompleteID', Session::get('txtOrderGlobalModalCompleteIDAlternative') ?? '');
-        } else {
+        // if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
+        //     Session::put('txtOrderGlobalModalCompleteID', Session::get('txtOrderGlobalModalCompleteIDAlternative') ?? '');
+        // } else {
             Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
-        }
+        // }
         // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
         return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address','amount'));
         // }
@@ -678,6 +678,7 @@ class PaymentController extends Controller
             }
             $orderId = $request->input('txtOrderGlobalModalCompleteIDValue') ?? '';
             //save order id
+            Session::forget('txtOrderGlobalModalCompleteIDAlternative'); //forget old order id for setting new order id
             Session::put('txtOrderGlobalModalCompleteIDAlternative', $orderId ?? '');
             //save order id
             // $orderId = 25;
@@ -768,12 +769,21 @@ class PaymentController extends Controller
                     $paymentDataHandling->user_id = Auth::user()->id ?? '';
                     $paymentDataHandling->data = "Booking_Final_Amount";
                     $paymentDataHandling->user_amount = $amount;
-                    $paymentDataHandling->order_id = Session::get('txtOrderGlobalModalCompleteID') ?? '';
-                    $paymentDataHandling->save();
-                    $optionalField = null;
-                    $base = new EazyPayController();
-                    $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
-                    return redirect()->to($url);
+                    $paymentDataHandling->order_id = Session::get('txtOrderGlobalModalCompleteIDAlternative') ?? '';
+                    $data=$paymentDataHandling->save();
+                    /*payment mode change for online and cheque*/
+                    if($data)
+                    {
+                        $main=order::find(Session::get('txtOrderGlobalModalCompleteIDAlternative'));
+                        $main->payment_mode="online";
+                        $main->save();
+                        $optionalField = null;
+                        $base = new EazyPayController();
+                        $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
+                        return redirect()->to($url);
+                    }
+                    /*payment mode change for online and cheque*/
+
                 } catch (\Throwable $ex) {
                     Log::info($ex->getMessage());
                 }
@@ -789,7 +799,7 @@ class PaymentController extends Controller
                     $customerStartDate = Carbon::parse($member_at);
                     $threeYearsAgo = Carbon::now()->subYears(3);
                     if ($customerStartDate <= $threeYearsAgo) {
-                        $txtOrderGlobalModalCompleteID = Session::get('txtOrderGlobalModalCompleteID');
+                        $txtOrderGlobalModalCompleteID = Session::get('txtOrderGlobalModalCompleteIDAlternative');
                         // dd( $txtOrderGlobalModalCompleteID);
                         if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
                             $value = Order::find($txtOrderGlobalModalCompleteID);
