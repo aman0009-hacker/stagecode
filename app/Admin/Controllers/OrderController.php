@@ -136,8 +136,10 @@ class OrderController extends AdminController
                     //return $userID;
                     if (isset($userID) && !empty($userID)) {
                         $member_at = User::find($userID)->member_at;
+                       
                         if (isset($member_at) && !empty($member_at)) {
                             $customerStartDate = Carbon::parse($member_at);
+                        
                             $threeYearsAgo = Carbon::now()->subYears(3);
                             if ($customerStartDate <= $threeYearsAgo) {
                                 if ($this->payment_mode == "cheque") {
@@ -181,6 +183,7 @@ class OrderController extends AdminController
                                         return $this->cheque_final_amount;
                                     }
                                     $chequeAmount = $this->check_amount;
+                                    
                                     if($chequeAmount===null || $chequeAmount==="")
                                     {
                                         return "N/A";
@@ -198,21 +201,41 @@ class OrderController extends AdminController
                                         $orderChequeArrivalDate = Carbon::parse($this->cheque_arrival_date);
                                         $chequeArrivalDateWithinAllowedPeriod = $orderChequeArrivalDate->greaterThanOrEqualTo($chequePaymentDate) &&
                                             $orderChequeArrivalDate->diffInDays($chequePaymentDate) <= $maxAllowedDays;
+                                            
                                     }
 
                                     // Calculate the due date to the controller (20 days from payment date)
                                     $dueDate = $chequePaymentDate->copy()->addDays($allowedDays);
+                            
+                                    // dd($dueDate->diffInDays(Carbon::now()));
 
                                     // Calculate the number of days within the allowed period
                                     $daysWithinAllowedPeriod = min($dueDate->diffInDays(Carbon::now()), $allowedDays);
-
-                                    if ($daysWithinAllowedPeriod === 0) {
-                                        // Calculate interest amount within the allowed period (0% interest)
-                                        $interestWithinAllowedPeriod = 0;
-                                    } else {
-                                        // Calculate interest amount within the allowed period
-                                        $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod * $interestRateWithin20Days * 0.01);
-                                    }
+                                    // dd($daysWithinAllowedPeriod);
+                                   
+                                   
+                                    $currentDate = Carbon::now()->toDateString();
+                                   
+                                    
+                                 if($this->Cheque_Date >   $currentDate  || $this->Cheque_Date ===   $currentDate )
+                                 {
+                                   
+                                    $interestWithinAllowedPeriod = 0;
+                                }
+                              else
+                              {
+                                  
+                            
+                                if ($daysWithinAllowedPeriod === 0) {
+                                    // Calculate interest amount within the allowed period (0% interest)
+                                    $interestWithinAllowedPeriod = 0;
+                                } else {
+                                    // Calculate interest amount within the allowed period
+                             
+                                    $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod * $interestRateWithin20Days * 0.01);
+                                }
+                              }
+                                   
 
                                     // Calculate the number of days beyond the allowed period
                                     $daysBeyondAllowedPeriod = $chequeArrivalDateWithinAllowedPeriod
@@ -228,12 +251,12 @@ class OrderController extends AdminController
                                     $totalInterestAmount = $interestWithinAllowedPeriod + $interestBeyondAllowedPeriod;
                                     $totalAmount = $chequeAmount + $totalInterestAmount;
 
+                                   
                                     // Check if the max allowed days (60 days) are over
                                     if ($daysBeyondAllowedPeriod > $maxAllowedDays) {
                                         // Return a specific message or value for the case when max allowed days are over
                                         return "Wrong Check";
                                     }
-
                                     return $totalAmount;
 
 
@@ -280,6 +303,7 @@ class OrderController extends AdminController
                                             $dueDate = $chequePaymentDate->copy()->addDays($allowedDays);
                                             // Calculate the number of days within the allowed period
                                             $daysWithinAllowedPeriod = min($dueDate->diffInDays(Carbon::now()), $allowedDays);
+                                            dd($daysWithinAllowedPeriod);
                                             if ($daysWithinAllowedPeriod === 0) {
                                                 // Calculate interest amount within the allowed period (0% interest)
                                                 $interestWithinAllowedPeriod = 0;
@@ -404,6 +428,8 @@ class OrderController extends AdminController
             <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <link rel="stylesheet" href="../css/modal.css">
+            
+            
             <style>
             input[type=file] {
                   margin-bottom: 20px;
