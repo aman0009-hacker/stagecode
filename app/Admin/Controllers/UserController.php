@@ -288,10 +288,23 @@ class UserController extends AdminController
                     }
 
                     if ($order->payment_mode === 'cheque') {
+                      if($order->cheque_final_amount!=null || $order->final_amount!="")
+                      {
+                        $chequeDate = $order->Cheque_Date ?? '';
+                        $chequeAmount = $order->check_amount ?? '';
+                        $chequeNumber = $order->cheque_number ?? '';
+                        $finalAmount=$order->cheque_final_amount??'';
+                        $checkcompletionDate=$order->cheque_arrival_date??'';
+                        $orderData['Cheque Info'] = "[Cheque Date: " . $checkcompletionDate . "]" . " " . "[Cheque Number: " . $chequeNumber . "]" . "  " . " [Final Cheque Amount: " . $finalAmount . "]";
+                      }
+                      else
+                      {
+
                         $chequeDate = $order->Cheque_Date ?? '';
                         $chequeAmount = $order->check_amount ?? '';
                         $chequeNumber = $order->cheque_number ?? '';
                         $orderData['Cheque Info'] = "[Cheque Date: " . $chequeDate . "]" . " " . "[Cheque Number: " . $chequeNumber . "]" . "  " . " [Cheque Amount: " . $chequeAmount . "]";
+                      }
                     } else {
                         $orderData['Cheque Info'] = "<span style='color:black;font-weight:600'>(N/A)</span>";
                     }
