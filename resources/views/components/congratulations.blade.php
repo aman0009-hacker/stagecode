@@ -116,8 +116,9 @@
                                         <p class="mb-0">Congratulations! Your payment has been successfully submitted.
                                         </p>
                                         <p>Payment Details:</p>
-                                        <ul>
-                                            <li>Amount: ₹ 10,000 (Registration Amount)</li>
+                                        <ul style="list-style:none;"
+                                            <li >Amount: ₹ 10,000 (Registration Amount)
+                                            </li>
                                         </ul>
                                         <p>Thank you for your payment. If you have any further questions or concerns,
                                             please don't hesitate to contact our support team. We appreciate your
