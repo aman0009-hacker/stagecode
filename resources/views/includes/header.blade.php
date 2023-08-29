@@ -127,7 +127,7 @@ opacity: 0.9; / Initial opacity /
 
 
 
-                 @if ($payment_data!==null || $payment_data !=="" || $payment_data!==[])
+                 {{-- @if ($payment_data!==null || $payment_data !=="" || $payment_data!==[])
                  <div class="dropdown ">
                   <button class="  account-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
@@ -172,10 +172,10 @@ opacity: 0.9; / Initial opacity /
                       </a></li>
                   </ul>
                 </div>
-                   @else
+                   @else --}}
                    <button type="submit" class="btn btn-secondary account-btn" id="myid" style="display:none">My
                     Account</button>
-                 @endif
+                 {{-- @endif --}}
 
                     
 
