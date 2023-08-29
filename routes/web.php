@@ -17,6 +17,8 @@ use App\Http\Controllers\OrderProcessController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NewUpdatedController;
+use App\Http\Controllers\FirstPageController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +37,7 @@ use App\Http\Controllers\NewUpdatedController;
 //     return view('home');
 // })->name('/home');
 Route::get('/', [FirstPageController::class,'home'])->name('home');
-Route::get('/home', [FirstPageController::class,'home'])->name('home');
+Route::get('/home', [FirstPageController::class,'home'])->name('/home');
 Route::get('header',[HomeController::class,'home']);
 Route::get('signup', function () {
     return view('auth.signUp');
