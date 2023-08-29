@@ -68,7 +68,7 @@ $(document).ready(function () {
                 // Handle any errors that occur during the AJAX request
             }
         });
-    }, 1000);
+    }, 15000);
     $('#btnSubmit').on("click", function (event) {
         event.preventDefault();
         var value = ($("#textAreaMsg").val());

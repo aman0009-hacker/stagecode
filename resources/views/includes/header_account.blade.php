@@ -100,7 +100,7 @@ opacity: 0.9; /* Initial opacity */
         </div>
         <div class="navbar-nav ms-auto">
           <ul>
-            <form  class="icon-container" ">
+            <form  class="icon-container" >
                 <div class="icon">
                     <button tye="button" style="border: none; background:none;" onclick="fun(event)">
                       <img  src="{{asset('images/home-page/bell.png')}}" id="read" class="img-fluid" alt="no-image" />
@@ -179,19 +179,19 @@ opacity: 0.9; /* Initial opacity */
       <span class="navbar-text d-md-flex justify-content-center align-items-center w-100">
         <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Products</a>
+            <a class="nav-link" href="home">Products</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">About Us</a>
+            <a class="nav-link" href="home">About Us</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">News</a>
+            <a class="nav-link" href="home">News</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Contact Us</a>
+            <a class="nav-link" href="home ">Contact Us</a>
           </li>
         </ul>
       </span>
