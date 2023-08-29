@@ -2,28 +2,23 @@
 
 namespace App\Admin\Controllers;
 
-use Encore\Admin\Controllers\AdminController;
-use Encore\Admin\Form;
-use Encore\Admin\Grid;
-use Encore\Admin\Show;
-use Illuminate\Mail\Attachment;
-use ZipArchive;
-use App\Models\User;
-// use App\Models\Comments;
-use Encore\Admin\Layout\Content;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
-use App\Models\Comments;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
-use App\Models\State;
 use App\Models\City;
+use App\Models\Comments;
 use App\Models\Order;
-use Illuminate\Support\Facades\Log;
 use App\Models\Records;
+use App\Models\State;
+use App\Models\User;
+use Carbon\Carbon;
+// use App\Models\Comments;
+use Encore\Admin\Controllers\AdminController;
+use Encore\Admin\Layout\Content;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class CustomPageController extends AdminController
 {
@@ -50,8 +45,7 @@ class CustomPageController extends AdminController
     {
         try {
 
-            if(auth::user())
-            {
+            if (auth::user()) {
                 $id = (Crypt::decryptString($id));
                 //   dd($id);
                 $count = 0;
@@ -67,18 +61,15 @@ class CustomPageController extends AdminController
                         return view('components.payment-process');
                     }
                 }
-            }
-            else
-            {
+            } else {
                 return view('auth.login');
             }
-        
+
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
             return view('auth.login');
         }
     }
-
 
     public function PaymentDetailsOrder(Request $request, $id, $status)
     {
@@ -146,7 +137,6 @@ class CustomPageController extends AdminController
         }
     }
 
-
     public function adminMsgHandling(Request $request)
     {
         try {
@@ -175,7 +165,7 @@ class CustomPageController extends AdminController
                 //code to send mail start
                 $details = [
                     'email' => 'Mail from PSIEC Admin Panel',
-                    'body' => 'Admin Panel has requested the following information' . "  . Kindly resolve the issues as follows:-" . $adminMsg
+                    'body' => 'Admin Panel has requested the following information' . "  . Kindly resolve the issues as follows:-" . $adminMsg,
                 ];
                 //\Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
                 \Mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
@@ -201,21 +191,84 @@ class CustomPageController extends AdminController
         // ->view('admin.custom-page');
     }
 
+    // public function chatDataPost(Request $request)
+    // {
+    //     // dd('joker');
+    //     // $queryData = DB::table('users')->join('comments', 'users.id', '=', 'comments.user_id')->
+    //     //     where('comments.user_id', Auth::user()->id)->orderBy('comments.created_at', 'desc')->select('comments.*')->first();
+    //     $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
+    //         ->where('comments.user_id', auth()->user()->id)
+    //         ->orderBy('comments.created_at', 'desc')
+    //         ->select('comments.*')
+    //         ->first();
+
+    //     $admin_id = $queryData->admin_id;
+    //     if (isset($queryData)) {
+    //         $latestData = Comments::latest()->where('admin_id', $admin_id)->where('user_id', Auth::user()->id)->get();
+    //         $latestData->read_at = Carbon::now();
+    //         $latestData->save();
+    //         // dd($queryData->save());
+    //         //$latestData=Comments::where('id',$lastInsertedId->id)->first();
+    //         return response()->json(["msg" => "success", 'latestData' => $latestData]);
+    //     }
+    // }
     public function chatDataPost(Request $request)
     {
-        // $queryData = DB::table('users')->join('comments', 'users.id', '=', 'comments.user_id')->
-        //     where('comments.user_id', Auth::user()->id)->orderBy('comments.created_at', 'desc')->select('comments.*')->first();
         $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
             ->where('comments.user_id', auth()->user()->id)
             ->orderBy('comments.created_at', 'desc')
             ->select('comments.*')
             ->first();
+
         $admin_id = $queryData->admin_id;
-        if (isset($queryData)) {
-            $latestData = Comments::latest()->where('admin_id', $admin_id)->where('user_id', Auth::user()->id)->get();
-            //$latestData=Comments::where('id',$lastInsertedId->id)->first();
+
+        if ($queryData) {
+            $latestData = Comments::latest()
+                ->where('admin_id', $admin_id)
+                ->where('user_id', Auth::user()->id)
+                ->get();
+
+            foreach ($latestData as $comment) {
+                $comment->read_by = Carbon::now();
+                $comment->save();
+            }
+
             return response()->json(["msg" => "success", 'latestData' => $latestData]);
+        } else {
+            return response()->json(["msg" => "Record not found"]);
         }
+    }
+
+    public function chatCount()
+    {
+
+        if(Auth::check())
+        {
+            
+            $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
+                ->where('comments.user_id', auth()->user()->id)
+                ->orderBy('comments.created_at', 'desc')
+                ->select('comments.*')
+                ->first();
+                
+                if ($queryData) {
+                $admin_id = $queryData->admin_id;
+                $chatCount = Comments::latest()
+                ->where('admin_id', $admin_id)
+                ->where('user_id', Auth::user()->id)
+                ->whereNull('read_by')
+                ->count();
+                return response()->json(["msg" => "success", 'chatCount' => $chatCount]);
+            }
+
+            else
+
+            {
+                return response()->json(["msg" => "success", 'chatCount' => '']); 
+            }
+        }
+
+        return response()->json(["msg" => "success", 'chatCount' => '']);
     }
 
     public function chatData(Request $request)
@@ -229,6 +282,8 @@ class CustomPageController extends AdminController
             ->orderBy('comments.created_at', 'desc')
             ->select('comments.*')
             ->first();
+        // dd($queryData);
+
         $admin_id = $queryData->admin_id;
         if (isset($messageData) && !empty($messageData)) {
             $data = new Comments;
@@ -247,8 +302,6 @@ class CustomPageController extends AdminController
             }
         }
     }
-
-
 
     public function checkurl(Request $request)
     {
@@ -273,6 +326,8 @@ class CustomPageController extends AdminController
                     // $data->save();
                     if ($data->save()) {
                         $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->get();
+                
+                     
                         //$latestData=Comments::where('id',$lastInsertedId->id)->first();
                         return response()->json([
                             "msg" => "success",
@@ -282,15 +337,40 @@ class CustomPageController extends AdminController
                             "userid" => $userid,
                             "adminusername" => $adminusername,
                             "textAreaMsg" => $textAreaMsg,
-                            'latestData' => $latestData
+                            'latestData' => $latestData,
                         ]);
                     }
                 }
             }
         }
+   }
 
-    }
+//    public function admin_read_message()
+//    {
+//     $id=user::all();
+//     foreach($id as $user)
+//     {
+//         $notRead[]=Comments::where('user_id',$user->id)->where('admin_read_at',null)->get()->last();
 
+//     }
+    
+//     foreach($notRead as $main)
+//     {
+//         if($main===null || $main=='')
+//         {
+            
+
+//         }
+//         else
+//         {
+           
+//             $getmain[]=$main;
+//         }
+//     }
+    
+   
+//     return response()->json(['data'=>$getmain]);
+//    }
 
     public function checkurlIndex(Request $request)
     {
@@ -306,24 +386,36 @@ class CustomPageController extends AdminController
             $status = $query->approved;
             //if ($status == 2 || $status == 0) {
             if ($status == 2 || $status == 0 || $status == 1) {
-                if (isset($adminid) && isset($userid)) { {
-                        $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->get();
-                        //$latestData=Comments::where('id',$lastInsertedId->id)->first();
-                        return response()->json([
-                            "msg" => "success",
-                            "adminid" => $adminid,
-                            'adminrole' => $adminrole,
-                            "userid" => $userid,
-                            "adminusername" => $adminusername,
-                            "textAreaMsg" => $textAreaMsg,
-                            'latestData' => $latestData
-                        ]);
-                    }
+                if (isset($adminid) && isset($userid)) {{
+                    
+                    $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->get();
+                    // if($latestData)
+                    // {
+                    //     foreach($latestData as $single)
+                    //     {
+                    
+                    //         $single->admin_read_at=Carbon::now();
+                    //         $single->save();
+                    //     }
+                    // }
+
+                    //$latestData=Comments::where('id',$lastInsertedId->id)->first();
+                    return response()->json([
+                        "msg" => "success",
+                        "adminid" => $adminid,
+                        'adminrole' => $adminrole,
+                        "userid" => $userid,
+                        "adminusername" => $adminusername,
+                        "textAreaMsg" => $textAreaMsg,
+                        'latestData' => $latestData,
+                    ]);
+                }
                 }
             }
+
+            
         }
     }
-
 
     public function start(Request $request)
     {
@@ -366,7 +458,7 @@ class CustomPageController extends AdminController
                 }
                 $myData = [
                     'month' => $charmonth,
-                    'numberOf' => $chardate
+                    'numberOf' => $chardate,
                 ];
                 return response()->json(['msg' => "success", 'data' => $myData], 200);
             }
@@ -399,7 +491,7 @@ class CustomPageController extends AdminController
                 }
                 $myData = [
                     'month' => $charmonth,
-                    'numberOf' => $chardate
+                    'numberOf' => $chardate,
                 ];
 
                 return response()->json(['msg' => "success", 'data' => $myData], 200);
@@ -432,7 +524,7 @@ class CustomPageController extends AdminController
                 }
                 $myData = [
                     'month' => $charmonth,
-                    'numberOf' => $chardate
+                    'numberOf' => $chardate,
                 ];
                 return response()->json(['msg' => "success", 'data' => $myData], 200);
             }
@@ -464,7 +556,7 @@ class CustomPageController extends AdminController
                 }
                 $myData = [
                     'month' => $charmonth,
-                    'total' => $chardate
+                    'total' => $chardate,
                 ];
                 return response()->json(['msg' => "success", 'data' => $myData], 200);
             }
