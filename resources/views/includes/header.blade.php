@@ -9,10 +9,10 @@ left: -10px;
 }
 
 .icon {
-/* width: 100px; Adjust the size of the icon */
-/* height: 100px; */
-/* background-color: #3498db; Change this to your icon's background color */
-/* border-radius: 50%; */
+/ width: 100px; Adjust the size of the icon /
+/ height: 100px; /
+/ background-color: #3498db; Change this to your icon's background color /
+/ border-radius: 50%; /
 }
 
 .badge {
@@ -22,14 +22,14 @@ right: 0;
 left:11px;
 width: 15px;
 height: 15px;
-background-color: #e74c3c; /* Change this to the badge color */
+background-color: #e74c3c; / Change this to the badge color /
 color: white;
 border-radius: 50%;
 display: flex;
 justify-content: center;
 align-items: center;
-animation: pulseBadge 2s infinite; /* Change animation duration as needed */
-opacity: 0.9; /* Initial opacity */
+animation: pulseBadge 2s infinite; / Change animation duration as needed /
+opacity: 0.9; / Initial opacity /
 }
 
 @keyframes pulseBadge {
@@ -101,7 +101,7 @@ opacity: 0.9; /* Initial opacity */
           </div>
           <div class="navbar-nav ms-auto">
             <ul>
-              <form  class="icon-container" ">
+              <form  class="icon-container" >
                   <div class="icon">
                       <button style="border: none; background:none;" onclick="fun(event)">
                         <img  src="{{asset('images/home-page/bell.png')}}" id="read" class="img-fluid" alt="no-image" />
@@ -123,8 +123,61 @@ opacity: 0.9; /* Initial opacity */
                    {{-- <a href="#" class="btn btn-primary account-btn" id="myid" style="display:none">
                     My Account
                   </a>  --}}
-                  <button type="submit" class="btn btn-secondary account-btn" id="myid" style="display:none">My
+                
+
+
+
+                 @if ($payment_data!==null || $payment_data !=="" || $payment_data!==[])
+                 <div class="dropdown ">
+                  <button class="  account-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    MY ACCOUNT
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                      <li class="ms-1 mt-2"><a class="dropdown-item" href="/profile">
+                        <img src="{{asset('images/home-page/nav_user.png')}}" alt="Sent"style="width:32px;">
+                        <div class="dropdown-text d-inline">
+                          Profile
+                        </div>
+                      </a></li>
+                      <li class="ms-1 mt-2"><a class="dropdown-item" href="/RawMaterial">
+                        <img src="{{asset('images/home-page/nav_product.png')}}" alt="Sent"style="width:32px;">
+                        <div class="dropdown-text d-inline">
+                          Products
+                        </div>
+                      </a></li>
+                      <li class="ms-1 mt-2"><a class="dropdown-item" href="/booking">
+                        <img src="{{asset('images/home-page/Sent.png')}}" alt="Sent">
+                        <div class="dropdown-text d-inline">
+                          My Bookings
+                        </div>
+                      </a></li>
+                      <li class="ms-1 mt-2"><a class="dropdown-item" href="/order">
+                        <img src="{{asset('images/home-page/Combined-Shape.png')}}" alt="Combined-Shape">
+                        <div class="dropdown-text d-inline">
+                          My Orders
+                        </div>
+                      </a></li>
+                      <li class="ms-1 mt-2"><a class="dropdown-item" href="/user/dashboard">
+                        <img src="{{asset('images/home-page/nav_dashboard.png')}}" alt="dashboard" style="width:32px;">
+                        <div class="dropdown-text d-inline">
+                         Dashboard
+                        </div>
+                      </a></li>
+                    <li class="ms-2 mt-2"><a class="dropdown-item" href="/logout">
+                        <img src="{{asset('images/home-page/Logout.png')}}" alt="Logout">
+                        <div class="dropdown-text d-inline">
+                          Logout
+                        </div>
+                      </a></li>
+                  </ul>
+                </div>
+                   @else
+                   <button type="submit" class="btn btn-secondary account-btn" id="myid" style="display:none">My
                     Account</button>
+                 @endif
+
+                    
 
                     {{-- <a href="/order" class="btn btn-outline-secondary ms-4" id="myOrder" style="display:none">
                       My Order

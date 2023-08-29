@@ -28,12 +28,15 @@ use App\Http\Controllers\NewUpdatedController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-Route::get('/home', function () {
-    return view('home');
-})->name('/home');
+// Route::get('/', function () {
+//     return view('home');
+// })->name('home');
+// Route::get('/home', function () {
+//     return view('home');
+// })->name('/home');
+Route::get('/', [FirstPageController::class,'home'])->name('home');
+Route::get('/home', [FirstPageController::class,'home'])->name('home');
+Route::get('header',[HomeController::class,'home']);
 Route::get('signup', function () {
     return view('auth.signUp');
 })->name('signUp');
