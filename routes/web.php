@@ -199,3 +199,4 @@ Route::get("/payment/complete/process/{id}/{status}", [PaymentController::class,
 
 // Route::get("/payment/method/change/{paymentMode}", [PaymentController::class, 'paymentMethodChange'])->name('payment.method.change');
 Route::get("/payment/method/change/{paymentMode}/{data}", [PaymentController::class, 'paymentMethodChange'])->name('payment.method.change');
+Route::get("/chatcount", [App\Admin\Controllers\CustomPageController::class, 'chatCount'])->name('chatCount');
