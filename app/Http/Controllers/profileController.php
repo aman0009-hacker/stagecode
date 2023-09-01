@@ -160,8 +160,16 @@ class profileController extends Controller
                 ->get();
             $chardate = "";
             foreach ($user_order_total as $date) {
-                $month = DateTime::createFromFormat('!m', $date->month);
-                $chardate .= "['" . $month->format('F') . "'," . $date->total_amount . "],";
+                if($date->month===null || $date->total_amount===null)
+                {
+
+                }
+                else
+                {
+
+                    $month = DateTime::createFromFormat('!m', $date->month);
+                    $chardate .= "['" . $month->format('F') . "'," . $date->total_amount . "],";
+                }
             }
             $chartrim = rtrim($chardate, ',');
             //  total purchse in order
@@ -187,13 +195,26 @@ class profileController extends Controller
                 ->where('user_id', $auth_id)
                 ->groupBy('date', 'amount')
                 ->get();
-            // dd($per_month_amount); 
+            
             $perday = "";
             foreach ($per_month_amount as $day) {
-                $month = new DateTime($day->date);
-                $perday .= "['" . $month->format('d') . "'," . $day->total_amount . "],";
+                if($day->date===null || $day->total_amount===null)
+                {
+
+                }
+                else
+                {
+                    $month = new DateTime($day->date);
+                    $perday .= "['" . $month->format('d') . "'," . $day->total_amount . "],";
+
+                }
             }
+            
+
             $perday_trim = rtrim($perday, ',');
+            // dd($perday_trim);
+            
+        
             return view('userDashboard.dashboard', compact('data', 'order', 'chartrim', 'order_trim', 'total_amount', 'perday_trim'));
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());

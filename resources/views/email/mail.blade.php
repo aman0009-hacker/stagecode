@@ -78,7 +78,7 @@
                                             @endif
                                             @if ( isset($details['status']) && $details['status']=="OrderApprove")
                                             <p>To facilitate the booking payment process, please click the following link:</p>
-                                            <a href="{{ env('APP_URL') }}PaymentDetailsOrder/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>
+                                            <a href="{{ env('APP_URL') }}paymentdetailsorder/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>
                                             @endif
                                             @if ( isset($details['status']) && $details['status']=="OrderPayment")
                                             <a href="{{ env('APP_URL') }}PaymentDetailsOrder/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>

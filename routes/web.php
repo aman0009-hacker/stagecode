@@ -153,7 +153,8 @@ Route::post('checkurlIndex', [App\Admin\Controllers\CustomPageController::class,
     Route::post('dropzone/store', [FileUploadController::class, 'store'])->name('dropzone.store');
     Route::post('adminDownload', [App\Admin\Controllers\CustomPageController::class, 'adminDownload'])->name('adminDownload');
     Route::get("PaymentDetails/{id}", [App\Admin\Controllers\CustomPageController::class, 'PaymentDetails'])->name('PaymentDetails');
-    Route::get("PaymentDetailsOrder/{id}/{status}", [App\Admin\Controllers\CustomPageController::class, 'PaymentDetailsOrder'])->name('PaymentDetailsOrder');
+    Route::get("paymentdetailsorder/{id}/{status}", [App\Admin\Controllers\CustomPageController::class, 'PaymentDetailsOrder'])->name('PaymentDetailsOrder');
+    // Route::get("PaymentDetailsOrder/{id}/{status}", [App\Admin\Controllers\CustomPageController::class, 'PaymentDetailsOrder'])->name('PaymentDetailsOrder');
     Route::post('/entities/{categoryId}', [ProductCategoryController::class, 'entity'])->name('category.entities');
     Route::get('/RawMaterial', [ProductCategoryController::class, 'index'])->name('RawMaterial');
     Route::post('/entityData', [ProductCategoryController::class, 'entityData'])->name('entityData');
