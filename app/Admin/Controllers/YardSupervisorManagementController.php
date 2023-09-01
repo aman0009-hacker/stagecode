@@ -59,8 +59,11 @@ class YardSupervisorManagementController extends AdminController
       $grid->filter(function ($filter) {
         // $filter->notIn('id', __('Id'));
         $filter->disableIdFilter();
-        $filter->like('supervisor_id',__('supervisor Name'))->select(AdminUser::pluck('name','id'));
-        // $filter->between('created_at', 'Select Date')->date('Y-m-d');
+        if(\Auth::user()->name==="Administrator")
+        {
+          $filter->like('supervisor_id',__('supervisor Name'))->select(AdminUser::pluck('name','id'));
+
+        }        // $filter->between('created_at', 'Select Date')->date('Y-m-d');
         $filter->between('created_at', 'Select Date')->date();
         //$filter->like('email', __('Email'));
         // $filter->column(1 / 2, function ($filter) {

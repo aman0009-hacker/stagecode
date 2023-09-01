@@ -40,7 +40,7 @@
 {
   display: none!important;
 }
-#curve_chart #google-visualization-errors-0 span,#chart_div #google-visualization-errors-all-3 span
+#curve_chart #google-visualization-errors-0 span,#chart_div #google-visualization-errors-all-3 span,#chart_div #google-visualization-errors-all-1 span
 {
   display: none!important
 }.sale1 h5 {
@@ -144,7 +144,7 @@
 
                     <h3>Orders per day</h3>
                     <h5>No data</h5>
-
+                   @else()
                   @endif
                   <div id="chart_div" style="width: 100%;"></div>
                 </div>
@@ -192,7 +192,11 @@
                <tr>
                  <td>{{$value->order_no}}</td>
                  <td>{{rtrim($categories_relation,",")}}</td>
+                 @if($value->amount===null)
+                 <td>Not Paid</td>
+                 @else
                  <td> {{$value->amount}}</td>
+                 @endif
                  <td> {{ \Carbon\Carbon::parse($value->transaction_date)->format('d F Y')}} </td>
                  <td> {{ \Carbon\Carbon::parse($value->created_at)->format('d F Y')}}</td>
                  <td> {{$value->payment_status}}</td>
@@ -340,6 +344,7 @@
           </div>
         </div>
         <div class="col-lg-6">
+          
           <div id="piechart" style="width: 100%; height: 500px;"></div>
         </div>
         <div class="col-lg-6">
