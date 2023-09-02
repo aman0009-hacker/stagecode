@@ -37,7 +37,7 @@
       $decryptedResponse = Illuminate\Support\Facades\Crypt::decrypt($encryptedResponse);
       $paymentResponse = $decryptedResponse['paymentResponse'] ?? '';
       $reference_no = $decryptedResponse['reference_no'] ?? '';
-      $transaction_id = $decryptedResponse['transaction_id'] ?? '';  
+      $transaction_id = $decryptedResponse['transaction_id'] ?? '';
       $transactionAmount = $decryptedResponse['transactionAmount'] ?? '';
      if( $paymentResponse!="" && $paymentResponse!=null && $paymentResponse=="SUCCESS")
      {
@@ -50,7 +50,8 @@
       ?>
       <script>
         Swal.fire({
-          title: 'Payment Done Successfully. Your Payment Reference No is <?php echo $reference_no; ?> and Amount is ₹ <?php echo $transactionAmount; ?>',
+        //   title: 'Payment Done Successfully. Your Payment Reference No is <?php echo $reference_no; ?> and Amount is ₹ <?php echo $transactionAmount; ?>',
+          title: 'Payment Done Successfully. Your Payment Reference No is <?php echo $reference_no; ?> and  your payment has been processed',
           showClass: {
             popup: 'animate__animated animate__fadeInDown'
           },
@@ -221,7 +222,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="order-box mt-5">
-              <p>Your Booking has Rejected.</p>
+              <p>Your Booking has been Rejected.</p>
               {{-- <p>Kindly Pay Booking amount as
                 <span>per PSIEC Policy.</span>
               </p> --}}
@@ -276,7 +277,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="order-box mt-5">
-              <p>Your Booking Amount has already paid.</p>
+              <p>Your Booking Amount has been already paid.</p>
               <p>Kindly wait for admin approval for further processing or Check the latest status
                 <span>in My Orders Section.</span>
               </p>
@@ -302,7 +303,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="order-box mt-5">
-              <p>Initial booking amount has already paid.</p>
+              <p>Initial booking amount has already been paid.</p>
               {{-- <p>Kindly Pay Booking amount as
                 <span>per PSIEC Policy.</span>
               </p> --}}

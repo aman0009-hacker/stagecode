@@ -223,6 +223,19 @@
             {{$SGST}}
           </td>
         </tr>
+        <tr>
+          <td style="border-top: none; border-bottom: none">1.</td>
+          <td style="border-top: none; border-bottom: none; text-align: end">
+            Advance Payment
+          </td>
+          <td style="border-top: none; border-bottom: none"></td>
+          <td style="border-top: none; border-bottom: none"></td>
+          <td style="border-top: none; border-bottom: none"></td>
+          <td style="border-top: none; border-bottom: none"></td>
+          <td style="border-top: none; border-bottom: none; text-align: end">
+            {{$Advance_booking_amount}}
+          </td>
+        </tr>
 
         <tr>
           <td style="border-top: none; border-bottom: none"></td>
@@ -245,7 +258,7 @@
           <td></td>
           <td></td>
           <td></td>
-          <td>Rs. {{$Taxablevalue}}</td>
+          <td>Rs. {{$Balance ?? ''}}</td>
         </tr>
         {{-- <tr>
           <td colspan="7">Amount Chargeable(In Words)</td>
@@ -295,14 +308,14 @@
       <table style="width: 100%; margin-top: 14px">
         <tr>
           <td colspan="2" style="border: none;padding-bottom: 23px;">
-            <u><b>Declaration:-</b></u>&nbsp; We declare that this invoice shows 
-            the actual price of the goods described and that all particulars are 
+            <u><b>Declaration:-</b></u>&nbsp; We declare that this invoice shows
+            the actual price of the goods described and that all particulars are
             true and correct.
           </td>
         </tr>
         <tr>
           <td style="border: none">
-             Balance (Amount to paid):{{$Balance ?? ''}} 
+             Balance (Amount to paid):{{$Balance ?? ''}}
           </td>
           <td rowspan="3" style="width: 50%; text-align: end; font-weight: bold">
             for Punjab Small Industries & Export Corp.

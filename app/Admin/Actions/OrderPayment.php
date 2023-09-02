@@ -71,8 +71,8 @@ class OrderPayment extends RowAction
 
     public function form()
     {
-        $this->date('cheque_arrival_date', 'Cheque Completion Date');
-        $this->text('cheque_final_amount','Cheque Final Amount');
+        $this->date('cheque_arrival_date', 'Payment Completion Date');
+        $this->text('cheque_final_amount',' Final Amount');
     }
 
 

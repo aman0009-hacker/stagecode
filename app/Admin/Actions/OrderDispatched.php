@@ -26,10 +26,22 @@ class OrderDispatched extends RowAction
         try {
             $order = OrderItem::where('order_id', $this->getKey())->get();
             $allorder = order::find($this->getKey());
-            $allorder->amount = $request->total;
+            // $allorder->amount = $request->total;
+            //new logic for request total
+            $total=0;
+            foreach ($order as $item) {
+                $item->price = $request->price[$num] ?? 0;
+                //new code for store price
+                $total=$total+$item->price;
+            }
+            $allorder->amount = $total;
+            //new logic for request total
             $allorder->save();
             foreach ($order as $item) {
                 $item->quantity = $request->quantity[$num];
+                //new code for store price
+                $item->price = $request->price[$num];
+                //new code for store price
                 $item->save();
                 $num++;
             }
@@ -37,7 +49,7 @@ class OrderDispatched extends RowAction
             //dd($id);
             if (isset($id) && !empty($id)) {
                 $data = Order::find($id);
-                $encryptedID=Crypt::encryptString($data->id);
+                $encryptedID = Crypt::encryptString($data->id);
                 $data->status = "Dispatched";
                 $data->save();
                 //Session::put('txtOrderGlobalModalCompleteID',$id);
@@ -62,10 +74,10 @@ class OrderDispatched extends RowAction
                         $emailDataName = $emailData->email;
                         //het current user emailid end
                         $details = [
-                            'email' => 'Payment Required for Order '.$model->order_no,
+                            'email' => 'Payment Required for Order ' . $model->order_no,
                             'body' => 'We are pleased to inform you that your order with order number ' . $model->order_no . ' is now ready for dispatch. To facilitate the completion of this process, we kindly request that you make the full payment against the invoice.',
                             'encryptedID' => $encryptedID,
-                            'status'=>'Dispatched'
+                            'status' => 'Dispatched'
                         ];
                         \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
                         //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
@@ -85,10 +97,13 @@ class OrderDispatched extends RowAction
     {
         $data = OrderItem::where('order_id', $this->getKey())->get();
         $order_id = Order::find($this->getKey());
-        $this->text('total', 'Total amount')->default($order_id->amount)->attribute('class', 'item_name');
+        $this->text('total', 'Total amount')->default($order_id->amount)->attribute('class', 'item_name')->rules('required')->placeholder('total amount');
         foreach ($data as $element) {
             $this->text('Item name')->rules('required')->default($element->category_name)->readonly()->attribute('class', 'item_name');
             $this->text('quantity[]', 'Quantity')->rules('required')->default($element->quantity)->attribute('class', 'item_name');
+            $this->text('price[]', 'Price')->rules(['numeric', 'regex:/^\d+(?:\.\d{1,2})?$/'])->help('(amount without tax)')->rules('required');
+
+
         }
 
     }

@@ -144,7 +144,8 @@ class OrderController extends AdminController
                             if ($customerStartDate <= $threeYearsAgo) {
                                 if ($this->payment_mode == "cheque") {
                                     if (isset($this->cheque_final_amount) && !empty($this->cheque_final_amount)) {
-                                        return $this->cheque_final_amount;
+                                        return 'Payment Done'.' (₹ '.$this->cheque_final_amount.')';
+                                        // return $this->cheque_final_amount;
                                     }
                                     $chequeAmount = $this->check_amount;
 
@@ -192,6 +193,7 @@ class OrderController extends AdminController
                                         return "Wrong Check";
                                     }
                                     $totalAmount = $chequeAmount + $interestWithinAllowedPeriod;
+
                                     return round($totalAmount, 2);
                                 } else {
                                     return "N/A";
@@ -208,6 +210,7 @@ class OrderController extends AdminController
                                         ->limit(1);
                                 }
                             ])->find($userID);
+
                             //return $user;
                             if ($user) {
                                 if ($user->paymentDataHandling->isNotEmpty()) {
@@ -357,8 +360,8 @@ class OrderController extends AdminController
             <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <link rel="stylesheet" href="../css/modal.css">
-            
-            
+
+
             <style>
             input[type=file] {
                   margin-bottom: 20px;
@@ -407,7 +410,7 @@ class OrderController extends AdminController
                 </div>
                 <div class="modal-body">
                        <form method="post" action="/payment/process/verify/extra/js" enctype="multipart/form-data" id="OrderForm">
-                          <input type="hidden" name="_token" value="{$csrfToken}"> 
+                          <input type="hidden" name="_token" value="{$csrfToken}">
                           <input type="hidden" id="modalIdInput" name="modalId">
                                      <label for="file">Upload File</label >
                                             <div id="allfiles" class="fileadding">
@@ -434,7 +437,7 @@ class OrderController extends AdminController
                                                    </div>
                                       <div class="row">
                                          <hr>
-                                      </div>      
+                                      </div>
                               <div class="action"style="margin-top:-3px">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary"style="float:right">Submit</button>
@@ -445,7 +448,7 @@ class OrderController extends AdminController
             </div>
                   </div>
                   <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-         </section> 
+         </section>
          HTML;
             Admin::html($htmls);
 

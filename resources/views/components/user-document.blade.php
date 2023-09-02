@@ -77,7 +77,7 @@
               <strong>Oops!</strong> Something went <b>wrong</b>.
             </div>
             @if (Auth::check())
-            <?php 
+            <?php
                  if(isset(Auth::user()->state))
                  {
                   Session::put('currentId', Auth::user()->id );
@@ -104,13 +104,12 @@
                 <input type="text" class="form-control form-input bg-transparent " id="gstNumber" name="gstNumber"
                   aria-describedby="gstNumberHelp" placeholder="Enter your GST Number (15 digit)"
                   title="GST No (15 digit)" oninvalid="this.setCustomValidity('Enter your GST Number (15 digit)')"
-                  oninput="setCustomValidity('')" minlength="15" maxlength="15" value="{{old('gstNumber')}}">
+                  oninput="setCustomValidity('')"  minlength="15" maxlength="15" value="{{old('gstNumber')}}">
                 <label for="gstNumber" class="form-label">Enter your GST Number (15 digit)</label>
               </div>
               <div class="mb-3 position-relative form-control-new">
                 <input type="text" class="form-control form-input bg-transparent" id="msmeNumber" name="msmeNumber"
                   aria-describedby="msmeNumberHelp" placeholder="Enter your MSME Number (12 digit)" required
-                  onkeypress="return isNumberKey(event)"
                   oninvalid="this.setCustomValidity('Enter your MSME Number (12 digit)')" title="MSME No (12 digit)"
                   oninput="setCustomValidity('')" minlength="12" maxlength="12" value="{{old('msmeNumber')}}">
                 <label for="msmeNumber" class="form-label">Enter your MSME/Udyam Number (12 digit) <span style="color:red">★</span> </label>
@@ -126,7 +125,7 @@
                 <input type="text" class="form-control form-input bg-transparent" id="adharCardNumber"
                   name="adharCardNumber" aria-describedby="adharCardNumberHelp"
                   placeholder="Enter Adhaar Card Number ★ (12 digit)" required title="Adhaar No (12 digit)"
-                  oninvalid="this.setCustomValidity('Enter Adhaar Card Number')" oninput="setCustomValidity('')"
+                  oninvalid="this.setCustomValidity('Enter Adhaar Card Number (12 digit)')" oninput="setCustomValidity('')"
                   minlength="12" maxlength="12" onkeypress="return isNumberKey(event)"
                   value="{{old('adharCardNumber')}}">
                 <label for="adharCardNumber" class="form-label">Enter Adhaar Card Number <span
@@ -136,7 +135,7 @@
                 <input type="text" class="form-control form-input bg-transparent" id="panCardNumber"
                   name="panCardNumber" aria-describedby="panCardNumberHelp"
                   placeholder="Enter Pan Card Number ★ (10 digit)" required title="Pan No (10 digit)"
-                  oninvalid="this.setCustomValidity('Enter Pan Card Number')" oninput="setCustomValidity('')"
+                  oninvalid="this.setCustomValidity('Enter Pan Card Number (10 digit)')" oninput="setCustomValidity('')"
                   minlength="10" maxlength="10" value="{{old('panCardNumber')}}">
                 <label for="panCardNumber" class="form-label">Enter Pan Card Number <span style="color:red">★</span> (10
                   digit)</label>
@@ -145,7 +144,7 @@
                 <input type="text" class="form-control form-input bg-transparent" id="utilityCardNumber"
                   name="utilityCardNumber" aria-describedby="utilityCardNumberHelp"
                   placeholder="Enter Capacity Card Number" title="Capacity No"
-                  oninvalid="this.setCustomValidity('Enter Capacity Card Number')" oninput="setCustomValidity('')"
+                  oninvalid="this.setCustomValidity('Enter Capacity Card Number (10 digit)')" oninput="setCustomValidity('')"
                   maxlength="10" value="{{old('utilityCardNumber')}}">
                 <label for="utilityCardNumber" class="form-label">Enter Capacity Card Number</label>
               </div>

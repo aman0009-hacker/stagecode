@@ -43,9 +43,9 @@ class YardSupervisorManagementController extends AdminController
       // $grid->column('supervisor_id', __('Supervisor id'));
       $grid->column('date', __('Date'));
       $grid->column('product', __('Product'));
-      $grid->column('quantity', __('Quantity'));
-      $grid->column('amount', __('Amount'));
-      $grid->column('Total')->display(function () {
+      $grid->column('quantity', __("Quantity in Ton's"));
+      $grid->column('amount', __("Commission amount per Ton's"));
+      $grid->column('Total commission')->display(function () {
         return $this->quantity * $this->amount;
       });
       $grid->column('description', __('Description'));
