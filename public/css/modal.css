@@ -22,9 +22,9 @@
 }
 .modal-body.main .form-group:not(:first-child)
 {
-    flex:0 0 45%;
+    flex:0 0 30%;
 }
-.modal-body.main .form-group:nth-child(2),.modal-body.main .form-group:nth-child(3)
+.modal-body.main .form-group:nth-child(2),.modal-body.main .form-group:nth-child(3),.modal-body.main .form-group:nth-child(4)
 {
     margin-top:60px;
 }
@@ -49,4 +49,8 @@ border: 1px solid #ccc;
 .modal-body.main .form-group:nth-child(1) label
 {
     margin-top:7px;
+}
+.modal-body.main .form-group:nth-child(1)
+{
+    display: none;
 }

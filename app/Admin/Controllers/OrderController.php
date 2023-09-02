@@ -80,6 +80,19 @@ class OrderController extends AdminController
             // $grid->column('user_id', __('User'))->display(function($user_id)
             // {
             // });
+            $grid->column('amount',__('Product Total Price'))->display(function($value)
+            {
+                if(isset($value)&&!empty($value))
+                {
+
+                    return $value;
+                }
+                else
+                {
+                    return "N/A";
+                }
+                
+            });
             $grid->column('status', __('Status'));
 
             // $grid->column('payment_mode', __('Payment Mode'));

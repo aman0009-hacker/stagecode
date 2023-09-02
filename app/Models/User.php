@@ -22,7 +22,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable 
 {
     use HasApiTokens, HasFactory, Notifiable, LogsActivity;
 
@@ -40,8 +40,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'email',
         'contact_number',
-        'state'
-        //'otp',
+        'state',
+        'email_otp',
+        'otp',
         //'otp_generated_at'
     ];
 
