@@ -71,20 +71,23 @@ class CustomPageController extends AdminController
         }
     }
 
-    public function PaymentDetailsOrder( $id, $status)
+    public function PaymentDetailsOrder($id, $status)
     {
         try {
-             $txtOrderGlobalModalID= Crypt::decryptString($id);
-        Session::forget('txtOrderGlobalModalID');
-        Session::put('txtOrderGlobalModalID', $txtOrderGlobalModalID ?? '');
-        if (isset($txtOrderGlobalModalID) && !empty($txtOrderGlobalModalID)) {
-            return view('components.order-process', compact('txtOrderGlobalModalID'));
-        }
+            if (auth::user()) {
+                $txtOrderGlobalModalID = Crypt::decryptString($id);
+                Session::forget('txtOrderGlobalModalID');
+                Session::put('txtOrderGlobalModalID', $txtOrderGlobalModalID ?? '');
+                if (isset($txtOrderGlobalModalID) && !empty($txtOrderGlobalModalID)) {
+                    return view('components.order-process', compact('txtOrderGlobalModalID'));
+                }
+            } else {
+                return view('auth.login');
+            }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
             return view('auth.login');
         }
-
 
     }
 
@@ -235,8 +238,7 @@ class CustomPageController extends AdminController
     public function chatCount()
     {
 
-        if(Auth::check())
-        {
+        if (Auth::check()) {
 
             $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
                 ->where('comments.user_id', auth()->user()->id)
@@ -244,19 +246,15 @@ class CustomPageController extends AdminController
                 ->select('comments.*')
                 ->first();
 
-                if ($queryData) {
+            if ($queryData) {
                 $admin_id = $queryData->admin_id;
                 $chatCount = Comments::latest()
-                ->where('admin_id', $admin_id)
-                ->where('user_id', Auth::user()->id)
-                ->whereNull('read_by')
-                ->count();
+                    ->where('admin_id', $admin_id)
+                    ->where('user_id', Auth::user()->id)
+                    ->whereNull('read_by')
+                    ->count();
                 return response()->json(["msg" => "success", 'chatCount' => $chatCount]);
-            }
-
-            else
-
-            {
+            } else {
                 return response()->json(["msg" => "success", 'chatCount' => '']);
             }
         }
@@ -320,7 +318,6 @@ class CustomPageController extends AdminController
                     if ($data->save()) {
                         $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->get();
 
-
                         //$latestData=Comments::where('id',$lastInsertedId->id)->first();
                         return response()->json([
                             "msg" => "success",
@@ -336,7 +333,7 @@ class CustomPageController extends AdminController
                 }
             }
         }
-   }
+    }
 
 //    public function admin_read_message()
 //    {
@@ -352,7 +349,6 @@ class CustomPageController extends AdminController
 //         if($main===null || $main=='')
 //         {
 
-
 //         }
 //         else
 //         {
@@ -360,7 +356,6 @@ class CustomPageController extends AdminController
 //             $getmain[]=$main;
 //         }
 //     }
-
 
 //     return response()->json(['data'=>$getmain]);
 //    }
@@ -405,7 +400,6 @@ class CustomPageController extends AdminController
                 }
                 }
             }
-
 
         }
     }

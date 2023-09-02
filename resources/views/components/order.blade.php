@@ -46,7 +46,8 @@
        ?>
       <script>
         Swal.fire({
-           title: 'Payment Done Successfully. Your Payment Reference No is <?php echo $reference_no; ?> and Amount is ₹ <?php echo $transactionAmount; ?>',
+        //    title: 'Payment Done Successfully. Your Payment Reference No is <?php echo $reference_no; ?> and Amount is ₹ <?php echo $transactionAmount; ?>',
+           title: 'Payment Done Successfully. Your Payment Reference No is <?php echo $reference_no; ?> and your payment has been processed',
            showClass: {
              popup: 'animate__animated animate__fadeInDown'
            },
@@ -354,8 +355,8 @@
         <div class="row">
           <div class="col-md-12">
             <div class="order-box mt-5">
-              <p>Amount has successfully received by PSIEC.</p>
-              <p>Orders has delivered soon.</span>
+              <p>Amount has been successfully received by PSIEC.</p>
+              <p>Orders will be delivered soon.</span>
               </p>
             </div>
           </div>
@@ -379,7 +380,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="order-box mt-5">
-              <p>Your Booking has Rejected.</p>
+              <p>Your Booking has been Rejected.</p>
               {{-- <p>Kindly Pay Booking amount as
                 <span>per PSIEC Policy.</span>
               </p> --}}

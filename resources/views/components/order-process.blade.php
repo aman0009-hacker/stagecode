@@ -87,7 +87,7 @@
                             @endphp --}}
                             <?php
                                 $encryptedResponse = request('encryptedResponse');
-                             
+
                                 if(isset($encryptedResponse) && !empty($encryptedResponse)) {
                                 $decryptedResponse = Illuminate\Support\Facades\Crypt::decrypt($encryptedResponse);
                                 $paymentResponse = $decryptedResponse['paymentResponse'] ?? '';
@@ -109,7 +109,7 @@
                             </div>
                             <?php
                                }
-                               else 
+                               else
                                {
                                 ?>
                             <div class="alert alert-warning" role="alert">
@@ -131,7 +131,7 @@
                                         <div class="input-group">
                                             <span class="input-group-text">₹</span>
                                             <input type="number" class="form-control" placeholder="Enter amount"
-                                                aria-label="Amount" name="amountOrder" id="amountOrder" required>
+                                                aria-label="Amount" name="amountOrder" id="amountOrder" value="200000" readonly required>
                                             <span class="input-group-text">.00</span>
                                         </div>
                                     </div>

@@ -20,6 +20,7 @@ use App\Models\Address;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\City;
 use App\Models\State;
+use App\Models\Invoice;
 
 
 
@@ -572,15 +573,16 @@ class PaymentController extends Controller
         try {
             Session::forget('GLOBALUSERID');
             Session::put('GLOBALUSERID', Auth::user()->id ?? '');
-            // $validator = Validator::make($request->all(), [
-            //     'amountOrder' => ['required', 'in:10000'],
-            // ]);
-            // if ($validator->fails()) {
-            //     $amount = 10000;
-            // } else {
-            //     $amount = $request->input('amountOrder');
-            // }
-            $amount = $request->input('amountOrder');
+            $amount="";
+            $validator = Validator::make($request->all(), [
+                'amountOrder' => ['required', 'in:200000'],
+            ]);
+            if ($validator->fails()) {
+                $amount = 200000;
+            } else {
+                $amount = $request->input('amountOrder');
+            }
+            // $amount = $request->input('amountOrder');
             //$reference_no = rand(1111, 9999);
             $reference_no = time() . Str::random(5);
             $paymentDataHandling = new PaymentDataHandling();
@@ -616,7 +618,8 @@ class PaymentController extends Controller
         $address = Address::where('user_id', Auth::user()->id)->latest()->first();
         $states = State::all();
         $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
-        $amount= Order::where('id',$txtOrderGlobalModalCompleteID)->pluck('amount');
+        // dd($txtOrderGlobalModalCompleteID);
+        $amount= Invoice::where('order_id',$txtOrderGlobalModalCompleteID)->latest()->pluck('balance');
         Session::forget('txtOrderGlobalModalCompleteID');
         // if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
         //     Session::put('txtOrderGlobalModalCompleteID', Session::get('txtOrderGlobalModalCompleteIDAlternative') ?? '');
@@ -755,14 +758,7 @@ class PaymentController extends Controller
                     }
                     Session::forget('GLOBALUSERID');
                     Session::put('GLOBALUSERID', Auth::user()->id ?? '');
-                    // $validator = Validator::make($request->all(), [
-                    //     'amountValue' => ['required', 'in:10000'],
-                    // ]);
-                    // if ($validator->fails()) {
-                    //     $amount = 10000;
-                    // } else {
-                    //     $amount = $request->input('amountValue');
-                    // }
+
                     $amount = $amountOrderFinal;
                     //$reference_no = rand(1111, 9999);
                     $reference_no = time() . Str::random(5);

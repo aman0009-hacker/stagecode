@@ -69,6 +69,7 @@ class InvoiceController extends Controller
                     $invoice->save();
                     //insert in invoice table
                     $pdf = PDF::loadView('components.invoice', [
+                        'Advance_booking_amount' => $bookingAmount,
                         'IRN' => env('IRN', ''),
                         'AckNo' => $order->invoices->pluck('invoice_id')[0],
                         'AckDate' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('Y-m-d'),
@@ -294,6 +295,7 @@ class InvoiceController extends Controller
                     $invoice->save();
                     //insert in invoice table
                     $pdf = PDF::loadView('components.invoice', [
+                        'Advance_booking_amount' => $bookingAmount,
                         'IRN' => env('IRN', ''),
                         'AckNo' => $order->invoices->pluck('invoice_id')[0],
                         'AckDate' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('Y-m-d'),
