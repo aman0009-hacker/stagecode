@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Twilio\Rest\Client;
+use Twilio\Exceptions\TwilioException;
+use Illuminate\Validation\ValidationException;
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -48,11 +50,7 @@ class CreateNewUser implements CreatesNewUsers
                 // must contain a special character
             ],
         ])->validate();
-        $otp = \Str::random(6);
-        // $details=[
-        //     'email'=>"OTP VERIFICATOIN CODE",
-        //     'message'=>"Your OTP is $otp"
-        // ];
+            
         $user = User::create([
             'name' => $input['name'],
             'last_name' => $input['last_name'],
@@ -66,18 +64,53 @@ class CreateNewUser implements CreatesNewUsers
             //'otp_generated_at' => Carbon::now(),
         ]);
        \Mail::to($user->email)->send(new optEmail($user->email_otp));
+   
        $twilioSid=env('ACCOUNT_SID');
        $twilioToken=env('AUTH_TOKEN');
        $twilioPhoneNumber=env('PHONE_NUMBER');
-       $client = new Client($twilioSid, $twilioToken);
-      
-           $data = $client->messages->create('+91'.$user->contact_number,
-               [
-                   'from' => $twilioPhoneNumber,
-                   'body' => $user->otp
-               ]
-           );
+
+       try
+       {
+
+           $client = new Client($twilioSid, $twilioToken);
           
+               $data = $client->messages->create('+91'.$user->contact_number,
+                   [
+                       'from' => $twilioPhoneNumber,
+                       'body' => $user->otp
+                   ]
+               );
+       }
+       catch (TwilioException $e) {
+    $code=$e->getCode();
+
+    if($code===20003)
+    {
+        $errorMessage="The limit of your twilio trial account has been excceded.";
+        throw ValidationException::withMessages([
+            'contact_number' => [$errorMessage],
+        ]);
+    }
+    elseif($code===21614)
+    {
+
+        $errorMessage = "The number is not registered with twilio account. Please use registered number to send otp";
+        throw ValidationException::withMessages([
+            'contact_number' => [$errorMessage],
+        ]);
+    }
+    else
+    {
+        $errorMessage = "Sever is busy.Please try again later";
+        throw ValidationException::withMessages([
+            'contact_number' => [$errorMessage],
+        ]);   
+    }
+
+       
+
+        
+       }
         
         return $user;
     }

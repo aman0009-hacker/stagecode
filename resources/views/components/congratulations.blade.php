@@ -113,7 +113,7 @@
                                     <div class="alert alert-success" role="alert">
                                         <h4 class="alert-heading">Payment Successful</h4>
                                         <hr>
-                                        <p class="mb-0">Congratulations! Your payment has been successfully submitted.
+                                        <p class="mb-0">Congratulations! Registration fee has been successfully submitted.
                                         </p>
                                         <p>Payment Details:</p>
                                         <ul style="list-style:none;"
