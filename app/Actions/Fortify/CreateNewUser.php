@@ -86,7 +86,7 @@ class CreateNewUser implements CreatesNewUsers
 
     if($code===20003)
     {
-        $errorMessage="The limit of your twilio trial account has been excceded.";
+        $errorMessage="The limit of your Twilio Trial Account has been exceeded.";
         throw ValidationException::withMessages([
             'contact_number' => [$errorMessage],
         ]);
@@ -94,14 +94,14 @@ class CreateNewUser implements CreatesNewUsers
     elseif($code===21614)
     {
 
-        $errorMessage = "The number is not registered with twilio account. Please use registered number to send otp";
+        $errorMessage = "The number is not registered with Twilio Trial Account. Please use the Registered Number to send OTP";
         throw ValidationException::withMessages([
             'contact_number' => [$errorMessage],
         ]);
     }
     else
     {
-        $errorMessage = "Sever is busy.Please try again later";
+        $errorMessage = "The number is not registered with Twilio Trial Account. Please use the Registered Number to send OTP";
         throw ValidationException::withMessages([
             'contact_number' => [$errorMessage],
         ]);   
