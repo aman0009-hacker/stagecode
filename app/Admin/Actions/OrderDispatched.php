@@ -30,13 +30,17 @@ class OrderDispatched extends RowAction
             //new logic for request total
             $total=0;
             foreach ($order as $item) {
+                $item->quantity = $request->quantity[$num] ?? 1;
                 $item->price = $request->price[$num] ?? 0;
                 //new code for store price
-                $total=$total+$item->price;
+                $total=$total+($item->price*$item->quantity);
+                $num++;
             }
             $allorder->amount = $total;
             //new logic for request total
             $allorder->save();
+
+            $num = 0;
             foreach ($order as $item) {
                 $item->quantity = $request->quantity[$num];
                 //new code for store price
@@ -101,7 +105,7 @@ class OrderDispatched extends RowAction
         foreach ($data as $element) {
             $this->text('Item name')->rules('required')->default($element->category_name)->readonly()->attribute('class', 'item_name');
             $this->text('quantity[]', 'Quantity')->rules('required')->default($element->quantity)->attribute('class', 'item_name');
-            $this->text('price[]', 'Price')->rules(['numeric', 'regex:/^\d+(?:\.\d{1,2})?$/'])->help('(amount without tax)')->rules('required');
+            $this->text('price[]', 'Price')->rules(['numeric', 'regex:/^\d+(?:\.\d{1,2})?$/'])->help('(amount without tax per ton)')->rules('required');
 
 
         }
