@@ -306,7 +306,7 @@
           <td>Rs 133</td>
         </tr> -->
       </table>
-      <table style="width: 100%; margin-top: 14px">
+      <table style="width: 100%; margin-top: 40px">
         <tr>
           <td colspan="2" style="border: none;padding-bottom: 23px;">
             <u><b>Declaration:-</b></u>&nbsp; We declare that this invoice shows
