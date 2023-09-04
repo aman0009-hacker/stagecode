@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\EazyPayController;
+use App\Models\Attachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PaymentHandling;
@@ -626,9 +627,18 @@ class PaymentController extends Controller
         // } else {
             Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
             Session::put('change_the_code', $txtOrderGlobalModalCompleteID ?? '');
+            $userId=Auth::user()->id;
+              $document=Attachment::where('user_id',$userId)->get();
+              foreach($document as $singleDocument)
+              {
+                if($singleDocument->file_type==="gstfile")
+                {
+                    $gstfile=$singleDocument->fileno;
+                }
+              }
         // }
         // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
-        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address','amount'));
+        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address','amount','gstfile'));
         // }
     }
 

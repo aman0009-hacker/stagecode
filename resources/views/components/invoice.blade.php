@@ -168,7 +168,7 @@
           <th style="width: 45%">Description of Goods</th>
           <th style="width: 10%">HSN/SAC</th>
           <th style="width: 10%">Quantity</th>
-          <th style="width: 10%">Rate</th>
+          <th style="width: 10%">Rate Per Ton</th>
           <th style="width: 10%">Per</th>
           <th style="width: 10%">Amount</th>
         </tr>
@@ -178,7 +178,7 @@
           <td style="border-bottom: none">{{ $item['category_name'] }}</td>
           <td style="border-bottom: none">{{ $HSNSAC }}</td>
           <td style="border-bottom: none">{{ $item['quantity'] }}</td>
-          <td style="border-bottom: none">{{$Rate}}</td>
+          <td style="border-bottom: none">{{$item['rate']}}</td>
           <td style="border-bottom: none">{{$Per}}</td>
           <td style="border-bottom: none">{{$Amount}}</td>
         </tr>

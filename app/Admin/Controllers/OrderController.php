@@ -318,14 +318,14 @@ class OrderController extends AdminController
                 $actions->disableDelete();
                 if ($actions->row->status == "Approved") {
                     $actions->add(new OrderDispatched);
-                    $actions->add(new OrderRejected);
+                    // $actions->add(new OrderRejected);
                     $actions->add(new OrderPayment);
                     $actions->add(new OrderDelivered);
                 } else if ($actions->row->status == "Rejected") {
-                    $actions->add(new OrderApproved);
-                    $actions->add(new OrderDispatched);
-                    $actions->add(new OrderPayment);
-                    $actions->add(new OrderDelivered);
+                    // $actions->add(new OrderApproved);
+                    // $actions->add(new OrderDispatched);
+                    // $actions->add(new OrderPayment);
+                    // $actions->add(new OrderDelivered);
                 } else if ($actions->row->status == "Dispatched") {
                     // $actions->add(new OrderApproved);
                     // $actions->add(new OrderRejected);
