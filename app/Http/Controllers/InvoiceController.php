@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use App\Models\Order;
+use App\Models\PaymentDataHandling;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -67,12 +68,17 @@ class InvoiceController extends Controller
                     $invoice->initial_amount = $bookingAmount;
                     $invoice->balance = $balance;
                     $invoice->save();
+                    $finalbalancepayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Booking_Final_Amount')->where('payment_status','SUCCESS')->first();
+                    if($finalbalancepayment)
+                    {
+                        $balance=$balance." (Paid)";  
+                    }
                     //insert in invoice table
                     $pdf = PDF::loadView('components.invoice', [
                         'Advance_booking_amount' => $bookingAmount,
                         'IRN' => env('IRN', ''),
                         'AckNo' => $order->invoices->pluck('invoice_id')[0],
-                        'AckDate' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('Y-m-d'),
+                        'AckDate' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('d-m-Y'),
                         'PSIECAddress' => json_decode($order->address->psiec_address_ludhiana, true),
                         'shipping_name' => $order->address->shipping_name,
                         'shipping_address' => $order->address->shipping_address,
@@ -91,13 +97,13 @@ class InvoiceController extends Controller
                         'billing_gst_number' => $order->address->billing_gst_number,
                         'billing_gst_statecode' => $order->address->billing_gst_statecode,
                         'InvoiceNo' => $order->invoices->pluck('invoice_id')[0],
-                        'DatedInvoice' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('Y-m-d'),
+                        'DatedInvoice' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('d-m-Y'),
                         'DeliveryNote' => env('DELIVERY_NOTE', ''),
                         'ModeTermsofPayment' => $order->payment_mode,
                         'OtherReferences' => env('OTHER_REFERENCES', ''),
                         //'ReferenceNoDate' => $order->invoices->invoice_id . " " . $order->invoices->created_at,
                         'Buyers_Order_No' => $order->order_no,
-                        'DatedOrderNo' => Carbon::parse($order->created_at)->format('Y-m-d'),
+                        'DatedOrderNo' => Carbon::parse($order->created_at)->format('d-m-Y'),
                         'DispatchDocNo' => env('DISPATCH_DOC_NO', ''),
                         'DeliveryNoteDate' => env('DELIVERYNOTEDATE', ''),
                         'DispatchedThrough' => env('DISPATCHED_THROUGH', ''),
@@ -111,11 +117,12 @@ class InvoiceController extends Controller
                                 'category_name' => $orderItem->category_name,
                                 'quantity' => $orderItem->quantity,
                                 'price' => $orderItem->measurement,
+                                'rate'=>$orderItem->price
                             ];
                         }),
                         'id' => $order->id,
                         'HSNSAC' => env('HSN_SAC', ''),
-                        'Rate' => env('RATE', ''),
+                        
                         'Per' => env('PER', ''),
                         'Balance' => $balance,
                         'Amount' => $totalAmount,
@@ -126,8 +133,8 @@ class InvoiceController extends Controller
                         'TotalTaxAmount' => $totalTaxAmount,
                         'delivery_terms' => $order->invoices->pluck('delivery_terms')[0],
                         'invoice_date' => $order->invoices->pluck('invoice_date')[0],
-                        'created_at' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('Y-m-d'),
-                        'updated_at' => Carbon::parse($order->invoices->pluck('updated_at')[0])->format('Y-m-d'),
+                        'created_at' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('d-m-Y'),
+                        'updated_at' => Carbon::parse($order->invoices->pluck('updated_at')[0])->format('d-m-Y'),
                         'invoice_id' => $order->invoices->pluck('invoice_id')[0],
                         'complete_amount' => $completeAmount,
                         'CGSTTAX' => $cgstPercent,
@@ -285,6 +292,8 @@ class InvoiceController extends Controller
                     // iii- Find the complete amount
                     $completeAmount = ($totalAmount + $totalTaxAmount) ?? 0;
                     $balance = $completeAmount - $bookingAmount;
+                   
+          
                     //code for cheque end
                     //insert in invoice table
                     $invoice = Invoice::where('order_id', $orderId)->orderBy('created_at', 'desc')->first();
@@ -293,12 +302,17 @@ class InvoiceController extends Controller
                     $invoice->initial_amount = $bookingAmount;
                     $invoice->balance = $balance;
                     $invoice->save();
+                    $finalbalancepayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Booking_Final_Amount')->where('payment_status','SUCCESS')->first();
+                    if($finalbalancepayment)
+                    {
+                        $balance=$balance." (Paid)";  
+                    }
                     //insert in invoice table
                     $pdf = PDF::loadView('components.invoice', [
                         'Advance_booking_amount' => $bookingAmount,
                         'IRN' => env('IRN', ''),
                         'AckNo' => $order->invoices->pluck('invoice_id')[0],
-                        'AckDate' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('Y-m-d'),
+                        'AckDate' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('d-m-Y'),
                         'PSIECAddress' => json_decode($order->address->psiec_address_ludhiana, true),
                         'shipping_name' => $order->address->shipping_name,
                         'shipping_address' => $order->address->shipping_address,
@@ -317,13 +331,13 @@ class InvoiceController extends Controller
                         'billing_gst_number' => $order->address->billing_gst_number,
                         'billing_gst_statecode' => $order->address->billing_gst_statecode,
                         'InvoiceNo' => $order->invoices->pluck('invoice_id')[0],
-                        'DatedInvoice' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('Y-m-d'),
+                        'DatedInvoice' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('d-m-Y'),
                         'DeliveryNote' => env('DELIVERY_NOTE', ''),
                         'ModeTermsofPayment' => $order->payment_mode,
                         'OtherReferences' => env('OTHER_REFERENCES', ''),
                         //'ReferenceNoDate' => $order->invoices->invoice_id . " " . $order->invoices->created_at,
                         'Buyers_Order_No' => $order->order_no,
-                        'DatedOrderNo' => Carbon::parse($order->created_at)->format('Y-m-d'),
+                        'DatedOrderNo' => Carbon::parse($order->created_at)->format('d-m-Y'),
                         'DispatchDocNo' => env('DISPATCH_DOC_NO', ''),
                         'DeliveryNoteDate' => env('DELIVERYNOTEDATE', ''),
                         'DispatchedThrough' => env('DISPATCHED_THROUGH', ''),
@@ -337,11 +351,12 @@ class InvoiceController extends Controller
                                 'category_name' => $orderItem->category_name,
                                 'quantity' => $orderItem->quantity,
                                 'price' => $orderItem->measurement,
+                                'rate'=>$orderItem->price
                             ];
                         }),
                         'id' => $order->id,
                         'HSNSAC' => env('HSN_SAC', ''),
-                        'Rate' => env('RATE', ''),
+                       
                         'Per' => env('PER', ''),
                         'Balance' => $balance,
                         'Amount' => $totalAmount,
@@ -352,8 +367,8 @@ class InvoiceController extends Controller
                         'TotalTaxAmount' => $totalTaxAmount,
                         'delivery_terms' => $order->invoices->pluck('delivery_terms')[0],
                         'invoice_date' => $order->invoices->pluck('invoice_date')[0],
-                        'created_at' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('Y-m-d'),
-                        'updated_at' => Carbon::parse($order->invoices->pluck('updated_at')[0])->format('Y-m-d'),
+                        'created_at' => Carbon::parse($order->invoices->pluck('created_at')[0])->format('d-m-Y'),
+                        'updated_at' => Carbon::parse($order->invoices->pluck('updated_at')[0])->format('d-m-Y'),
                         'invoice_id' => $order->invoices->pluck('invoice_id')[0],
                         'complete_amount' => $completeAmount,
                         'CGSTTAX' => $cgstPercent,

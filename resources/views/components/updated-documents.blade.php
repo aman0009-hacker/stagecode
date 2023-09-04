@@ -80,7 +80,7 @@
               <div class="col-12">
                 <img src="{{asset('images/login-signup/doc-success.png')}}" alt="process-pending"
                   class="img-fluid process-pending" width="220" height="220">
-                <h1 class="sign-up-text document-text">Document's Uploaded Successfully</h1>
+                <h1 class="sign-up-text document-text" style="line-height: 50px">Document's Uploaded Successfully</h1>
                 <p class="sign-up-text process-pending-text">Your Registration is Pending for<br> approval within 7
                   days. After <br>approval you can pay the <br>Registration fee Rupees 10,000/-</p>
               </div>
