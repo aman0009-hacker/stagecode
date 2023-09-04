@@ -83,7 +83,7 @@
             <span style="font-weight: bold">{{$InvoiceNo}}</span>
           </td>
           <td>
-            Dated <br />
+            Invoice Date <br />
             <span style="font-weight: bold">{{$DatedInvoice}}</span>
           </td>
         </tr>
@@ -113,7 +113,7 @@
           <td>Buyer's Order No.
             <br><span style="font-weight: bold;">{{$Buyers_Order_No}}</span>
           </td>
-          <td>Dated
+          <td>Date
             <br><span style="font-weight: bold;">{{$DatedOrderNo}}</span>
           </td>
         </tr>
@@ -174,13 +174,14 @@
         </tr>
         @foreach ($DescriptionofGoods as $index => $item)
         <tr>
+          
           <td style="height: 70px; border-bottom: none">{{ $index + 1 }}</td>
           <td style="border-bottom: none">{{ $item['category_name'] }}</td>
           <td style="border-bottom: none">{{ $HSNSAC }}</td>
           <td style="border-bottom: none">{{ $item['quantity'] }}</td>
           <td style="border-bottom: none">{{$item['rate']}}</td>
           <td style="border-bottom: none">{{$Per}}</td>
-          <td style="border-bottom: none">{{$Amount}}</td>
+          <td style="border-bottom: none">{{$item['amount']}}</td>
         </tr>
         @endforeach
 

@@ -68,7 +68,7 @@ class InvoiceController extends Controller
                     $invoice->initial_amount = $bookingAmount;
                     $invoice->balance = $balance;
                     $invoice->save();
-                    $finalbalancepayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Booking_Final_Amount')->where('payment_status','SUCCESS')->first();
+                    $finalbalancepayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Booking_Final_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
                     if($finalbalancepayment)
                     {
                         $balance=$balance." (Paid)";  
@@ -117,7 +117,8 @@ class InvoiceController extends Controller
                                 'category_name' => $orderItem->category_name,
                                 'quantity' => $orderItem->quantity,
                                 'price' => $orderItem->measurement,
-                                'rate'=>$orderItem->price
+                                'rate'=>$orderItem->price,
+                                'amount'=>$orderItem->quantity*$orderItem->price,
                             ];
                         }),
                         'id' => $order->id,
@@ -302,7 +303,7 @@ class InvoiceController extends Controller
                     $invoice->initial_amount = $bookingAmount;
                     $invoice->balance = $balance;
                     $invoice->save();
-                    $finalbalancepayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Booking_Final_Amount')->where('payment_status','SUCCESS')->first();
+                    $finalbalancepayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Booking_Final_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
                     if($finalbalancepayment)
                     {
                         $balance=$balance." (Paid)";  
@@ -351,7 +352,8 @@ class InvoiceController extends Controller
                                 'category_name' => $orderItem->category_name,
                                 'quantity' => $orderItem->quantity,
                                 'price' => $orderItem->measurement,
-                                'rate'=>$orderItem->price
+                                'rate'=>$orderItem->price,
+                                'amount'=>$orderItem->quantity*$orderItem->price,
                             ];
                         }),
                         'id' => $order->id,
