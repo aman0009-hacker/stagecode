@@ -16,6 +16,7 @@ class FileUploadController extends Controller
 {
     public function fileUploadPost(Request $request)
     {
+       
         try {
             $currentId = $request->input('txtIds');
             $gst = $msme = $itr = $aadhar = $pan = $utility = 0;
@@ -41,32 +42,107 @@ class FileUploadController extends Controller
                 if (isset($data->file_type) && $data->file_type != "" && $data->file_type == "utilityfile" && isset($data->fileno) && !empty($data->fileno)) {
                     $utility = 1;
                 }
+                // if (isset($data->file_type) && $data->file_type != "" && $data->file_type == "extradoc1" && isset($data->fileno) && !empty($data->fileno)) {
+                //     $documentextra1 = 1;
+                // }
+                // if (isset($data->file_type) && $data->file_type != "" && $data->file_type == "extradoc2" && isset($data->fileno) && !empty($data->fileno)) {
+                //     $documentextra2 = 1;
+                // }
+                // if (isset($data->file_type) && $data->file_type != "" && $data->file_type == "extradoc3" && isset($data->fileno) && !empty($data->fileno)) {
+                //     $documentextra3 = 1;
+                // }
             }
             if ($gst == 1) {
 
-                $gstValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                // $gstValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                $gstValue = 'required|mimes:pdf|max:5000';
             } else {
-                $gstValue = 'mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                // $gstValue = 'mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                $gstValue = 'mimes:pdf|max:5000';
             }
             if ($msme == 1) {
-                $msmeValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                // $msmeValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                $msmeValue = 'required|mimes:pdf|max:5000';
             } else {
-                $msmeValue = 'mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                // $msmeValue = 'mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                $msmeValue = 'mimes:pdf|max:5000';
             }
             if ($itr == 1) {
-                $itrValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                $itrValue = 'required|mimes:pdf|max:5000';
+                // $itrValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
             } else {
-                $itrValue = 'mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                // $itrValue = 'mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                $itrValue = 'mimes:pdf|max:5000';
             }
-            $aadharValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
-            $panValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+            // $aadharValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+            $aadharValue = 'required|mimes:pdf|max:5000';
+            // $panValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+            $panValue = 'required|mimes:pdf|max:5000';
             if ($utility == 1) {
-                $utilityValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                // $utilityValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                $utilityValue = 'required|mimes:pdf|max:5000';
             } else {
-                $utilityValue = 'mimes:jpeg,png,jpg,zip,pdf|max:5000';
+                $utilityValue = 'mimes:pdf|max:5000';
+                // $utilityValue = 'mimes:jpeg,png,jpg,zip,pdf|max:5000';
+            }
+
+            if($request->hasFile('extradoc1'))
+            {
+               if($request->file('extradoc1'))
+               {
+
+                   $documentextra1='required|mimes:pdf|max:5000';
+               }
+               else
+
+               {
+                   $documentextra1='mimes:pdf|max:5000';
+               }
+            }
+            else
+
+            {
+                $documentextra1='mimes:pdf|max:5000';
+            }
+            if($request->hasFile('extradoc2'))
+            {
+                if($request->file('extradoc2'))
+                {
+
+                    $documentextra2='required|mimes:pdf|max:5000';
+                }
+                else
+
+                {
+                    $documentextra2='mimes:pdf|max:5000';
+                }
+            }
+            else
+
+            {
+                $documentextra2='mimes:pdf|max:5000';
+            }
+            if($request->hasFile('extradoc3'))
+            {
+                if($request->file('extradoc3'))
+                {
+
+                    $documentextra3='required|mimes:pdf|max:5000';
+                }
+                else
+
+                {
+                    $documentextra3='mimes:pdf|max:5000';
+                }
+
+            }
+            else
+
+            {
+                $documentextra3='mimes:pdf|max:5000';
             }
             //   $request->validate([
-            //         'gstFile' => $gstValue,
+                //         'gstFile' => $gstValue,
             //         'msmeFile' => $msmeValue,
             //         'itrFile' => $itrValue,
             //         'aadharFile' => $aadharValue,
@@ -82,9 +158,14 @@ class FileUploadController extends Controller
                 'aadharFile' => $aadharValue,
                 'panFile' => $panValue,
                 'utilityFile' => $utilityValue,
+                'extradoc1'=>$documentextra1,
+                'extradoc2'=>$documentextra2,
+                'extradoc3'=>$documentextra3
             ];
             // Create a Validator instance with the rules
+            
             $validator = Validator::make($request->all(), $rules);
+            
 
             // Check if validation fails
             if ($validator->fails()) {
@@ -98,6 +179,9 @@ class FileUploadController extends Controller
             $fileNameAadhar = "";
             $fileNamePan = "";
             $fileNameUtility = "";
+            $fileextradoc1="";
+            $fileextradoc2="";
+            $fileextradoc3="";
             if ($request->hasFile('gstFile')) {
                 $fileName = time() . '.' . $request->gstFile->getClientOriginalName();
                 //dd($fileName);
@@ -130,6 +214,21 @@ class FileUploadController extends Controller
                 $request->utilityFile->move(public_path('uploads'), $fileNameUtility);
                 //dd($fileNameUtility);
             }
+            if($request->hasfile('extradoc1'))
+            {
+                $fileextradoc1 = time() . '.' . $request->extradoc1->getClientOriginalName();
+                $request->extradoc1->move(public_path('uploads'), $fileextradoc1);   
+            }
+            if($request->hasfile('extradoc2'))
+            {
+                $fileextradoc2 = time() . '.' . $request->extradoc2->getClientOriginalName();
+                $request->extradoc2->move(public_path('uploads'), $fileextradoc2);   
+            }
+            if($request->hasfile('extradoc3'))
+            {
+                $fileextradoc3 = time() . '.' . $request->extradoc3->getClientOriginalName();
+                $request->extradoc3->move(public_path('uploads'), $fileextradoc3);   
+            }
             $attachments = Attachment::where('user_id', $currentId)->get();
             foreach ($attachments as $attachment) {
                 switch ($attachment->file_type) {
@@ -151,6 +250,15 @@ class FileUploadController extends Controller
                     case 'utilityfile':
                         $attachment->filename = $fileNameUtility;
                         break;
+                        case 'extradoc1':
+                            $attachment->filename=$fileextradoc1;
+                            break;
+                        case 'extradoc2':
+                            $attachment->filename=$fileextradoc2;
+                            break;
+                        case 'extradoc3':
+                            $attachment->filename=$fileextradoc3;
+                            break;
                     default:
                         // Handle any other cases if needed
                         break;

@@ -22,6 +22,9 @@ class DocumentProcessController extends Controller
       $adharCardNumber = $request->input('adharCardNumber');
       $panCardNumber = $request->input('panCardNumber');
       $utilityCardNumber = $request->input('utilityCardNumber');
+      $extradoc1="documentextra1";
+      $extradoc2="documentextra2";
+      $extradoc3="documentextra3";
       $request->validate([
         'adharCardNumber' => "required",
         'panCardNumber' => "required"
@@ -69,6 +72,27 @@ class DocumentProcessController extends Controller
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'file_type' => 'utilityfile'
+          ],
+          [
+            'fileno' => $extradoc1,
+            'user_id' => $currentId,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'file_type' => 'extradoc1'
+          ],
+          [
+            'fileno' => $extradoc2,
+            'user_id' => $currentId,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'file_type' => 'extradoc2'
+          ],
+          [
+            'fileno' => $extradoc3,
+            'user_id' => $currentId,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'file_type' => 'extradoc3'
           ]
         ];
         $collectionCount = 0;

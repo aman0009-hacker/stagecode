@@ -437,51 +437,67 @@ opacity: 0.9; /* Initial opacity */
                     </a>
                   </li>
                   <li>
-      
-                    <div class="dropdown ">
-                      <button class="  account-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        MY ACCOUNT
-                      </button>
-                      <ul class="dropdown-menu dropdown-menu-end">
-                          <li class="ms-1 mt-2"><a class="dropdown-item" href="/profile">
-                            <img src="{{asset('images/home-page/nav_user.png')}}" alt="Sent"style="width:32px;">
-                            <div class="dropdown-text d-inline">
-                              Profile
-                            </div>
-                          </a></li>
-                          <li class="ms-1 mt-2"><a class="dropdown-item" href="/RawMaterial">
-                            <img src="{{asset('images/home-page/nav_product.png')}}" alt="Sent"style="width:32px;">
-                            <div class="dropdown-text d-inline">
-                              Products
-                            </div>
-                          </a></li>
-                          <li class="ms-1 mt-2"><a class="dropdown-item" href="/booking">
-                            <img src="{{asset('images/home-page/Sent.png')}}" alt="Sent">
-                            <div class="dropdown-text d-inline">
-                              My Bookings
-                            </div>
-                          </a></li>
-                          <li class="ms-1 mt-2"><a class="dropdown-item" href="/order">
-                            <img src="{{asset('images/home-page/Combined-Shape.png')}}" alt="Combined-Shape">
-                            <div class="dropdown-text d-inline">
-                              My Orders
-                            </div>
-                          </a></li>
-                          <li class="ms-1 mt-2"><a class="dropdown-item" href="/user/dashboard">
-                            <img src="{{asset('images/home-page/nav_dashboard.png')}}" alt="dashboard" style="width:32px;">
-                            <div class="dropdown-text d-inline">
-                             Dashboard
-                            </div>
-                          </a></li>
-                        <li class="ms-2 mt-2"><a class="dropdown-item" href="/logout">
-                            <img src="{{asset('images/home-page/Logout.png')}}" alt="Logout">
-                            <div class="dropdown-text d-inline">
-                              Logout
-                            </div>
-                          </a></li>
-                      </ul>
-                    </div>
+                    {{-- @if(Auth::check()) --}}
+                      
+
+                      @if(Auth::check())
+                      @if($paymentstatus===null)
+                      <a href="" class="btn btn-primary account-btn">
+                        My Account
+                      </a>
+  
+                      @else
+                      <div class="dropdown ">
+                        <button class="  account-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                          aria-expanded="false">
+                          MY ACCOUNT
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="ms-1 mt-2"><a class="dropdown-item" href="/profile">
+                              <img src="{{asset('images/home-page/nav_user.png')}}" alt="Sent"style="width:32px;">
+                              <div class="dropdown-text d-inline">
+                                Profile
+                              </div>
+                            </a></li>
+                            <li class="ms-1 mt-2"><a class="dropdown-item" href="/RawMaterial">
+                              <img src="{{asset('images/home-page/nav_product.png')}}" alt="Sent"style="width:32px;">
+                              <div class="dropdown-text d-inline">
+                                Products
+                              </div>
+                            </a></li>
+                            <li class="ms-1 mt-2"><a class="dropdown-item" href="/booking">
+                              <img src="{{asset('images/home-page/Sent.png')}}" alt="Sent">
+                              <div class="dropdown-text d-inline">
+                                My Bookings
+                              </div>
+                            </a></li>
+                            <li class="ms-1 mt-2"><a class="dropdown-item" href="/order">
+                              <img src="{{asset('images/home-page/Combined-Shape.png')}}" alt="Combined-Shape">
+                              <div class="dropdown-text d-inline">
+                                My Orders
+                              </div>
+                            </a></li>
+                            <li class="ms-1 mt-2"><a class="dropdown-item" href="/user/dashboard">
+                              <img src="{{asset('images/home-page/nav_dashboard.png')}}" alt="dashboard" style="width:32px;">
+                              <div class="dropdown-text d-inline">
+                               Dashboard
+                              </div>
+                            </a></li>
+                          <li class="ms-2 mt-2"><a class="dropdown-item" href="/logout">
+                              <img src="{{asset('images/home-page/Logout.png')}}" alt="Logout">
+                              <div class="dropdown-text d-inline">
+                                Logout
+                              </div>
+                            </a></li>
+                        </ul>
+                      </div>
+                      @endif
+                      @else
+                      <a href="" class="btn btn-primary account-btn">
+                        My Account
+                      </a>
+                      @endif
+                    
                  </li>
                 </ul>
               </div>
@@ -748,6 +764,15 @@ opacity: 0.9; /* Initial opacity */
               document.getElementById('notification-badge').innerHTML=response.chatCount;
           }
       });
+      // $.ajax({
+      //   url:'rejectornotreject',
+      //   method:'get',
+      //   dataType:'json',
+      //   success:function(response)
+      //   {
+      //     console.log("success");
+      //   }
+      // });
       function fun(event)
       {
           event.preventDefault();
