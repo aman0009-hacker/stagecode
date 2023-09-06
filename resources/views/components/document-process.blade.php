@@ -1,3 +1,14 @@
+
+<style>
+  .extrahiddendoc
+  {
+    display: none!important;
+    
+  
+  }
+</style>
+
+
 @extends('layouts.guest')
 @section('content')
 <div class="main">
@@ -223,9 +234,84 @@
                   </div>
                 </div>
               </div>
-              <div class="row mb-3">
+
+
+
+
+
+{{-- start --}}
+
+              <div class="row mb-3 extrahiddendoc" id="extradocuments">
+                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="extradocId1" style="position:relative" >
+                 
+                 
+                  <div class="mb-3">
+                    <input type="file" id="extradoc1" name="extradoc1" hidden >
+                    <label for="extradoc1" class="upload-files">
+                      <div class="row text-center">
+                        <div class="col-12">
+                          <img src="{{asset('images/login-signup/upload-icon.png')}}" alt="upload file"
+                            class="img-fluid upload-icon gsi-icon-up" id="documetation1">
+                          <p class="upload-text text_ellips" id="document1">Upload Extra<br> Doc</p>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="extradocId2"style="position:relative" >
+                
+                  
+                  <div class="mb-3">
+                    <input type="file" id="extradoc2" name="extradoc2" hidden  >
+                    <label for="extradoc2" class="upload-files">
+                      <div class="row text-center">
+                        <div class="col-12">
+                          <img src="{{asset('images/login-signup/upload-icon.png')}}" alt="upload file"
+                            class="img-fluid upload-icon gsi-icon-up" id="documetation2">
+                          <p class="upload-text text_ellips" id="document2">Upload Extra <br>Doc</p>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-4 col-md-6 text-lg-end text-center" id="extradocId3" style="position:relative" >
+                  
+                  <div class="mb-3">
+                    <input type="file" id="extradoc3" name="extradoc3" hidden >
+                    <label for="extradoc3" class="upload-files">
+                      <div class="row text-center">
+                        <div class="col-12">
+                          <img src="{{asset('images/login-signup/upload-icon.png')}}" alt="upload file"
+                            class="img-fluid upload-icon gsi-icon-up" id="documetation3">
+                          <p class="upload-text text_ellips" id="document3">Upload Exta <br> Doc</p>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12  text-center">
+                    <div class="upload_validation"style="display:flex;align-items:center;width:100%;justify-content:center;">
+                      <input type="checkbox" id="show_three_more" style="width:17px;height:16px">
+                      <span class="text-danger ms-2">Are you three year old customer?</span>
+                    </div>
+                </div>
+              </div>
+
+
+{{-- end --}}
+
+
+            
+
+
+
+<div class="row mb-3">
                 <div class="col-12">
-                  <p class="format-text text-center">Choose any Format (JPG, PNG, PDF max. 5MB)</p>
+                  {{-- <p class="format-text text-center">Choose any Format (JPG, PNG, PDF max. 5MB)</p> --}}
+                  <p class="format-text text-center">Choose any Format (PDF max. 5MB)</p>
                 </div>
               </div>
               <div class="row">
@@ -242,4 +328,22 @@
       </div>
     </div>
   </div>
+  <script>
+    let extra=document.getElementById('show_three_more');
+   
+    let extradoc=document.getElementById('extradocuments');
+
+    extra.addEventListener('click',function()
+    {
+      if(extra.checked===true)
+      {
+extradoc.classList.remove('extrahiddendoc');
+      }
+      else
+      {
+        extradoc.classList.add('extrahiddendoc');
+      }
+    })
+  </script>
   @endsection
+

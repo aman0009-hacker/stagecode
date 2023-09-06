@@ -44,16 +44,57 @@ $("#continueBtn").click(function (e) {
 
 
 $(document).ready(function() {
+
+
     $('.registerBtnSignUp').prop('disabled', true);
     // Listen for change event on the checkbox
     $('#acceptTerms').change(function() {
       // Check if the checkbox is checked
+     
       if ($(this).is(':checked')) {
-        // Enable the "Register" button
-        $('.registerBtnSignUp').prop('disabled', false);
+        if($('#acceptTerms2').is(':checked'))
+        {
+
+            $('.registerBtnSignUp').prop('disabled', false);
+        }
+        else
+        {
+            $('.registerBtnSignUp').prop('disabled', true);
+        }
+               // Enable the "Register" button
       } else {
         // Disable the "Register" button
         $('.registerBtnSignUp').prop('disabled', true);
       }
     });
+
+
+
+
+    $('#acceptTerms2').change(function() {
+      // Check if the checkbox is checked
+     
+      if ($(this).is(':checked')) {
+        if($('#acceptTerms').is(':checked'))
+        {
+
+            $('.registerBtnSignUp').prop('disabled', false);
+        }
+        else
+        {
+            $('.registerBtnSignUp').prop('disabled', true);
+        }
+               // Enable the "Register" button
+      } else {
+        // Disable the "Register" button
+        $('.registerBtnSignUp').prop('disabled', true);
+      }
+    });
+
+
+
+
+
+
+
   });

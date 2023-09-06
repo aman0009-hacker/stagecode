@@ -49,7 +49,7 @@ setInterval(function () {
       }
     }
   );
-}, 15000);
+}, 1000);
 
 $("#btnSubmit").on("click", function (event) {
   event.preventDefault();

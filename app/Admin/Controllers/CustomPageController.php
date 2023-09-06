@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Models\City;
 use App\Models\Comments;
 use App\Models\Order;
+use App\Models\PaymentDataHandling;
 use App\Models\Records;
 use App\Models\State;
 use App\Models\User;
@@ -556,4 +557,15 @@ class CustomPageController extends AdminController
     }
 
     /* charts function End*/
+
+    public function paymentpay()
+    {
+        $userid=Auth::user()->id;
+        $paymentstatus=PaymentDataHandling::where('user_id', $userid)
+    ->where('data', 'Registration_Amount')
+    ->whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
+    ->first();
+   return view('components.chat',compact('paymentstatus')); 
+
+    }
 }

@@ -164,9 +164,18 @@
                      <div class="row justify-content-center">
                       <div class="col-12">
                        
-                        <div class="mb-3 form-check d-flex justify-content-center align-items-center">
-                          <input type="checkbox"  id="acceptTerms" name="accept_terms" required>
-                          <label class="form-check-label ms-2" for="acceptTerms">I accept the <a href="{{asset('policy.pdf')}}" target="_blank">Terms and Conditions</a></label>
+                        <div class="mb-3 form-check ">
+                          <div class="two-checkboxes">
+                            <div class="firstinput d-flex"style="align-items:center;margin-bottom:11px;">
+                              <input type="checkbox"  id="acceptTerms" name="accept_terms" required style="height:16px">
+                              <label class="form-check-label ms-2" for="acceptTerms">I accept the <a href="{{asset('policy.pdf')}}" target="_blank">Terms and Conditions</a></label>
+                            </div>
+                            <div class="secondinput d-flex" style="align-items:center">
+                              <input type="checkbox"  id="acceptTerms2" name="accept_terms" required style="height:16px">
+                              <label class="form-check-label ms-2" for="acceptTerms">I accept the <a href="{{asset('policy.pdf')}}" target="_blank">Terms and Conditions</a></label>
+                            </div>
+                          </div>
+                         
                         </div>
                     
                       </div>

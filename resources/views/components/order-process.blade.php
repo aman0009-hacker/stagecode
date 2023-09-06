@@ -133,13 +133,18 @@
                                             <input type="number" class="form-control" placeholder="Enter amount"
                                                 aria-label="Amount" name="amountOrder" id="amountOrder" value="200000" readonly required>
                                             <span class="input-group-text">.00</span>
+                                           
+                                        </div>
+                                        <div class="conditionterms mt-4">
+                                            <input type="checkbox"  id="advanceterms" name="accept_terms" required style="height:16px;vertical-align:-3px">
+                                            <label class="form-check-label ms-2" for="acceptTerms">I accept the <a href="{{asset('policy.pdf')}}" target="_blank">Terms and Conditions</a></label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="action">
-                                            <button type="submit" class="btn continue-btn w-100">Continue</button>
+                                            <button type="submit" class="btn continue-btn w-100 "disabled id="advancebutton">Continue</button>
                                         </div>
                                     </div>
                                 </div>
@@ -184,3 +189,21 @@
 </body>
 
 </html>
+
+<script>
+   let changeterms=document.getElementById('advanceterms');
+        
+     changeterms.addEventListener('click',function()
+     {
+        if(changeterms.checked===true)
+        {
+           document.getElementById('advancebutton').disabled=false;
+        }
+        else
+        {
+            document.getElementById('advancebutton').disabled=true;
+        }
+     })
+
+  
+</script>
