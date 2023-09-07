@@ -63,7 +63,7 @@ Route::post("/chartApproveStatus", [App\Admin\Controllers\CustomPageController::
 Route::post("/checkStatus", [LoginController::class, 'chartStatus'])->name('checkStatus');
 // Route::get('/chat', function () {
 //     return view('components.chat'); })->name('chat');
-Route::get('/chat',[CustomPageController::class,'paymentpay']);
+Route::get('/chat',[App\Admin\Controllers\CustomPageController::class,'paymentpay']);
 Route::post('chatData', [App\Admin\Controllers\CustomPageController::class, 'chatData'])->name('chatData');
 Route::post('chatDataPost', [App\Admin\Controllers\CustomPageController::class, 'chatDataPost'])->name('chatDataPost');
 Route::post('checkurl', [App\Admin\Controllers\CustomPageController::class, 'checkurl'])->name('checkurl');
