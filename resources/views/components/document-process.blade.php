@@ -82,7 +82,7 @@
               <div class="col-12">
                 <img src="{{asset('images/login-signup/document-process.png')}}" alt="document-process"
                   class="img-fluid document-process" width="117" height="160">
-                <h1 class="sign-up-text document-text">Document Upload Process</h1>
+                <h1 class="sign-up-text document-text"  style="line-height: 50px">Document Upload Process</h1>
               </div>
             </div>
             @if (Auth::check())
