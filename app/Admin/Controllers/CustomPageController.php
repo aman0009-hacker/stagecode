@@ -560,12 +560,18 @@ class CustomPageController extends AdminController
 
     public function paymentpay()
     {
-        $userid=Auth::user()->id;
-        $paymentstatus=PaymentDataHandling::where('user_id', $userid)
-    ->where('data', 'Registration_Amount')
-    ->whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
-    ->first();
-   return view('components.chat',compact('paymentstatus')); 
+        $paymentstatus=null;
+        if(Auth::check())
+        {
 
+            $userid=Auth::user()->id;
+            $paymentstatus=PaymentDataHandling::where('user_id', $userid)
+        ->where('data', 'Registration_Amount')
+        ->whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
+        ->first();
+       return view('components.chat',compact('paymentstatus')); 
+        }
+
+        return view('components.chat',compact('paymentstatus')); 
     }
 }
