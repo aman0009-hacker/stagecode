@@ -213,3 +213,10 @@ Route::get('checkuseremail/{email}/{userid}',[OTPHandleController::class,'email'
 Route::get('resendsmsotp/{idofuser}',[OTPHandleController::class,'resendsms']);
 Route::get('resendemailotp/{idofuser}',[OTPHandleController::class,'resendemail']); 
 
+Route::any("/process/invalid/cheque/{id}",[PaymentController::class, 'paymentInvalidChequeCompletion'])->name('process.invalid.cheque');
+
+Route::post("/payment/process/invalid/cheque", [PaymentController::class, 'paymentProcessInvalidChequeCompletion'])->name('payment.process.invalid.cheque');
+
+Route::get('notifi',[App\Admin\Controllers\CustomPageController::class, 'getOrdernotification']);
+Route::get('notifi/users',[App\Admin\Controllers\CustomPageController::class, 'getUserNotification']);
+
