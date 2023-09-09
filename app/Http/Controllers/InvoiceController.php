@@ -71,8 +71,18 @@ class InvoiceController extends Controller
                     $finalbalancepayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Booking_Final_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
                     if($finalbalancepayment)
                     {
-                        $balance=$balance." (Paid)";  
+                        $balance=$balance." (Paid)";
                     }
+                    else
+                    {
+
+                        $interest_amount= Order::find($orderId)->interest_amount;
+
+                        $finalInvalidChequeBalancePayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Invalid_Cheque_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
+
+                        $balance = $balance + round($interest_amount,2) ."(Paid)";
+                    }
+                    $balance_on_booking_amount= Order::find($orderId)->balance_on_booking;
                     //insert in invoice table
                     $pdf = PDF::loadView('components.invoice', [
                         'Advance_booking_amount' => $bookingAmount,
@@ -123,9 +133,11 @@ class InvoiceController extends Controller
                         }),
                         'id' => $order->id,
                         'HSNSAC' => env('HSN_SAC', ''),
-                        
+
                         'Per' => env('PER', ''),
                         'Balance' => $balance,
+                        'InterestAmount' => round($interest_amount,2),
+                        'BalanceOnBooking' => round($balance_on_booking_amount,2),
                         'Amount' => $totalAmount,
                         'CGST' => $centralTaxAmount,
                         'SGST' => $stateTaxAmount,
@@ -293,8 +305,8 @@ class InvoiceController extends Controller
                     // iii- Find the complete amount
                     $completeAmount = ($totalAmount + $totalTaxAmount) ?? 0;
                     $balance = $completeAmount - $bookingAmount;
-                   
-          
+
+
                     //code for cheque end
                     //insert in invoice table
                     $invoice = Invoice::where('order_id', $orderId)->orderBy('created_at', 'desc')->first();
@@ -306,7 +318,7 @@ class InvoiceController extends Controller
                     $finalbalancepayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Booking_Final_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
                     if($finalbalancepayment)
                     {
-                        $balance=$balance." (Paid)";  
+                        $balance=$balance." (Paid)";
                     }
                     //insert in invoice table
                     $pdf = PDF::loadView('components.invoice', [
@@ -358,7 +370,7 @@ class InvoiceController extends Controller
                         }),
                         'id' => $order->id,
                         'HSNSAC' => env('HSN_SAC', ''),
-                       
+
                         'Per' => env('PER', ''),
                         'Balance' => $balance,
                         'Amount' => $totalAmount,

@@ -91,15 +91,18 @@ class ProductCategoryController extends Controller
 
     public function storeOrder(Request $request)
     {
+
+        
         try {
             $order = new Order();
             $order->status = "New";
             $order->user_id = Auth::user()->id;
             //$order->save();
-
-
+           
+          
             //new code to generate invoice start
             if ($order->save()) {
+               
                 $lastInvoice = Invoice::orderByDesc('invoice_id')->first();
                 $newInvoiceId = $lastInvoice ? $lastInvoice->invoice_id + 1 : 1;
                 $invoice = new Invoice();
@@ -115,7 +118,10 @@ class ProductCategoryController extends Controller
             }
             //new code to generte invoice end
             if ($order->save()) {
+               
                 $latestId = Order::latest()->first()->id;
+                 $oderId=order::find($latestId);
+               
                 if (isset($latestId) && !empty($latestId)) {
                     $orderItem = new OrderItem();
                     $orderItem->order_id = $latestId;
@@ -125,8 +131,22 @@ class ProductCategoryController extends Controller
                     $orderItem->size = $request->input('size');
                     $orderItem->quantity = $request->input('quantity');
                     $orderItem->measurement = $request->input('measurement');
-                    $orderItem->save();
-                    return response()->json(["response" => "successful"]);
+                    $ordersave=$orderItem->save();
+                    if($ordersave)
+                    {
+                      
+                        $details = [
+                            'email' => 'New Order',
+                            'body' => 'Dear administrator,<p> You have received a new order that requires your immediate attention. The details of the order are as follows:</p><p>Order Number : '.$oderId->order_no.'</p><p>Customer Name : '.Auth::user()->name.'</p><p>Order Date : '.$oderId->created_at.'</p>'   
+            
+                        ];
+                        
+                        \Mail::to(Auth::user()->email)->send(new \App\Mail\PSIECMail($details));
+                        
+                    
+                        
+                        return response()->json(["response" => "successful"]);
+                    }
                 }
 
             }
@@ -326,6 +346,7 @@ class ProductCategoryController extends Controller
 
                     if ($order->save()) {
                         $latestId = Order::latest()->first()->id;
+                        $oderId=order::find($latestId);
                         foreach ($rowsValues as $data) {
                             $orderItem = new OrderItem();
                             $orderItem->order_id = $latestId;
@@ -335,7 +356,20 @@ class ProductCategoryController extends Controller
                             $orderItem->size = $data['size'];
                             $orderItem->quantity = $data['quantity'];
                             $orderItem->measurement = $data['measurement'];
-                            $orderItem->save();
+                            $orderstoring=$orderItem->save();
+
+                        
+
+                        }
+                        if($orderstoring)
+                        {
+                            $details = [
+                                'email' => 'New Order',
+                                'body' => 'Dear administrator,<p> You have received a new order that requires your immediate attention. The details of the order are as follows:</p><p>Order Number : '.$oderId->order_no.'</p><p>Customer Name : '.Auth::user()->name.'</p><p>Order Date : '.$oderId->created_at.'</p>'   
+                
+                            ];
+                            
+                            \Mail::to(Auth::user()->email)->send(new \App\Mail\PSIECMail($details));
 
                         }
                     }

@@ -5,10 +5,12 @@ namespace App\Admin\Controllers;
 use App\Models\City;
 use App\Models\Comments;
 use App\Models\Order;
-use App\Models\PaymentDataHandling;
 use App\Models\Records;
 use App\Models\State;
 use App\Models\User;
+use App\Models\Yard;
+use App\Models\AdminUser;
+use App\Models\PaymentDataHandling;
 use Carbon\Carbon;
 // use App\Models\Comments;
 use Encore\Admin\Controllers\AdminController;
@@ -229,8 +231,8 @@ class CustomPageController extends AdminController
                 $comment->read_by = Carbon::now();
                 $comment->save();
             }
-
             return response()->json(["msg" => "success", 'latestData' => $latestData]);
+
         } else {
             return response()->json(["msg" => "Record not found"]);
         }
@@ -251,6 +253,7 @@ class CustomPageController extends AdminController
                 $admin_id = $queryData->admin_id;
                 $chatCount = Comments::latest()
                     ->where('admin_id', $admin_id)
+                    ->where('commented_by', "admin")
                     ->where('user_id', Auth::user()->id)
                     ->whereNull('read_by')
                     ->count();
@@ -319,7 +322,6 @@ class CustomPageController extends AdminController
                     if ($data->save()) {
                         $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->get();
 
-                        //$latestData=Comments::where('id',$lastInsertedId->id)->first();
                         return response()->json([
                             "msg" => "success",
                             "adminid" => $adminid,
@@ -378,16 +380,15 @@ class CustomPageController extends AdminController
                 if (isset($adminid) && isset($userid)) {{
 
                     $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->get();
-                    // if($latestData)
-                    // {
-                    //     foreach($latestData as $single)
-                    //     {
 
-                    //         $single->admin_read_at=Carbon::now();
-                    //         $single->save();
+
+                    // dd($latestData);
+                    // foreach ($latestData as $comment) {
+                    //     if ($comment->commented_by == "user") {
+                    //         $comment->read_by = 'read_by_admin';
+                    //         $comment->save();
                     //     }
                     // }
-
                     //$latestData=Comments::where('id',$lastInsertedId->id)->first();
                     return response()->json([
                         "msg" => "success",
@@ -558,6 +559,97 @@ class CustomPageController extends AdminController
 
     /* charts function End*/
 
+    /*Notification in the dashboard function starts*/
+    public function getOrdernotification()
+    {
+        try
+        {
+            $newOrders = Order::latest()->where('status','New')->take(10)->get();
+
+            if(count($newOrders)>0)
+            {
+
+                foreach($newOrders as $newOrderss)
+                {
+                    $newOrder[]= User::where('id', $newOrderss->user_id)->select('name', 'last_name')->first();
+
+                }
+                return response()->json(['data' => $newOrder]);
+                // return view('admin.admin-orders-notification',compact('newOrder'));
+            }
+            else
+            {
+                // dd('joker');
+                return response()->json(['msg' => "empty", 'data' => null], 200);
+            }
+        }
+        catch (QueryException $e)
+        {
+            return response()->json(['msg' => "empty", 'data' => null], 200);
+        }
+    }
+
+    public function getUserNotification()
+    {
+        try{
+
+            $newUsers = User::latest()->where('approved',0)->select('name','last_name')->take(10)->get();
+            if(!empty($newUsers))
+            {
+                return response()->json(['data' => $newUsers]);
+            }
+            else
+            {
+                return response()->json(['msg' => "empty", 'data' => null], 200);
+            }
+        }
+        catch (QueryException $e)
+        {
+            return response()->json(['msg' => "empty", 'data' => null], 200);
+        }
+    }
+    public function getMessageNotification()
+    {
+        try{
+
+            $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
+            ->where('comments.user_id', auth()->user()->id)
+            ->orderBy('comments.created_at', 'desc')
+            ->select('comments.*')
+            ->first();
+            // dd($queryData);
+
+        if ($queryData) {
+            $admin_id = $queryData->admin_id;
+            $chatCount = Comments::latest()
+                ->where('admin_id', $admin_id)
+                ->where('commented_by', "user")
+                ->whereNull('read_by')
+                ->distinct('user_id') // Get distinct user IDs with unread messages
+                ->pluck('user_id'); // Pluck the user IDs
+
+            $usernames = [];
+            foreach ($chatCount as $user) {
+                $userModel = User::find($user);
+
+                if ($userModel) {
+                    $username = $userModel->name . ' ' . $userModel->last_name;
+                    $usernames[] = $username;
+                }
+            }
+            return response()->json(["msg" => "success", 'data' => $username]);
+        } else {
+            return response()->json(["msg" => "success", 'chatCount' => '']);
+        }
+        }
+        catch (QueryException $e)
+        {
+            return response()->json(['msg' => "empty", 'data' => null], 200);
+        }
+    }
+
+    /*Notification in the dashboard function ends*/
+
     public function paymentpay()
     {
         $paymentstatus=null;
@@ -569,9 +661,9 @@ class CustomPageController extends AdminController
         ->where('data', 'Registration_Amount')
         ->whereIn('payment_status', ['RIP', 'SIP', 'SUCCESS'])
         ->first();
-       return view('components.chat',compact('paymentstatus')); 
+       return view('components.chat',compact('paymentstatus'));
         }
 
-        return view('components.chat',compact('paymentstatus')); 
+        return view('components.chat',compact('paymentstatus'));
     }
 }

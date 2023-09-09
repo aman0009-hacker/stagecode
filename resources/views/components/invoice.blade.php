@@ -174,7 +174,7 @@
         </tr>
         @foreach ($DescriptionofGoods as $index => $item)
         <tr>
-          
+
           <td style="height: 70px; border-bottom: none">{{ $index + 1 }}</td>
           <td style="border-bottom: none">{{ $item['category_name'] }}</td>
           <td style="border-bottom: none">{{ $HSNSAC }}</td>
@@ -237,7 +237,36 @@
             {{$Advance_booking_amount}}
           </td>
         </tr>
-
+        @if(isset($InterestAmount))
+        <tr>
+          <td style="border-top: none; border-bottom: none">1.</td>
+          <td style="border-top: none; border-bottom: none; text-align: end">
+            Interest
+          </td>
+          <td style="border-top: none; border-bottom: none"></td>
+          <td style="border-top: none; border-bottom: none"></td>
+          <td style="border-top: none; border-bottom: none"></td>
+          <td style="border-top: none; border-bottom: none"></td>
+          <td style="border-top: none; border-bottom: none; text-align: end">
+            {{$InterestAmount}}
+          </td>
+        </tr>
+        @endif
+        @if(isset($BalanceOnBooking))
+        <tr>
+          <td style="border-top: none; border-bottom: none">1.</td>
+          <td style="border-top: none; border-bottom: none; text-align: end">
+            Balance on booking
+          </td>
+          <td style="border-top: none; border-bottom: none"></td>
+          <td style="border-top: none; border-bottom: none"></td>
+          <td style="border-top: none; border-bottom: none"></td>
+          <td style="border-top: none; border-bottom: none"></td>
+          <td style="border-top: none; border-bottom: none; text-align: end">
+            {{$BalanceOnBooking}}
+          </td>
+        </tr>
+        @endif
         <tr>
           <td style="border-top: none; border-bottom: none"></td>
           <td style="border-top: none; border-bottom: none; text-align: end">

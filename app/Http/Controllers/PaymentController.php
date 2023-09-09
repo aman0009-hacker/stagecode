@@ -883,10 +883,6 @@ class PaymentController extends Controller
 
             if (Auth::check()) {
                 $order_id = Crypt::decryptString($id);
-                // $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
-                // Session::forget('txtOrderGlobalModalCompleteID');
-                // Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
-                //     return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID'));
                 $address = Address::where('user_id', Auth::user()->id)->latest()->first() ?? '';
                 $states = State::all();
                 $txtOrderGlobalModalCompleteID = $order_id;
@@ -914,8 +910,80 @@ class PaymentController extends Controller
             Log::info($ex->getMessage());
         }
 
+    }    public function paymentInvalidChequeCompletion(Request $request, $id)
+    {
+        // $order_id = Crypt::decryptString($id);
+        // dd($order_id);
+        try {
+
+            if (Auth::check()) {
+                $order_id = Crypt::decryptString($id);
+                // dd($order_id);
+                // $address = Address::where('user_id', Auth::user()->id)->latest()->first() ?? '';
+                // $states = State::all();
+                $txtOrderGlobalModalCompleteID = $order_id;
+                $amount= Order::where('id',$txtOrderGlobalModalCompleteID)->pluck('total_cheque_amount_with_tax');
+                // dd($amount);
+                Session::forget('txtOrderGlobalModalCompleteID');
+                if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
+
+                    Session::put('txtOrderGlobalModalCompleteID', Session::get('txtOrderGlobalModalCompleteIDAlternative') ?? '');
+
+                } else {
+                    Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
+
+
+                }
+                // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
+                return view('components.order-process-invalid-cheque', compact('txtOrderGlobalModalCompleteID','amount'));
+                // }
+            } else {
+
+
+            return view('auth.login');
+            }
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+        }
+
     }
 
+
+    public function paymentProcessInvalidChequeCompletion(Request $request)
+    {
+        // dd($request->all());
+        // dd(Auth::user()->id);
+        try {
+            Session::forget('GLOBALUSERID');
+            Session::put('GLOBALUSERID', Auth::user()->id ?? '');
+            $amount="";
+
+            $validAmount = Order::where('id',$request->maindatas)->pluck('total_cheque_amount_with_tax');
+            $validator = Validator::make($request->all(), [
+                'invalidChequeAmount' => ['required', 'in:'.$validAmount[0]],
+            ]);
+            if ($validator->fails()) {
+                $amount = $validAmount[0];
+            } else {
+                }
+            $amount = $request->input('invalidChequeAmount');
+            $reference_no = time() . Str::random(5);
+            $paymentDataHandling = new PaymentDataHandling();
+            $paymentDataHandling->reference_no = $reference_no;
+            $paymentDataHandling->paymode = 'online';
+            $paymentDataHandling->user_id = Auth::user()->id ?? '';
+            $paymentDataHandling->data = "Invalid_Cheque_Amount";
+            $paymentDataHandling->user_amount = $amount;
+            $paymentDataHandling->order_id = $request->maindatas ?? '';
+            $paymentDataHandling->save();
+            $optionalField = null;
+            $base = new EazyPayController();
+            $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
+            return redirect()->to($url);
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+        }
+    }
 
       public function paymentMethodChange($paymentModes,$data)
     {

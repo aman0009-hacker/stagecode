@@ -52,7 +52,7 @@ class UserController extends AdminController
     try {
       $grid = new Grid(new User());
       //$grid->column('id', __('Id'));
-     
+
       $grid->column('name', __('First Name'));
       //   $grid->column('name', __('First Name'))->display(function ($value) {
       //     return $this->getNameAttribute($value);
@@ -79,6 +79,7 @@ class UserController extends AdminController
           return "Rejected";
         }
       });
+
       // ->expand(function ($model) {
       //         $query = DB::table('comments')->where('approved', $model->approved)->where('admin_id',Admin::user()->id)->get();
       //         if ($model->approved == 0) {
@@ -129,6 +130,7 @@ class UserController extends AdminController
         }
         $actions->add(new RegisterWithPsiec);
       });
+
       $grid->batchActions(function ($batchActions) {
         $batchActions->disableDelete(); // Disable batch delete for all cases
       });
@@ -215,12 +217,15 @@ class UserController extends AdminController
         $date = Carbon::now();
         $allorders = Order::where('user_id', $user_id)->get();
         $orderDetails = [];
-
+        $orderDetails2 = [];
         if (isset($allorders) && !empty($allorders)) {
             foreach ($allorders as $order) {
                 $orderData = [
                     "Order No" => "(N/A)",
-                    "Booking Initial Amount" => "<span style='color:red;font-weight:600'>(Unpaid)</span>",
+                    "Balance On Booking" => "(N/A)",
+                    "Booking Transaction ID" => "(N/A)",
+                    "Booking Amount" => "<span style='color:red;font-weight:600'>(Unpaid)</span>",
+                    "Final Transaction ID" => "(N/A)",
                     "Final Amount" => "<span style='color:red;font-weight:600'>(Unpaid)</span>",
                     "Final Payment Mode" => "<span style='color:black;font-weight:600'>(N/A)</span>",
                     "Cheque Info" => "<span style='color:black;font-weight:600'>(N/A)</span>",
@@ -234,16 +239,62 @@ class UserController extends AdminController
                         $orderData["Order No"] = "(N/A)";
                     }
 
+                    $balance_on_booking = Order::where('id', $order->id)->where('user_id', $user_id)->value('balance_on_booking');
+                    if(isset($balance_on_booking) && !empty($balance_on_booking))
+                    {
+                        $orderData['Balance On Booking'] = $balance_on_booking;
+                    }
+                    else
+                    {
+                        $orderData['Balance On Booking'] = "(N/A)";
+                    }
+
+
+                $final_transaction = PaymentDataHandling::where('order_id', $order->id)->where('user_id', $user_id)->where('data', 'Booking_Final_Amount')->pluck('transaction_id')->last();
+
+                $invalid_cheque_transaction = PaymentDataHandling::where('order_id', $order->id)->where('user_id', $user_id)->where('data', 'Invalid_Cheque_Amount')->whereIn('payment_status', ['SUCCESS','RIP','SIP'])->pluck('transaction_id')->last();
+
+                if(isset($final_transaction) && !empty($final_transaction))
+                {
+                    $orderData["Final Transaction ID"] = $final_transaction;
+                }
+                elseif(isset($invalid_cheque_transaction) && !empty($invalid_cheque_transaction))
+                {
+                    $orderData["Final Transaction ID"] = $invalid_cheque_transaction;
+                }
+                else
+                {
+                    $orderData["Final Transaction ID"] = "(N/A)";
+                }
+
+                // dd($final_transaction);
+
+                $booking_transaction = PaymentDataHandling::where('order_id', $order->id)->where('user_id', $user_id)->where('data','Booking_Amount')->pluck('transaction_id')->last();
+                if(isset($booking_transaction) && !empty($booking_transaction))
+                    {
+                        $orderData["Booking Transaction ID"] = $booking_transaction;                    }
+                    else
+                    {
+                        $orderData["Booking Transaction ID"] = "(N/A)";
+
+                    }
                     $initial_amount = PaymentDataHandling::where('order_id', $order->id)->where('user_id', $user_id)->where('data', 'Booking_Amount')->get()->last();
                     if (isset($initial_amount) && !empty($initial_amount) && isset($initial_amount->transaction_amount) && !empty($initial_amount->transaction_amount)) {
-                        $orderData['Booking Initial Amount'] = $initial_amount->transaction_amount . "   <span style='color:green;font-weight:600'>(Outstanding Amount)</span>";
+                        $orderData['Booking Amount'] = $initial_amount->transaction_amount;
                     } else {
-                        $orderData['Booking Initial Amount'] = "<span style='color:red;font-weight:600'>(Unpaid)</span>";
+                        $orderData['Booking Amount'] = "<span style='color:red;font-weight:600'>(Unpaid)</span>";
                     }
 
                     $final_amount = PaymentDataHandling::where('order_id', $order->id)->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->where('user_id', $user_id)->where('data', 'Booking_Final_Amount')->get()->last();
+                    $invalid_cheque_amount = PaymentDataHandling::where('order_id', $order->id)
+                    ->where('user_id', $user_id)
+                    ->where('data', 'Invalid_Cheque_Amount')
+                    ->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])
+                    ->get()
+                    ->last();
+
                     if (isset($final_amount) && !empty($final_amount) && isset($final_amount->payment_status) && !empty($final_amount->payment_status)) {
-                      if (strtolower($final_amount->payment_status) === strtolower('success') || strtolower($final_amount->payment_status) === strtolower('rip') || strtolower(strtolower($final_amount->payment_status)) === strtolower('sip'))  {
+                    if (strtolower($final_amount->payment_status) === strtolower('success') || strtolower($final_amount->payment_status) === strtolower('rip') || strtolower(strtolower($final_amount->payment_status)) === strtolower('sip'))  {
                             $totalAmount = $final_amount->transaction_amount;
                             // $cgstPercent = env('CGST', 9);
                             // $sgstPercent = env('SGST', 9);
@@ -255,15 +306,32 @@ class UserController extends AdminController
                             $invoice=Invoice::where('order_id', $order->id)->orderBy('created_at', 'desc')->first();
                             //find tax
                             if (isset($invoice) && isset($invoice->amount) && isset($invoice->totaltax)) {
-                              $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})" . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+                              $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})";
                           } else {
-                              $orderData['Final Amount'] = $totalAmount . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+                              $orderData['Final Amount'] = $totalAmount;
                           }
                             //$orderData['Final Amount'] = $totalAmount . "   <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
                         } else {
                             $orderData['Final Amount'] = "<span style='color:red;font-weight:600'>(Unpaid)</span>";
                         }
-                    } else {
+                    }
+                    elseif(isset($invalid_cheque_amount) && !empty($invalid_cheque_amount))
+                    {
+
+                    $totalAmount = $invalid_cheque_amount->transaction_amount;
+                    $invoice=Invoice::where('order_id', $order->id)->orderBy('created_at', 'desc')->first();
+                    $interestAmount = Order::where('id', $order->id)->where('user_id', $user_id)->value('interest_amount');
+                    $interestAmountRound = round($interestAmount,2);
+                    if (isset($invoice) && isset($invoice->amount)) {
+                    //   $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})" . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+                      $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax}, Interest: {$interestAmountRound})" ;
+                    //   dd($orderData['Final_Amount']);
+                  } else {
+                      $orderData['Final Amount'] = $totalAmount . " <span style='color:green;font-weight:600'></span>";
+                  }
+                    }
+
+                    else {
                         $final_check_amount = Order::where('user_id', $user_id)->where('id', $order->id)->where('payment_mode', 'cheque')->get()->last();
 
                         if (isset($final_check_amount) &&
@@ -314,15 +382,67 @@ class UserController extends AdminController
                 $orderDetails[] = $orderData;
             }
         }
+        $payment=PaymentDataHandling::where('user_id',$this->getKey())->where('data','Registration_Amount')->get();
+
+
+
+        foreach($payment as $singlepayment)
+        {
+          $registration=[
+            "transaction_id"=>"(N/A)",
+            "registration_amount"=>"(N/A)",
+            "status"=>"(N/A)",
+            "date"=>"(N/A)"
+          ];
+          if(isset($singlepayment->transaction_id) && !empty($singlepayment->transaction_id))
+          {
+
+            $registration["transaction_id"]=$singlepayment->transaction_id;
+          }
+          else
+          {
+            $registration["transaction_id"]="<span style='color:red;font-weight:600'>(N/A)</span>";
+          }
+
+          $registration["registration_amount"]=$singlepayment->transaction_amount."<span style='color:green;font-weight:600'>(Paid)</span>";
+
+          if(isset($singlepayment->payment_status) && !empty($singlepayment->payment_status))
+          {
+            $registration["status"]=$singlepayment->payment_status;
+
+          }
+          else
+          {
+            $registration["status"]="<span style='color:red;font-weight:600'>".$singlepayment->payment_status."</span>";
+          }
+          $registration["date"]=$singlepayment->transaction_date;
+
+
+
+          $orderDetails2[]=$registration;
+
+        }
+
 
         // Define the column headers explicitly
-        $headers = ['Order No', 'Booking Initial Amount', 'Final Amount', ' Final Payment Mode', 'Cheque Info'];
+        $headers = ['Order No','Balance on Booking','Booking Transaction ID', 'Booking Amount','Final Transaction ID', 'Final Amount', ' Final Payment Mode', 'Cheque Info'];
 
+            $headers2 = ['Transaction Id', 'Registration Amount', 'Status', 'Date'];
+
+
+
+
+
+
+            $table2=  new Table($headers2, $orderDetails2);
+            $table1=  new Table($headers, $orderDetails);
+            $html1 = $table1->render();
+            $html2 = $table2->render();
         // Return the Table instance with all order data and headers
-        return new Table($headers, $orderDetails);
+        return $html2 . '<br><br>' . $html1;
     });
-    
-    
+
+
 
 
 
@@ -363,7 +483,7 @@ class UserController extends AdminController
                 //return $updatedAt;
                 $customerStartDate = Carbon::parse($updatedAt);
                 //insert member at in DB
-                // $user=User::find($userID); 
+                // $user=User::find($userID);
                 // $user->member_at=Carbon::parse($customerStartDate)->format('Y-m-d');
                 // $user->save();
                 //insert member at in DB
@@ -379,6 +499,9 @@ class UserController extends AdminController
           }
         }
       });
+
+
+
       $grid->filter(function ($filter) {
         $filter->disableIdFilter();
         $filter->column(1 / 2, function ($filter) {
@@ -395,10 +518,19 @@ class UserController extends AdminController
           $filter->like('contact_number', __('Contact'));
         });
       });
+
+
       //$grid->disableRowSelector();
-      $grid->model()->whereHas('attachment', function ($query) {
-        $query->whereNotNull('filename');
-      })->orderByDesc('created_at');
+
+
+    //   $grid->model()->whereHas('attachment', function ($query) {
+    //     $query->whereNotNull('filename');
+    //   })->orderByDesc('created_at');
+
+
+
+
+
       return $grid;
     } catch (\Throwable $ex) {
       Log::info($ex->getMessage());
@@ -444,7 +576,7 @@ class UserController extends AdminController
       // disable `Continue Creating` checkbox
       $footer->disableCreatingCheck();
     });
-    // $form->footer->class('form-footer'); 
+    // $form->footer->class('form-footer');
     return $form;
   }
 }

@@ -57,7 +57,7 @@ class OrderController extends AdminController
             $grid->column('user_id', __('User'))->display(function ($user_id) {
                 return User::find($user_id)->name . ' ' . User::find($user_id)->last_name ?? '';
             });
-            $grid->column('id', __('Order Items'))->display(function ($id) {
+            $grid->column('id', __('Items'))->display(function ($id) {
                 //$count = count($comments);
                 //return "<span class='label label-warning'>{$count}</span>";
                 return "items ( " . OrderItem::where('order_id', $id)->count() . " )";
@@ -80,7 +80,7 @@ class OrderController extends AdminController
             // $grid->column('user_id', __('User'))->display(function($user_id)
             // {
             // });
-            $grid->column('amount',__('Product Total Price'))->display(function($value)
+            $grid->column('amount',__('Product Price'))->display(function($value)
             {
                 if(isset($value)&&!empty($value))
                 {
@@ -91,7 +91,7 @@ class OrderController extends AdminController
                 {
                     return "N/A";
                 }
-                
+
             });
             $grid->column('status', __('Status'));
 
@@ -141,7 +141,7 @@ class OrderController extends AdminController
                     return $value;
                 }
             });
-            $grid->column('payable_amount', __('Payable Amount[Cheque]'))->display(function ($value) {
+            $grid->column('payable_amount', __('Payable Amount'))->display(function ($value) {
                 $order = Order::with('user')->find($this->id);
                 if ($order) {
                     // Order found, you can access the user_id now
@@ -190,7 +190,6 @@ class OrderController extends AdminController
 
                                         // Calculate interest amount within the allowed period
                                         $interestWithinAllowedPeriod = $this->check_amount * $date * $interestRateWithin20Days * 1 / 365;
-
                                         if ($date == 20) {
                                             $order = Order::with('user')->find($this->id);
                                             $order->interest_within_allowed_period = $interestWithinAllowedPeriod;
@@ -200,14 +199,22 @@ class OrderController extends AdminController
 
                                         $order = Order::with('user')->find($this->id);
                                         $final_interst = $date - 20;
+                                        // dd($order->interest_within_allowed_period);
                                         $interestWithinAllowedPeriod = $this->check_amount * $final_interst * $additionalInterestRateBeyond20Days * 1 / 365;
                                         $interestWithinAllowedPeriod = $interestWithinAllowedPeriod + $order->interest_within_allowed_period;
                                     } else {
                                         return "Wrong Check";
                                     }
                                     $totalAmount = $chequeAmount + $interestWithinAllowedPeriod;
-
+                                    $order->interest_amount = $interestWithinAllowedPeriod;
+                                    $order->total_cheque_amount_with_tax = $totalAmount;
+                                    $order->save();
                                     return round($totalAmount, 2);
+
+                                     /*how to get the user id and order id here to update a new column called interest amount*/
+                                            // $order->interest_amount = $totalInterestAmount;
+                                            // $order->save();
+                                            /*need to save here the interest amount*/
                                 } else {
                                     return "N/A";
                                 }
@@ -223,7 +230,6 @@ class OrderController extends AdminController
                                         ->limit(1);
                                 }
                             ])->find($userID);
-
                             //return $user;
                             if ($user) {
                                 if ($user->paymentDataHandling->isNotEmpty()) {
@@ -248,7 +254,7 @@ class OrderController extends AdminController
                                             $dueDate = $chequePaymentDate->copy()->addDays($allowedDays);
                                             // Calculate the number of days within the allowed period
                                             $daysWithinAllowedPeriod = min($dueDate->diffInDays(Carbon::now()), $allowedDays);
-                                            dd($daysWithinAllowedPeriod);
+                                            // dd($daysWithinAllowedPeriod);
                                             if ($daysWithinAllowedPeriod === 0) {
                                                 // Calculate interest amount within the allowed period (0% interest)
                                                 $interestWithinAllowedPeriod = 0;

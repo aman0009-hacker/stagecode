@@ -71,7 +71,7 @@
                                             style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;">
                                             </h1>
                                             <h1>{{ $details['email'] }}</h1>
-                                            <p>{{ $details['body'] }}</p>
+                                            <p>{!! $details['body'] !!}</p>
                                             @if (  isset($details['status']) && $details['status'] == 'account approved')
                                             <p>To proceed with the next steps, kindly click on the following link:</p>
                                             <a href="{{ env('APP_URL') }}PaymentDetails/{{$details['encryptedID']}}">click here</a>
@@ -85,6 +85,9 @@
                                             @endif
                                             @if(isset($details['status']) && $details['status']==='Dispatched')
                                             <a href="{{ env('APP_URL') }}payment/complete/process/{{$details['encryptedID']}}/{{$details['status']}}">click here</a>
+                                            @endif
+                                            @if(isset($details['status']) && $details['status']==='Invalidcheque')
+                                            <a href="{{ env('APP_URL') }}process/invalid/cheque/{{$details['orderid']}}">click here</a>
                                             @endif
                                             <p>Thank you once again for choosing our services.</p>
                                             <p>Best regards,</p>
