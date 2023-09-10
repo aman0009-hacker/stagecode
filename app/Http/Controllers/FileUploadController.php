@@ -22,6 +22,7 @@ class FileUploadController extends Controller
             $gst = $msme = $itr = $aadhar = $pan = $utility = 0;
             $gstValue = $msmeValue = $itrValue = $aadharValue = $panValue = $utilityValue = 0;
             $queryDocument = Attachment::where('user_id', $currentId)->get();
+         
 
             foreach ($queryDocument as $data) {
                 if (isset($data->file_type) && $data->file_type != "" && $data->file_type == "gstfile" && isset($data->fileno) && !empty($data->fileno)) {
@@ -183,56 +184,58 @@ class FileUploadController extends Controller
             $fileextradoc2="";
             $fileextradoc3="";
             if ($request->hasFile('gstFile')) {
-                $fileName = time() . '.' . $request->gstFile->getClientOriginalName();
+                $fileName = time() . '1.' . $request->gstFile->getClientOriginalName();
                 //dd($fileName);
                 $request->gstFile->move(public_path('uploads'), $fileName);
             }
             //dd($fileName);
             if ($request->hasFile('msmeFile')) {
-                $fileNameMsme = time() . '.' . $request->msmeFile->getClientOriginalName();
+                $fileNameMsme = time() . '2.' . $request->msmeFile->getClientOriginalName();
                 $request->msmeFile->move(public_path('uploads'), $fileNameMsme);
             }
             //dd($fileNameMsme);
             if ($request->hasFile('itrFile')) {
-                $fileNameItr = time() . '.' . $request->itrFile->getClientOriginalName();
+                $fileNameItr = time() . '3.' . $request->itrFile->getClientOriginalName();
                 $request->itrFile->move(public_path('uploads'), $fileNameItr);
                 //dd($fileNameItr);
             }
             if ($request->hasFile('aadharFile')) {
-                $fileNameAadhar = time() . '.' . $request->aadharFile->getClientOriginalName();
+                $fileNameAadhar = time() . '4.' . $request->aadharFile->getClientOriginalName();
                 $request->aadharFile->move(public_path('uploads'), $fileNameAadhar);
                 //dd($fileNameAadhar);
             }
 
             if ($request->hasFile('panFile')) {
-                $fileNamePan = time() . '.' . $request->panFile->getClientOriginalName();
+                $fileNamePan = time() . '5.' . $request->panFile->getClientOriginalName();
                 $request->panFile->move(public_path('uploads'), $fileNamePan);
                 //dd($fileNamePan);
             }
             if ($request->hasFile('utilityFile')) {
-                $fileNameUtility = time() . '.' . $request->utilityFile->getClientOriginalName();
+                $fileNameUtility = time() . '6.' . $request->utilityFile->getClientOriginalName();
                 $request->utilityFile->move(public_path('uploads'), $fileNameUtility);
                 //dd($fileNameUtility);
             }
             if($request->hasfile('extradoc1'))
             {
-                $fileextradoc1 = time() . '.' . $request->extradoc1->getClientOriginalName();
+                $fileextradoc1 = time() . '7.' . $request->extradoc1->getClientOriginalName();
                 $request->extradoc1->move(public_path('uploads'), $fileextradoc1);   
             }
             if($request->hasfile('extradoc2'))
             {
-                $fileextradoc2 = time() . '.' . $request->extradoc2->getClientOriginalName();
+                $fileextradoc2 = time() . '8.' . $request->extradoc2->getClientOriginalName();
                 $request->extradoc2->move(public_path('uploads'), $fileextradoc2);   
             }
             if($request->hasfile('extradoc3'))
             {
-                $fileextradoc3 = time() . '.' . $request->extradoc3->getClientOriginalName();
+                $fileextradoc3 = time() . '9.' . $request->extradoc3->getClientOriginalName();
                 $request->extradoc3->move(public_path('uploads'), $fileextradoc3);   
             }
             $attachments = Attachment::where('user_id', $currentId)->get();
             foreach ($attachments as $attachment) {
                 switch ($attachment->file_type) {
                     case 'gstfile':
+                      
+                        
                         $attachment->filename = $fileName;
                         break;
                     case 'msmefile':
@@ -251,6 +254,7 @@ class FileUploadController extends Controller
                         $attachment->filename = $fileNameUtility;
                         break;
                         case 'extradoc1':
+                           
                             $attachment->filename=$fileextradoc1;
                             break;
                         case 'extradoc2':
