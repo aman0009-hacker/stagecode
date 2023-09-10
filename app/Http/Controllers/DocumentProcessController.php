@@ -22,9 +22,9 @@ class DocumentProcessController extends Controller
       $adharCardNumber = $request->input('adharCardNumber');
       $panCardNumber = $request->input('panCardNumber');
       $utilityCardNumber = $request->input('utilityCardNumber');
-      $extradoc1="documentextra1";
-      $extradoc2="documentextra2";
-      $extradoc3="documentextra3";
+      $extradoc1="";
+      $extradoc2="";
+      $extradoc3="";
       $request->validate([
         'adharCardNumber' => "required",
         'panCardNumber' => "required"
