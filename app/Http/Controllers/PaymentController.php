@@ -913,7 +913,6 @@ class PaymentController extends Controller
     }    public function paymentInvalidChequeCompletion(Request $request, $id)
     {
         // $order_id = Crypt::decryptString($id);
-        // dd($order_id);
         try {
 
             if (Auth::check()) {
@@ -934,6 +933,7 @@ class PaymentController extends Controller
 
 
                 }
+
                 // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
                 return view('components.order-process-invalid-cheque', compact('txtOrderGlobalModalCompleteID','amount'));
                 // }
@@ -952,18 +952,27 @@ class PaymentController extends Controller
     public function paymentProcessInvalidChequeCompletion(Request $request)
     {
         // dd($request->all());
-        // dd(Auth::user()->id);
         try {
             Session::forget('GLOBALUSERID');
             Session::put('GLOBALUSERID', Auth::user()->id ?? '');
             $amount="";
 
-            $validAmount = Order::where('id',$request->maindatas)->pluck('total_cheque_amount_with_tax');
+            $orderId=$request->maindatas;
+            // $validAmount = Order::find($orderId)->value('total_cheque_amount_with_tax');
+            $validAmount = Order::find($orderId);
+            $chequeAmount =$validAmount->total_cheque_amount_with_tax;
+            // dd($chequeAmount);
+            if ($validAmount) {
+                // Update the payment_mode field
+                $validAmount->payment_mode = 'online';
+                $validAmount->save();
+            }
+
             $validator = Validator::make($request->all(), [
-                'invalidChequeAmount' => ['required', 'in:'.$validAmount[0]],
+                'invalidChequeAmount' => ['required', 'in:'.$chequeAmount],
             ]);
             if ($validator->fails()) {
-                $amount = $validAmount[0];
+                $amount = $chequeAmount;
             } else {
                 }
             $amount = $request->input('invalidChequeAmount');
@@ -974,7 +983,7 @@ class PaymentController extends Controller
             $paymentDataHandling->user_id = Auth::user()->id ?? '';
             $paymentDataHandling->data = "Invalid_Cheque_Amount";
             $paymentDataHandling->user_amount = $amount;
-            $paymentDataHandling->order_id = $request->maindatas ?? '';
+            $paymentDataHandling->order_id = $orderId ?? '';
             $paymentDataHandling->save();
             $optionalField = null;
             $base = new EazyPayController();

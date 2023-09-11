@@ -19,7 +19,7 @@ class InvoiceController extends Controller
     {
         try {
             $orderId = Crypt::decrypt($request->input('orderIDInvoice'));
-            //dd($orderId);
+            // dd($request);
             //return $orderId;
             if (isset($orderId) && !empty($orderId)) {
                 //dd(Crypt::decrypt($orderIDInvoice));
@@ -36,6 +36,7 @@ class InvoiceController extends Controller
                     ])->where('id', $orderId)
                         ->where('user_id', $userId)
                         ->first();
+
                     if (
                         !isset($order->invoices) || $order->invoices()->count() === 0 ||
                         !isset($order->address) || $order->address()->count() === 0 ||
@@ -44,13 +45,10 @@ class InvoiceController extends Controller
                     ) {
                         return redirect()->route('order')->with('error', 'Order not found.');
                     }
-                    //dd($order);
-                    // $totalAmount = $order->payments
-                    //     ->where('data', 'Booking_Final_Amount')
-                    //     ->where('payment_status', 'SUCCESS')
-                    //     ->value('transaction_amount') ?: ($order->payment_mode === 'cheque' ? $order->check_amount : 0);
+                    
                     $totalAmount = $order->amount;
                     $bookingAmount = $order->payments->where('data', 'Booking_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->value('transaction_amount');
+                    $interest_amount=0;
                     // ii- Find tax amount
                     $cgstPercent = env('CGST', 9); // Set your CGST percentage here (e.g., 9%)
                     $sgstPercent = env('SGST', 9);
@@ -63,6 +61,7 @@ class InvoiceController extends Controller
                     $balance = $completeAmount - $bookingAmount;
                     //insert in invoice table
                     $invoice = Invoice::where('order_id', $orderId)->orderBy('created_at', 'desc')->first();
+
                     $invoice->amount = $totalAmount;
                     $invoice->totaltax = $totalTaxAmount;
                     $invoice->initial_amount = $bookingAmount;
@@ -83,6 +82,12 @@ class InvoiceController extends Controller
                         $balance = $balance + round($interest_amount,2) ."(Paid)";
                     }
                     $balance_on_booking_amount= Order::find($orderId)->balance_on_booking;
+                    if($balance_on_booking_amount)
+                    {
+                        $balance = $completeAmount." (Paid)";
+                    }
+                    // dd($balance_on_booking_amount);
+
                     //insert in invoice table
                     $pdf = PDF::loadView('components.invoice', [
                         'Advance_booking_amount' => $bookingAmount,
@@ -161,6 +166,7 @@ class InvoiceController extends Controller
                             ];
                         }),
                     ]);
+
                     return $pdf->download('invoice.pdf');
                 } else if ($PaymentMode == "cheque") {
                     //code for cheque start
