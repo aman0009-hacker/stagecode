@@ -408,7 +408,7 @@ class UserController extends AdminController
 
           if(isset($singlepayment->payment_status) && !empty($singlepayment->payment_status))
           {
-            $registration["status"]=$singlepayment->payment_status;
+            $registration["status"]="SUCCESS";
 
           }
           else

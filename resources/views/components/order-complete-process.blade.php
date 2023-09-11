@@ -307,7 +307,7 @@
                                     <div class="col-12">
                                         <div class="action">
                                          
-                                            @if('App\Models\order'::find(Session::get('change_the_code'))->balance_on_booking??'')
+                                            @if(!is_null($orderdata))
                                             
                                             
                                             
@@ -629,6 +629,7 @@
             $('#form').submit(function(event) {
                 event.preventDefault(); // Prevent the default form submission
                 var formData = $(this).serialize();
+                
                 // Send AJAX request
                 $.post('/payment/complete/process/address', formData)
                     .done(function(response) {

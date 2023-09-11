@@ -620,7 +620,7 @@ class PaymentController extends Controller
         $states = State::all();
         $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
         // dd($txtOrderGlobalModalCompleteID);
-        $amount= Invoice::where('order_id',$txtOrderGlobalModalCompleteID)->latest()->pluck('balance');
+       
         Session::forget('txtOrderGlobalModalCompleteID');
         // if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
         //     Session::put('txtOrderGlobalModalCompleteID', Session::get('txtOrderGlobalModalCompleteIDAlternative') ?? '');
@@ -636,9 +636,17 @@ class PaymentController extends Controller
                     $gstfile=$singleDocument->fileno;
                 }
               }
+              $amount= Invoice::where('order_id',$txtOrderGlobalModalCompleteID)->latest()->pluck('balance');
+           
+              $orderdata = order::where('id', $txtOrderGlobalModalCompleteID)->value('balance_on_booking');
+            
+              if(!$orderdata)
+              {
+                 $orderdata=null;
+              }
         // }
         // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
-        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address','amount','gstfile'));
+        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address','amount','gstfile','orderdata'));
         // }
     }
 
@@ -651,7 +659,10 @@ class PaymentController extends Controller
 
     public function paymentCompleteProcessAddress(Request $request)
     {
+
         try {
+
+          
             $validator1 = Validator::make(
                 $request->all(),
                 [
