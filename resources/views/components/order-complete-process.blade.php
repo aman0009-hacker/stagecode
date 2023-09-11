@@ -306,7 +306,17 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="action">
+                                         
+                                            @if('App\Models\order'::find(Session::get('change_the_code'))->balance_on_booking??'')
+                                            
+                                            
+                                            
+                                            <button type="submit" class="btn continue-btn w-100" id="show_on_interst">Continue</button>
+                                            @else
+                                            
                                             <button type="submit" class="btn continue-btn w-100">Continue</button>
+                                            
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -732,6 +742,23 @@
                         })
                     }
                 }) ;
+
+                $('#show_on_interst').click(function(event)
+                {
+event.preventDefault();
+                    swal.fire({
+                            title: 'Already Paid',
+                            text:'You already paid the order amount,kindly  contact to administrator for refund .',
+                            icon: 'warning',
+                            showConfirmButton: true,
+                            allowOutsideClick:false
+                        }).then(function(result){
+                            if(result.isConfirmed)
+                            {
+                                window.location.href="/order";
+                            }
+                        });
+                })
         });
 
     </script>

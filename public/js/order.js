@@ -29,8 +29,12 @@ $(document).ready(function () {
                 // contentType: false,
                 success: function (data) {
 
-                    console.log(data);
-                    if ((data.orderStatus[0]["status"] == "Dispatched" || data.orderStatus[0]["status"] == "Payment_Done") && data.orderStatus[0]["final_payment_status"] == "verified") {
+                    console.log(data.orderStatus[0]["interest_amount"]);
+                     if (data.orderStatus[0]["status"] == "Dispatched" && data.orderStatus[0]["interest_amount"] !== null && data.orderStatus[0]["interest_amount"] > 0 && data.orderStatus[0]["final_payment_status"] === "unverified") {
+                        // $(".bookingUserStatusOrder").hide(); // Optionally hide an element
+                        $('#makepaymentnModalRejectionInterestCalculationStarts').modal('show');
+                      }
+                      else if ((data.orderStatus[0]["status"] == "Dispatched" || data.orderStatus[0]["status"] == "Payment_Done") && data.orderStatus[0]["final_payment_status"] == "verified") {
                         $('#makepaymentnModalRejectionAdmin').modal('show');
 
                         //Code for "download invoice" start
@@ -39,6 +43,7 @@ $(document).ready(function () {
 
 
                     }
+
                     else if (data.orderStatus[0]["status"] == "Dispatched") {
                         //alert("jkjklfffffffj");
                         $('#makepaymentnModals').modal('show');
@@ -54,6 +59,7 @@ $(document).ready(function () {
                     else if (data.orderStatus[0]["status"] == "Delivered") {
                         //$(".bookingUserStatusOrder").hide();
                     }
+
                     // else
                     // {
                     //     $('#confirmationModal').modal('show');
