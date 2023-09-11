@@ -380,6 +380,18 @@ class profileController extends Controller
                       $orderData['Final_Amount'] = $totalAmount . " <span style='color:green;font-weight:600'></span>";
                   }
                 }
+                elseif(isset($balance_on_booking) && !empty($balance_on_booking))
+                {
+                    $invoice=Invoice::where('order_id', $order->id)->orderBy('created_at', 'desc')->first();
+
+                    $totalAmount = $invoice->amount + $invoice->totaltax;
+
+                    if (isset($invoice) && isset($invoice->amount)) {
+                      $orderData['Final_Amount'][] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})" ;
+                  } else {
+                      $orderData['Final_Amount'] = $totalAmount . " <span style='color:green;font-weight:600'></span>";
+                  }
+                }
                 else
                 {
                     $final_check_amount = Order::where('user_id', $user_id)->where('id', $order->id)->where('payment_mode', 'cheque')->get()->last();

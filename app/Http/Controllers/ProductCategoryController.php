@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Admin\Controllers\AdminCommonValue;
+use App\Models\adminCommonValueChange;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
@@ -412,8 +414,11 @@ class ProductCategoryController extends Controller
     public function supervisor(Content $content)
     {
         try {
-            $data = Entity::all();
-            return $content->body(view('supervisor', compact('data')));
+        $data = Entity::all();
+        $changes=  adminCommonValueChange::all();
+    
+
+            return $content->body(view('supervisor', compact('data','changes')));
         } catch (\Exception $ex) {
             Log::info($ex->getMessage());
         }

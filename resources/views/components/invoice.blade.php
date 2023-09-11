@@ -256,7 +256,7 @@
         <tr>
           <td style="border-top: none; border-bottom: none">1.</td>
           <td style="border-top: none; border-bottom: none; text-align: end">
-            Balance on booking
+            Balance on booking (with PSIEC)
           </td>
           <td style="border-top: none; border-bottom: none"></td>
           <td style="border-top: none; border-bottom: none"></td>
@@ -335,8 +335,12 @@
           <td>Rs 133</td>
         </tr> -->
       </table>
-      <table style="width: 100%; margin-top: 40px">
-        <tr>
+      @if(count($DescriptionofGoods)===1)
+      <table style="width: 100%; margin-top: 20px">
+        @else
+        <table style="width: 100%; margin-top: 40px">
+            @endif
+                <tr>
           <td colspan="2" style="border: none;padding-bottom: 23px;">
             <u><b>Declaration:-</b></u>&nbsp; We declare that this invoice shows
             the actual price of the goods described and that all particulars are

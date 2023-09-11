@@ -98,7 +98,7 @@ let user = document.getElementById('users_id');
     {
         Array.from(latestnames).forEach(element => {
 
-            html +=`<div id="users_id" class="alert alert-info"><strong class="default"><i class="fa fa-user"></i><span style="margin-left: 5px; " id="name">${element.name+ " " + element.
+            html +=`<div id="users_id" class="alert alert-info"><strong class="default"><i class="fa fa-bell"></i><span style="margin-left: 5px; " id="name">${element.name+ " " + element.
             last_name}</span> </strong> sent registration to PSIEC.</div>`;
         });
     }

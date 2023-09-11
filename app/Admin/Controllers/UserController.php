@@ -326,10 +326,27 @@ class UserController extends AdminController
                     //   $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})" . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
                       $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax}, Interest: {$interestAmountRound})" ;
                     //   dd($orderData['Final_Amount']);
-                  } else {
+                  } 
+                  
+                  
+                  else {
                       $orderData['Final Amount'] = $totalAmount . " <span style='color:green;font-weight:600'></span>";
                   }
                     }
+
+
+
+                    elseif (isset($balance_on_booking) && !empty($balance_on_booking)) {
+                      $invoice = Invoice::where('order_id', $order->id)->orderBy('created_at', 'desc')->first();
+
+                      $totalAmount = $invoice->amount + $invoice->totaltax;
+
+                      if (isset($invoice) && isset($invoice->amount)) {
+                          $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})";
+                      } else {
+                          $orderData['Final Amount'] = $totalAmount . " <span style='color:green;font-weight:600'></span>";
+                      }
+                  } 
 
                     else {
                         $final_check_amount = Order::where('user_id', $user_id)->where('id', $order->id)->where('payment_mode', 'cheque')->get()->last();
@@ -382,7 +399,7 @@ class UserController extends AdminController
                 $orderDetails[] = $orderData;
             }
         }
-        $payment=PaymentDataHandling::where('user_id',$this->getKey())->where('data','Registration_Amount')->get();
+        $payment=PaymentDataHandling::where('user_id',$this->getKey())->where('data','Registration_Amount')->whereIn('payment_status',['RIP','SUCCESS','SIP'])->get();
 
 
 
@@ -404,7 +421,16 @@ class UserController extends AdminController
             $registration["transaction_id"]="<span style='color:red;font-weight:600'>(N/A)</span>";
           }
 
-          $registration["registration_amount"]=$singlepayment->transaction_amount."<span style='color:green;font-weight:600'>(Paid)</span>";
+          if(isset($singlepayment->transaction_amount) && !empty($singlepayment->transaction_amount))
+          {
+            $registration["registration_amount"]=$singlepayment->transaction_amount."<span style='color:green;font-weight:600'>(Paid)</span>";
+
+          }
+          else
+          {
+            $registration["registration_amount"]="<span style='color:red;font-weight:600'>(N/A)</span>";
+          }
+
 
           if(isset($singlepayment->payment_status) && !empty($singlepayment->payment_status))
           {
