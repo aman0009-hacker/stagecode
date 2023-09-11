@@ -237,7 +237,7 @@
             {{$Advance_booking_amount}}
           </td>
         </tr>
-        @if(isset($InterestAmount))
+        @if(isset($InterestAmount) && $InterestAmount > 0)
         <tr>
           <td style="border-top: none; border-bottom: none">1.</td>
           <td style="border-top: none; border-bottom: none; text-align: end">
@@ -252,7 +252,7 @@
           </td>
         </tr>
         @endif
-        @if(isset($BalanceOnBooking))
+        @if(isset($BalanceOnBooking) && $BalanceOnBooking > 0)
         <tr>
           <td style="border-top: none; border-bottom: none">1.</td>
           <td style="border-top: none; border-bottom: none; text-align: end">
