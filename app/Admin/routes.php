@@ -29,4 +29,8 @@ Route::group([
     $router->resource('entities', EntityController::class);
     $router->resource('orders', OrderController::class);
     $router->resource('records', YardSupervisorManagementController::class);
+    $router->resource('admin-common-value-changes', AdminCommonValue::class);
+
+
+
 });

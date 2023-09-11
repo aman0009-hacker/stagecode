@@ -45,7 +45,7 @@ class InvoiceController extends Controller
                     ) {
                         return redirect()->route('order')->with('error', 'Order not found.');
                     }
-                    
+
                     $totalAmount = $order->amount;
                     $bookingAmount = $order->payments->where('data', 'Booking_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->value('transaction_amount');
                     $interest_amount=0;
@@ -326,6 +326,11 @@ class InvoiceController extends Controller
                     {
                         $balance=$balance." (Paid)";
                     }
+                    $balance_on_booking_amount= Order::find($orderId)->balance_on_booking;
+                    if($balance_on_booking_amount)
+                    {
+                        $balance = $completeAmount." (Paid)";
+                    }
                     //insert in invoice table
                     $pdf = PDF::loadView('components.invoice', [
                         'Advance_booking_amount' => $bookingAmount,
@@ -391,6 +396,7 @@ class InvoiceController extends Controller
                         'updated_at' => Carbon::parse($order->invoices->pluck('updated_at')[0])->format('d-m-Y'),
                         'invoice_id' => $order->invoices->pluck('invoice_id')[0],
                         'complete_amount' => $completeAmount,
+                        'BalanceOnBooking' => round($balance_on_booking_amount,2),
                         'CGSTTAX' => $cgstPercent,
                         'SGSTTAX' => $sgstPercent,
                         'order_items' => $order->orderItems->map(function ($orderItem) {

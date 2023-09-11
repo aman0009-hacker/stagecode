@@ -106,7 +106,7 @@ $.ajax({
 
         Array.from(latestn).forEach(element => {
 
-            htmlw +=`<div id="users_id2" class="alert alert order"><strong class="default"><i class="fa fa-archive"></i><span style="margin-left: 5px; " id="name2">${element.name+ " " + element.last_name}</span> </strong> placed an order!.</div>`;
+            htmlw +=`<div id="users_id2" class="alert alert order"><strong class="default"><i class="fa fa-bell"></i><span style="margin-left: 5px; " id="name2">${element.name+ " " + element.last_name}</span> </strong> placed an order!.</div>`;
 
 
             });

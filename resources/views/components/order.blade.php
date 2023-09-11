@@ -434,7 +434,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="order-box mt-5">
-              <p>Kindly contact the administrator for live update. joker</p>
+              <p>Kindly contact the administrator for live update.</p>
               {{-- <p>Kindly Pay Booking amount as
                 <span>per PSIEC Policy.</span>
               </p> --}}

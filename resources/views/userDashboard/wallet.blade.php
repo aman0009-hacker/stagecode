@@ -6,6 +6,13 @@
         background-color: #196f8e !important;
         color :white;
     }
+    .table{
+        text-align: center;
+    }
+    .table thead th {
+    vertical-align: inherit !important;
+    border-bottom: 2px solid #dee2e6;
+}
 </style>
 {{-- {{dd($registration_data)}} --}}
 <div class="row">
