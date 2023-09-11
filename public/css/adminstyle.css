@@ -71,3 +71,7 @@ a.download-btn::before {
     height: 174px;
     overflow-y: scroll;
 }
+.column-user_id
+{
+  width: 10px!important;
+}

@@ -70,7 +70,7 @@
               <div class="col-12">
                 <img src="{{asset('images/login-signup/document-process.png')}}" alt="document-process"
                   class="img-fluid document-process" width="117" height="160">
-                <h1 class="sign-up-text document-text">Document Process</h1>
+                <h1 style="line-height: 50px;" class="sign-up-text document-text">Document Process</h1>
               </div>
             </div>
             <div class="alert alert-danger" style="display: none" id="successmsgdocument" style="display: none">
@@ -96,33 +96,37 @@
             </script>
             @endif
             @endif
-            <form class="document-process-form" id="userDocumentForm" method="post" autocomplete="off"
+            <form  class="document-process-form" id="userDocumentForm" method="post" autocomplete="off"
               action="{{ route('ajaxRequest.postdocument')}}">
               @csrf
               <input type="hidden" name="txtID" id="txtID" value="{{ $userCurrentId ?? ''}}" />
               <div class="mb-3 position-relative form-control-new">
-                <input type="text" class="form-control form-input bg-transparent " id="gstNumber" name="gstNumber"
+                {{-- <input type="text" class="form-control form-input bg-transparent " id="gstNumber" name="gstNumber"
                   aria-describedby="gstNumberHelp" placeholder="Enter your GST Number (15 digit)"
                   title="GST No (15 digit)" oninvalid="this.setCustomValidity('Enter your GST Number (15 digit)')"
-                  oninput="setCustomValidity('')"  minlength="15" maxlength="15" value="{{old('gstNumber')}}">
+                  oninput="setCustomValidity('')" required pattern="[0-9a-zA-Z_.-]*"  minlength="15" maxlength="15" value="{{old('gstNumber')}}"> --}}
+                  <input type="text" class="form-control form-input bg-transparent validateDoc" id="gstNumber" name="gstNumber"
+           aria-describedby="gstNumberHelp" placeholder="Enter your GST Number (15 digit)"
+           title="GST No (15 digit)"  minlength="15" maxlength="15" value="{{old('gstNumber')}}">
+             <div id="errorMessage" style="color: red;"></div>
                 <label for="gstNumber" class="form-label">Enter your GST Number (15 digit)</label>
               </div>
               <div class="mb-3 position-relative form-control-new">
-                <input type="text" class="form-control form-input bg-transparent" id="msmeNumber" name="msmeNumber"
+                <input type="text" class="form-control form-input bg-transparent validateDoc" id="msmeNumber" name="msmeNumber"
                   aria-describedby="msmeNumberHelp" placeholder="Enter your MSME Number (12 digit)" required
                   oninvalid="this.setCustomValidity('Enter your MSME Number (12 digit)')" title="MSME No (12 digit)"
                   oninput="setCustomValidity('')" minlength="12" maxlength="12" value="{{old('msmeNumber')}}">
                 <label for="msmeNumber" class="form-label">Enter your MSME/Udyam Number (12 digit) <span style="color:red">★</span> </label>
               </div>
               <div class="mb-3 position-relative form-control-new">
-                <input type="text" class="form-control form-input bg-transparent" id="itrNumber" name="itrNumber"
+                <input type="text" class="form-control form-input bg-transparent validateDoc" id="itrNumber" name="itrNumber"
                   aria-describedby="itrNumberHelp" placeholder="Enter your ITR Number (20 digit)"
                   title="ITR No (20 digit)" oninvalid="this.setCustomValidity('Enter your ITR Number (20 digit)')"
                   oninput="setCustomValidity('')" minlength="20" maxlength="20" value="{{old('itrNumber')}}">
                 <label for="itrNumber" class="form-label">Enter your ITR Number (20 digit)</label>
               </div>
               <div class="mb-3 position-relative form-control-new">
-                <input type="text" class="form-control form-input bg-transparent" id="adharCardNumber"
+                <input type="text" class="form-control form-input bg-transparent validateDoc" id="adharCardNumber"
                   name="adharCardNumber" aria-describedby="adharCardNumberHelp"
                   placeholder="Enter Adhaar Card Number ★ (12 digit)" required title="Adhaar No (12 digit)"
                   oninvalid="this.setCustomValidity('Enter Adhaar Card Number (12 digit)')" oninput="setCustomValidity('')"
@@ -132,7 +136,7 @@
                     style="color:red">★</span> (12 digit)</label>
               </div>
               <div class="mb-3 position-relative form-control-new">
-                <input type="text" class="form-control form-input bg-transparent" id="panCardNumber"
+                <input type="text" class="form-control form-input bg-transparent validateDoc" id="panCardNumber"
                   name="panCardNumber" aria-describedby="panCardNumberHelp"
                   placeholder="Enter Pan Card Number ★ (10 digit)" required title="Pan No (10 digit)"
                   oninvalid="this.setCustomValidity('Enter Pan Card Number (10 digit)')" oninput="setCustomValidity('')"
@@ -141,7 +145,7 @@
                   digit)</label>
               </div>
               <div class="mb-3 position-relative form-control-new">
-                <input type="text" class="form-control form-input bg-transparent" id="utilityCardNumber"
+                <input type="text" class="form-control form-input bg-transparent validateDoc" id="utilityCardNumber"
                   name="utilityCardNumber" aria-describedby="utilityCardNumberHelp"
                   placeholder="Enter Capacity Card Number" title="Capacity No"
                   oninvalid="this.setCustomValidity('Enter Capacity Card Number (10 digit)')" oninput="setCustomValidity('')"
@@ -163,4 +167,19 @@
       </div>
     </div>
   </div>
- @endsection
+  <script>
+    const inputField = document.getElementsByClassName("validateDoc");
+    Array.from(inputField).forEach(element => {
+        element.addEventListener('keypress', function(event){
+        let key = event.key;
+        let regex = new RegExp("^[a-zA-Z0-9]+$");
+        if(!regex.test(key)){
+            // Restrict the special characters
+            event.preventDefault();
+            return false;
+        }
+    });
+    });
+
+</script>
+@endsection
