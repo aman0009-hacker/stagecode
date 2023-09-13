@@ -326,9 +326,9 @@ class UserController extends AdminController
                     //   $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})" . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
                       $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax}, Interest: {$interestAmountRound})" ;
                     //   dd($orderData['Final_Amount']);
-                  } 
-                  
-                  
+                  }
+
+
                   else {
                       $orderData['Final Amount'] = $totalAmount . " <span style='color:green;font-weight:600'></span>";
                   }
@@ -346,7 +346,7 @@ class UserController extends AdminController
                       } else {
                           $orderData['Final Amount'] = $totalAmount . " <span style='color:green;font-weight:600'></span>";
                       }
-                  } 
+                  }
 
                     else {
                         $final_check_amount = Order::where('user_id', $user_id)->where('id', $order->id)->where('payment_mode', 'cheque')->get()->last();
@@ -379,13 +379,16 @@ class UserController extends AdminController
                         $chequeAmount = $order->check_amount ?? '';
                         $chequeNumber = $order->cheque_number ?? '';
                         $finalAmount=$order->cheque_final_amount??'';
-                        $checkcompletionDate=$order->cheque_arrival_date??'';
+                        $checkcompletionDate = Carbon::parse($order->cheque_arrival_date ?? '')->format("m/d/Y");
                         $orderData['Cheque Info'] = "[Cheque Date: " . $checkcompletionDate . "]" . " " . "[Cheque Number: " . $chequeNumber . "]" . "  " . " [Final Cheque Amount: " . $finalAmount . "]";
                       }
                       else
                       {
 
-                        $chequeDate = $order->Cheque_Date ?? '';
+                        $chequeDate = '';
+                        if ($order->Cheque_Date) {
+                            $chequeDate = Carbon::parse($order->Cheque_Date)->format("m/d/Y");
+                        }
                         $chequeAmount = $order->check_amount ?? '';
                         $chequeNumber = $order->cheque_number ?? '';
                         $orderData['Cheque Info'] = "[Cheque Date: " . $chequeDate . "]" . " " . "[Cheque Number: " . $chequeNumber . "]" . "  " . " [Cheque Amount: " . $chequeAmount . "]";

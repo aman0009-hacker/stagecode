@@ -263,7 +263,6 @@
                             <form method="post" action="{{ route('payment.process.data.order.complete') }}">
                                 {{-- {{dd($txtOrderGlobalModalCompleteID)}} --}}
                                 @csrf
-
                                 <input type="hidden" name="maindatas"
                                 id="textmaindata"
                                 value="{{ Session::get('txtOrderGlobalModalCompleteID') ?? ''}}">
@@ -297,7 +296,7 @@
                                             <div class="input-group mt-2" id="divPayment">
                                                 <span class="input-group-text">₹</span>
                                                 <input type="number" class="form-control" placeholder="Enter amount"
-                                                 aria-label="Amount" name="amountOrderFinal" id="amountOrderFinal" value="{{$amount[0] ?? ''}}" >
+                                                aria-label="Amount" name="amountOrderFinal" id="amountOrderFinal" value="{{$amountToPay ?? ''}}" readonly>
                                                 <span class="input-group-text">.00</span>
                                             </div>
                                         </div>
@@ -306,16 +305,16 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="action">
-                                         
+
                                             @if(!is_null($orderdata))
-                                            
-                                            
-                                            
+
+
+
                                             <button type="submit" class="btn continue-btn w-100" id="show_on_interst">Continue</button>
                                             @else
-                                            
+
                                             <button type="submit" class="btn continue-btn w-100">Continue</button>
-                                            
+
                                             @endif
                                         </div>
                                     </div>
@@ -629,7 +628,7 @@
             $('#form').submit(function(event) {
                 event.preventDefault(); // Prevent the default form submission
                 var formData = $(this).serialize();
-                
+
                 // Send AJAX request
                 $.post('/payment/complete/process/address', formData)
                     .done(function(response) {
