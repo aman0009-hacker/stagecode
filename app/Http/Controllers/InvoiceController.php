@@ -67,26 +67,29 @@ class InvoiceController extends Controller
                     $invoice->initial_amount = $bookingAmount;
                     $invoice->balance = $balance;
                     $invoice->save();
+
+                    /* $balance return for normal online payment case */
                     $finalbalancepayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Booking_Final_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
                     if($finalbalancepayment)
                     {
                         $balance=$balance." (Paid)";
                     }
-                    else
+
+                    /* $balance return for invalid cheque online payment case */
+                    $finalInvalidChequeBalancePayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Invalid_Cheque_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
+                    if($finalInvalidChequeBalancePayment)
                     {
-
                         $interest_amount= Order::find($orderId)->interest_amount;
-
-                        $finalInvalidChequeBalancePayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Invalid_Cheque_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
-
                         $balance = $balance + round($interest_amount,2) ."(Paid)";
                     }
+
+
+                    /* $balance return for balance on booking online payment case */
                     $balance_on_booking_amount= Order::find($orderId)->balance_on_booking;
                     if($balance_on_booking_amount)
                     {
                         $balance = $completeAmount." (Paid)";
                     }
-                    // dd($balance_on_booking_amount);
 
                     //insert in invoice table
                     $pdf = PDF::loadView('components.invoice', [
@@ -321,11 +324,13 @@ class InvoiceController extends Controller
                     $invoice->initial_amount = $bookingAmount;
                     $invoice->balance = $balance;
                     $invoice->save();
+                    
                     $finalbalancepayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Booking_Final_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
                     if($finalbalancepayment)
                     {
                         $balance=$balance." (Paid)";
                     }
+
                     $balance_on_booking_amount= Order::find($orderId)->balance_on_booking;
                     if($balance_on_booking_amount)
                     {

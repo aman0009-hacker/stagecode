@@ -3,37 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\EazyPayController;
+use App\Models\Address;
 use App\Models\Attachment;
+use App\Models\City;
+use App\Models\Order;
+use App\Models\PaymentDataHandling;
+use App\Models\State;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\PaymentHandling;
-use App\Models\User;
-use App\Models\PaymentDataHandling;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
-use App\Models\Order;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Crypt;
-use App\Models\Address;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Models\City;
-use App\Models\State;
-use App\Models\Invoice;
-
-
-
-
 
 class PaymentController extends Controller
 {
     public $encryption_key;
     public $EAZYPAY_BASE_URL;
     public $EAZYPAY_BASE_URL_VERIFY;
-   public $storeValue=1;
-   public $arr=[];
+    public $storeValue = 1;
+    public $arr = [];
     //public $UserID;
 
     public function __construct()
@@ -68,25 +62,25 @@ class PaymentController extends Controller
                     'optional_fields' => $request['optional_fields'],
                     'RSV' => $request['RSV'],
                     /*
-                    "Response_Code" => "E000",
-                    "Unique_Ref_Number" => "2306301647032",
-                    "Service_Tax_Amount" => "0.00",
-                    "Processing_Fee_Amount" => "0.00",
-                    "Total_Amount" => "10000.00",
-                    "Transaction_Amount" => "10000",
-                    "Transaction_Date" => "30-06-2023 14:24:34",
-                    "Interchange_Value" => null,
-                    "TDR" => null,
-                    "Payment_Mode" => "NET_BANKING",
-                    "SubMerchantId" => "45",
-                    "ReferenceNo" => "3281",
-                    "ID" => "600477",
-                    "RS" => "ddf30156e88e88b7e45007af65c3aecd74e0e8315ffb2c115e81928607d3fe004df35c8887a479a5951df51e39527e5be0103af921786974e1965a4e321d977a",
-                    "TPS" => "N",
-                    "mandatory_fields" => "3281|45|10000",
-                    "optional_fields" => "null",
-                    "RSV" => "c5036cc5258a0f066c3260b7316eb285f91bec128047a49bacb094c7030c5a49708eac460d3d4801db57d17cca7cb35778e31e5dc64d73f4e84ec281fb07f5d3",
-                    */
+                "Response_Code" => "E000",
+                "Unique_Ref_Number" => "2306301647032",
+                "Service_Tax_Amount" => "0.00",
+                "Processing_Fee_Amount" => "0.00",
+                "Total_Amount" => "10000.00",
+                "Transaction_Amount" => "10000",
+                "Transaction_Date" => "30-06-2023 14:24:34",
+                "Interchange_Value" => null,
+                "TDR" => null,
+                "Payment_Mode" => "NET_BANKING",
+                "SubMerchantId" => "45",
+                "ReferenceNo" => "3281",
+                "ID" => "600477",
+                "RS" => "ddf30156e88e88b7e45007af65c3aecd74e0e8315ffb2c115e81928607d3fe004df35c8887a479a5951df51e39527e5be0103af921786974e1965a4e321d977a",
+                "TPS" => "N",
+                "mandatory_fields" => "3281|45|10000",
+                "optional_fields" => "null",
+                "RSV" => "c5036cc5258a0f066c3260b7316eb285f91bec128047a49bacb094c7030c5a49708eac460d3d4801db57d17cca7cb35778e31e5dc64d73f4e84ec281fb07f5d3",
+                 */
                 );
                 //code to send info to DB
                 $paymentHandling = PaymentDataHandling::where('reference_no', $request['ReferenceNo'])->first();
@@ -111,10 +105,10 @@ class PaymentController extends Controller
                 }
                 //code to send info to DB
                 $verification_key = $data['ID'] . '|' . $data['Response_Code'] . '|' . $data['Unique_Ref_Number'] . '|' .
-                    $data['Service_Tax_Amount'] . '|' . $data['Processing_Fee_Amount'] . '|' . $data['Total_Amount'] . '|' .
-                    $data['Transaction_Amount'] . '|' . $data['Transaction_Date'] . '|' . $data['Interchange_Value'] . '|' .
-                    $data['TDR'] . '|' . $data['Payment_Mode'] . '|' . $data['SubMerchantId'] . '|' . $data['ReferenceNo'] . '|' .
-                    $data['TPS'] . '|' . $this->encryption_key;
+                $data['Service_Tax_Amount'] . '|' . $data['Processing_Fee_Amount'] . '|' . $data['Total_Amount'] . '|' .
+                $data['Transaction_Amount'] . '|' . $data['Transaction_Date'] . '|' . $data['Interchange_Value'] . '|' .
+                $data['TDR'] . '|' . $data['Payment_Mode'] . '|' . $data['SubMerchantId'] . '|' . $data['ReferenceNo'] . '|' .
+                $data['TPS'] . '|' . $this->encryption_key;
                 $encrypted_message = hash('sha512', $verification_key);
                 if ($encrypted_message == $data['RS']) {
                     //return Auth::user()->id;
@@ -132,7 +126,7 @@ class PaymentController extends Controller
                             'paymentResponse' => 'SUCCESS',
                             'reference_no' => $data['ReferenceNo'],
                             'transaction_id' => $data['Unique_Ref_Number'],
-                            'transactionAmount'=> $data['Transaction_Amount']
+                            'transactionAmount' => $data['Transaction_Amount'],
                         ]);
                         $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
                             ->where('data', 'Registration_Amount')
@@ -170,7 +164,7 @@ class PaymentController extends Controller
                         $encryptedResponse = Crypt::encrypt([
                             'paymentResponse' => 'FAILURE',
                             'reference_no' => $data['ReferenceNo'],
-                            'transaction_id' => $data['Unique_Ref_Number']
+                            'transaction_id' => $data['Unique_Ref_Number'],
                         ]);
                         //return redirect()->back()->with('encryptedResponse', $encryptedResponse);
                         $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
@@ -221,7 +215,7 @@ class PaymentController extends Controller
                     'TPS' => $request['TPS'],
                     'mandatory_fields' => $request['mandatory_fields'],
                     'optional_fields' => $request['optional_fields'],
-                    'RSV' => $request['RSV']
+                    'RSV' => $request['RSV'],
                 );
                 //code to send info to DB
                 $paymentHandling = PaymentDataHandling::where('reference_no', $request['ReferenceNo'])->first();
@@ -255,7 +249,7 @@ class PaymentController extends Controller
                             'paymentResponse' => 'SUCCESS',
                             'reference_no' => $data['ReferenceNo'],
                             'transaction_id' => $data['Unique_Ref_Number'],
-                            'transactionAmount'=> $data['Transaction_Amount']
+                            'transactionAmount' => $data['Transaction_Amount'],
                         ]);
                         $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
                             ->where('data', 'Registration_Amount')
@@ -297,7 +291,7 @@ class PaymentController extends Controller
                         $encryptedResponse = Crypt::encrypt([
                             'paymentResponse' => 'FAILURE',
                             'reference_no' => $data['ReferenceNo'],
-                            'transaction_id' => $data['Unique_Ref_Number']
+                            'transaction_id' => $data['Unique_Ref_Number'],
                         ]);
                         //return redirect()->back()->with('encryptedResponse', $encryptedResponse);
                         $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
@@ -451,7 +445,7 @@ class PaymentController extends Controller
             'E0861' => 'Cardholder did not return from ACS',
             'E0862' => 'Duplicate transmission',
             'E0863' => 'Wrong transaction state',
-            'E0864' => 'Card acceptor contact acquirer'
+            'E0864' => 'Card acceptor contact acquirer',
         );
         return $errorCodes[$code];
     }
@@ -568,13 +562,12 @@ class PaymentController extends Controller
         }
     }
 
-
     public function paymentProcessOrder(Request $request)
     {
         try {
             Session::forget('GLOBALUSERID');
             Session::put('GLOBALUSERID', Auth::user()->id ?? '');
-            $amount="";
+            $amount = "";
             $validator = Validator::make($request->all(), [
                 'amountOrder' => ['required', 'in:200000'],
             ]);
@@ -602,8 +595,6 @@ class PaymentController extends Controller
         }
     }
 
-
-
     public function index(Request $request)
     {
         return view('components.payment-process');
@@ -611,43 +602,44 @@ class PaymentController extends Controller
 
     public function paymentComplete(Request $request)
     {
-        // dd($request);
-        // $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
-        // Session::forget('txtOrderGlobalModalCompleteID');
-        // Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
-        //     return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID'));
         $address = Address::where('user_id', Auth::user()->id)->latest()->first();
         $states = State::all();
         $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
-        // dd($txtOrderGlobalModalCompleteID);
-       
         Session::forget('txtOrderGlobalModalCompleteID');
-        // if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
-        //     Session::put('txtOrderGlobalModalCompleteID', Session::get('txtOrderGlobalModalCompleteIDAlternative') ?? '');
-        // } else {
-            Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
-            Session::put('change_the_code', $txtOrderGlobalModalCompleteID ?? '');
-            $userId=Auth::user()->id;
-              $document=Attachment::where('user_id',$userId)->get();
-              foreach($document as $singleDocument)
-              {
-                if($singleDocument->file_type==="gstfile")
-                {
-                    $gstfile=$singleDocument->fileno;
-                }
-              }
-              $amount= Invoice::where('order_id',$txtOrderGlobalModalCompleteID)->latest()->pluck('balance');
-           
-              $orderdata = order::where('id', $txtOrderGlobalModalCompleteID)->value('balance_on_booking');
-            
-              if(!$orderdata)
-              {
-                 $orderdata=null;
-              }
-        // }
-        // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
-        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address','amount','gstfile','orderdata'));
-        // }
+        Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
+        Session::put('change_the_code', $txtOrderGlobalModalCompleteID ?? ''); //generate new session for order id
+        $userId = Auth::user()->id;
+        $document = Attachment::where('user_id', $userId)->get();
+        foreach ($document as $singleDocument) {
+            if ($singleDocument->file_type === "gstfile") {
+                $gstfile = $singleDocument->fileno;
+            }
+        }
+        $amount = Order::where('id', $txtOrderGlobalModalCompleteID)->value('amount');
+        $bookingAmount = PaymentDataHandling::where('order_id', $txtOrderGlobalModalCompleteID)
+            ->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])
+            ->where('user_id', $userId)
+            ->value('transaction_amount');
+
+        /*-------logic for giving final payment amount in the input----starts---*/
+        if ($amount && $bookingAmount) {
+            $cgstPercent = env('CGST', 9); // Set your CGST percentage here (e.g., 9%)
+            $sgstPercent = env('SGST', 9);// Set your SGST percentage here (e.g., 9%)
+
+
+            $totalTaxAmount = ($amount * ($cgstPercent + $sgstPercent) / 100) ?? 0;
+
+            $amountToPay = ($amount + $totalTaxAmount) - $bookingAmount;
+        } else {
+            $amountToPay = '';
+        }
+        /*-------logic for giving final payment amount in the input----starts---*/
+
+        $orderdata = order::where('id', $txtOrderGlobalModalCompleteID)->value('balance_on_booking');
+        if (!$orderdata) {
+            $orderdata = null;
+        }
+        return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address', 'gstfile', 'orderdata', 'amountToPay'));
     }
 
     public function getUserId()
@@ -656,13 +648,11 @@ class PaymentController extends Controller
         return $userId;
     }
 
-
     public function paymentCompleteProcessAddress(Request $request)
     {
 
         try {
 
-          
             $validator1 = Validator::make(
                 $request->all(),
                 [
@@ -789,16 +779,15 @@ class PaymentController extends Controller
                     $paymentDataHandling->data = "Booking_Final_Amount";
                     $paymentDataHandling->user_amount = $amount;
                     $paymentDataHandling->order_id = Session::get('txtOrderGlobalModalCompleteIDAlternative') ?? '';
-                    $data=$paymentDataHandling->save();
-                    if($data)
-                    {
-                       $main=order::find(Session::get('txtOrderGlobalModalCompleteIDAlternative'));
-                       $main->payment_mode="online";
-                       $main->save();
-                       $optionalField = null;
-                       $base = new EazyPayController();
-                       $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
-                       return redirect()->to($url);
+                    $data = $paymentDataHandling->save();
+                    if ($data) {
+                        $main = order::find(Session::get('txtOrderGlobalModalCompleteIDAlternative'));
+                        $main->payment_mode = "online";
+                        $main->save();
+                        $optionalField = null;
+                        $base = new EazyPayController();
+                        $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
+                        return redirect()->to($url);
                     }
 
                 } catch (\Throwable $ex) {
@@ -838,7 +827,7 @@ class PaymentController extends Controller
                                 ->where("data", "Registration_Amount")
                                 ->orderBy('updated_at', 'desc')
                                 ->limit(1);
-                        }
+                        },
                     ])->find($userID);
                     //return $user;
                     if ($user) {
@@ -877,7 +866,6 @@ class PaymentController extends Controller
         }
     }
 
-
     public function getCities($stateId)
     {
         try {
@@ -897,8 +885,14 @@ class PaymentController extends Controller
                 $address = Address::where('user_id', Auth::user()->id)->latest()->first() ?? '';
                 $states = State::all();
                 $txtOrderGlobalModalCompleteID = $order_id;
-                //dd($txtOrderGlobalModalCompleteID);
-                $amount= Order::where('id',$txtOrderGlobalModalCompleteID)->pluck('amount');
+                $userId = Auth::user()->id;
+                $document = Attachment::where('user_id', $userId)->get();
+                foreach ($document as $singleDocument) {
+                    if ($singleDocument->file_type === "gstfile") {
+                        $gstfile = $singleDocument->fileno;
+                    }
+                }
+                $amount = Order::where('id', $txtOrderGlobalModalCompleteID)->value('amount');
                 Session::forget('txtOrderGlobalModalCompleteID');
                 if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
 
@@ -907,21 +901,42 @@ class PaymentController extends Controller
                 } else {
                     Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
 
-
                 }
-                // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
-                return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address','amount'));
-                // }
+
+                $bookingAmount = PaymentDataHandling::where('order_id', $txtOrderGlobalModalCompleteID)
+                    ->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])
+                    ->where('user_id', $userId)
+                    ->value('transaction_amount');
+
+                /*-------logic for giving final payment amount in the input----starts---*/
+                if ($amount && $bookingAmount) {
+                    $cgstPercent = env('CGST', 9); // Set your CGST percentage here (e.g., 9%)
+                    $sgstPercent = env('SGST', 9);
+                    // Set your SGST percentage here (e.g., 9%)
+                    $totalTaxAmount = ($amount * ($cgstPercent + $sgstPercent) / 100) ?? 0;
+
+                    $amountToPay = ($amount + $totalTaxAmount) - $bookingAmount;
+                } else {
+                    $amountToPay = '';
+                }
+                /*-------logic for giving final payment amount in the input----starts---*/
+
+                $orderdata = order::where('id', $txtOrderGlobalModalCompleteID)->value('balance_on_booking');
+                if (!$orderdata) {
+                    $orderdata = null;
+                }
+                    return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address', 'gstfile', 'orderdata', 'amountToPay'));
             } else {
 
-
-            return view('auth.login');
+                return view('auth.login');
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
         }
 
-    }    public function paymentInvalidChequeCompletion(Request $request, $id)
+    }
+
+    public function paymentInvalidChequeCompletion(Request $request, $id)
     {
         // $order_id = Crypt::decryptString($id);
         try {
@@ -932,7 +947,7 @@ class PaymentController extends Controller
                 // $address = Address::where('user_id', Auth::user()->id)->latest()->first() ?? '';
                 // $states = State::all();
                 $txtOrderGlobalModalCompleteID = $order_id;
-                $amount= Order::where('id',$txtOrderGlobalModalCompleteID)->pluck('total_cheque_amount_with_tax');
+                $amount = Order::where('id', $txtOrderGlobalModalCompleteID)->pluck('total_cheque_amount_with_tax');
                 // dd($amount);
                 Session::forget('txtOrderGlobalModalCompleteID');
                 if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
@@ -942,16 +957,14 @@ class PaymentController extends Controller
                 } else {
                     Session::put('txtOrderGlobalModalCompleteID', $txtOrderGlobalModalCompleteID ?? '');
 
-
                 }
 
                 // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
-                return view('components.order-process-invalid-cheque', compact('txtOrderGlobalModalCompleteID','amount'));
+                return view('components.order-process-invalid-cheque', compact('txtOrderGlobalModalCompleteID', 'amount'));
                 // }
             } else {
 
-
-            return view('auth.login');
+                return view('auth.login');
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
@@ -959,19 +972,18 @@ class PaymentController extends Controller
 
     }
 
-
     public function paymentProcessInvalidChequeCompletion(Request $request)
     {
         // dd($request->all());
         try {
             Session::forget('GLOBALUSERID');
             Session::put('GLOBALUSERID', Auth::user()->id ?? '');
-            $amount="";
+            $amount = "";
 
-            $orderId=$request->maindatas;
+            $orderId = $request->maindatas;
             // $validAmount = Order::find($orderId)->value('total_cheque_amount_with_tax');
             $validAmount = Order::find($orderId);
-            $chequeAmount =$validAmount->total_cheque_amount_with_tax;
+            $chequeAmount = $validAmount->total_cheque_amount_with_tax;
             // dd($chequeAmount);
             if ($validAmount) {
                 // Update the payment_mode field
@@ -980,12 +992,12 @@ class PaymentController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'invalidChequeAmount' => ['required', 'in:'.$chequeAmount],
+                'invalidChequeAmount' => ['required', 'in:' . $chequeAmount],
             ]);
             if ($validator->fails()) {
                 $amount = $chequeAmount;
             } else {
-                }
+            }
             $amount = $request->input('invalidChequeAmount');
             $reference_no = time() . Str::random(5);
             $paymentDataHandling = new PaymentDataHandling();
@@ -1005,9 +1017,9 @@ class PaymentController extends Controller
         }
     }
 
-      public function paymentMethodChange($paymentModes,$data)
+    public function paymentMethodChange($paymentModes, $data)
     {
-        try{
+        try {
             $member_at = "";
             $userID = Auth::user()->id ?? '';
             if ($paymentModes === 'cheque') {
@@ -1026,9 +1038,7 @@ class PaymentController extends Controller
                             $value->payment_mode = "cheque";
                             $value->save();
                             return response()->json(['main' => 'cheque_success']);
-                        }
-                        else
-                        {
+                        } else {
                             return response()->json(['main' => 'sms_error']);
                         }
                     } else {
@@ -1038,9 +1048,7 @@ class PaymentController extends Controller
                     return response()->json(['main' => 'cheque_error']);
                 }
 
-            }
-            elseif ($paymentModes === 'online') {
-
+            } elseif ($paymentModes === 'online') {
 
                 if (isset($data) && !empty($data)) {
                     $value = Order::find($data);
@@ -1048,20 +1056,13 @@ class PaymentController extends Controller
                     $value->save();
 
                     return response()->json(['main' => 'online_success']);
-                }
-
-                else
-                {
+                } else {
                     return response()->json(['main' => 'sms_error']);
                 }
             }
-        }
-        catch (\Throwable $ex) {
+        } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
         }
     }
-
-
-
 
 }
