@@ -14,6 +14,7 @@ use App\Models\AdminUser;
 use App\Models\PaymentDataHandling;
 use Carbon\Carbon;
 // use App\Models\Comments;
+use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Layout\Content;
 use Illuminate\Database\QueryException;
@@ -563,11 +564,12 @@ class CustomPageController extends AdminController
     /*Notification in the dashboard function starts*/
     public function getOrdernotification()
     {
+
+
         try
         {
-            // $newOrders = Order::latest()->where('status','New')->take(10)->get();
-
-            $newOrders = notification::latest()->where('type','App\\Notifications\\orderPlaced')->whereNull('read_at')->select('id','data')->take(10)->get();
+            $adminId=\Encore\Admin\Facades\Admin::user()->id;
+            $newOrders = notification::latest()->where('notifiable_id',$adminId)->where('type','App\\Notifications\\orderPlaced')->whereNull('read_at')->select('id','data')->take(10)->get();
 
 
             if(count($newOrders)>0)
@@ -587,9 +589,12 @@ class CustomPageController extends AdminController
 
     public function getUserNotification()
     {
-        try{
 
-            $newUsers = notification::latest()->where('type','App\\Notifications\\userRegister')->whereNull('read_at')->select('id','data')->take(10)->get();
+
+        try{
+            $adminId=\Encore\Admin\Facades\Admin::user()->id;
+
+            $newUsers = notification::latest()->where('notifiable_id',$adminId)->where('type','App\\Notifications\\userRegister')->whereNull('read_at')->select('id','data')->take(10)->get();
 
             if(!empty($newUsers))
             {
@@ -614,14 +619,14 @@ class CustomPageController extends AdminController
        {
            $notificationRead->read_at= Carbon::now();
            $notificationRead->save();
-           return redirect(env('APP_URL').':8000/admin/orders');
+           return redirect(env('APP_URL').'admin/orders');
        }
        else
 
        {
         $notificationRead->read_at= Carbon::now();
         $notificationRead->save();
-           return redirect(env('APP_URL').':8000/admin/auth/user');
+           return redirect(env('APP_URL').'admin/auth/user');
        }
 
     }
@@ -640,11 +645,11 @@ class CustomPageController extends AdminController
         if($notificationRead->type==="App\\Notifications\\orderPlaced" )
             {
 
-                return redirect(env('APP_URL').':8000/admin/orders');
+                return redirect(env('APP_URL').'admin/orders');
             }
         else
         {
-            return redirect(env('APP_URL').':8000/admin/auth/user');
+            return redirect(env('APP_URL').'admin/auth/user');
 
         }
     }

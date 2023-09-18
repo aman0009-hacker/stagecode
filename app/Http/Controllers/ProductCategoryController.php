@@ -147,7 +147,7 @@ class ProductCategoryController extends Controller
                         $firstname = Auth::user()->name;
                         $lastname = Auth::user()->last_name;
 
-                        $admins = AdminUser::all(); // You can modify this query to target specific admin users
+                        $admins = AdminUser::where('id',1)->get(); // You can modify this query to target specific admin users
                         \Notification::send($admins, new orderPlaced($firstname,$lastname));
                         \Mail::to(Auth::user()->email)->send(new \App\Mail\PSIECMail($details));
 
