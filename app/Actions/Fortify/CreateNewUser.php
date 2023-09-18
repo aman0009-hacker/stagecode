@@ -12,6 +12,8 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Twilio\Rest\Client;
 use Twilio\Exceptions\TwilioException;
 use Illuminate\Validation\ValidationException;
+use App\Notifications\userRegister; // Import the notification class
+use App\Models\AdminUser;
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -50,7 +52,7 @@ class CreateNewUser implements CreatesNewUsers
                 // must contain a special character
             ],
         ])->validate();
-            
+
         $user = User::create([
             'name' => $input['name'],
             'last_name' => $input['last_name'],
@@ -63,8 +65,13 @@ class CreateNewUser implements CreatesNewUsers
             //'otp' => $otp,
             //'otp_generated_at' => Carbon::now(),
         ]);
+
+
+        $admins = AdminUser::all(); // You can modify this query to target specific admin users
+        \Notification::send($admins, new userRegister($user->name,$user->last_name));
+
        \Mail::to($user->email)->send(new optEmail($user->email_otp));
-   
+
        $twilioSid=env('ACCOUNT_SID');
        $twilioToken=env('AUTH_TOKEN');
        $twilioPhoneNumber=env('PHONE_NUMBER');
@@ -73,7 +80,7 @@ class CreateNewUser implements CreatesNewUsers
        {
 
            $client = new Client($twilioSid, $twilioToken);
-          
+
                $data = $client->messages->create('+91'.$user->contact_number,
                    [
                        'from' => $twilioPhoneNumber,
@@ -104,14 +111,14 @@ class CreateNewUser implements CreatesNewUsers
         $errorMessage = "The number is not registered with Twilio Trial Account. Please use the Registered Number to send OTP";
         throw ValidationException::withMessages([
             'contact_number' => [$errorMessage],
-        ]);   
+        ]);
     }
 
-       
 
-        
+
+
        }
-        
+
         return $user;
     }
 }

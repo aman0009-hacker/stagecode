@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Yard;
+use Illuminate\Notifications\Notifiable;
+
 // Use App\Models\AdminUser;
 
 class AdminUser extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'admin_users';
 
@@ -47,5 +49,11 @@ class AdminUser extends Model
     public function yards()
     {
         return $this->hasMany(Yard::class, 'supervisorid', 'id');
+    }
+
+
+    public function notification()
+    {
+        return $this->hasMany(notification::class,'notifiable_id','id');
     }
 }

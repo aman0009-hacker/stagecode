@@ -1,4 +1,5 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <style>
 .panel-default > .panel-heading {
     color: #333;
@@ -71,48 +72,80 @@ a:hover{
       <hr style="border-top: 1px solid #00A3CB;">
     </div>
     <div>
-      <a href="admin/auth/user" class="showBtn" >Show All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+      <a href=""  id ="showalluser" class="showBtn" >Mark all as read <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
 <script>
 
-let header=document.getElementById('panel_header');
-let addclass=header.parentNode.parentNode.parentNode;
-let addclass2=header.parentNode.parentNode;
-addclass.classList.add('notification1');
-addclass2.classList.add('notification2');
 
-let count = document.getElementById('name');
-let content=document.createElement('span');
-let user = document.getElementById('users_id');
-// Append to body:
+    let header=document.getElementById('panel_header');
+    let addclass=header.parentNode.parentNode.parentNode;
+    let addclass2=header.parentNode.parentNode;
+    addclass.classList.add('notification1');
+    addclass2.classList.add('notification2');
+
+    let count = document.getElementById('name');
+    let content=document.createElement('span');
+    let user = document.getElementById('users_id');
+    // Append to body:
     $.ajax({
-        url:'/notifi/users',
-        method:'GET',
-        datatype:'JSON',
-        success:function(response){
-    let latestnames=response.data;
-    // console.log(latestnames);
-    let arr=[];
-    let html = ``;
-    if(latestnames.length>0)
-    {
-        Array.from(latestnames).forEach(element => {
+    url:'/notifi/users',
+    method:'GET',
+    datatype:'JSON',
+    success:function(response){
+    // console.log(response.data[0]);
+            let latestnames=response.data;
+            // console.log();
+            let arr=[];
+            let html = ``;
+            const alluserarray=[];
+            if(latestnames.length>0)
+            {
+                Array.from(latestnames).forEach(element => {
+                    const thedata=element.data
+                    const noti=thedata.replace(/^"(.+(?="$))"$/, '$1');
+                    const notiId =element.id;
+                    alluserarray.push(element.id);
+                    html +=`<div id="users_id" class="alert alert-info"><a href="mark/as/read/${notiId}"><strong class="default"><i class="fa fa-bell"></i><span
+                                style="margin-left: 5px; " id="name">${noti}</span> </strong> </a> </div>`;
+                });
 
-            html +=`<div id="users_id" class="alert alert-info"><strong class="default"><i class="fa fa-bell"></i><span style="margin-left: 5px; " id="name">${element.name+ " " + element.
-            last_name}</span> </strong> sent registration to PSIEC.</div>`;
-        });
+            }
+            else
+            {
+                html=`<strong class="default nonotification"><span style="margin-left: 5px; " id="name">No Notification Yet !</span>
+                </strong> `;
+            }
+            $('#new-cards').html(html);
+            var queryString = alluserarray.join(',');
+            if(queryString===null || queryString==='')
+            {
+                toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-top-right',
+                showDuration: '300',
+                hideDuration: '1000',
+                timeOut: '5000',
+                extendedTimeOut: '1000',
+                showEasing: 'swing',
+                hideEasing: 'linear',
+                showMethod: 'fadeIn',
+                                    };
+                toastr.success("No new user notification");
+            }
+            else
+            {
+
+                var urlofalluserid = `mark/as/read/multiple/${queryString}`;
+                $('#showalluser').attr('href',urlofalluserid);
+            }
+
+
     }
-    else
-    {
-        html=`<strong class="default nonotification"><span style="margin-left: 5px; " id="name">No Notification Yet !</span> </strong> `;
-    }
-        $('#new-cards').html(html);
 
-
-
-
-
-    }
-});
+    });
 
 </script>
