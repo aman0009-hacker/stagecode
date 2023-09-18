@@ -9,6 +9,7 @@ use App\Models\Records;
 use App\Models\State;
 use App\Models\User;
 use App\Models\Yard;
+use App\Models\notification;
 use App\Models\AdminUser;
 use App\Models\PaymentDataHandling;
 use Carbon\Carbon;
@@ -564,22 +565,17 @@ class CustomPageController extends AdminController
     {
         try
         {
-            $newOrders = Order::latest()->where('status','New')->take(10)->get();
+            // $newOrders = Order::latest()->where('status','New')->take(10)->get();
+
+            $newOrders = notification::latest()->where('type','App\\Notifications\\orderPlaced')->whereNull('read_at')->select('id','data')->take(10)->get();
+
 
             if(count($newOrders)>0)
             {
-
-                foreach($newOrders as $newOrderss)
-                {
-                    $newOrder[]= User::where('id', $newOrderss->user_id)->select('name', 'last_name')->first();
-
-                }
-                return response()->json(['data' => $newOrder]);
-                // return view('admin.admin-orders-notification',compact('newOrder'));
+                return response()->json(['data' => $newOrders]);
             }
             else
             {
-                // dd('joker');
                 return response()->json(['msg' => "empty", 'data' => null], 200);
             }
         }
@@ -593,7 +589,8 @@ class CustomPageController extends AdminController
     {
         try{
 
-            $newUsers = User::latest()->where('approved',0)->select('name','last_name')->take(10)->get();
+            $newUsers = notification::latest()->where('type','App\\Notifications\\userRegister')->whereNull('read_at')->select('id','data')->take(10)->get();
+
             if(!empty($newUsers))
             {
                 return response()->json(['data' => $newUsers]);
@@ -608,6 +605,50 @@ class CustomPageController extends AdminController
             return response()->json(['msg' => "empty", 'data' => null], 200);
         }
     }
+
+    public function markAsReadSingle($id)
+    {
+
+        $notificationRead = notification::find($id);
+       if( $notificationRead->type==="App\\Notifications\\orderPlaced")
+       {
+           $notificationRead->read_at= Carbon::now();
+           $notificationRead->save();
+           return redirect(env('APP_URL').':8000/admin/orders');
+       }
+       else
+
+       {
+        $notificationRead->read_at= Carbon::now();
+        $notificationRead->save();
+           return redirect(env('APP_URL').':8000/admin/auth/user');
+       }
+
+    }
+
+    public function markAsReadMultiple($id)
+    {
+        $data=explode(",",$id);
+        $notificationRead='';
+
+        foreach($data as $singledata)
+        {
+            $notificationRead = notification::find($singledata);
+            $notificationRead->read_at= Carbon::now();
+            $notificationRead->save();
+        }
+        if($notificationRead->type==="App\\Notifications\\orderPlaced" )
+            {
+
+                return redirect(env('APP_URL').':8000/admin/orders');
+            }
+        else
+        {
+            return redirect(env('APP_URL').':8000/admin/auth/user');
+
+        }
+    }
+
     public function getMessageNotification()
     {
         try{
