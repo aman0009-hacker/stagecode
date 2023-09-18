@@ -93,7 +93,8 @@ a:hover{
     $.ajax({
     url:'/notifi/users',
     method:'GET',
-    datatype:'JSON',
+    datatype:'JSON',                    // const noti=thedata.replace(/^"(.+(?="$))"$/, '$1');
+
     success:function(response){
     // console.log(response.data[0]);
             let latestnames=response.data;
@@ -105,7 +106,7 @@ a:hover{
             {
                 Array.from(latestnames).forEach(element => {
                     const thedata=element.data
-                    const noti=thedata.replace(/^"(.+(?="$))"$/, '$1');
+                    const noti=thedata.replaceAll('"', '');
                     const notiId =element.id;
                     alluserarray.push(element.id);
                     html +=`<div id="users_id" class="alert alert-info"><a href="mark/as/read/${notiId}"><strong class="default"><i class="fa fa-bell"></i><span
