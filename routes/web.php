@@ -219,4 +219,6 @@ Route::post("/payment/process/invalid/cheque", [PaymentController::class, 'payme
 
 Route::get('notifi',[App\Admin\Controllers\CustomPageController::class, 'getOrdernotification']);
 Route::get('notifi/users',[App\Admin\Controllers\CustomPageController::class, 'getUserNotification']);
+Route::get('mark/as/read/{id}',[App\Admin\Controllers\CustomPageController::class, 'markAsReadSingle']);
 
+Route::get('mark/as/read/multiple/{showAll}',[App\Admin\Controllers\CustomPageController::class, 'markAsReadMultiple']);

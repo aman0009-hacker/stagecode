@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Records;
 use App\Models\Entity;
 use App\Models\Order;
+use App\Models\AdminUser;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
@@ -19,7 +20,7 @@ use Encore\Admin\Facades\Admin;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Invoice;
-
+use App\Notifications\orderPlaced;
 
 class ProductCategoryController extends Controller
 {
@@ -94,17 +95,17 @@ class ProductCategoryController extends Controller
     public function storeOrder(Request $request)
     {
 
-        
+
         try {
             $order = new Order();
             $order->status = "New";
             $order->user_id = Auth::user()->id;
             //$order->save();
-           
-          
+
+
             //new code to generate invoice start
             if ($order->save()) {
-               
+
                 $lastInvoice = Invoice::orderByDesc('invoice_id')->first();
                 $newInvoiceId = $lastInvoice ? $lastInvoice->invoice_id + 1 : 1;
                 $invoice = new Invoice();
@@ -120,10 +121,10 @@ class ProductCategoryController extends Controller
             }
             //new code to generte invoice end
             if ($order->save()) {
-               
+
                 $latestId = Order::latest()->first()->id;
                  $oderId=order::find($latestId);
-               
+
                 if (isset($latestId) && !empty($latestId)) {
                     $orderItem = new OrderItem();
                     $orderItem->order_id = $latestId;
@@ -136,17 +137,22 @@ class ProductCategoryController extends Controller
                     $ordersave=$orderItem->save();
                     if($ordersave)
                     {
-                      
+
                         $details = [
                             'email' => 'New Order',
-                            'body' => 'Dear administrator,<p> You have received a new order that requires your immediate attention. The details of the order are as follows:</p><p>Order Number : '.$oderId->order_no.'</p><p>Customer Name : '.Auth::user()->name.'</p><p>Order Date : '.$oderId->created_at.'</p>'   
-            
+                            'body' => 'Dear administrator,<p> You have received a new order that requires your immediate attention. The details of the order are as follows:</p><p>Order Number : '.$oderId->order_no.'</p><p>Customer Name : '.Auth::user()->name.'</p><p>Order Date : '.$oderId->created_at.'</p>'
+
                         ];
-                        
+
+                        $firstname = Auth::user()->name;
+                        $lastname = Auth::user()->last_name;
+
+                        $admins = AdminUser::all(); // You can modify this query to target specific admin users
+                        \Notification::send($admins, new orderPlaced($firstname,$lastname));
                         \Mail::to(Auth::user()->email)->send(new \App\Mail\PSIECMail($details));
-                        
-                    
-                        
+
+
+
                         return response()->json(["response" => "successful"]);
                     }
                 }
@@ -360,17 +366,17 @@ class ProductCategoryController extends Controller
                             $orderItem->measurement = $data['measurement'];
                             $orderstoring=$orderItem->save();
 
-                        
+
 
                         }
                         if($orderstoring)
                         {
                             $details = [
                                 'email' => 'New Order',
-                                'body' => 'Dear administrator,<p> You have received a new order that requires your immediate attention. The details of the order are as follows:</p><p>Order Number : '.$oderId->order_no.'</p><p>Customer Name : '.Auth::user()->name.'</p><p>Order Date : '.$oderId->created_at.'</p>'   
-                
+                                'body' => 'Dear administrator,<p> You have received a new order that requires your immediate attention. The details of the order are as follows:</p><p>Order Number : '.$oderId->order_no.'</p><p>Customer Name : '.Auth::user()->name.'</p><p>Order Date : '.$oderId->created_at.'</p>'
+
                             ];
-                            
+
                             \Mail::to(Auth::user()->email)->send(new \App\Mail\PSIECMail($details));
 
                         }
@@ -416,7 +422,7 @@ class ProductCategoryController extends Controller
         try {
         $data = Entity::all();
         $changes=  adminCommonValueChange::all();
-    
+
 
             return $content->body(view('supervisor', compact('data','changes')));
         } catch (\Exception $ex) {

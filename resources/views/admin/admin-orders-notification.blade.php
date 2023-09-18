@@ -79,9 +79,11 @@ a:hover{
       <hr style="border-top: 1px solid #08a870ee;">
     </div>
     <div>
-      <a href="admin/orders" class="showBtn_order" >Show All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+      <a href="" id="showallorder" class="showBtn_order" >Mark all as read<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
     </div>
 <script>
+$(document).ready(function(){
+
 let fogo=document.getElementById('panel_header_2');
 let addclass3=fogo.parentNode.parentNode.parentNode;
 let addclass4=fogo.parentNode.parentNode;
@@ -99,23 +101,55 @@ $.ajax({
         datatype:'JSON',
         success:function(response){
     let latestn=response.data;
-    let htmlw = ``;
+
+    let htmlws = ``;
     let arr=[];
     if(latestn!=null )
     {
 
         Array.from(latestn).forEach(element => {
 
-            htmlw +=`<div id="users_id2" class="alert alert order"><strong class="default"><i class="fa fa-bell"></i><span style="margin-left: 5px; " id="name2">${element.name+ " " + element.last_name}</span> </strong> placed an order!.</div>`;
+            const orderdata=element.data;
+            const ordernoti=orderdata.replace(/^"(.+(?="$))"$/, '$1');
 
+
+
+            const ordernotiId =element.id;
+            arr.push(element.id);
+
+            htmlws +=`<div id="users_id2" class="alert alert order"><a href ="mark/as/read/${ordernotiId}" ><strong class="default"><i class="fa fa-bell"></i><span style="margin-left: 5px; " id="name2">${ordernoti}</span> </strong></a></div>`;
 
             });
     }
     else
     {
-        htmlw=`<strong class="default nonotification"><span style="margin-left: 5px; " id="name2">No Notification Yet !</span> </strong> `;
+        htmlws=`<strong class="default nonotification"><span style="margin-left: 5px; " id="name2">No Notification Yet !</span> </strong> `;
     }
-        $('#new_cards2').html(htmlw);
+        $('#new_cards2').html(htmlws);
+
+        var queryStringOrder = arr.join(',');
+            if(queryStringOrder===null || queryStringOrder==='')
+            {
+                toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-top-right',
+                showDuration: '300',
+                hideDuration: '1000',
+                timeOut: '5000',
+                extendedTimeOut: '1000',
+                showEasing: 'swing',
+                hideEasing: 'linear',
+                showMethod: 'fadeIn',
+                                    };
+                toastr.success("No new order notification");
+            }
+            else
+            {
+
+                var urlofallorderid = `mark/as/read/multiple/${queryStringOrder}`;
+                $('#showallorder').attr('href',urlofallorderid);
+            }
 
 
 
@@ -123,4 +157,6 @@ $.ajax({
 
     }
 });
+});
+
 </script>
