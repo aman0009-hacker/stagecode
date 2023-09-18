@@ -110,10 +110,7 @@ $.ajax({
         Array.from(latestn).forEach(element => {
 
             const orderdata=element.data;
-            const ordernoti=orderdata.replace(/^"(.+(?="$))"$/, '$1');
-
-
-
+            const ordernoti=orderdata.replaceAll('"', '');
             const ordernotiId =element.id;
             arr.push(element.id);
 
