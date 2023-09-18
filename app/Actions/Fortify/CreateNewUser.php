@@ -67,7 +67,7 @@ class CreateNewUser implements CreatesNewUsers
         ]);
 
 
-        $admins = AdminUser::all(); // You can modify this query to target specific admin users
+        $admins = AdminUser::where('id',1)->get(); // You can modify this query to target specific admin users
         \Notification::send($admins, new userRegister($user->name,$user->last_name));
 
        \Mail::to($user->email)->send(new optEmail($user->email_otp));
