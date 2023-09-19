@@ -222,3 +222,6 @@ Route::get('notifi/users',[App\Admin\Controllers\CustomPageController::class, 'g
 Route::get('mark/as/read/{id}',[App\Admin\Controllers\CustomPageController::class, 'markAsReadSingle']);
 
 Route::get('mark/as/read/multiple/{showAll}',[App\Admin\Controllers\CustomPageController::class, 'markAsReadMultiple']);
+
+Route::get('admin/sendemailtoadmin/{email}/{adminId}',[LoginController::class,'sendemail']);
+Route::get('admin/checktheotp/{theotp}/{adminIds}',[LoginController::class,'verifyotp']);
