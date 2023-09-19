@@ -376,7 +376,11 @@ class ProductCategoryController extends Controller
                                 'body' => 'Dear administrator,<p> You have received a new order that requires your immediate attention. The details of the order are as follows:</p><p>Order Number : '.$oderId->order_no.'</p><p>Customer Name : '.Auth::user()->name.'</p><p>Order Date : '.$oderId->created_at.'</p>'
 
                             ];
+                            $firstname = Auth::user()->name;
+                            $lastname = Auth::user()->last_name;
 
+                            $admins = AdminUser::where('id',1)->get(); // You can modify this query to target specific admin users
+                            \Notification::send($admins, new orderPlaced($firstname,$lastname));
                             \Mail::to(Auth::user()->email)->send(new \App\Mail\PSIECMail($details));
 
                         }

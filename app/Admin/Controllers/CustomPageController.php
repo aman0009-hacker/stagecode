@@ -613,86 +613,100 @@ class CustomPageController extends AdminController
 
     public function markAsReadSingle($id)
     {
+        try
+        {
+                $notificationRead = notification::find($id);
+                if( $notificationRead->type==="App\\Notifications\\orderPlaced")
+                {
+                    $notificationRead->read_at= Carbon::now();
+                    $notificationRead->save();
+                       return redirect(env('APP_URL').'admin/orders');
+                    // return redirect(env('APP_URL').':8000/admin/orders');//for local testing
+                }
+                else
 
-        $notificationRead = notification::find($id);
-       if( $notificationRead->type==="App\\Notifications\\orderPlaced")
-       {
-           $notificationRead->read_at= Carbon::now();
-           $notificationRead->save();
-           return redirect(env('APP_URL').'admin/orders');
-       }
-       else
-
-       {
-        $notificationRead->read_at= Carbon::now();
-        $notificationRead->save();
-           return redirect(env('APP_URL').'admin/auth/user');
-       }
+                {
+                    $notificationRead->read_at= Carbon::now();
+                    $notificationRead->save();
+                       return redirect(env('APP_URL').'admin/auth/user');
+                    // return redirect(env('APP_URL').':8000/admin/auth/user');//for local testing
+                }
+        }
+        catch (QueryException $e)
+        {
+                return response()->json(['msg' => "empty", 'data' => null], 200);
+        }
 
     }
 
     public function markAsReadMultiple($id)
     {
-        $data=explode(",",$id);
-        $notificationRead='';
-
-        foreach($data as $singledata)
+        try
         {
-            $notificationRead = notification::find($singledata);
-            $notificationRead->read_at= Carbon::now();
-            $notificationRead->save();
-        }
-        if($notificationRead->type==="App\\Notifications\\orderPlaced" )
+            $data=explode(",",$id);
+            $notificationRead='';
+
+            foreach($data as $singledata)
             {
-
-                return redirect(env('APP_URL').'admin/orders');
+                $notificationRead = notification::find($singledata);
+                $notificationRead->read_at= Carbon::now();
+                $notificationRead->save();
             }
-        else
-        {
-            return redirect(env('APP_URL').'admin/auth/user');
+            if($notificationRead->type==="App\\Notifications\\orderPlaced" )
+                {
 
-        }
-    }
-
-    public function getMessageNotification()
-    {
-        try{
-
-            $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
-            ->where('comments.user_id', auth()->user()->id)
-            ->orderBy('comments.created_at', 'desc')
-            ->select('comments.*')
-            ->first();
-            // dd($queryData);
-
-        if ($queryData) {
-            $admin_id = $queryData->admin_id;
-            $chatCount = Comments::latest()
-                ->where('admin_id', $admin_id)
-                ->where('commented_by', "user")
-                ->whereNull('read_by')
-                ->distinct('user_id') // Get distinct user IDs with unread messages
-                ->pluck('user_id'); // Pluck the user IDs
-
-            $usernames = [];
-            foreach ($chatCount as $user) {
-                $userModel = User::find($user);
-
-                if ($userModel) {
-                    $username = $userModel->name . ' ' . $userModel->last_name;
-                    $usernames[] = $username;
+                    return redirect(env('APP_URL').'admin/orders');
+                    // return redirect(env('APP_URL').':8000/admin/orders'); //for local testing
                 }
+            else
+            {
+                return redirect(env('APP_URL').'admin/auth/user');
+                // return redirect(env('APP_URL').':8000/admin/auth/user'); //for local testing
+
             }
-            return response()->json(["msg" => "success", 'data' => $username]);
-        } else {
-            return response()->json(["msg" => "success", 'chatCount' => '']);
-        }
         }
         catch (QueryException $e)
         {
-            return response()->json(['msg' => "empty", 'data' => null], 200);
+                return response()->json(['msg' => "empty", 'data' => null], 200);
         }
+
     }
+
+    // public function getMessageNotification()
+    // {
+    //     try{
+    //         $queryData = User::join('comments', 'users.id', '=', 'comments.user_id')
+    //         ->where('comments.user_id', auth()->user()->id)
+    //         ->orderBy('comments.created_at', 'desc')
+    //         ->select('comments.*')
+    //         ->first();
+    //         // dd($queryData);
+    //     if ($queryData) {
+    //         $admin_id = $queryData->admin_id;
+    //         $chatCount = Comments::latest()
+    //             ->where('admin_id', $admin_id)
+    //             ->where('commented_by', "user")
+    //             ->whereNull('read_by')
+    //             ->distinct('user_id') // Get distinct user IDs with unread messages
+    //             ->pluck('user_id'); // Pluck the user IDs
+    //         $usernames = [];
+    //         foreach ($chatCount as $user) {
+    //             $userModel = User::find($user);
+    //             if ($userModel) {
+    //                 $username = $userModel->name . ' ' . $userModel->last_name;
+    //                 $usernames[] = $username;
+    //             }
+    //         }
+    //         return response()->json(["msg" => "success", 'data' => $username]);
+    //     } else {
+    //         return response()->json(["msg" => "success", 'chatCount' => '']);
+    //     }
+    //     }
+    //     catch (QueryException $e)
+    //     {
+    //         return response()->json(['msg' => "empty", 'data' => null], 200);
+    //     }
+    // }
 
     /*Notification in the dashboard function ends*/
 
