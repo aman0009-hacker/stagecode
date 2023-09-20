@@ -34,7 +34,7 @@ function updateModalContent(rowData, callingFunction = 1) {
     modal.find('.modal-body p').text(rowData.description);
     modal.find('.modal-body span').eq(0).text(rowData.diameter);
     modal.find('.modal-body span').eq(1).text(rowData.size);
-    modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" value="' + (rowData.quantity =='' ? '': 1) + '">');
+    modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" value="' + (rowData.quantity ==undefined ? '': 1) + '">');
     //modal.find('#measurement').empty().append('<input type="number" class="form-control measurement-input" value="' + rowData.measurement + '">');
     modal.find('#measurement').empty().append('<select class="form-select measurement-input">' +
         '<option value="Ton"' + (rowData.measurement === "Ton" ? ' selected' : '') + '>Ton</option>' +
@@ -61,7 +61,7 @@ function updateModalContentMultiple(rowsData) {
         // tr.append('<td>' + rowData.size + '</td>');(entity.quantity===undefined ? '': 1)
         //   tr.append('<td>' + rowData.quantity + '</td>');
         //   tr.append('<td>' + rowData.measurement + '</td>');
-        tr.append('<td>' + '<input type="number" class="form-control quantity-input" value="' + (rowData.quantity =='' ? '': 1) + '">' + '</td>');
+        tr.append('<td>' + '<input type="number" class="form-control quantity-input" value="' + (rowData.quantity == undefined ? '': 1) + '">' + '</td>');
         //tr.append('<td>' + '<input type="number" class="form-control measurement-input" value="' + rowData.measurement + '">' + '</td>');
         tr.append('<td>' + '<select class="form-select measurement-input">' +
             '<option value="Ton"' + (rowData.measurement === "Ton" ? ' selected' : '') + '>Ton</option>' +
@@ -451,7 +451,7 @@ function generateTableRows(data) {
         //new code
         // var quantityCell = $('<td></td>').html('<input type="number" class="form-control quantity-input" value="' + entity.quantity + '">');
         // var measurementCell = $('<td></td>').html('<input type="number" class="form-control measurement-input" value="' + entity.measurement + '">');
-        var quantityCell = $('<td></td>').html('<input type="number" class="form-control quantity-input" hidden value="' + (entity.quantity=='' ? '': 1) + '" min="1" required>');
+        var quantityCell = $('<td></td>').html('<input type="number" class="form-control quantity-input" hidden value="' + (entity.quantity==NaN ? '': 1) + '" min="1" required>');
         //var measurementCell = $('<td></td>').html('<input type="number" class="form-control measurement-input"  hidden value="' + (entity.measurement || 0) + '">');
         var measurementCell = $('<td></td>').html('<select class="form-select measurement-input">' +
             '<option value="Ton">Ton</option>' +
@@ -493,7 +493,7 @@ function updateModalContent(rowData, callingFunction = 1) {
     modal.find('.modal-body p').text(rowData.description);
     // modal.find('.modal-body span').eq(0).text(rowData.diameter);
     // modal.find('.modal-body span').eq(1).text(rowData.size);
-    modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" value="' + (entity.quantity=='' ? '': 1) + '" min="1" required>');
+    modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" value="' + (entity.quantity==NaN ? '': 1) + '" min="1" required>');
     //modal.find('#measurement').empty().append('<input type="number" class="form-control measurement-input" value="' + rowData.measurement + '">');
     //var measurement = modal.find('.measurement-input').val();
     modal.find('#measurement').empty().append('<select class="form-select measurement-input">' +
