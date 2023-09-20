@@ -1,160 +1,186 @@
-let verify=document.getElementById('emailverification');
+let verify=document.getElementsByClassName('emailverification');
 
-if(verify &&  verify.parentNode)
+
+Array.from(verify).forEach(element => {
+
+    console.log(element.parentNode);
+    if(element &&  element.parentNode)
 {
-
-    let buttonsubmit=verify.parentNode;
-    
+   
+    let buttonsubmit=element.parentNode;
+      
     let findlabel=buttonsubmit.querySelector('label')
     findlabel.setAttribute('id','emaillabel')
     let sndbutton=document.createElement('span');
-    sndbutton.innerHTML=`<a href="#" style="margin-left: 10px;padding: 6px 26px;background-color: #00a65a;color: #fff;border: 1px solid #00a65a;border-radius: 3px;" id="Sendemail" >Send</a>`;
+    sndbutton.innerHTML=`<a href="#" style="margin-left: 10px;padding: 6px 26px;background-color: #00a65a;color: #fff;border: 1px solid #00a65a;border-radius: 3px;" class="Sendemail" >Send</a>`;
     
-    buttonsubmit.append(sndbutton);
+    buttonsubmit.append(sndbutton); 
 }
+});
 
 
 
 
-if(verify && verify.parentNode.parentNode)
+Array.from(verify).forEach(element => {
+if(element && element.parentNode.parentNode)
 {
 
-    let verifyparent=verify.parentNode.parentNode;
+    let verifyparent=element.parentNode.parentNode;
     let makeelement=document.createElement('div');
     makeelement.setAttribute('id','verifiction_head');
-    makeelement.innerHTML=`<label for="emailotp">OTP</label><input type="text" id="emailotp" placeholder="InputOtp"><button type="button"style="margin-left: 10px;padding: 6px 26px;background-color: #55ACEE;color: #fff;border: 1px solid #55ACEE;border-radius: 3px;"id="verifytheotp">Verify</button>
+    makeelement.innerHTML=`<label for="emailotp">OTP</label><input type="text" class="emailotp" placeholder="InputOtp"><button type="button"style="margin-left: 10px;padding: 6px 26px;background-color: #55ACEE;color: #fff;border: 1px solid #55ACEE;border-radius: 3px;"class="verifytheotp">Verify</button>
         `
     
     verifyparent.append(makeelement);
 }
 
 
+});
 
 
 
 
 
 
-
-let getdata=document.getElementById('Sendemail');
+let getdata=document.getElementsByClassName('Sendemail');
 if(getdata)
 {
-
-    getdata.addEventListener('click',function(){
-        
-        let adminId=document.getElementById('emailotpcheck').value;
-        let email=document.getElementById('emailverification').value;
-        if(email==='' || email===null)
-        {
-            toastr.options = {
-                closeButton: true,
-                progressBar: true,
-                positionClass: 'toast-top-right',
-                showDuration: '300',
-                hideDuration: '1000',
-                timeOut: '5000',
-                extendedTimeOut: '1000',
-                showEasing: 'swing',
-                hideEasing: 'linear',
-                showMethod: 'fadeIn',
-            
-            };
-            
-            toastr.error("Please fill the email field");
-        }
-        else
-        {
+Array.from(getdata).forEach(element=>{
     
-            toastr.options = {
-                closeButton: true,
-                progressBar: true,
-                positionClass: 'toast-top-right',
-                showDuration: '300',
-                hideDuration: '1000',
-                timeOut: '5000',
-                extendedTimeOut: '1000',
-                showEasing: 'swing',
-                hideEasing: 'linear',
-                showMethod: 'fadeIn',
-            
-            };
-            
-            toastr.info("Please wait");
-        }
-    $.ajax({
-        url:'sendemailtoadmin/'+email+'/'+adminId,
-        method:'get',
-        datatype:'json',
-        success:function(response)
-        {
-            console.log(response);
-            if(response.data==="success")
-            {
-                toastr.options = {
-                    closeButton: true,
-                    progressBar: true,
-                    positionClass: 'toast-top-right',
-                    showDuration: '300',
-                    hideDuration: '1000',
-                    timeOut: '5000',
-                    extendedTimeOut: '1000',
-                    showEasing: 'swing',
-                    hideEasing: 'linear',
-                    showMethod: 'fadeIn',
-                
-                };
-                
-                toastr.success("Email sent");
-            }
-            else if(response.data==="match")
-            {
-                toastr.options = {
-                    closeButton: true,
-                    progressBar: true,
-                    positionClass: 'toast-top-right',
-                    showDuration: '300',
-                    hideDuration: '1000',
-                    timeOut: '5000',
-                    extendedTimeOut: '1000',
-                    showEasing: 'swing',
-                    hideEasing: 'linear',
-                    showMethod: 'fadeIn',
-                
-                };
-                
-                toastr.warning("Email id is already registered");
-            }
-            
-            else if(response.data==="fail")
-            {
-                toastr.options = {
-                    closeButton: true,
-                    progressBar: true,
-                    positionClass: 'toast-top-right',
-                    showDuration: '300',
-                    hideDuration: '1000',
-                    timeOut: '5000',
-                    extendedTimeOut: '1000',
-                    showEasing: 'swing',
-                    hideEasing: 'linear',
-                    showMethod: 'fadeIn',
-                
-                };
-                
-                toastr.warning("Server is busy,Please try again later");
-            }
-        }
-    })
-    });
+     element.addEventListener('click',function(event){
+     
+    
+     
+         let parentofbuttons=event.target.parentNode.parentNode;
+         let findthehidden=event.target.parentNode.parentNode.parentNode;
+        let inputchild= parentofbuttons.querySelector('input');
+     
+        let hiddenvalue=findthehidden.querySelector('input[type="hidden"]').value;
+      
+
+        //  let adminId=document.getElementById('emailotpcheck').value;
+         // let email=document.getElementsByClassName('emailverification').value;
+         // console.log(email);
+         if(inputchild.value==='' || inputchild.value===null)
+         {
+             toastr.options = {
+                 closeButton: true,
+                 progressBar: true,
+                 positionClass: 'toast-top-right',
+                 showDuration: '300',
+                 hideDuration: '1000',
+                 timeOut: '5000',
+                 extendedTimeOut: '1000',
+                 showEasing: 'swing',
+                 hideEasing: 'linear',
+                 showMethod: 'fadeIn',
+             
+             };
+             
+             toastr.error("Please fill the email field");
+         }
+         else
+         {
+     
+             toastr.options = {
+                 closeButton: true,
+                 progressBar: true,
+                 positionClass: 'toast-top-right',
+                 showDuration: '300',
+                 hideDuration: '1000',
+                 timeOut: '5000',
+                 extendedTimeOut: '1000',
+                 showEasing: 'swing',
+                 hideEasing: 'linear',
+                 showMethod: 'fadeIn',
+             
+             };
+             
+             toastr.info("Please wait");
+         }
+     $.ajax({
+         url:'sendemailtoadmin/'+inputchild.value+'/'+hiddenvalue,
+         method:'get',
+         datatype:'json',
+         success:function(response)
+         {
+       
+             if(response.data==="success")
+             {
+                 toastr.options = {
+                     closeButton: true,
+                     progressBar: true,
+                     positionClass: 'toast-top-right',
+                     showDuration: '300',
+                     hideDuration: '1000',
+                     timeOut: '5000',
+                     extendedTimeOut: '1000',
+                     showEasing: 'swing',
+                     hideEasing: 'linear',
+                     showMethod: 'fadeIn',
+                 
+                 };
+                 
+                 toastr.success("Email sent");
+             }
+             else if(response.data==="match")
+             {
+                 toastr.options = {
+                     closeButton: true,
+                     progressBar: true,
+                     positionClass: 'toast-top-right',
+                     showDuration: '300',
+                     hideDuration: '1000',
+                     timeOut: '5000',
+                     extendedTimeOut: '1000',
+                     showEasing: 'swing',
+                     hideEasing: 'linear',
+                     showMethod: 'fadeIn',
+                 
+                 };
+                 
+                 toastr.warning("Email id is already registered");
+             }
+             
+             else if(response.data==="fail")
+             {
+                 toastr.options = {
+                     closeButton: true,
+                     progressBar: true,
+                     positionClass: 'toast-top-right',
+                     showDuration: '300',
+                     hideDuration: '1000',
+                     timeOut: '5000',
+                     extendedTimeOut: '1000',
+                     showEasing: 'swing',
+                     hideEasing: 'linear',
+                     showMethod: 'fadeIn',
+                 
+                 };
+                 
+                 toastr.warning("Server is busy,Please try again later");
+             }
+         }
+     })
+     });
+});
+
+
 }
 
-let getheoptelement=document.getElementById('verifytheotp');
+let getheoptelement=document.getElementsByClassName('verifytheotp');
 if(getheoptelement)
 {
+Array.from(getheoptelement).forEach(element=>{
 
-    getheoptelement.addEventListener('click',function()
+    element.addEventListener('click',function(event)
     {
-        let theotp=document.getElementById('emailotp').value;
+        let theotps=event.target.parentNode;
+        let theotp= theotps.querySelector('input').value;
+     let adminids=event.target.parentNode.parentNode;
+     let adminId=adminids.querySelector('input').value;
+
+        console.log(theotp);
         if(theotp===''|| theotp===null)
         {
             toastr.options = {
@@ -173,9 +199,9 @@ if(getheoptelement)
             
             toastr.error("Please fill the otp field");
         }
-        let adminIds=document.getElementById('emailotpcheck').value;
+        // let adminIds=document.getElementById('emailotpcheck').value;
         $.ajax({
-            url:'checktheotp/'+theotp+'/'+adminIds,
+            url:'checktheotp/'+theotp+'/'+adminId,
             method:'get',
             datatype:'json',
             success:function(response)
@@ -183,10 +209,10 @@ if(getheoptelement)
                 if(response.data==="success")
                 {
                     
-                    document.getElementById('verifytheotp').disabled=true;
-                    document.getElementById('emailotp').disabled=true;
+                   element.disabled=true;
+                   theotps.querySelector('input').disabled=true;
                     
-                   document.getElementById('verifytheotp').innerHTML="Verified";
+                   element.innerHTML="Verified";
                 }
                 else
                 {
@@ -209,5 +235,6 @@ if(getheoptelement)
             }
         })
     });
+})
 }
 
