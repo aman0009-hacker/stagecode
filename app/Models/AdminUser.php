@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 
 // Use App\Models\AdminUser;
 
-class AdminUser extends Model
+class adminUser extends Model
 {
     use HasFactory, Notifiable;
 
