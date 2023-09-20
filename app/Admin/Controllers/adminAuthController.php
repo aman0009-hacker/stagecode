@@ -2,8 +2,8 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Actions\Verification;
-use App\models\AdminUser;
+use App\Admin\Actions\verification;
+use App\Models\AdminUser;
 use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -27,7 +27,7 @@ class adminAuthController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new adminUser());
+        $grid = new Grid(new AdminUser());
 
         $grid->column('id', __('Id'));
         $grid->column('username', __('Username'));
@@ -43,7 +43,7 @@ class adminAuthController extends AdminController
         {
             return $value;
         }
-        
+
     });
         // $grid->column('otp', __('Stauts'));
 
@@ -67,7 +67,7 @@ class adminAuthController extends AdminController
         else
         {
             foreach ($value as $key => $singlevalue) {
-        
+
                       $arr[]=$singlevalue['name'];
             }
 
@@ -75,7 +75,7 @@ class adminAuthController extends AdminController
         }
     });
         // $grid->column('remember_token', __('Remember token'));
-        // $grid->column('created_at', __('Created at'));   
+        // $grid->column('created_at', __('Created at'));
 
         $grid->column('created_at', __('Created At'))->display(function ($value) {
 
@@ -83,6 +83,7 @@ class adminAuthController extends AdminController
         });
         // $grid->column('updated_at', __('Updated at'));
 
+        $grid->disableCreateButton();
           $grid->actions(function($action)
           {
             $action->disableDelete();
@@ -95,18 +96,26 @@ class adminAuthController extends AdminController
             }
             else
             {
-           
+
             }
 
           });
 
           $html = <<<HTML
           <style>
-  
-              #emailverification
+
+              .emailverification
               {
                display:inline-block!important;
-               width:50%;   
+               width:50%;
+               padding: 6px 12px;
+                 border: 1px solid #d2d6de;
+                
+              }
+              .emailverification:focus-visible
+              {
+                  outline:1px solid #3c8dbc!important;
+                  border-color:none!important;
               }
               #emaillabel
               {
@@ -115,7 +124,7 @@ class adminAuthController extends AdminController
               #verifiction_head label
                {
                 display: block!important;
-                
+
               }
               #verifiction_head input
               {
@@ -128,10 +137,10 @@ class adminAuthController extends AdminController
                   outline:1px solid #3c8dbc!important;
                   border-color:none!important;
               }
-  
+
           </style>
-  
-  
+
+
         HTML;
           Admin::html($html);
 
@@ -149,7 +158,7 @@ class adminAuthController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(adminUser::findOrFail($id));
+        $show = new Show(AdminUser::findOrFail($id));
 
         $show->field('id', __('Id'));
         $show->field('username', __('Username'));
@@ -172,7 +181,7 @@ class adminAuthController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new adminUser());
+        $form = new Form(new AdminUser());
 
         $form->text('username', __('Username'));
         $form->password('password', __('Password'));

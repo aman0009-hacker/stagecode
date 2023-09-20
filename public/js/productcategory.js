@@ -34,7 +34,7 @@ function updateModalContent(rowData, callingFunction = 1) {
     modal.find('.modal-body p').text(rowData.description);
     modal.find('.modal-body span').eq(0).text(rowData.diameter);
     modal.find('.modal-body span').eq(1).text(rowData.size);
-    modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" value="' + rowData.quantity + '">');
+    modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" value="' + (rowData.quantity || 1) + '">');
     //modal.find('#measurement').empty().append('<input type="number" class="form-control measurement-input" value="' + rowData.measurement + '">');
     modal.find('#measurement').empty().append('<select class="form-select measurement-input">' +
         '<option value="Ton"' + (rowData.measurement === "Ton" ? ' selected' : '') + '>Ton</option>' +
@@ -61,7 +61,7 @@ function updateModalContentMultiple(rowsData) {
         // tr.append('<td>' + rowData.size + '</td>');
         //   tr.append('<td>' + rowData.quantity + '</td>');
         //   tr.append('<td>' + rowData.measurement + '</td>');
-        tr.append('<td>' + '<input type="number" class="form-control quantity-input" value="' + rowData.quantity + '">' + '</td>');
+        tr.append('<td>' + '<input type="number" class="form-control quantity-input" value="' + (rowData.quantity || 1) + '">' + '</td>');
         //tr.append('<td>' + '<input type="number" class="form-control measurement-input" value="' + rowData.measurement + '">' + '</td>');
         tr.append('<td>' + '<select class="form-select measurement-input">' +
             '<option value="Ton"' + (rowData.measurement === "Ton" ? ' selected' : '') + '>Ton</option>' +
@@ -264,7 +264,7 @@ function handleCategoryChange(categoryId) {
                         if (value !== null) {
                             var option = $('<option>').val(key).text(value);
                             $("#entity").append(option);
-                            
+
                         }
                     });
                 },
@@ -309,7 +309,7 @@ function handleCategoryChangeCoal(categoryId) {
                         if (value !== null) {
                             var option = $('<option>').val(key).text(value);
                             $("#entityCoal").append(option);
-                            
+
                         }
                     });
                 },
@@ -337,7 +337,7 @@ $("#showEntity").on("click", function (event) {
     var subcategory_data = $("#entity option:selected").text();
 
 
-    //alert( category +  "  "  +subcategory); 
+    //alert( category +  "  "  +subcategory);
 
     if (category) {
         $.ajax(
@@ -382,7 +382,7 @@ $("#showEntityCoal").on("click", function (event) {
     var subcategory_data = $("#entityCoal option:selected").text();
 
 
-    //alert( category +  "  "  +subcategory); 
+    //alert( category +  "  "  +subcategory);
 
     if (category) {
         $.ajax(
@@ -451,7 +451,7 @@ function generateTableRows(data) {
         //new code
         // var quantityCell = $('<td></td>').html('<input type="number" class="form-control quantity-input" value="' + entity.quantity + '">');
         // var measurementCell = $('<td></td>').html('<input type="number" class="form-control measurement-input" value="' + entity.measurement + '">');
-        var quantityCell = $('<td></td>').html('<input type="number" class="form-control quantity-input" hidden value="' + (entity.quantity || 0) + '">');
+        var quantityCell = $('<td></td>').html('<input type="number" class="form-control quantity-input" hidden value="' + (entity.quantity || 1) + '" min="1" required>');
         //var measurementCell = $('<td></td>').html('<input type="number" class="form-control measurement-input"  hidden value="' + (entity.measurement || 0) + '">');
         var measurementCell = $('<td></td>').html('<select class="form-select measurement-input">' +
             '<option value="Ton">Ton</option>' +
@@ -493,7 +493,7 @@ function updateModalContent(rowData, callingFunction = 1) {
     modal.find('.modal-body p').text(rowData.description);
     // modal.find('.modal-body span').eq(0).text(rowData.diameter);
     // modal.find('.modal-body span').eq(1).text(rowData.size);
-    modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" value="' + rowData.quantity + '">');
+    modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" value="' + (entity.quantity || 1) + '" min="1" required>');
     //modal.find('#measurement').empty().append('<input type="number" class="form-control measurement-input" value="' + rowData.measurement + '">');
     //var measurement = modal.find('.measurement-input').val();
     modal.find('#measurement').empty().append('<select class="form-select measurement-input">' +

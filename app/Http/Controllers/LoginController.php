@@ -95,18 +95,20 @@ class LoginController extends Controller
 
     public function sendemail($email,$adminId)
     {
+        
+        
         try
         {
-
-         $alladmin=AdminUser::all();
+            $alladmin=AdminUser::where('is_verified','1')->get();
 
         foreach($alladmin as $singleadmin)
         {
-            if($singleadmin->email===$email)
+            if($singleadmin->email==$email)
             {
-                return response()->json(['data'=>"match"]);
+                return response()->json(['data'=>"match"]);	
             }
         }
+
 
             $otp=random_int(1000, 9999);
             $details = [
