@@ -34,7 +34,7 @@ function updateModalContent(rowData, callingFunction = 1) {
     modal.find('.modal-body p').text(rowData.description);
     modal.find('.modal-body span').eq(0).text(rowData.diameter);
     modal.find('.modal-body span').eq(1).text(rowData.size);
-    modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" value="' + (rowData.quantity == undefined || rowData.quantity == null || rowData.quantity == '' ? 1 :'') + '">');
+    modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" min="1" value="' + (rowData.quantity == undefined || rowData.quantity == null || rowData.quantity == '' ? 1 :'') + '">');
     //modal.find('#measurement').empty().append('<input type="number" class="form-control measurement-input" value="' + rowData.measurement + '">');
     modal.find('#measurement').empty().append('<select class="form-select measurement-input">' +
         '<option value="Ton"' + (rowData.measurement === "Ton" ? ' selected' : '') + '>Ton</option>' +
@@ -61,7 +61,7 @@ function updateModalContentMultiple(rowsData) {
         // tr.append('<td>' + rowData.size + '</td>');(entity.quantity===undefined ? '': 1)
         //   tr.append('<td>' + rowData.quantity + '</td>');
         //   tr.append('<td>' + rowData.measurement + '</td>');
-        tr.append('<td>' + '<input type="number" class="form-control quantity-input" value="' + (rowData.quantity == undefined || rowData.quantity == null || rowData.quantity == '' ? 1 :'') + '">' + '</td>');
+        tr.append('<td>' + '<input type="number" class="form-control quantity-input" min="1" value="' + (rowData.quantity == undefined || rowData.quantity == null || rowData.quantity == '' ? 1 :'') + '">' + '</td>');
         //tr.append('<td>' + '<input type="number" class="form-control measurement-input" value="' + rowData.measurement + '">' + '</td>');
         tr.append('<td>' + '<select class="form-select measurement-input">' +
             '<option value="Ton"' + (rowData.measurement === "Ton" ? ' selected' : '') + '>Ton</option>' +
