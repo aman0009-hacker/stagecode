@@ -40,15 +40,29 @@ class YardSupervisorManagementController extends AdminController
     try {
       $grid = new Grid(new Records());
       // $grid->column('id', __('Id'));
-      // $grid->column('supervisor_id', __('Supervisor id'));
-      $grid->column('date', __('Date'));
+      $grid->column('adminUser.name', __('Supervisor Name'));
+      $grid->column('date', __('Date'))->display(function($value)
+    {
+      return Carbon::parse($value)->format('Y-m-d');
+    });
       $grid->column('product', __('Product'));
       $grid->column('quantity', __("Quantity in Ton's"));
       $grid->column('amount', __("Commission amount per Ton's"));
       $grid->column('Total commission')->display(function () {
         return $this->quantity * $this->amount;
       });
-      $grid->column('description', __('Description'));
+      $grid->column('description', __('Description'))->display(function($value)
+    {
+        if($value===null)
+        {
+          return "N/A";
+        }
+
+        else
+        {
+          return $value;
+        }
+    });
       // $grid->column('created_at', __('Created at'))->display(function ($value) {
       //    // return Carbon::parse($value)->format('Y-m-d H:i:s');
       //    //return Carbon::parse($value)->format('d-m-Y');
@@ -111,6 +125,8 @@ class YardSupervisorManagementController extends AdminController
       }
       //new code
       $grid->model()->orderBy('created_at', 'desc');
+
+      
       return $grid;
     } catch (\Throwable $ex) {
       Log::info($ex->getMessage());
