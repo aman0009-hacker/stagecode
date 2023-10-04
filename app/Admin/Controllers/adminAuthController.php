@@ -31,77 +31,59 @@ class adminAuthController extends AdminController
 
         $grid->column('id', __('Id'));
         $grid->column('username', __('Username'));
-        // $grid->column('password', __('Password'));
         $grid->column('name', __('Name'));
-        $grid->column('email', __('Email'))->display(function($value)
-    {
-        if($value===null)
-        {
-            return "N/A";
-        }
-        else
-        {
-            return $value;
-        }
-
-    });
-        // $grid->column('otp', __('Stauts'));
-
-        $grid->column('is_verified', __('Status'))->display(function($value)
-    {
-        if($value==0)
-          {
-            return "<span style='background-color:red;color:#fff;padding:3px 10px;border-radius:10px'>Not verified</span>";
-          }
-          else
-          {
-            return "<span style='background-color:green;color:#fff;padding:3px 10px;border-radius:10px'>Verified</span>";
-          }
-    });
-
-    $grid->column('Roles', __('Role'))->display(function ($value) {
-        if($value==null)
-        {
-            return "N/A";
-        }
-        else
-        {
-            foreach ($value as $key => $singlevalue) {
-
-                      $arr[]=$singlevalue['name'];
+        $grid->column('email', __('Email'))->display(function ($value) {
+            if ($value === null) {
+                return "N/A";
+            } else {
+                return $value;
             }
 
-            return implode(",",$arr);
-        }
-    });
-        // $grid->column('remember_token', __('Remember token'));
-        // $grid->column('created_at', __('Created at'));
+        });
+
+
+        $grid->column('is_verified', __('Status'))->display(function ($value) {
+            if ($value == 0) {
+                return "<span style='background-color:red;color:#fff;padding:3px 10px;border-radius:10px'>Not verified</span>";
+            } else {
+                return "<span style='background-color:green;color:#fff;padding:3px 10px;border-radius:10px'>Verified</span>";
+            }
+        });
+
+        $grid->column('Roles', __('Role'))->display(function ($value) {
+            if ($value == null) {
+                return "N/A";
+            } else {
+                foreach ($value as $key => $singlevalue) {
+
+                    $arr[] = $singlevalue['name'];
+                }
+
+                return implode(",", $arr);
+            }
+        });
+
 
         $grid->column('created_at', __('Created At'))->display(function ($value) {
 
             return Carbon::parse($value)->format('Y-m-d H:i');
         });
-        // $grid->column('updated_at', __('Updated at'));
 
         $grid->disableCreateButton();
-          $grid->actions(function($action)
-          {
+        $grid->actions(function ($action) {
             $action->disableDelete();
             $action->disableView();
             $action->disableEdit();
-            if($action->row->is_verified==0)
-            {
+            if ($action->row->is_verified == 0) {
 
                 $action->add(new Verification());
-            }
-            else
-            {
+            } else {
 
             }
 
-          });
+        });
 
-          $html = <<<HTML
+        $html = <<<HTML
           <style>
 
               .emailverification
@@ -110,7 +92,7 @@ class adminAuthController extends AdminController
                width:50%;
                padding: 6px 12px;
                  border: 1px solid #d2d6de;
-                
+
               }
               .emailverification:focus-visible
               {
@@ -142,11 +124,18 @@ class adminAuthController extends AdminController
 
 
         HTML;
-          Admin::html($html);
+        Admin::html($html);
 
-          $jsFilePath = public_path('js/emailverification.js');
-          $jsContent = file_get_contents($jsFilePath);
-          Admin::script($jsContent);
+        $jsFilePath = public_path('js/emailverification.js');
+        $jsContent = file_get_contents($jsFilePath);
+        Admin::script($jsContent);
+        $grid->filter(function ($filter) {
+            $filter->like('username', 'Username');
+            $filter->like('name', 'Name');
+            $filter->like('email', 'Email');
+            $filter->like('roles.name', 'Role');
+            $filter->disableIdFilter();
+        });
         return $grid;
     }
 
