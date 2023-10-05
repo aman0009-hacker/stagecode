@@ -69,7 +69,7 @@ class profileController extends Controller
 
     public function addresssave(request $request)
     {
-        // dd($request->all());
+
         try {
             $address = new Address();
             $valid = Validator::make($request->all(), [
@@ -204,7 +204,7 @@ class profileController extends Controller
             }
 
             $perday_trim = rtrim($perday, ',');
-            // dd($perday_trim);
+
 
             return view('userDashboard.dashboard', compact('data', 'order', 'chartrim', 'order_trim', 'total_amount', 'perday_trim'));
         } catch (\Throwable $ex) {
@@ -228,18 +228,26 @@ class profileController extends Controller
     {
         $user_id = Auth::user()->id;
         $allorders = Order::where('user_id', $user_id)->get();
-        // dd($allorders);
+
         $orderDetails = [];
         $counter = 0;
         $orderData = [
-            "Order_No" => [], // Changed to an empty array
-            "Balance_on_booking" => [], // Changed to an empty array
-            "booking_transaction_id" => [], // Changed to an empty array
-            "final_transaction_id" => [], // Changed to an empty array
-            "Booking_Initial_Amount" => [], // Changed to an empty array
-            "Final_Amount" => [], // Changed to an empty array
-            "Final_Payment_Mode" => [], // Changed to an empty array
-            "Cheque_Info" => [], // Changed to an empty array
+            "Order_No" => [],
+            // Changed to an empty array
+            "Balance_on_booking" => [],
+            // Changed to an empty array
+            "booking_transaction_id" => [],
+            // Changed to an empty array
+            "final_transaction_id" => [],
+            // Changed to an empty array
+            "Booking_Initial_Amount" => [],
+            // Changed to an empty array
+            "Final_Amount" => [],
+            // Changed to an empty array
+            "Final_Payment_Mode" => [],
+            // Changed to an empty array
+            "Cheque_Info" => [],
+            // Changed to an empty array
         ];
         foreach ($allorders as $order) {
             if (isset($order->id) && !empty($order->id)) {
@@ -251,7 +259,7 @@ class profileController extends Controller
                     $orderData["Order_No"][] = "(N/A)";
                 }
 
-                // $interestAmount = Order::where('id', $order->id)->where('user_id', $user_id)->value('interest_amount');
+
 
                 $balance_on_booking = Order::where('id', $order->id)->where('user_id', $user_id)->value('balance_on_booking');
                 if (isset($balance_on_booking) && !empty($balance_on_booking)) {
@@ -281,7 +289,7 @@ class profileController extends Controller
                     $orderData['final_transaction_id'][] = "(N/A)";
                 }
 
-                // dd($final_transaction);
+
 
                 $booking_transaction = PaymentDataHandling::where('order_id', $order->id)->where('user_id', $user_id)->where('data', 'Booking_Amount')->pluck('transaction_id')->last();
                 if (isset($booking_transaction) && !empty($booking_transaction)) {
@@ -290,11 +298,7 @@ class profileController extends Controller
                     $orderData['booking_transaction_id'][] = "(N/A)";
                 }
 
-                // $invalid_cheque_amount = PaymentDataHandling::where('order_id', $order->id)
-                // ->where('user_id', $user_id)
-                // ->where('data', 'Invalid_Cheque_Amount')
-                // ->whereIn('payment_status', ['SUCCESS','RIP','SIP'])
-                // ->get();
+
 
                 $initial_amount = PaymentDataHandling::where('order_id', $order->id)
                     ->where('user_id', $user_id)
@@ -328,13 +332,13 @@ class profileController extends Controller
                         $totalAmount = $final_amount->transaction_amount;
                         $invoice = Invoice::where('order_id', $order->id)->orderBy('created_at', 'desc')->first();
                         if (isset($invoice) && isset($invoice->amount) && isset($invoice->totaltax)) {
-                            //   $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})" . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+
                             $orderData['Final_Amount'][] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})";
-                            //   dd($orderData['Final_Amount']);
+
                         } else {
                             $orderData['Final_Amount'] = $totalAmount . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
                         }
-                        //$orderData['Final Amount'] = $totalAmount . "   <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+
                     } else {
                         $orderData['Final_Amount'][] = "<span style='color:red;font-weight:600'>(Unpaid)</span>";
                     }
@@ -345,9 +349,9 @@ class profileController extends Controller
                     $interestAmount = Order::where('id', $order->id)->where('user_id', $user_id)->value('interest_amount');
                     $interestAmountRound = round($interestAmount, 2);
                     if (isset($invoice) && isset($invoice->amount)) {
-                        //   $orderData['Final Amount'] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax})" . " <span style='color:green;font-weight:600'>(Paid With Tax)</span>";
+
                         $orderData['Final_Amount'][] = $totalAmount . " (Amount: {$invoice->amount}, Tax: {$invoice->totaltax}, Interest: {$interestAmountRound})";
-                        //   dd($orderData['Final_Amount']);
+
                     } else {
                         $orderData['Final_Amount'] = $totalAmount . " <span style='color:green;font-weight:600'></span>";
                     }
@@ -364,11 +368,13 @@ class profileController extends Controller
                 } else {
                     $final_check_amount = Order::where('user_id', $user_id)->where('id', $order->id)->where('payment_mode', 'cheque')->get()->last();
 
-                    if (isset($final_check_amount) &&
+                    if (
+                        isset($final_check_amount) &&
                         !empty($final_check_amount) &&
                         isset($final_check_amount->final_payment_status) &&
                         !empty($final_check_amount->final_payment_status) &&
-                        $final_check_amount->final_payment_status === 'verified') {
+                        $final_check_amount->final_payment_status === 'verified'
+                    ) {
                         $orderData['Final_Amount'][] = "<span style='color:green;font-weight:600'>(Paid With Cheque)</span>";
                     } else {
                         $orderData['Final_Amount'][] = "<span style='color:red;font-weight:600'>(Unpaid)</span>";
@@ -411,7 +417,7 @@ class profileController extends Controller
         }
         $data = auth::user();
         $registration_data = PaymentDataHandling::where('user_id', $user_id)->where('data', 'Registration_Amount')->first();
-        // dd($registration_data);
+
         return view('userDashboard.wallet', compact('orderData', 'registration_data', 'data'));
     }
 

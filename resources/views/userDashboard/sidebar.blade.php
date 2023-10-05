@@ -37,8 +37,8 @@
               @endif
           </div>
           @if ($data->name != '')
-              <h3 id="user_name">{{ $data->name }}</h3>
-              <p>{{ $data->email }}</p>
+              <h3 id="user_name"style="width:100%;word-wrap:break-word;">{{ $data->name }}</h3>
+              <p style="width:100%;word-wrap:break-word;">{{ $data->email }}</p>
           @endif
       </div>
       <!-- Sidebar Menu -->

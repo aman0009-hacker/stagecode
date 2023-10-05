@@ -25,13 +25,12 @@ $(document).ready(function () {
                 },
                 data: { adminStatus: status , dataorderid:dataorderid },
                 dataType: 'JSON',
-                // processData: false,
-                // contentType: false,
+
                 success: function (data) {
 
                     console.log(data.orderStatus[0]["interest_amount"]);
                      if (data.orderStatus[0]["status"] == "Dispatched" && data.orderStatus[0]["interest_amount"] !== null && data.orderStatus[0]["interest_amount"] > 0 && data.orderStatus[0]["final_payment_status"] === "unverified") {
-                        // $(".bookingUserStatusOrder").hide(); // Optionally hide an element
+                      
                         $('#makepaymentnModalRejectionInterestCalculationStarts').modal('show');
                       }
                       else if ((data.orderStatus[0]["status"] == "Dispatched" || data.orderStatus[0]["status"] == "Payment_Done") && data.orderStatus[0]["final_payment_status"] == "verified") {

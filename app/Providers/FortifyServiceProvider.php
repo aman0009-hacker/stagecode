@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 
-// use Laravel\Fortify\Contracts\RegisterResponse;
+
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
@@ -53,7 +53,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::authenticateUsing(function (Request $request) {
 
             $request->validate([
-               'g-recaptcha-response' => ['required', new ReCaptcha]
+                'g-recaptcha-response' => ['required', new ReCaptcha]
             ]);
 
             $user = User::where('email', $request->email)->first();
@@ -71,8 +71,8 @@ class FortifyServiceProvider extends ServiceProvider
                     ]);
                 }
             }
-           
-         });
+
+        });
         Fortify::loginView(function () {
             return view('auth.login');
         });
@@ -86,16 +86,10 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::createUsersUsing(CreateNewUser::class);
-        //Fortify::CreateNewUser(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
-        // RateLimiter::for('login', function (Request $request) {
-        //     $email = (string) $request->email;
-
-        //     return Limit::perMinute(5)->by($email.$request->ip());
-        // });
 
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;

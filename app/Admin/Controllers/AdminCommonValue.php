@@ -28,16 +28,12 @@ class AdminCommonValue extends AdminController
 
         $grid->column('id', __('Id'));
         $grid->column('yard_record_value', __('Yard record value'));
-        // $grid->column('created_at', __('Created at'));
-        // $grid->column('updated_at', __('Updated at'));
-
         $grid->disableCreateButton();
         $grid->disableExport();
         $grid->disableFilter();
         $grid->disableColumnSelector();
         $grid->disableRowSelector();
-        $grid->actions(function($actions)
-        {
+        $grid->actions(function ($actions) {
             $actions->disableView();
             $actions->disableDelete();
         });

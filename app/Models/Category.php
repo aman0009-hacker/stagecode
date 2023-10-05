@@ -13,16 +13,14 @@ class Category extends Model
     protected $table = 'categories';
 
     public $incrementing = false;
-    protected $keyType = 'string'; 
-  
-    public $timestamps = true;
+    protected $keyType = 'string';
 
-    //protected $fillable = ['name'];
-    protected $fillable = ['name','category_id'];
+    public $timestamps = true;
+    protected $fillable = ['name', 'category_id'];
 
     public function product()
     {
-        return $this->belongsTo(Product::class,'category_id');
+        return $this->belongsTo(Product::class, 'category_id');
     }
 
     public function entities()
@@ -30,7 +28,8 @@ class Category extends Model
         return $this->hasMany(Entity::class);
     }
 
-    protected static function boot(){
+    protected static function boot()
+    {
         parent::boot();
         static::creating(function ($model) {
             $model->{$model->getKeyName()} = Uuid::generate()->string;

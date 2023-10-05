@@ -75,7 +75,7 @@
             @if (Session::has('currentId'))
             <?php
                       $userCurrentId=Session::get('currentId');
-                      // echo $userCurrentId;
+
                   ?>
             @endif
             <form class="sign-up-form" id="register-form" action="{{ route('register') }}" method="POST"
@@ -146,7 +146,7 @@
               </div>
 
 
-            
+
 
 
 
@@ -163,7 +163,7 @@
                      {{-- new code for terms and conditions --}}
                      <div class="row justify-content-center">
                       <div class="col-12">
-                       
+
                         <div class="mb-3 form-check ">
                           <div class="two-checkboxes">
                             <div class="firstinput d-flex"style="align-items:center;margin-bottom:11px;">
@@ -175,22 +175,22 @@
                               <label class="form-check-label ms-2" for="acceptTerms">I accept the <a href="{{asset('policy.pdf')}}" target="_blank">Terms and Conditions</a></label>
                             </div>
                           </div>
-                         
+
                         </div>
-                    
+
                       </div>
                     </div>
-                                
-                    
-                    
-                    
-                    
+
+
+
+
+
                     {{-- new code for terms and conditions --}}
-         
+
               <div class="row">
                 <div class="col-12">
                   <div class="action">
-                    {{-- <button type="submit" class="btn continue-btn w-100"> Send OTP</button> --}}
+                   
                     <button type="submit" class="btn continue-btn w-100 registerBtnSignUp" id="registerBtn">Register</button>
                   </div>
                 </div>

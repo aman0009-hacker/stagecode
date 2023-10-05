@@ -18,7 +18,8 @@ class Role extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'name', 'slug',
+        'name',
+        'slug',
     ];
 
     public function users()

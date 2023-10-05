@@ -45,40 +45,21 @@ class EntityController extends AdminController
                 }
                 return "";
             });
-            // $grid->column('id', __('Id'));
             $grid->column('entity_id', __('Category'))->display(function ($entity_id) {
                 return Category::where('id', $entity_id)->firstOrFail()->name ?? '';
             });
             $grid->column('name', __('Material'));
             $grid->column('description', __('Description'));
-            // $grid->column('size', __('Size'));
-            // $grid->column('diameter', __('Diameter'));
-            // $grid->column('quantity', __('Quantity'));
-            // $grid->column('remaining', __('Remaining'));
-            // $grid->column('measurement', __('Measurement'));
+
             $grid->column('created_at', __('Created At'))->display(function ($value) {
-                // return Carbon::parse($value)->format('Y-m-d H:i:s');
-                //return Carbon::parse($value)->format('d-m-Y');
-                //return Carbon::parse($value)->format('Y-m-d H:i');
+
                 return Carbon::parse($value)->format('Y-m-d H:i');
             });
-            // $grid->column('updated_at', __('Updated at'));
-            // $grid->actions(function ($actions) {
-            //     $actions->disableEdit();
-            // });
+
             $grid->filter(function ($filter) {
                 $filter->disableIdFilter();
                 $filter->like('name', __('Material'));
-                //$filter->like('entity_id', __('Category'));
-                // $filter->like('id', __('Product Name'));
-                // $filter->column(1 / 2, function ($filter) {
-                //      $filter->like('name', __('Entity Name'));
-                //     // $filter->like('id', __('Product Name'));
-                //  });
-                //    $filter->column(1 / 2, function ($filter) {
-                //     $filter->like('created_at', __('Created At'));
-                //     // $filter->like('entity_id', __('Category Name'));
-                //  });
+
             });
             $grid->actions(function ($actions) {
                 $actions->disableEdit();
@@ -93,17 +74,10 @@ class EntityController extends AdminController
                 $tools->append(new excelfile());
 
             });
-            //$grid->disableActions();
+
             $grid->disableRowSelector();
             $grid->disableCreateButton();
-            //$grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
-            // if (Admin::user()->inRoles(['admin', 'administrator', 'Administartor'])) {
-            //     // If user has one of the specified roles, show all records
-            //     $grid->model()->orderBy('created_at', 'desc');
-            // } else {
-            //     // Otherwise, show only records where supervisorid matches the login ID
-            //     $grid->model()->where('supervisorid', Admin::user()->id)->orderBy('created_at', 'desc');
-            // }
+
             return $grid;
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
@@ -120,17 +94,12 @@ class EntityController extends AdminController
     protected function detail($id)
     {
         $show = new Show(Entity::findOrFail($id));
-        // $show->field('id', __('Id'));
         $show->field('name', __('Entity Name'));
         $show->field('description', __('Description'));
         $show->field('size', __('Size'));
         $show->field('diameter', __('Diameter'));
-        // $show->field('quantity', __('Quantity'));
-        // $show->field('remaining', __('Remaining'));
-        // $show->field('measurement', __('Measurement'));
-        // $show->field('entity_id', __('Entity id'));
         $show->field('created_at', __('Created at'));
-        // $show->field('updated_at', __('Updated at'));
+
         return $show;
     }
 
@@ -142,17 +111,6 @@ class EntityController extends AdminController
     protected function form()
     {
         $form = new Form(new Entity());
-        // $form->select('product_id', 'Product')
-        // ->options(function () {
-        //     // Retrieve the products from the database
-        //     $products = Product::pluck('name', 'id');
-
-        //     // Add a placeholder option
-        //     $products->prepend('-- Select Product --', '');
-
-        //     return $products;
-        // })
-        // ->rules('required')->load('category_id', '/admin/load-categories');
         $form->select('product_id', 'Product')
             ->options(function () {
                 // Retrieve the products from the database
@@ -167,17 +125,14 @@ class EntityController extends AdminController
             ->default('')
             ->load('category_id', '/admin/load-categories');
         $form->select('category_id', 'Category')->rules('required')->load('entity_id', '/admin/load-entities');
-        // $form->text('entity_id', 'Entity')->;
+
         $form->text('name', __('Entity Name'));
         $form->text('description', __('Description'));
         $form->text('size', __('Size'));
         $form->text('diameter', __('Diameter'));
-        // $form->number('quantity', __('Quantity'));
-        // $form->number('remaining', __('Remaining'));
-        // $form->text('measurement', __('Measurement'));
+
         $form->select('entity_id', __('Category ID'));
-        //$form->select('entity_id', __('Category ID'))->attribute('onload', "this.style.display='none';");
-        //$form->select('entity_id', __('Category ID'))->attribute('style', 'display: none;');
+
         $form->submitted(function (Form $form) {
             $form->ignore('product_id');
             $form->ignore('category_id');

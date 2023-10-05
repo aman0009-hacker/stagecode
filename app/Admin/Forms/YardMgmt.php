@@ -29,7 +29,6 @@ class YardMgmt extends Form
         ]);
         $product_id = $validatedData['product_id'];
         $category_id = $validatedData['category_id'];
-        //dump($request->all());
         admin_success('Processed successfully.');
         return back();
     }
@@ -39,7 +38,6 @@ class YardMgmt extends Form
      */
     public function form()
     {
-        //$this->hidden('_token')->default(csrf_token());
         $this->select('product_id', 'Product')
             ->options(function () {
                 // Retrieve the products from the database

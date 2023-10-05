@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Support\Facades\Crypt;
-// use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permisssion\Traits\HasRoles;
 use Spatie\Activitylog\LogOptions;
@@ -53,7 +52,7 @@ class Attachment extends Model
     {
         return "you have {$eventName} attachment";
     }
-    //new code for logActivity start 
+    //new code for logActivity start
 
 
 

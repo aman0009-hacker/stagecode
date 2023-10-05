@@ -29,7 +29,7 @@ class AdminUser extends Model
 
     public function records()
     {
-        return $this->hasMany(Records::class,'supervisor_id','id');
+        return $this->hasMany(Records::class, 'supervisor_id', 'id');
     }
 
     protected $hidden = [
@@ -54,6 +54,6 @@ class AdminUser extends Model
 
     public function notification()
     {
-        return $this->hasMany(notification::class,'notifiable_id','id');
+        return $this->hasMany(notification::class, 'notifiable_id', 'id');
     }
 }

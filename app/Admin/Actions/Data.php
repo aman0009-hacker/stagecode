@@ -3,13 +3,9 @@
 namespace App\Admin\Actions;
 
 use Encore\Admin\Actions\RowAction;
-use App\Models\Attachment;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
@@ -37,7 +33,6 @@ class Data extends RowAction
                 // send values in model "documents" end
                 if (isset($resultQuery) && $resultQuery === true) {
                     //get current user emailid start
-                    // $emailData = DB::table('users')->join('attachments', 'users.id', '=', 'attachments.user_id')->where('attachments.user_id', $model->id)->select('users.email')->first();
                     $emailData = User::join('attachments', 'users.id', '=', 'attachments.user_id')
                         ->where('attachments.user_id', $model->id)
                         ->select('users.email')
@@ -54,8 +49,7 @@ class Data extends RowAction
 
                         ];
                         \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
-                        //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
-                        //dd("Email is Sent.");
+
                     } else {
                         return $this->response()->error('Oops! Kindly submit documents as required');
                     }

@@ -32,7 +32,6 @@ class LoginController extends Controller
         } else {
             Session::put('loginUserId', $user->id);
             Session::put('loginUserEmail', $user->email);
-            //return redirect()->route('home')->withInput(Input:all());
             return redirect()->route('home')->withInput(['currentId' => $user->id, "data" => "success"]);
 
         }
@@ -93,59 +92,51 @@ class LoginController extends Controller
         }
     }
 
-    public function sendemail($email,$adminId)
+    public function sendemail($email, $adminId)
     {
-        
-        
-        try
-        {
-            $alladmin=AdminUser::where('is_verified','1')->get();
 
-        foreach($alladmin as $singleadmin)
-        {
-            if($singleadmin->email==$email)
-            {
-                return response()->json(['data'=>"match"]);	
+
+        try {
+            $alladmin = AdminUser::where('is_verified', '1')->get();
+
+            foreach ($alladmin as $singleadmin) {
+                if ($singleadmin->email == $email) {
+                    return response()->json(['data' => "match"]);
+                }
             }
-        }
 
 
-            $otp=random_int(1000, 9999);
+            $otp = random_int(1000, 9999);
             $details = [
                 'email' => 'Email Verification',
-              
-                'body' => 'Your OTP is '. $otp,
+
+                'body' => 'Your OTP is ' . $otp,
             ];
 
             \Mail::to($email)->send(new \App\Mail\PSIECMail($details));
 
-            AdminUser::where('id',$adminId)->update(['otp'=>$otp,'email'=>$email]);
-            
-    
-           
-    
-            return response()->json(["data"=>"success"]);
+            AdminUser::where('id', $adminId)->update(['otp' => $otp, 'email' => $email]);
 
+
+
+
+            return response()->json(["data" => "success"]);
+
+        } catch (\Exception $e) {
+            return response()->json(["data" => "fail"]);
         }
-         catch(\Exception $e)
-         {
-            return response()->json(["data"=>"fail"]);
-         }
 
     }
-    public function verifyotp($otp,$adminId)
+    public function verifyotp($otp, $adminId)
     {
-        $admindata=AdminUser::where('id',$adminId)->first();
+        $admindata = AdminUser::where('id', $adminId)->first();
 
-        if($admindata->otp==$otp)
-        {
-            $admindata->is_verified=1;
+        if ($admindata->otp == $otp) {
+            $admindata->is_verified = 1;
             $admindata->save();
-           return response()->json(['data'=>'success']);
-        }
-        else
-        {
-            return response()->json(['data'=>'fail']);
+            return response()->json(['data' => 'success']);
+        } else {
+            return response()->json(['data' => 'fail']);
         }
     }
 }
