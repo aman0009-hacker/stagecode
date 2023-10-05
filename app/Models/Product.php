@@ -13,8 +13,8 @@ class Product extends Model
     protected $table = 'products';
     protected $fillable = ['name'];
     public $incrementing = false;
-    protected $keyType = 'string'; 
-  
+    protected $keyType = 'string';
+
     public $timestamps = true;
 
     public function category()
@@ -22,12 +22,13 @@ class Product extends Model
         return $this->hasMany(Category::class);
     }
 
-    protected static function boot(){
+    protected static function boot()
+    {
         parent::boot();
         static::creating(function ($model) {
             $model->{$model->getKeyName()} = Uuid::generate()->string;
         });
     }
 
-  
+
 }

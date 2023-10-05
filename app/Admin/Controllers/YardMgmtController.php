@@ -10,7 +10,6 @@ use Encore\Admin\Show;
 use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use App\Models\Category;
-use App\Models\Entity;
 
 class YardMgmtController extends AdminController
 {
@@ -37,11 +36,9 @@ class YardMgmtController extends AdminController
 
     public function loadEntities(Request $request)
     {
-        //$category_id = $request->input('category_id');
         $category_data = $request->input('q');
         if (isset($category_data) && $category_data != "-- Select Category --") {
             $category_id = Category::where("name", $category_data)->first()->id;
-            //$entities = Entity::where('entity_id', $category_id)->pluck('entity_id', 'id');
             $category_id = Category::where("name", $category_data)->pluck('id', 'category_id');
             return response()->json($category_id);
         }

@@ -6,23 +6,7 @@
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto);
 
-        /* margin-top: 40px!important; */
-        /* body {
-            font-family: Roboto, sans-serif;
-        }
 
-        #chart {
-            max-width: 650px;
-        }
-
-        #chart100 {
-            margin-top: 40px;
-        }
-
-        #chart100 .apexcharts-toolbar {
-            top: -50px !important;
-
-        } */
         .apexcharts-zoomin-icon,
     .apexcharts-zoomout-icon,
     .apexcharts-zoom-icon.apexcharts-selected,

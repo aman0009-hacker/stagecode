@@ -1,18 +1,4 @@
-// $(document).on('click', '#passwordimg', function () {
-//     var clicks = $(this).data('clicks');
-//     if (clicks) {
-//         // odd clicks
-//         var source = "/images/login-signup/show.png";
-//         $('#passwordimg').prop('src', source);
-//         $('#password').prop('type', 'text');
-//     } else {
-//         var source = "/images/login-signup/hide.png";
-//         $('#passwordimg').prop('src', source);
-//         $('#password').prop('type', 'password');
-//         // even clicks
-//     }
-//     $(this).data("clicks", !clicks);
-// });
+
 
 //code for user-document
 function isNumberKey(evt) {
@@ -26,8 +12,7 @@ function isNumberKey(evt) {
 $(document).on('click', '#passwordimg', function () {
   var clicks = $(this).data('clicks');
   if (clicks) {
-      // odd clicks
-      //alert("jlkjlk");
+
       var source = "/images/login-signup/show.png";
       $('#passwordimg').prop('src', source);
       $('#password').prop('type', 'text');
@@ -64,7 +49,7 @@ $(".btn-refresh").click(function(){
      url:'/refresh_captcha',
      success:function(data){
         $(".captcha span").html(data.captcha);
-        //$(".captcha").load(window.location.href + " .captcha");
+       
      }
   });
 });

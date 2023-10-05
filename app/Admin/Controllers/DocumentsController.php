@@ -32,11 +32,9 @@ class DocumentsController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Document());
-        //$grid->column('id', __('Id'));
         $grid->column('id', __('Name'))->display(function ($data) {
             $queryName = DB::table('users')->join('documents', 'users.id', '=', 'documents.id')->where('documents.id', $data)
                 ->select('users.name', 'users.last_name')->first();
-            //$fullname = $queryName->name . " " . $queryName->last_name;
             $fullname = $queryName->name;
             return $fullname;
         });
@@ -62,9 +60,7 @@ class DocumentsController extends AdminController
                 return "Rejected";
             }
         });
-        //    $grid->column('comment', __('Comment'));
         $grid->export(function ($export) {
-            //$export->filename('Filename.csv');
             $export->except(['gstcardpath', 'msmecardpath', 'itrcardpath', 'aadharcardpath', 'pancardpath', 'utilitycardpath']);
         });
         $grid->actions(function ($actions) {
@@ -87,7 +83,6 @@ class DocumentsController extends AdminController
     protected function detail($id)
     {
         $show = new Show(Document::findOrFail($id));
-        // $show->field('id', __('Id'));
         $show->field('userid', __('Userid'));
         $show->field('gstcard', __('GstCardNo'));
         $show->field('msmecard', __('MsmeCardNo'));
@@ -103,8 +98,6 @@ class DocumentsController extends AdminController
         $show->field('utilitycardpath', __('UtilityFile'));
         $show->field('approved', __('Approved'));
         $show->field('comment', __('Comment'));
-        // $show->field('created_at', __('Created at'));
-        // $show->field('updated_at', __('Updated at'));
         return $show;
     }
 

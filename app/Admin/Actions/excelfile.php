@@ -30,7 +30,7 @@ class excelfile extends Action
                         $array[] = $content;
                     }
                     //  $transRow=false;
-                    elseif(strtoupper($content[0])==strtoupper('Product') && strtoupper($content[1])==strtoupper('category') &&   strtoupper($content[2])==strtoupper('subcategory') && strtoupper($content[3])==strtoupper('description')){
+                    elseif (strtoupper($content[0]) == strtoupper('Product') && strtoupper($content[1]) == strtoupper('category') && strtoupper($content[2]) == strtoupper('subcategory') && strtoupper($content[3]) == strtoupper('description')) {
                         $transRow = false;
                     } else {
                         return $this->response()->error('Please give the coloumns in following way: Product,category,subcategory,dimension')->refresh();
@@ -45,7 +45,7 @@ class excelfile extends Action
                         $catall = product::all();
                         foreach ($catall as $single) {
                             if (strtoupper($single->name) == strtoupper($value[0])) {
-                                //   
+                                //
                                 category::create([
                                     "name" => $value[1],
                                     "category_id" => $single->id

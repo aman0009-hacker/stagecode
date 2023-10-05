@@ -6,14 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Webpatser\Uuid\Uuid;
 use App\Models\User;
-use App\Models\Address;
 use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\Invoice;
 
 
-
-// use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class PaymentDataHandling extends Model
 {
@@ -22,7 +17,7 @@ class PaymentDataHandling extends Model
     protected $keyType = 'string';
     protected $table = 'payment_data_handling';
 
-   
+
     public $timestamps = true;
 
     public function user()
@@ -35,12 +30,13 @@ class PaymentDataHandling extends Model
         return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 
-    protected static function boot(){
+    protected static function boot()
+    {
         parent::boot();
         static::creating(function ($model) {
             $model->{$model->getKeyName()} = Uuid::generate()->string;
         });
-   
+
     }
 
 

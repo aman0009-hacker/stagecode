@@ -35,29 +35,17 @@ class CategoryController extends AdminController
             $grid->column('category_id', __('Type'))->display(function ($category_id) {
                 return Product::where('id', $category_id)->firstOrFail()->name ?? '';
             });
-            // $grid->column('id', __('Id'));
+
             $grid->column('name', __('Category Name'));
             $grid->column('created_at', __('Created at'))->display(function ($value) {
-                //return Carbon::parse($value)->format('Y-m-d H:i:s');
-                //return Carbon::parse($value)->format('d-m-Y');
+
                 return Carbon::parse($value)->format('Y-m-d H:i');
             });
-            //$grid->column('updated_at', __('Updated at'));
-            // $grid->actions(function ($actions) {
-            //     $actions->disableEdit();
-            // });
             $grid->filter(function ($filter) {
-                // $filter->notIn('id', __('Id'));
+
                 $filter->disableIdFilter();
                 $filter->like('name', __('Category Name'));
-                // $filter->column(1 / 2, function ($filter) {
-                //   $filter->like('name', __('First Name'));
-                //   $filter->like('email', __('Email'));
-                // });
-                // $filter->column(1 / 2, function ($filter) {
-                //   $filter->like('last_name', __('Last Name'));
-                //   $filter->like('contact_number', __('Contact'));
-                // });
+
             });
             $grid->actions(function ($actions) {
                 $actions->disableEdit();
@@ -75,7 +63,7 @@ class CategoryController extends AdminController
             Log::info($ex->getMessage());
             return $grid;
         }
-        
+
     }
 
     /**
@@ -87,11 +75,8 @@ class CategoryController extends AdminController
     protected function detail($id)
     {
         $show = new Show(Category::findOrFail($id));
-        // $show->field('id', __('Id'));
         $show->field('name', __('Name'));
-        // $show->field('category_id', __('Category id'));
         $show->field('created_at', __('Created at'));
-        // $show->field('updated_at', __('Updated at'));
         return $show;
     }
 

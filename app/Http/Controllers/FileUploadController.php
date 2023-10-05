@@ -16,13 +16,13 @@ class FileUploadController extends Controller
 {
     public function fileUploadPost(Request $request)
     {
-       
+
         try {
             $currentId = $request->input('txtIds');
             $gst = $msme = $itr = $aadhar = $pan = $utility = 0;
             $gstValue = $msmeValue = $itrValue = $aadharValue = $panValue = $utilityValue = 0;
             $queryDocument = Attachment::where('user_id', $currentId)->get();
-         
+
 
             foreach ($queryDocument as $data) {
                 if (isset($data->file_type) && $data->file_type != "" && $data->file_type == "gstfile" && isset($data->fileno) && !empty($data->fileno)) {
@@ -43,113 +43,73 @@ class FileUploadController extends Controller
                 if (isset($data->file_type) && $data->file_type != "" && $data->file_type == "utilityfile" && isset($data->fileno) && !empty($data->fileno)) {
                     $utility = 1;
                 }
-                // if (isset($data->file_type) && $data->file_type != "" && $data->file_type == "extradoc1" && isset($data->fileno) && !empty($data->fileno)) {
-                //     $documentextra1 = 1;
-                // }
-                // if (isset($data->file_type) && $data->file_type != "" && $data->file_type == "extradoc2" && isset($data->fileno) && !empty($data->fileno)) {
-                //     $documentextra2 = 1;
-                // }
-                // if (isset($data->file_type) && $data->file_type != "" && $data->file_type == "extradoc3" && isset($data->fileno) && !empty($data->fileno)) {
-                //     $documentextra3 = 1;
-                // }
+
             }
             if ($gst == 1) {
 
-                // $gstValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+
                 $gstValue = 'required|mimes:pdf|max:5000';
             } else {
-                // $gstValue = 'mimes:jpeg,png,jpg,zip,pdf|max:5000';
+
                 $gstValue = 'mimes:pdf|max:5000';
             }
             if ($msme == 1) {
-                // $msmeValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+
                 $msmeValue = 'required|mimes:pdf|max:5000';
             } else {
-                // $msmeValue = 'mimes:jpeg,png,jpg,zip,pdf|max:5000';
+
                 $msmeValue = 'mimes:pdf|max:5000';
             }
             if ($itr == 1) {
                 $itrValue = 'required|mimes:pdf|max:5000';
-                // $itrValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+
             } else {
-                // $itrValue = 'mimes:jpeg,png,jpg,zip,pdf|max:5000';
+
                 $itrValue = 'mimes:pdf|max:5000';
             }
-            // $aadharValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+
             $aadharValue = 'required|mimes:pdf|max:5000';
-            // $panValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+
             $panValue = 'required|mimes:pdf|max:5000';
             if ($utility == 1) {
-                // $utilityValue = 'required|mimes:jpeg,png,jpg,zip,pdf|max:5000';
+
                 $utilityValue = 'required|mimes:pdf|max:5000';
             } else {
                 $utilityValue = 'mimes:pdf|max:5000';
-                // $utilityValue = 'mimes:jpeg,png,jpg,zip,pdf|max:5000';
+
             }
 
-            if($request->hasFile('extradoc1'))
-            {
-               if($request->file('extradoc1'))
-               {
+            if ($request->hasFile('extradoc1')) {
+                if ($request->file('extradoc1')) {
 
-                   $documentextra1='required|mimes:pdf|max:5000';
-               }
-               else
-
-               {
-                   $documentextra1='mimes:pdf|max:5000';
-               }
-            }
-            else
-
-            {
-                $documentextra1='mimes:pdf|max:5000';
-            }
-            if($request->hasFile('extradoc2'))
-            {
-                if($request->file('extradoc2'))
-                {
-
-                    $documentextra2='required|mimes:pdf|max:5000';
+                    $documentextra1 = 'required|mimes:pdf|max:5000';
+                } else {
+                    $documentextra1 = 'mimes:pdf|max:5000';
                 }
-                else
-
-                {
-                    $documentextra2='mimes:pdf|max:5000';
-                }
+            } else {
+                $documentextra1 = 'mimes:pdf|max:5000';
             }
-            else
+            if ($request->hasFile('extradoc2')) {
+                if ($request->file('extradoc2')) {
 
-            {
-                $documentextra2='mimes:pdf|max:5000';
-            }
-            if($request->hasFile('extradoc3'))
-            {
-                if($request->file('extradoc3'))
-                {
-
-                    $documentextra3='required|mimes:pdf|max:5000';
+                    $documentextra2 = 'required|mimes:pdf|max:5000';
+                } else {
+                    $documentextra2 = 'mimes:pdf|max:5000';
                 }
-                else
+            } else {
+                $documentextra2 = 'mimes:pdf|max:5000';
+            }
+            if ($request->hasFile('extradoc3')) {
+                if ($request->file('extradoc3')) {
 
-                {
-                    $documentextra3='mimes:pdf|max:5000';
+                    $documentextra3 = 'required|mimes:pdf|max:5000';
+                } else {
+                    $documentextra3 = 'mimes:pdf|max:5000';
                 }
 
+            } else {
+                $documentextra3 = 'mimes:pdf|max:5000';
             }
-            else
-
-            {
-                $documentextra3='mimes:pdf|max:5000';
-            }
-            //   $request->validate([
-                //         'gstFile' => $gstValue,
-            //         'msmeFile' => $msmeValue,
-            //         'itrFile' => $itrValue,
-            //         'aadharFile' => $aadharValue,
-            //         'panFile' => $panValue,
-            //         'utilityFile' => $utilityValue,
-            //     ]);
 
             //new code added
             $rules = [
@@ -159,14 +119,14 @@ class FileUploadController extends Controller
                 'aadharFile' => $aadharValue,
                 'panFile' => $panValue,
                 'utilityFile' => $utilityValue,
-                'extradoc1'=>$documentextra1,
-                'extradoc2'=>$documentextra2,
-                'extradoc3'=>$documentextra3
+                'extradoc1' => $documentextra1,
+                'extradoc2' => $documentextra2,
+                'extradoc3' => $documentextra3
             ];
             // Create a Validator instance with the rules
-            
+
             $validator = Validator::make($request->all(), $rules);
-            
+
 
             // Check if validation fails
             if ($validator->fails()) {
@@ -180,62 +140,59 @@ class FileUploadController extends Controller
             $fileNameAadhar = "";
             $fileNamePan = "";
             $fileNameUtility = "";
-            $fileextradoc1="";
-            $fileextradoc2="";
-            $fileextradoc3="";
+            $fileextradoc1 = "";
+            $fileextradoc2 = "";
+            $fileextradoc3 = "";
             if ($request->hasFile('gstFile')) {
                 $fileName = time() . '1.' . $request->gstFile->getClientOriginalName();
-                //dd($fileName);
+
                 $request->gstFile->move(public_path('uploads'), $fileName);
             }
-            //dd($fileName);
+
             if ($request->hasFile('msmeFile')) {
                 $fileNameMsme = time() . '2.' . $request->msmeFile->getClientOriginalName();
                 $request->msmeFile->move(public_path('uploads'), $fileNameMsme);
             }
-            //dd($fileNameMsme);
+
             if ($request->hasFile('itrFile')) {
                 $fileNameItr = time() . '3.' . $request->itrFile->getClientOriginalName();
                 $request->itrFile->move(public_path('uploads'), $fileNameItr);
-                //dd($fileNameItr);
+
             }
             if ($request->hasFile('aadharFile')) {
                 $fileNameAadhar = time() . '4.' . $request->aadharFile->getClientOriginalName();
                 $request->aadharFile->move(public_path('uploads'), $fileNameAadhar);
-                //dd($fileNameAadhar);
+
             }
 
             if ($request->hasFile('panFile')) {
                 $fileNamePan = time() . '5.' . $request->panFile->getClientOriginalName();
                 $request->panFile->move(public_path('uploads'), $fileNamePan);
-                //dd($fileNamePan);
+
             }
             if ($request->hasFile('utilityFile')) {
                 $fileNameUtility = time() . '6.' . $request->utilityFile->getClientOriginalName();
                 $request->utilityFile->move(public_path('uploads'), $fileNameUtility);
-                //dd($fileNameUtility);
+
             }
-            if($request->hasfile('extradoc1'))
-            {
+            if ($request->hasfile('extradoc1')) {
                 $fileextradoc1 = time() . '7.' . $request->extradoc1->getClientOriginalName();
-                $request->extradoc1->move(public_path('uploads'), $fileextradoc1);   
+                $request->extradoc1->move(public_path('uploads'), $fileextradoc1);
             }
-            if($request->hasfile('extradoc2'))
-            {
+            if ($request->hasfile('extradoc2')) {
                 $fileextradoc2 = time() . '8.' . $request->extradoc2->getClientOriginalName();
-                $request->extradoc2->move(public_path('uploads'), $fileextradoc2);   
+                $request->extradoc2->move(public_path('uploads'), $fileextradoc2);
             }
-            if($request->hasfile('extradoc3'))
-            {
+            if ($request->hasfile('extradoc3')) {
                 $fileextradoc3 = time() . '9.' . $request->extradoc3->getClientOriginalName();
-                $request->extradoc3->move(public_path('uploads'), $fileextradoc3);   
+                $request->extradoc3->move(public_path('uploads'), $fileextradoc3);
             }
             $attachments = Attachment::where('user_id', $currentId)->get();
             foreach ($attachments as $attachment) {
                 switch ($attachment->file_type) {
                     case 'gstfile':
-                      
-                        
+
+
                         $attachment->filename = $fileName;
                         break;
                     case 'msmefile':
@@ -253,16 +210,16 @@ class FileUploadController extends Controller
                     case 'utilityfile':
                         $attachment->filename = $fileNameUtility;
                         break;
-                        case 'extradoc1':
-                           
-                            $attachment->filename=$fileextradoc1;
-                            break;
-                        case 'extradoc2':
-                            $attachment->filename=$fileextradoc2;
-                            break;
-                        case 'extradoc3':
-                            $attachment->filename=$fileextradoc3;
-                            break;
+                    case 'extradoc1':
+
+                        $attachment->filename = $fileextradoc1;
+                        break;
+                    case 'extradoc2':
+                        $attachment->filename = $fileextradoc2;
+                        break;
+                    case 'extradoc3':
+                        $attachment->filename = $fileextradoc3;
+                        break;
                     default:
                         // Handle any other cases if needed
                         break;
@@ -273,7 +230,7 @@ class FileUploadController extends Controller
             // Check if any rows were affected
             $query = $attachments->count();
             if (isset($query) && $query > 0) {
-                // $stateUpdate = DB::table('users')->where('id', $currentId)->update(['state' => 4]);
+
                 $stateUpdate = User::find($currentId);
                 $email = User::find($currentId)->email;
                 if ($stateUpdate) {
@@ -281,7 +238,7 @@ class FileUploadController extends Controller
                     $stateUpdate->save();
                 }
                 if (isset($stateUpdate)) {
-                    $details=[
+                    $details = [
                         'email' => 'Registration Successful',
                         'body' => 'We are pleased to inform you that your account registration process has initiated. Your Registration is Pending for
                         approval within 7 days. After
@@ -323,51 +280,51 @@ class FileUploadController extends Controller
             $fileNameUtility = "";
             if ($request->hasFile('gstFile')) {
                 $fileName = time() . '.' . $request->gstFile->getClientOriginalName();
-                //dd($fileName);
+
                 $request->gstFile->move(public_path('uploads'), $fileName);
             }
-            //dd($fileName);
+
             if ($request->hasFile('msmeFile')) {
                 $fileNameMsme = time() . '.' . $request->msmeFile->getClientOriginalName();
                 $request->msmeFile->move(public_path('uploads'), $fileNameMsme);
             }
-            //dd($fileNameMsme);
+
             if ($request->hasFile('itrFile')) {
                 $fileNameItr = time() . '.' . $request->itrFile->getClientOriginalName();
                 $request->itrFile->move(public_path('uploads'), $fileNameItr);
-                //dd($fileNameItr);
+
             }
             if ($request->hasFile('aadharFile')) {
                 $fileNameAadhar = time() . '.' . $request->aadharFile->getClientOriginalName();
                 $request->aadharFile->move(public_path('uploads'), $fileNameAadhar);
-                //dd($fileNameAadhar);
+
             }
             if ($request->hasFile('panFile')) {
                 $fileNamePan = time() . '.' . $request->panFile->getClientOriginalName();
                 $request->panFile->move(public_path('uploads'), $fileNamePan);
-                //dd($fileNamePan);
+
             }
             if ($request->hasFile('utilityFile')) {
                 $fileNameUtility = time() . '.' . $request->utilityFile->getClientOriginalName();
                 $request->utilityFile->move(public_path('uploads'), $fileNameUtility);
-                //dd($fileNameUtility);
+
             }
-            //dd("success");
+
             //code for 3 extra file start
             if ($request->hasFile('OtherFile1')) {
                 $fileNameUtility1 = time() . '.' . $request->OtherFile1->getClientOriginalName();
                 $request->OtherFile1->move(public_path('uploads'), $fileNameUtility1);
-                //dd($fileNameUtility);
+
             }
             if ($request->hasFile('OtherFile2')) {
                 $fileNameUtility2 = time() . '.' . $request->OtherFile2->getClientOriginalName();
                 $request->OtherFile2->move(public_path('uploads'), $fileNameUtility2);
-                //dd($fileNameUtility);
+
             }
             if ($request->hasFile('OtherFile3')) {
                 $fileNameUtility3 = time() . '.' . $request->OtherFile3->getClientOriginalName();
                 $request->OtherFile3->move(public_path('uploads'), $fileNameUtility3);
-                //dd($fileNameUtility);
+
             }
             //code for 3 extra file end
             $query = DB::table('documents')->where('userid', Auth::user()->id)->update([
@@ -378,8 +335,9 @@ class FileUploadController extends Controller
                 'pancardpath' => $fileNamePan,
                 'utilitycardpath' => $fileNameUtility,
 
-                // "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
-                "updated_at" => Carbon::now(), # new \Datetime()
+
+                "updated_at" => Carbon::now(),
+                # new \Datetime()
             ]);
             $attachmentQuery = DB::table('attachments')->insert([
                 ['filename' => $fileNameUtility1, 'path' => $fileNameUtility1, 'userid' => Auth::user()->id, 'mime_type' => 'pdf'],
@@ -400,26 +358,24 @@ class FileUploadController extends Controller
     public function userMsgHandling(Request $request)
     {
         try {
-            //return response()->json(["msg"=>"success"]);
+
             $userMsg = $request->input("userTxt");
             $userData = $request->input("admin-message");
             $adminData = $request->input("user-message");
             $supervisor = "user";
-            //$id=Auth::user()->id;
+
             $query = User::find(1);
             $query->comment = $userMsg;
             $query->supervisor = "user";
             $query->save();
-            //return response()->json(['userMsg'=>$userMsg, 'userData'=>$userData , 'adminData'=>$adminData]);
-            //   $previousAdmin = DB::table('comments')->where('user_id', 1)->where('supervisor', 'admin')->whereNotNull('comment')->select('comment')->orderBy('id', 'desc')->get();
-            //     $previousUSer = DB::table('comments')->where('user_id', 1)->where('supervisor', 'user')->whereNotNull('comment')->select('comment') ->orderBy('id', 'desc')->get();
+
             $previousAdmin = Comments::where('user_id', 1)
                 ->where('supervisor', 'admin')
                 ->whereNotNull('comment')
                 ->select('comment')
                 ->orderBy('id', 'desc')
                 ->get();
-            // $previousUSer = DB::table('comments')->where('user_id', 1)->where('supervisor', 'user')->whereNotNull('comment')->select('comment') ->orderBy('id', 'desc')->get();
+
             $previousUser = Comments::where('user_id', 1)
                 ->where('supervisor', 'user')
                 ->whereNotNull('comment')
@@ -439,9 +395,7 @@ class FileUploadController extends Controller
     public function adminReturnMsg(Request $request)
     {
         try {
-            //return response()->json(["msg"=>"success"]);
-            //$id=Auth::user()->id;
-            // $adminResponse= DB::table('comments')->where('user_id', 1)->where('supervisor', 'admin')->whereNotNull('comment')->select('comment')->orderBy('id', 'desc')->get();
+
             $adminResponse = Comments::where('user_id', 1)
                 ->where('supervisor', 'admin')
                 ->whereNotNull('comment')
@@ -466,7 +420,7 @@ class FileUploadController extends Controller
                 $image = $request->file('file');
                 $imageName = time() . '.' . $image->getClientOriginalName();
                 $image->move(public_path('uploads'), $imageName);
-                //return response()->json(['success'=>$imageName]);
+
                 $id = Auth::user()->id;
                 $attachment = new Attachment([
                     'filename' => $imageName,

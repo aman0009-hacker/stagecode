@@ -7,13 +7,11 @@ use Encore\Admin\Actions\RowAction;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Invoice;
-use Illuminate\Support\Facades\Session;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\PaymentDataHandling;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-use Encore\Admin\Layout\Row;
 use Illuminate\Support\Facades\Crypt;
 
 class OrderDispatched extends RowAction
@@ -27,19 +25,17 @@ class OrderDispatched extends RowAction
         try {
             $order = OrderItem::where('order_id', $this->getKey())->get();
             $allorder = order::find($this->getKey());
-            // $allorder->amount = $request->total;
-            $bookingAmount = PaymentDataHandling::where('order_id',$allorder->id)->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->value('transaction_amount');
+            $bookingAmount = PaymentDataHandling::where('order_id', $allorder->id)->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->value('transaction_amount');
             //new logic for request total
-            $total=0;
+            $total = 0;
             foreach ($order as $item) {
                 $item->quantity = $request->quantity[$num] ?? 1;
                 $item->price = $request->price[$num] ?? 0;
                 //new code for store price
-                $total=$total+($item->price*$item->quantity);
+                $total = $total + ($item->price * $item->quantity);
                 $num++;
             }
-            if(isset($bookingAmount) && !empty($bookingAmount))
-            {
+            if (isset($bookingAmount) && !empty($bookingAmount)) {
                 /*-------static calculation for booking amount and the final payment to be done---starts--*/
 
                 $cgstPercent = env('CGST', 9); // Set your CGST percentage here (e.g., 9%)
@@ -49,8 +45,7 @@ class OrderDispatched extends RowAction
 
                 $balanceAmount = $bookingAmount - ($totalTaxAmount + $total);
                 // dd($balanceAmount);                     ///remaining amount after static calculation
-                if($balanceAmount > 0)
-                {
+                if ($balanceAmount > 0) {
                     $allorder->balance_on_booking = $balanceAmount;
                     $allorder->save();
                     // dd($allorder->save());
@@ -78,7 +73,6 @@ class OrderDispatched extends RowAction
                     $encryptedID = Crypt::encryptString($data->id);
                     $data->status = "Dispatched";
                     $data->save();
-                    //Session::put('txtOrderGlobalModalCompleteID',$id);
                     //new code for update incoice table
                     $latestInvoice = Invoice::where('order_id', $id)
                         ->orderBy('updated_at', 'desc')
@@ -106,17 +100,14 @@ class OrderDispatched extends RowAction
                                 'status' => 'Dispatched'
                             ];
                             \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
-                            //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
-                            //dd("Email is Sent.");
+
                         } else {
                             return $this->response()->error('Oops! Kindly submit documents as required');
                         }
                     }
                     return $this->response()->success('Congratulations!!! Your order no ' . $model->order_no . ' is ready for dispatch. kindly make a full payment against invoice')->refresh();
                 }
-            }
-            else
-            {
+            } else {
                 return $this->response()->error('Oops! Booking Amount not yet recieved.');
             }
         } catch (\Throwable $ex) {

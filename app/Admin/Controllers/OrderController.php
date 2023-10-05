@@ -41,25 +41,11 @@ class OrderController extends AdminController
         try {
             $csrfToken = csrf_token();
             $grid = new Grid(new Order());
-            // $grid->refresh();
-            // $grid->column('id', __('Id'));
-            // $grid->column('amount', __('Amount'));
-            // $grid->column('transaction_date', __('Transaction date'));
-            // $grid->column('transaction_id', __('Transaction id'));
-            // $grid->column('person', __('Person'));
-            // $grid->column('category_name', __('Category name'));
-            // $grid->column('description', __('Description'));
-            // $grid->column('diameter', __('Diameter'));
-            // $grid->column('size', __('Size'));
-            // $grid->column('quantity', __('Quantity'));
-            // $grid->column('measurement', __('Measurement'));
             $grid->column('order_no', __('Order No'));
             $grid->column('user_id', __('User'))->display(function ($user_id) {
                 return User::find($user_id)->name . ' ' . User::find($user_id)->last_name ?? '';
             });
             $grid->column('id', __('Items'))->display(function ($id) {
-                //$count = count($comments);
-                //return "<span class='label label-warning'>{$count}</span>";
                 return "items ( " . OrderItem::where('order_id', $id)->count() . " )";
             })->expand(function ($model) {
                 $orderId = $model->id;
@@ -68,39 +54,30 @@ class OrderController extends AdminController
                     return [
                         'Item' => $item->category_name,
                         'Description' => $item->description,
-                        // 'Diameter' => $item->diameter,
-                        // 'Size' => $item->size,
                         'Quantity' => $item->quantity,
                         'Measurement (Ton) ' => $item->measurement,
                     ];
                 });
                 return new Table(['Item', 'Description', 'Quantity', 'Measurement'], $tableData->toArray());
-                //return new Table(['Item', 'Description', 'Diameter', 'Size', 'Quantity', 'Measurement'], $tableData->toArray());
             });
-            // $grid->column('user_id', __('User'))->display(function($user_id)
-            // {
-            // });
-            $grid->column('amount',__('Product Price'))->display(function($value)
-            {
-                if(isset($value)&&!empty($value))
-                {
+
+            $grid->column('amount', __('Product Price'))->display(function ($value) {
+                if (isset($value) && !empty($value)) {
 
                     return $value;
-                }
-                else
-                {
+                } else {
                     return "N/A";
                 }
 
             });
             $grid->column('status', __('Status'));
 
-            // $grid->column('payment_mode', __('Payment Mode'));
+
 
             $grid->column('payment_mode', __('Payment Mode'))->display(function ($title) {
                 $id = $this->id;
                 if ($title == "cheque") {
-                    //return "<a style='color:#fff' class='btn btn-primary' onclick='fun($id)'>$title</a>";
+
                     return "<a style='color:#fff' class='btn btn-primary allbtn' id=$id>$title</a>";
                 } else {
                     return "<a style='color:#fff' class='btn btn-primary'>$title</a>";
@@ -110,7 +87,7 @@ class OrderController extends AdminController
             $grid->column('payment_status', __('Booking Amount'))->display(function ($value) {
                 if ($value == "verified") {
                     $value = PaymentDataHandling::where('order_id', $this->id)->where('data', "Booking_Amount")->orderBy('created_at', 'desc')->first();
-                    //return $value->transaction_amount ?? "Done";
+
                     if (isset($value->transaction_amount) && $value->transaction_amount !== "") {
                         return "₹ " . $value->transaction_amount;
                     } else {
@@ -146,7 +123,7 @@ class OrderController extends AdminController
                 if ($order) {
                     // Order found, you can access the user_id now
                     $userID = $order->user->id ?? '';
-                    //return $userID;
+
                     if (isset($userID) && !empty($userID)) {
                         $member_at = User::find($userID)->member_at;
 
@@ -157,8 +134,8 @@ class OrderController extends AdminController
                             if ($customerStartDate <= $threeYearsAgo) {
                                 if ($this->payment_mode == "cheque") {
                                     if (isset($this->cheque_final_amount) && !empty($this->cheque_final_amount)) {
-                                        return 'Payment Done'.' (₹ '.$this->cheque_final_amount.')';
-                                        // return $this->cheque_final_amount;
+                                        return 'Payment Done' . ' (₹ ' . $this->cheque_final_amount . ')';
+
                                     }
                                     $chequeAmount = $this->check_amount;
 
@@ -199,7 +176,7 @@ class OrderController extends AdminController
 
                                         $order = Order::with('user')->find($this->id);
                                         $final_interst = $date - 20;
-                                        // dd($order->interest_within_allowed_period);
+
                                         $interestWithinAllowedPeriod = $this->check_amount * $final_interst * $additionalInterestRateBeyond20Days * 1 / 365;
                                         $interestWithinAllowedPeriod = $interestWithinAllowedPeriod + $order->interest_within_allowed_period;
                                     } else {
@@ -211,10 +188,10 @@ class OrderController extends AdminController
                                     $order->save();
                                     return round($totalAmount, 2);
 
-                                     /*how to get the user id and order id here to update a new column called interest amount*/
-                                            // $order->interest_amount = $totalInterestAmount;
-                                            // $order->save();
-                                            /*need to save here the interest amount*/
+                                    /*how to get the user id and order id here to update a new column called interest amount*/
+                                    // $order->interest_amount = $totalInterestAmount;
+                                    // $order->save();
+                                    /*need to save here the interest amount*/
                                 } else {
                                     return "N/A";
                                 }
@@ -296,45 +273,26 @@ class OrderController extends AdminController
                 }
                 //new code end
             });
-            // $grid->column('firm', __('Firm'));
+
             $grid->column('created_at', __('Created at'))->display(function ($value) {
                 //  return Carbon::parse($value)->format('Y-m-d H:i:s');
                 //   return Carbon::parse($value)->format('d-m-Y');
                 return Carbon::parse($value)->format('Y-m-d H:i');
             });
-            // $grid->column('updated_at', __('Updated at'));
-            // $grid->actions(function ($actions) {
-            //     $actions->add(new OrderApproved);
-            //     $actions->add(new OrderDispatched);
-            //     $actions->add(new OrderRejected);
-            //     // if ($actions->row->approved == 0) {
-            //     //   $actions->add(new Data);
-            //     //   $actions->add(new Rejected);
-            //     // } else if ($actions->row->approved == 1) {
-            //     //   //$actions->add(new Data);
-            //     //   $actions->add(new Rejected);
-            //     // } else if ($actions->row->approved == 2) {
-            //     //   $actions->add(new Data);
-            //     //   //$actions->add(new Rejected);
-            //     // }
-            // });
+
             $grid->actions(function ($actions) {
                 $actions->disableEdit();
                 $actions->disableView();
                 $actions->disableDelete();
                 if ($actions->row->status == "Approved") {
                     $actions->add(new OrderDispatched);
-                    // $actions->add(new OrderRejected);
+
                     $actions->add(new OrderPayment);
                     $actions->add(new OrderDelivered);
                 } else if ($actions->row->status == "Rejected") {
-                    // $actions->add(new OrderApproved);
-                    // $actions->add(new OrderDispatched);
-                    // $actions->add(new OrderPayment);
-                    // $actions->add(new OrderDelivered);
+
                 } else if ($actions->row->status == "Dispatched") {
-                    // $actions->add(new OrderApproved);
-                    // $actions->add(new OrderRejected);
+
                     $actions->add(new OrderPayment);
                     $actions->add(new OrderDelivered);
                 } else if ($actions->row->status == "New") {
@@ -344,38 +302,36 @@ class OrderController extends AdminController
                     $actions->add(new OrderPayment);
                     $actions->add(new OrderDelivered);
                 } else if ($actions->row->status == "Payment_Done") {
-                    // $actions->add(new OrderApproved);
-                    // $actions->add(new OrderDispatched);
-                    // $actions->add(new OrderRejected);
+
                     $actions->add(new OrderDelivered);
 
                 }
             });
             $grid->filter(function ($filter) {
-                // $filter->notIn('id', __('Id'));
+
                 $filter->disableIdFilter();
                 $filter->column(1 / 2, function ($filter) {
                     $userIds = Order::pluck('user_id')->toArray();
                     $userNames = User::whereIn('id', $userIds)->pluck('name', 'id')->toArray();
                     $filter->equal('user_id', __('User'))->select($userNames);
-                    //$filter->equal('user_id', __('User'))->select(User::pluck('name', 'id')->toArray());
+
                 });
                 $filter->column(1 / 2, function ($filter) {
                     $filter->like('status', __('Status'));
                 });
             });
             $grid->export(function ($export) {
-                //$export->filename('Filename.csv');
+
                 $export->except(['id', 'payment_mode', 'Cheque_Date', 'payable_amount']);
             });
-            //$grid->disableRowSelector();
+
             $grid->disableCreateButton();
             $grid->model()->orderBy('created_at', 'desc');
 
             $htmls = <<<HTML
             <head>
             <meta name="csrf-token" content="{{ csrf_token() }}">
-            <!-- <script src="../../js/modal.js"></script> -->
+
             <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <link rel="stylesheet" href="../css/modal.css">
@@ -435,12 +391,9 @@ class OrderController extends AdminController
                                             <div id="allfiles" class="fileadding">
                                           <input type="file" name="files[]" class="allitems" required   >
                                           <input type="file" name="files[]" class="allitems" >
-                                          <!-- <input type="file" name="files[]" class="allitems" > -->
+
                                             </div>
-                                      <!-- icon -->
-                                               <!-- <span class="btn btn-success" onclick="imagesAdd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Add</span></span>
-                                               <span class="btn btn-danger" onclick="imagesRemove()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 11H5V13H19V11Z" fill="rgba(255,255,255,1)"></path></svg><span class="name">Remove</span></span> -->
-                                            <!--  -->
+
                                          <div class="amount_coloumn"style="margin-top:20px">
                                                         <label for="Amount" class="form-label">Cheque Amount</label>
                                                         <input type="number" class="form-control" id="Amount" name="amount" placeholder="Enter Amount" required>
@@ -491,22 +444,9 @@ class OrderController extends AdminController
     protected function detail($id)
     {
         $show = new Show(Order::findOrFail($id));
-        // $show->field('id', __('Id'));
-        // $show->field('amount', __('Amount'));
-        // $show->field('transaction_date', __('Transaction date'));
-        // $show->field('transaction_id', __('Transaction id'));
-        // $show->field('status', __('Status'));
-        // $show->field('person', __('Person'));
-        // $show->field('category_name', __('Category name'));
-        // $show->field('description', __('Description'));
-        // $show->field('diameter', __('Diameter'));
-        // $show->field('size', __('Size'));
-        // $show->field('quantity', __('Quantity'));
-        // $show->field('measurement', __('Measurement'));
-        // $show->field('user_id', __('User id'));
-        // $show->field('firm', __('Firm'));
+
         $show->field('created_at', __('Created at'));
-        // $show->field('updated_at', __('Updated at'));
+
         return $show;
     }
 
@@ -518,19 +458,7 @@ class OrderController extends AdminController
     protected function form()
     {
         $form = new Form(new Order());
-        // $form->decimal('amount', __('Amount'));
-        // $form->date('transaction_date', __('Transaction date'))->default(date('Y-m-d'));
-        // $form->number('transaction_id', __('Transaction id'));
-        // $form->text('status', __('Status'));
-        // $form->text('person', __('Person'));
-        // $form->text('category_name', __('Category name'));
-        // $form->text('description', __('Description'));
-        // $form->text('diameter', __('Diameter'));
-        // $form->text('size', __('Size'));
-        // $form->text('quantity', __('Quantity'));
-        // $form->text('measurement', __('Measurement'));
-        // $form->text('user_id', __('User id'));
-        // $form->text('firm', __('Firm'));
+
         return $form;
     }
 }

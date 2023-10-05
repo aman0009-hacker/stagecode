@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Webpatser\Uuid\Uuid;
@@ -17,12 +16,11 @@ use Spatie\Permisssion\Traits\HasRoles;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 
-// use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 
 
-class User extends Authenticatable 
+
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, LogsActivity;
 
@@ -43,7 +41,7 @@ class User extends Authenticatable
         'state',
         'email_otp',
         'otp',
-        //'otp_generated_at'
+
     ];
 
 
@@ -75,7 +73,7 @@ class User extends Authenticatable
     {
         return "you have {$eventName} user";
     }
-    //new code for logActivity start 
+    //new code for logActivity start
 
 
 
@@ -101,10 +99,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // public function documents()
-    // {
-    //     return $this->hasOne(Document::class);
-    // }
+
 
     public function attachment()
     {
@@ -131,7 +126,7 @@ class User extends Authenticatable
         // 'name',
         // 'last_name',
         // 'email',
-        // 'contact_number'      
+        // 'contact_number'
 
 
     ];
@@ -171,26 +166,7 @@ class User extends Authenticatable
         return $value;
     }
 
-    //     public function setEmailAttribute($value)
-// {
-
-    //     if (in_array('email', $this->encryptable)) {
-//         $this->attributes['email'] = ($value !== null && trim($value) !== '') ? Crypt::encryptString($value) : null;
-//     } else {
-//         $this->attributes['email'] = $value;
-//     }
-//     //$this->attributes['email'] = ($value !== null && trim($value) !== '') ? Crypt::encryptString($value) : null;
-// }
-
-    // public function getEmailAttribute($value)
-// {
-//     if (in_array('email', $this->encryptable)) {
-//         return ($value !== null && trim($value) !== '') ? Crypt::decryptString($value) : null;
-//     }
-//     return $value;
-//     //return ($value !== null && trim($value) !== '') ? Crypt::decryptString($value) : null;
-// }
-
+  
     public function setContactNumberAttribute($value)
     {
         if (in_array('contact_number', $this->encryptable)) {

@@ -38,7 +38,7 @@ $("#continueBtn").click(function (e) {
                 }
             }
         });
-        //window.location.href = "/userDocument";
+
     }
 });
 
@@ -50,7 +50,7 @@ $(document).ready(function() {
     // Listen for change event on the checkbox
     $('#acceptTerms').change(function() {
       // Check if the checkbox is checked
-     
+
       if ($(this).is(':checked')) {
         if($('#acceptTerms2').is(':checked'))
         {
@@ -73,7 +73,7 @@ $(document).ready(function() {
 
     $('#acceptTerms2').change(function() {
       // Check if the checkbox is checked
-     
+
       if ($(this).is(':checked')) {
         if($('#acceptTerms').is(':checked'))
         {

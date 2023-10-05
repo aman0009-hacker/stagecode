@@ -71,7 +71,7 @@
             </div>
           </div>
         </div>
-       
+
         <div class="col-12 col-md-5 user-signUp">
           <div class="user-signUp-form">
             <div class="row text-center">
@@ -81,19 +81,19 @@
               </div>
             </div>
             @if (Auth::check())
-            <?php 
+            <?php
               if(isset(Auth::user()->state))
               {
                 Session::put('currentId', Auth::user()->id );
                 Session::put('contact_number', Auth::user()->contact_number );
                 Session::put('email', Auth::user()->email );
-               
-               
+
+
 
                $contact_number=Session::get('contact_number');
                $userCurrentId=Session::get('currentId');
                $email=Session::get('currentId');
-              
+
               }
             ?>
             @else
@@ -112,13 +112,13 @@
             @if (Session::has('contact_number'))
             <?php
                     $contact_number=Session::get('contact_number');
-                    //echo $contact_number;
+
                 ?>
             @endif
             @if (Session::has('currentId'))
             <?php
                   $userCurrentId=Session::get('currentId');
-                  //echo $userCurrentId;
+
               ?>
             @endif
             @if(session::has('email'))
@@ -158,7 +158,7 @@
                   oninvalid="this.setCustomValidity('Enter Contact Number Here (10 digits)')"
                   oninput="setCustomValidity('')" value="{{ $contact_number ?? ''}}">
                 <label for="contact_number" class="form-label">Contact Number</span></label>
-                
+
               </div>
               <div class="row g-3 align-items-center mb-3 send-otp" id="otp_div">
                 <div class="col-6">
@@ -168,7 +168,7 @@
                       oninvalid="this.setCustomValidity('Enter the required OTP')" title="Enter OTP"
                       oninput="setCustomValidity('')" maxlength="10"value="{{Auth::check()?Auth::user()->otp_generated_at===null?'':Auth::user()->otp:
                     ''}}">
-                     
+
                     <label for="userOtp" class="form-label">Enter OTP <span style="color:red">★</span></span></label>
                   </div>
                 </div>
@@ -181,7 +181,7 @@
                     </span>
                     <button type="button" class="btn btn-link btn-sm" id="otpHandleBtn" class="ms-4">Resend
                       OTP</button>
-                    {{-- <a href="" id="otpHandleBtn">Resend OTP</a> --}}
+
                     <span id="msg" style="display:none"><b>OTP WILL BE SHARED BY SMS</b></span>
                   </span>
                 </div>
@@ -190,7 +190,7 @@
               </div>
 
 
-{{-- emailotp --}}
+
 @if(Auth::check())
 @if(Auth::user()->otp_generated_at!=null)
 
@@ -246,11 +246,11 @@
                       </span>
                       <button type="button" class="btn btn-link btn-sm" id="otpEmailBtn" class="ms-4">Resend
                         OTP</button>
-                      {{-- <a href="" id="otpHandleBtn">Resend OTP</a> --}}
+
                       <span id="msg" style="display:none"><b>OTP has been sent to your email</b></span>
                     </span>
                   </div>
-                 
+
                 </div>
 
 
@@ -263,11 +263,11 @@
 
 
 
-             
+
               <div class="row">
                 <div class="col-6">
                   <div class="action">
-                    {{-- <button type="submit" class="btn continue-btn w-100"> Send OTP</button> --}}
+
                     <button type="submit" class="btn continue-btn w-100" disabled id="registerBtn">Validate</button>
                   </div>
                 </div>
@@ -291,12 +291,12 @@
 <script>
 
 
-   
 
 
 
 
-  
+
+
   $(document).ready(function()
   {
 
@@ -307,7 +307,7 @@
     let inputdisable=document.getElementById('registerBtn');
     let checkable=$('#nowdisable').val();
     let checkable2=$('#nowdisable').val();
-   
+
      if(checkable!==undefined && checkable2!=undefined)
      {
         let able=document.getElementById('registerBtn');
@@ -324,7 +324,7 @@
                 otpinput.disabled=true;
                 $('#otpHandleBtn').hide();
     }
-    
+
     if(data_email!=undefined)
     {
       $('#verfiy_user_email').hide();
@@ -352,10 +352,10 @@
         showEasing: 'swing',
         hideEasing: 'linear',
         showMethod: 'fadeIn',
-        // hideMethod: 'fadeOut'
+
     };
     toastr.error("Please fill the SMS column first.");
-      } 
+      }
       else if(sms!==null || sms!=="")
       {
 
@@ -365,17 +365,17 @@
           datatype:"JSON",
           success:function(response)
           {
-            
+
             if(response.message==="match")
             {
-             
-              
+
+
                $('#verfiy_user_sms').hide();
                $('.invisible_sms').show();
               $('#otpHandleBtn').hide();
                let otpinput=document.getElementById('userOtp');
                 otpinput.disabled=true;
-              
+
                      console.log(response.database);
                 if(response.database!=='')
                 {
@@ -383,7 +383,7 @@
                   inputElements.disabled=false;
                 }
 
-            
+
 
 
 
@@ -401,15 +401,15 @@
         showEasing: 'swing',
         hideEasing: 'linear',
         showMethod: 'fadeIn',
-        // hideMethod: 'fadeOut'
+
     };
     toastr.error("The sms otp number is wrong");
             }
-             
+
           }
         })
       }
-     
+
     });
     $('#verfiy_user_email').on('click',function()
     {
@@ -428,7 +428,7 @@
         showEasing: 'swing',
         hideEasing: 'linear',
         showMethod: 'fadeIn',
-        // hideMethod: 'fadeOut'
+
     };
     toastr.error("Please fill the Email column first.");
       }
@@ -469,7 +469,7 @@
         showEasing: 'swing',
         hideEasing: 'linear',
         showMethod: 'fadeIn',
-        // hideMethod: 'fadeOut'
+       
     };
     toastr.error("The email otp number is wrong");
             }
@@ -478,8 +478,8 @@
 
     })
     // resendemailotp
-  
-  
+
+
      $('#otpHandleBtn').on('click',function()
    {
     toastr.options = {
@@ -537,8 +537,8 @@
     toastr.success("The otp sending failed.Please try again later");
         }
     }
-  
-   
+
+
   });
    });
   $('#otpEmailBtn').on('click',function()
