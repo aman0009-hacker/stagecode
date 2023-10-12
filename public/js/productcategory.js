@@ -1,6 +1,6 @@
 var rowsValues = [];
 function handleMultipleCheckboxes() {
-    // alert("kjlhhkj");
+
     var selectedRows = []; // Array to store the selected rows
 
     // Iterate over each checked checkbox
@@ -11,10 +11,7 @@ function handleMultipleCheckboxes() {
         var rowData = {
             name: row.find('td:nth-child(2)').text(),
             description: row.find('td:nth-child(3)').text(),
-            // diameter: row.find('td:nth-child(4)').text(),
-            // size: row.find('td:nth-child(5)').text(),
-            //quantity: parseFloat(row.find('.quantity-input').val()),
-            //measurement: parseFloat(row.find('.measurement-input').val())
+
         };
 
         selectedRows.push(rowData);
@@ -57,10 +54,7 @@ function updateModalContentMultiple(rowsData) {
         var tr = $('<tr></tr>');
         tr.append('<td>' + rowData.name + '</td>');
         tr.append('<td>' + rowData.description + '</td>');
-        // tr.append('<td>' + rowData.diameter + '</td>');
-        // tr.append('<td>' + rowData.size + '</td>');(entity.quantity===undefined ? '': 1)
-        //   tr.append('<td>' + rowData.quantity + '</td>');
-        //   tr.append('<td>' + rowData.measurement + '</td>');
+
         tr.append('<td>' + '<input type="number" class="form-control quantity-input" min="1" value="' + (rowData.quantity == undefined || rowData.quantity == null || rowData.quantity == '' ? 1 :'') + '">' + '</td>');
         //tr.append('<td>' + '<input type="number" class="form-control measurement-input" value="' + rowData.measurement + '">' + '</td>');
         tr.append('<td>' + '<select class="form-select measurement-input">' +
@@ -72,7 +66,7 @@ function updateModalContentMultiple(rowsData) {
 
     modal.modal('show');
     // Get all rows' values
-    //var rowsValues = [];
+
     tbody.find('tr').each(function () {
         var rowValues = {};
         var row = $(this);
@@ -87,23 +81,7 @@ function updateModalContentMultiple(rowsData) {
 
     console.log(rowsValues);
 
-    // rowsValues.forEach(function(rowData) {
-    //     var name = rowData.name;
-    //     var description = rowData.description;
-    //     var diameter = rowData.diameter;
-    //     var size = rowData.size;
-    //     var quantity1 = rowData.quantity1;
-    //     var quantity2 = rowData.quantity2;
 
-    //     // Do something with the row data
-    //     console.log('Name: ' + name);
-    //     console.log('Description: ' + description);
-    //     console.log('Diameter: ' + diameter);
-    //     console.log('Size: ' + size);
-    //     console.log('Quantity 1: ' + quantity1);
-    //     console.log('Quantity 2: ' + quantity2);
-    //     //alert(quantity1);
-    //   });
 
 }
 
@@ -210,12 +188,11 @@ $('.order-bulk').on('click', function (e) {
                 rowsValues: rowsValues
             },
             dataType: 'JSON',
-            // processData: false,
-            // contentType: false,
+
             success: function (data) {
-                //alert("jlljlkjlkjlk");
+
                 if (data.response == "successful") {
-                    //alert("success");
+
                 }
             },
             error: function (error) {
@@ -239,14 +216,14 @@ function handleCategoryChange(categoryId) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    // $("#entity").html('<option value="">Select</option>');
+
     $("#entity").html('');
     $("#entity").append("<option value=''>Select</option>");
 
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     var form = document.getElementById("productCategoryInfo");
     var formData = new FormData(form);
-    // alert(categoryId);
+
     if (categoryId) {
         $.ajax(
             {
@@ -284,14 +261,14 @@ function handleCategoryChangeCoal(categoryId) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    // $("#entity").html('<option value="">Select</option>');
+
     $("#entityCoal").html('');
     $("#entityCoal").append("<option value=''>Select</option>");
 
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     var form = document.getElementById("productCategoryInfo");
     var formData = new FormData(form);
-    // alert(categoryId);
+
     if (categoryId) {
         $.ajax(
             {
@@ -324,7 +301,7 @@ function handleCategoryChangeCoal(categoryId) {
 
 
 $("#showEntity").on("click", function (event) {
-    // event.preventDefault();
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -337,7 +314,7 @@ $("#showEntity").on("click", function (event) {
     var subcategory_data = $("#entity option:selected").text();
 
 
-    //alert( category +  "  "  +subcategory);
+
 
     if (category) {
         $.ajax(
@@ -347,14 +324,12 @@ $("#showEntity").on("click", function (event) {
                 headers: {
                     'X-CSRF-TOKEN': csrfToken
                 },
-                //data: formData,
+
                 data: {
                     category_data: category_data,
                     subcategory_data: subcategory_data,
                 },
                 dataType: 'JSON',
-                // processData: false,
-                // contentType: false,
                 success: function (data) {
                     generateTableRows(data);
                 },
@@ -369,7 +344,7 @@ $("#showEntity").on("click", function (event) {
 
 
 $("#showEntityCoal").on("click", function (event) {
-    // event.preventDefault();
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -382,7 +357,7 @@ $("#showEntityCoal").on("click", function (event) {
     var subcategory_data = $("#entityCoal option:selected").text();
 
 
-    //alert( category +  "  "  +subcategory);
+
 
     if (category) {
         $.ajax(
@@ -392,14 +367,13 @@ $("#showEntityCoal").on("click", function (event) {
                 headers: {
                     'X-CSRF-TOKEN': csrfToken
                 },
-                //data: formData,
+
                 data: {
                     category_data: category_data,
                     subcategory_data: subcategory_data,
                 },
                 dataType: 'JSON',
-                // processData: false,
-                // contentType: false,
+
                 success: function (data) {
                     generateTableRows(data);
                 },
@@ -412,26 +386,7 @@ $("#showEntityCoal").on("click", function (event) {
 
 });
 
-// function generateTableRows(data) {
-//     var tbody = $('.table tbody');
-//     tbody.empty(); // Clear existing table rows
 
-//     // Iterate over each entity and generate the HTML for each row
-//     data.forEach(function (entity) {
-//         var tr = $('<tr></tr>');
-
-//         // Create and append the table cells
-//         var checkboxCell = $('<td><input class="form-check-input" type="checkbox"></td>');
-//         var nameCell = $('<td></td>').text(entity.name);
-//         var descriptionCell = $('<td></td>').text(entity.description);
-//         var diameterCell = $('<td></td>').text(entity.diameter);
-//         var sizeCell = $('<td></td>').text(entity.size);
-//         var bookNowCell = $('<td></td>').html('<a href="" class="btn btn-secondary book-now" data-bs-toggle="modal" data-bs-target="#exampleModal">Book Now</a>');
-
-//         tr.append(checkboxCell, nameCell, descriptionCell, diameterCell, sizeCell, bookNowCell);
-//         tbody.append(tr);
-//     });
-// }
 
 function generateTableRows(data) {
     var tbody = $('.table tbody');
@@ -445,14 +400,12 @@ function generateTableRows(data) {
         var checkboxCell = $('<td><input class="form-check-input" type="checkbox"></td>');
         var nameCell = $('<td></td>').text(entity.name);
         var descriptionCell = $('<td></td>').text(entity.description);
-        // var diameterCell = $('<td></td>').text(entity.diameter);
-        // var sizeCell = $('<td></td>').text(entity.size);
+
 
         //new code
-        // var quantityCell = $('<td></td>').html('<input type="number" class="form-control quantity-input" value="' + entity.quantity + '">');
-        // var measurementCell = $('<td></td>').html('<input type="number" class="form-control measurement-input" value="' + entity.measurement + '">');
+
         var quantityCell = $('<td></td>').html('<input type="number" class="form-control quantity-input" hidden value="' + (entity.quantity==NaN ? '': 1) + '" min="1" required>');
-        //var measurementCell = $('<td></td>').html('<input type="number" class="form-control measurement-input"  hidden value="' + (entity.measurement || 0) + '">');
+
         var measurementCell = $('<td></td>').html('<select class="form-select measurement-input">' +
             '<option value="Ton">Ton</option>' +
             '<option value="kW">kW</option>' +
@@ -466,8 +419,7 @@ function generateTableRows(data) {
             var rowData = {
                 name: entity.name,
                 description: entity.description,
-                // diameter: entity.diameter,
-                // size: entity.size,
+
 
                 //new code
 
@@ -479,23 +431,21 @@ function generateTableRows(data) {
             // Update the modal content with the current row data
             updateModalContent(rowData);
         });
-        //tr.append(checkboxCell, nameCell, descriptionCell, diameterCell, sizeCell, bookNowCell);
+
         tr.append(checkboxCell, nameCell, descriptionCell, bookNowCell);
-        //tr.append(checkboxCell, nameCell, descriptionCell, diameterCell, sizeCell, quantityCell, measurementCell, bookNowCell);
+
         tbody.append(tr);
     });
 }
 
 function updateModalContent(rowData, callingFunction = 1) {
-    //alert(rowData.name);
+
     var modal = $('#exampleModal');
     modal.find('.modal-body h3').text(rowData.name);
     modal.find('.modal-body p').text(rowData.description);
-    // modal.find('.modal-body span').eq(0).text(rowData.diameter);
-    // modal.find('.modal-body span').eq(1).text(rowData.size);
+
     modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" value="' + (entity.quantity==NaN ? '': 1) + '" min="1" required>');
-    //modal.find('#measurement').empty().append('<input type="number" class="form-control measurement-input" value="' + rowData.measurement + '">');
-    //var measurement = modal.find('.measurement-input').val();
+
     modal.find('#measurement').empty().append('<select class="form-select measurement-input">' +
         '<option value="Ton"' + (rowData.measurement === "Ton" ? ' selected' : '') + '>Ton</option>' +
         '<option value="kW"' + (rowData.measurement === "kW" ? ' selected' : '') + '>kW</option>' +
@@ -507,19 +457,7 @@ $('.order-show').on('click', function (e) {
     e.preventDefault();
     $('#exampleModal').modal('show');
 
-    //     var rowData = {
-    //         name: $(this).closest('tr').find('td:nth-child(2)').text(),
-    //         description: $(this).closest('tr').find('td:nth-child(3)').text(),
-    //         diameter: $(this).closest('tr').find('td:nth-child(4)').text(),
-    //         size: $(this).closest('tr').find('td:nth-child(5)').text(),
-    //         quantity: parseFloat($(this).closest('tr').find('.quantity-input').val()),
-    //         measurement: parseFloat($(this).closest('tr').find('.measurement-input').val())
-    //      };
-    //    //Update the modal content with the current row data
 
-    //     //alert($(this).closest('tr').find('td:nth-child(2)').text());
-    //     console.log(rowData);
-    //     updateModalContent(rowData);
     // Open the modal
     var modal = $('#exampleModal');
     // Get the values from the modal controls
@@ -561,12 +499,11 @@ $('.order-show').on('click', function (e) {
                 measurement: measurement,
             },
             dataType: 'JSON',
-            // processData: false,
-            // contentType: false,
+
             success: function (data) {
-                //alert("jlljlkjlkjlk");
+
                 if (data.response == "successful") {
-                    //alert("success");
+
                 }
             },
             error: function (error) {

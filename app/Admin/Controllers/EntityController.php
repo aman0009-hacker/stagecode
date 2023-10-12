@@ -50,9 +50,18 @@ class EntityController extends AdminController
             });
             $grid->column('name', __('Material'));
             $grid->column('description', __('Description'));
+<<<<<<< HEAD
             $grid->column('created_at', __('Created At'))->display(function ($value) {
                 return Carbon::parse($value)->format('Y-m-d H:i');
             });
+=======
+
+            $grid->column('created_at', __('Created At'))->display(function ($value) {
+
+                return Carbon::parse($value)->format('Y-m-d H:i');
+            });
+
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
             $grid->filter(function ($filter) {
                 $filter->disableIdFilter();
                 $filter->like('name', __('Material'));
@@ -98,12 +107,18 @@ class EntityController extends AdminController
     protected function detail($id)
     {
         $show = new Show(Entity::findOrFail($id));
+<<<<<<< HEAD
 
+=======
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         $show->field('name', __('Entity Name'));
         $show->field('description', __('Description'));
         $show->field('size', __('Size'));
         $show->field('diameter', __('Diameter'));
+<<<<<<< HEAD
 
+=======
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         $show->field('created_at', __('Created at'));
 
         return $show;
@@ -117,8 +132,11 @@ class EntityController extends AdminController
     protected function form()
     {
         $form = new Form(new Entity());
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         $form->select('product_id', 'Product')
             ->options(function () {
                 // Retrieve the products from the database

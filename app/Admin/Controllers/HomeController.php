@@ -1,6 +1,9 @@
 <?php
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;

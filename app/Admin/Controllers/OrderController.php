@@ -59,7 +59,10 @@ class OrderController extends AdminController
                     ];
                 });
                 return new Table(['Item', 'Description', 'Quantity', 'Measurement'], $tableData->toArray());
+<<<<<<< HEAD
 
+=======
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
             });
 
             $grid->column('amount', __('Product Price'))->display(function ($value) {
@@ -73,6 +76,10 @@ class OrderController extends AdminController
             });
             $grid->column('status', __('Status'));
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 
             $grid->column('payment_mode', __('Payment Mode'))->display(function ($title) {
                 $id = $this->id;
@@ -176,6 +183,10 @@ class OrderController extends AdminController
 
                                         $order = Order::with('user')->find($this->id);
                                         $final_interst = $date - 20;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                                         $interestWithinAllowedPeriod = $this->check_amount * $final_interst * $additionalInterestRateBeyond20Days * 1 / 365;
                                         $interestWithinAllowedPeriod = $interestWithinAllowedPeriod + $order->interest_within_allowed_period;
                                     } else {
@@ -186,6 +197,14 @@ class OrderController extends AdminController
                                     $order->total_cheque_amount_with_tax = $totalAmount;
                                     $order->save();
                                     return round($totalAmount, 2);
+<<<<<<< HEAD
+=======
+
+                                    /*how to get the user id and order id here to update a new column called interest amount*/
+                                    // $order->interest_amount = $totalInterestAmount;
+                                    // $order->save();
+                                    /*need to save here the interest amount*/
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                                 } else {
                                     return "N/A";
                                 }

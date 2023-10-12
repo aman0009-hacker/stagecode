@@ -2,7 +2,10 @@
 
 namespace App\Admin\Controllers;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 use App\Models\Attachment;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -15,6 +18,10 @@ use App\Admin\Actions\BatchReplicate;
 use App\Models\User;
 use Encore\Admin\Admin;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 
 
 class AttachmentController extends AdminController
@@ -64,7 +71,10 @@ class AttachmentController extends AdminController
         $grid->column('updated_at', __('Updated at'))->display(function ($value) {
             return Carbon::parse($value)->format('d-m-Y');
         });
+<<<<<<< HEAD
 
+=======
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         $grid->column('fileno', __('Document No'))->display(function ($value) {
             return $this->getFileNoAttribute($value);
         });
@@ -117,11 +127,19 @@ class AttachmentController extends AdminController
 
                           </div>
                     </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                   </div>
                  </div>
             </div>
        </div>
        </form>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
@@ -173,7 +191,7 @@ class AttachmentController extends AdminController
         $form->footer(function ($footer) {
             $footer->disableViewCheck();
 
-            // disable `Continue editing` checkbox
+            // disable `Continue editing` checkboxs
             $footer->disableEditingCheck();
 
             // disable `Continue Creating` checkbox

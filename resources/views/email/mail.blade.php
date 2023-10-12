@@ -1,26 +1,3 @@
-{{--
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>PSIEC Admin Panel</title>
-</head>
-
-<body>
-    <h1>{{ $details['email'] }}</h1>
-    <p>{{ $details['body'] }}</p>
-    @if ($details['body'] =="Congratulations!!! Your account has successfully verified.")
-    <a href="{{ env('APP_URL') }}PaymentDetails/{{$details['encryptedID']}}">click here</a>
-    @endif
-    <p>Thank you</p>
-</body>
-
-</html> --}}
-
-
-
-
-
 
 <!doctype html>
 <html lang="en-US">
@@ -92,15 +69,7 @@
                                             <p>Thank you once again for choosing our services.</p>
                                             <p>Best regards,</p>
                                             <p>PSIEC Admin Panel</p>
-                                        {{-- <span
-                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"></span> --}}
-                                        {{-- <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
-                                            A unique link to reset your password has been generated for you. To reset
-                                            your password, click the follow ing link and follow the instructions.
-                                        </p> --}}
-                                        {{-- <a href="{{$url}}"
-                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Reset
-                                            Password</a> --}}
+
                                     </td>
                                 </tr>
                                 <tr>

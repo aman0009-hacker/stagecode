@@ -101,8 +101,7 @@
             @endphp
             @if (Session::has('status'))
             <div class="alert alert-success" id="successmsg">
-              {{-- <strong>Great!</strong> Reset Password mail has <b>successfully</b> send to
-              the registered <b>email id</b>. --}}
+
             </div>
             @endif
             @if(count($errors))
@@ -115,7 +114,7 @@
             </div>
             @endif
             <br>
-            {{-- <form class="sign-in-form" method="post" action="{{ route('login.post') }}"> --}}
+
               <form class="sign-in-form" method="post" action="/login" autocomplete="off">
                 @csrf
                 <div class="mb-3 position-relative form-control-new">
@@ -142,7 +141,7 @@
                           @if ($errors->has('g-recaptcha-response'))
                               <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
                           @endif
-                      </div>  
+                      </div>
                   </div>
               </div>
                   <div class="col-12 mt-3">
@@ -154,7 +153,7 @@
                 <div class="row">
                   <div class="col-12">
                     <div class="action">
-                      {{-- <a href="./index.html" class="btn login-btn w-100">Log In</a> --}}
+
                       <button type="submit" class="btn login-btn w-100">Log In</button>
                     </div>
                   </div>

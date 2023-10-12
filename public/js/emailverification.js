@@ -6,15 +6,15 @@ Array.from(verify).forEach(element => {
     console.log(element.parentNode);
     if(element &&  element.parentNode)
 {
-   
+
     let buttonsubmit=element.parentNode;
-      
+
     let findlabel=buttonsubmit.querySelector('label')
     findlabel.setAttribute('id','emaillabel')
     let sndbutton=document.createElement('span');
     sndbutton.innerHTML=`<a href="#" style="margin-left: 10px;padding: 6px 26px;background-color: #00a65a;color: #fff;border: 1px solid #00a65a;border-radius: 3px;" class="Sendemail" >Send</a>`;
-    
-    buttonsubmit.append(sndbutton); 
+
+    buttonsubmit.append(sndbutton);
 }
 });
 
@@ -30,7 +30,7 @@ if(element && element.parentNode.parentNode)
     makeelement.setAttribute('id','verifiction_head');
     makeelement.innerHTML=`<label for="emailotp">OTP</label><input type="text" class="emailotp" placeholder="InputOtp"><button type="button"style="margin-left: 10px;padding: 6px 26px;background-color: #55ACEE;color: #fff;border: 1px solid #55ACEE;border-radius: 3px;"class="verifytheotp">Verify</button>
         `
-    
+
     verifyparent.append(makeelement);
 }
 
@@ -46,21 +46,18 @@ let getdata=document.getElementsByClassName('Sendemail');
 if(getdata)
 {
 Array.from(getdata).forEach(element=>{
-    
+
      element.addEventListener('click',function(event){
-     
-    
-     
+
+
+
          let parentofbuttons=event.target.parentNode.parentNode;
          let findthehidden=event.target.parentNode.parentNode.parentNode;
         let inputchild= parentofbuttons.querySelector('input');
-     
-        let hiddenvalue=findthehidden.querySelector('input[type="hidden"]').value;
-      
 
-        //  let adminId=document.getElementById('emailotpcheck').value;
-         // let email=document.getElementsByClassName('emailverification').value;
-         // console.log(email);
+        let hiddenvalue=findthehidden.querySelector('input[type="hidden"]').value;
+
+
          if(inputchild.value==='' || inputchild.value===null)
          {
              toastr.options = {
@@ -74,14 +71,14 @@ Array.from(getdata).forEach(element=>{
                  showEasing: 'swing',
                  hideEasing: 'linear',
                  showMethod: 'fadeIn',
-             
+
              };
-             
+
              toastr.error("Please fill the email field");
          }
          else
          {
-     
+
              toastr.options = {
                  closeButton: true,
                  progressBar: true,
@@ -93,9 +90,9 @@ Array.from(getdata).forEach(element=>{
                  showEasing: 'swing',
                  hideEasing: 'linear',
                  showMethod: 'fadeIn',
-             
+
              };
-             
+
              toastr.info("Please wait");
          }
      $.ajax({
@@ -104,7 +101,7 @@ Array.from(getdata).forEach(element=>{
          datatype:'json',
          success:function(response)
          {
-       
+
              if(response.data==="success")
              {
                  toastr.options = {
@@ -118,9 +115,9 @@ Array.from(getdata).forEach(element=>{
                      showEasing: 'swing',
                      hideEasing: 'linear',
                      showMethod: 'fadeIn',
-                 
+
                  };
-                 
+
                  toastr.success("Email sent");
              }
              else if(response.data==="match")
@@ -136,12 +133,12 @@ Array.from(getdata).forEach(element=>{
                      showEasing: 'swing',
                      hideEasing: 'linear',
                      showMethod: 'fadeIn',
-                 
+
                  };
-                 
+
                  toastr.warning("Email id is already registered");
              }
-             
+
              else if(response.data==="fail")
              {
                  toastr.options = {
@@ -155,9 +152,9 @@ Array.from(getdata).forEach(element=>{
                      showEasing: 'swing',
                      hideEasing: 'linear',
                      showMethod: 'fadeIn',
-                 
+
                  };
-                 
+
                  toastr.warning("Server is busy,Please try again later");
              }
          }
@@ -194,12 +191,12 @@ Array.from(getheoptelement).forEach(element=>{
                 showEasing: 'swing',
                 hideEasing: 'linear',
                 showMethod: 'fadeIn',
-            
+
             };
-            
+
             toastr.error("Please fill the otp field");
         }
-        // let adminIds=document.getElementById('emailotpcheck').value;
+     
         $.ajax({
             url:'checktheotp/'+theotp+'/'+adminId,
             method:'get',
@@ -208,10 +205,10 @@ Array.from(getheoptelement).forEach(element=>{
             {
                 if(response.data==="success")
                 {
-                    
+
                    element.disabled=true;
                    theotps.querySelector('input').disabled=true;
-                    
+
                    element.innerHTML="Verified";
                 }
                 else
@@ -227,9 +224,9 @@ Array.from(getheoptelement).forEach(element=>{
                         showEasing: 'swing',
                         hideEasing: 'linear',
                         showMethod: 'fadeIn',
-                    
+
                     };
-                    
+
                     toastr.error("The otp is not correct, try again");
                 }
             }

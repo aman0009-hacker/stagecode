@@ -54,6 +54,10 @@ class Rejected extends RowAction
             }
             return $this->response()->success('User status has successfully changed')->refresh();
         } catch (\Throwable $ex) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
             Log::info($ex->getMessage());
         }
     }

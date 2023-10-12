@@ -23,12 +23,19 @@ class RegisterResponse extends FortifyRegisterResponse
         $currentConatct="";
         if(isset($currentEmail) && $currentEmail!="")
         {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         $data = User::find(Auth::user()->id);
         $currentId=$data->id;$currentConatct=$data->contact_number;
 
         }
+<<<<<<< HEAD
 
+=======
+       
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         if(isset($currentId) && !empty($currentId))
         {
         return redirect()->route('signUpSubmit')->with( ['data' => "success" , 'currentId'=> $currentId, 'contact_number'=>$currentConatct] );

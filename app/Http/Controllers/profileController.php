@@ -228,6 +228,10 @@ class profileController extends Controller
     {
         $user_id = Auth::user()->id;
         $allorders = Order::where('user_id', $user_id)->get();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         $orderDetails = [];
         $counter = 0;
         $orderData = [

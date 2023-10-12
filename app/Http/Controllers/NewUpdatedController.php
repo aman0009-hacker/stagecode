@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 use App\Models\Attachment;
 
 class NewUpdatedController extends Controller

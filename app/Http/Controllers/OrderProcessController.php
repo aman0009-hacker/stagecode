@@ -20,6 +20,10 @@ class OrderProcessController extends Controller
         Session::put('txtOrderGlobalModalID', $txtOrderGlobalModalID ?? '');
         if (isset($txtOrderGlobalModalID) && !empty($txtOrderGlobalModalID)) {
             return view('components.order-process', compact('txtOrderGlobalModalID'));
+<<<<<<< HEAD
+=======
+
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         }
     }
 
@@ -42,7 +46,11 @@ class OrderProcessController extends Controller
                 $order = Order::findOrFail($modalIdInput);
                 $num = 0;
                 foreach ($allfiles as $image) {
+<<<<<<< HEAD
 
+=======
+                    //$files = time() . "." . $image->getClientOriginalExtension();
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                     $files = time() . rand(11, 99) . '.' . $image->getClientOriginalName();
                     $image->move(public_path('uploads'), $files);
                     if ($num == 0) {

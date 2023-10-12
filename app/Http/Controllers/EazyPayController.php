@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,9 +29,10 @@ class EazyPayController extends Controller
         $this->EAZYPAY_BASE_URL = env('EAZYPAY_BASE_URL', '');
     }
 
-    public function getPaymentUrl($amount, $reference_no, $optionalField=null)
+    public function getPaymentUrl($amount, $reference_no, $optionalField = null)
     {
         try {
+<<<<<<< HEAD
         $mandatoryField = $this->getMandatoryField($amount, $reference_no);
         $optionalField = $this->getOptionalField($optionalField);
         $amount = $this->getAmount($amount);
@@ -41,6 +43,19 @@ class EazyPayController extends Controller
         Log::info($ex->getMessage());
 
     }
+=======
+            $mandatoryField = $this->getMandatoryField($amount, $reference_no);
+            $optionalField = $this->getOptionalField($optionalField);
+            $amount = $this->getAmount($amount);
+            $reference_no = $this->getReferenceNo($reference_no);
+            $paymentUrl = $this->generatePaymentUrl($mandatoryField, $optionalField, $amount, $reference_no);
+            return $paymentUrl;
+
+        } catch (\Throwable $ex) {
+            Log::info($ex->getMessage());
+
+        }
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
     }
 
 
@@ -48,7 +63,7 @@ class EazyPayController extends Controller
     {
         $encryptedUrl = $this->EAZYPAY_BASE_URL . "merchantid=" . $this->merchant_id . "&mandatory fields=" . $mandatoryField . "&optional fields=" . $optionalField . "&returnurl=" . $this->getReturnUrl() . "&Reference No=" . $reference_no . "&submerchantid=" . $this->getSubMerchantId() . "&transaction amount=" . $amount . "&paymode=" . $this->getPaymode();
         return $encryptedUrl;
-   }
+    }
 
     protected function getMandatoryField($amount, $reference_no)
     {
@@ -56,7 +71,7 @@ class EazyPayController extends Controller
     }
 
     // optional field must be seperated with | eg. (20|20|20|20)
-    protected function getOptionalField($optionalField=null)
+    protected function getOptionalField($optionalField = null)
     {
         if (!is_null($optionalField)) {
             return $this->getEncryptValue($optionalField);

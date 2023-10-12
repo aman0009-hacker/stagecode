@@ -3,7 +3,6 @@
 namespace App\Admin\Actions;
 
 use Encore\Admin\Actions\RowAction;
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Order;

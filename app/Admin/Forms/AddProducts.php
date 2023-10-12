@@ -57,7 +57,10 @@ class AddProducts extends Form
                 $entity = new Entity();
                 $entity->name = $entityName;
                 $entity->size = $size;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                 $entity->entity_id = $category->id; // Assign the category ID
                 $entity->save();
                 // Commit the transaction
@@ -88,7 +91,10 @@ class AddProducts extends Form
         $this->text('category')->rules('required');
         $this->text('entity')->rules('required');
         $this->text('size')->rules('required');
+<<<<<<< HEAD
 
+=======
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 
     }
 

@@ -72,7 +72,7 @@
                 <p class="details-text">Please enter your details to reset password</p>
               </div>
             </div>
-            {{-- <form action="{{ route('reset.password.post') }}" method="POST"> --}}
+           
               <form action="/reset-password" method="POST">
                 @csrf
                 <input type="hidden" name="token" value="{{ request()->route('token') }}">

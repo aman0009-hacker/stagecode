@@ -28,7 +28,13 @@ class excelfile extends Action
                 while (($content = fgetcsv($data, 2000, ',')) !== false) {
                     if (!$transRow) {
                         $array[] = $content;
+<<<<<<< HEAD
                     } elseif (strtoupper($content[0]) == strtoupper('Product') && strtoupper($content[1]) == strtoupper('category') && strtoupper($content[2]) == strtoupper('subcategory') && strtoupper($content[3]) == strtoupper('description')) {
+=======
+                    }
+                    //  $transRow=false;
+                    elseif (strtoupper($content[0]) == strtoupper('Product') && strtoupper($content[1]) == strtoupper('category') && strtoupper($content[2]) == strtoupper('subcategory') && strtoupper($content[3]) == strtoupper('description')) {
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                         $transRow = false;
                     } else {
                         return $this->response()->error('Please give the coloumns in following way: Product,category,subcategory,dimension')->refresh();

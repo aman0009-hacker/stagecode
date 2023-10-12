@@ -35,8 +35,15 @@ class CategoryController extends AdminController
             $grid->column('category_id', __('Type'))->display(function ($category_id) {
                 return Product::where('id', $category_id)->firstOrFail()->name ?? '';
             });
+<<<<<<< HEAD
             $grid->column('name', __('Category Name'));
             $grid->column('created_at', __('Created at'))->display(function ($value) {
+=======
+
+            $grid->column('name', __('Category Name'));
+            $grid->column('created_at', __('Created at'))->display(function ($value) {
+
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                 return Carbon::parse($value)->format('Y-m-d H:i');
             });
             $grid->filter(function ($filter) {
@@ -73,11 +80,16 @@ class CategoryController extends AdminController
     protected function detail($id)
     {
         $show = new Show(Category::findOrFail($id));
+<<<<<<< HEAD
 
         $show->field('name', __('Name'));
 
         $show->field('created_at', __('Created at'));
 
+=======
+        $show->field('name', __('Name'));
+        $show->field('created_at', __('Created at'));
+>>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         return $show;
     }
 
