@@ -97,7 +97,7 @@ return [
     | If your page is going to be accessed via https, set it to `true`.
     |
     */
-    'https' => env('ADMIN_HTTPS', true),
+    'https' => env('ADMIN_HTTPS', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -412,16 +412,16 @@ return [
             'disk' => 'admin'   // Points to the disk set in config/filesystem.php
         ],
         'chartjs' => [
-        
+
             // Set to `false` if you want to disable this extension
             'enable' => true,
         ],
-     
-        
+
+
     ],
 
 
-   
+
 
 
     // 'menu' => [

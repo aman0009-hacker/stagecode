@@ -37,10 +37,9 @@ class EazyPayController extends Controller
         $reference_no = $this->getReferenceNo($reference_no);
         $paymentUrl = $this->generatePaymentUrl($mandatoryField, $optionalField, $amount, $reference_no);
         return $paymentUrl;
-        // return redirect()->to($paymentUrl);
     } catch (\Throwable $ex) {
         Log::info($ex->getMessage());
-   
+
     }
     }
 
@@ -98,6 +97,6 @@ class EazyPayController extends Controller
         $encrypted = openssl_encrypt($str, 'aes-128-ecb', $this->encryption_key, OPENSSL_RAW_DATA);
         // The $iv is just as important as the key for decrypting, so save it with our encrypted data using a unique separator (::)
         return base64_encode($encrypted);
-    
+
     }
 }

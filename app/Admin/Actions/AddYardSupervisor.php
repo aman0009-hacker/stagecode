@@ -4,7 +4,6 @@ namespace App\Admin\Actions;
 
 use Encore\Admin\Actions\RowAction;
 use Illuminate\Database\Eloquent\Model;
-use Encore\Admin\Layout\Content;
 use Illuminate\Support\Facades\Log;
 use App\Models\Yard;
 use App\Models\AdminUser;
@@ -24,7 +23,7 @@ class AddYardSupervisor extends RowAction
                 return $this->response()->success("Saved Successfully")->refresh();
             }
         } catch (\Throwable $ex) {
-            //return $this->response()->error('Oops! Sending mail has encountered some internal problem');
+
             Log::info($ex->getMessage());
         }
     }

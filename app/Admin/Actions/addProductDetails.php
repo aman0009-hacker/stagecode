@@ -9,13 +9,13 @@ use Illuminate\Http\Request;
 class addProductDetails extends RowAction
 {
     public $name = 'Add Details';
-   
 
-    public function handle(Model $model,Request $request)
+
+    public function handle(Model $model, Request $request)
     {
         // $model ...
-        $model->quantity=$request->Quantity;
-        $model->amount=$request->Amount;
+        $model->quantity = $request->Quantity;
+        $model->amount = $request->Amount;
         $model->save();
 
 
@@ -24,6 +24,6 @@ class addProductDetails extends RowAction
     public function form()
     {
         $this->text('Quantity', 'Quantity')->required();
-        $this->text('Amount', 'Amount')->required();    
+        $this->text('Amount', 'Amount')->required();
     }
 }

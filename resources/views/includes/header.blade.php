@@ -100,7 +100,7 @@ opacity: 0.9; / Initial opacity /
             <input id="search-input" placeholder="Search" />
           </div>
           <div class="navbar-nav ms-auto">
-            <ul>
+            <ul class="alliconshead">
               <form  class="icon-container" >
                   <div class="icon">
                       <button style="border: none; background:none;" onclick="fun(event)">
@@ -123,7 +123,7 @@ opacity: 0.9; / Initial opacity /
                    {{-- <a href="#" class="btn btn-primary account-btn" id="myid" style="display:none">
                     My Account
                   </a>  --}}
-                
+
 
 
 
@@ -177,7 +177,7 @@ opacity: 0.9; / Initial opacity /
                     Account</button>
                  {{-- @endif --}}
 
-                    
+
 
                     {{-- <a href="/order" class="btn btn-outline-secondary ms-4" id="myOrder" style="display:none">
                       My Order
@@ -208,7 +208,7 @@ opacity: 0.9; / Initial opacity /
                 @endguest --}}
                 <h2 style="display: inline;">
                   <a href="/signup" class="btn btn-outline-secondary" id="mySignUp">
-                    Register
+                    Registers
                   </a> <a href="/login" class="btn btn-outline-secondary ms-4" id="myLogin">
                     Login
                   </a>
@@ -246,6 +246,18 @@ opacity: 0.9; / Initial opacity /
             <li class="nav-item">
               <a class="nav-link" href="#contact">Contact Us</a>
             </li>
+            <li>
+              @guest
+              <li class="register_login">
+
+                <a href="/signup" class="btn btn-outline-secondary" id="mySignUp"style="background-color:#bbf5ff;color: #333333;border:0px">
+                  Register
+                </a> <a href="/login" class="btn btn-outline-secondary mt-3" id="myLogin"style="background-color:#bbf5ff;color: #333333;border:0px">
+                  Login
+                </a>
+              </li>
+              @endguest
+            </li>
           </ul>
         </span>
       </div>
@@ -254,22 +266,22 @@ opacity: 0.9; / Initial opacity /
 </div>
 </section>
 <script>
-  
+
   $.ajax({
       url: '/chatcount',
       method: 'GET',
       dataType: 'JSON',
       success:function(response){
-        
+
         if(response.chatCount==""|| response.chatCount===null)
         {
           document.getElementsByClassName('badge')[0].style.display="none";
           document.getElementById('notification-badge').style.display="none";
-          
+
         }
         else
         {
-           
+
               document.getElementById('notification-badge').innerHTML=response.chatCount;
           }
       }

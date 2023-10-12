@@ -43,7 +43,7 @@ class Records extends Model
     {
         return "you have {$eventName} yard records";
     }
-    //new code for logActivity start 
+    //new code for logActivity start
 
     public function adminUser()
     {

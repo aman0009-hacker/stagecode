@@ -12,15 +12,15 @@ use Illuminate\Queue\SerializesModels;
 class optEmail extends Mailable
 {
 
-   
+
     use Queueable, SerializesModels;
-public $details;
+    public $details;
     /**
      * Create a new message instance.
      */
     public function __construct($details)
     {
-        $this->details=$details;
+        $this->details = $details;
     }
 
     /**

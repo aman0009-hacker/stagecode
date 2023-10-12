@@ -8,9 +8,6 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Widgets\Table;
 use Encore\Admin\Show;
-use Illuminate\Support\HtmlString;
-use Encore\Admin\Widgets\TableEditable;
-use Encore\Admin\Grid\NestedGrid;
 
 class UserController extends AdminController
 {
@@ -33,22 +30,16 @@ class UserController extends AdminController
         $grid = new Grid(new User());
 
         $grid->column('id', __('Id'))->sortable();
-        // $grid->column('name', __('Name'));
-        // $grid->column('last_name', __('Last name'));
-
         $grid->column('full_name')->display(function () {
             return $this->name . ' ' . $this->last_name;
         });
         $grid->column('email', __('Email'));
         $grid->column('contact_number', __('Contact number'));
-        // $grid->column('email_verified_at', __('Email verified at'));
-        // $grid->column('password', __('Password'));
         $grid->column('otp', __('Otp'));
 
 
         $grid->column('attachment', 'Documents Count')->display(function ($comments) {
             $count = count($comments);
-            //return "<span class='label label-warning'>{$count}</span>";
             return $count;
         })->expand(function ($model) {
 
@@ -97,10 +88,6 @@ class UserController extends AdminController
 
                 return $table;
             }
-
-
-
-
         });
 
 
@@ -109,17 +96,14 @@ class UserController extends AdminController
         $grid->disableCreateButton();
 
         $grid->export(function ($export) {
-            //$export->filename('Filename.csv');
+
             $export->except(['approved', 'comments', 'attachment', 'otp']);
         });
 
-
-
-
         $grid->actions(function ($actions) {
-            // $actions->add(new Download);
+
             $actions->add(new Data);
-            // $actions->add(new Rejected);
+
         });
 
 
@@ -174,7 +158,7 @@ class UserController extends AdminController
 
         $form->radio("approved")->options([0 => 'New', 1 => 'Approved', 2 => 'Rejected'])->default(0);
         $form->text('comment', __('Comment'));
-        //$form->datetime('approved_at', __('Approved at'))->default(date('Y-m-d H:i:s'));
+
         $form->datetime('approved_at', __('Approved at'));
 
         $form->saving(function ($form) {
@@ -183,20 +167,18 @@ class UserController extends AdminController
                     'email' => 'Mail from PSIEC Admin Panel',
                     'body' => 'Your account has not verified due to issue in your documents' . "  . Kindly resolve the issues as follows:-" . $form->comment
                 ];
-                //\Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
+
                 \Mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
             } else if (isset($form->approved) && $form->approved == 2) {
                 $details = [
                     'email' => 'Mail from PSIEC Admin Panel',
                     'body' => 'Your account has successfully verified' . $form->comment
                 ];
-                //\Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
+
                 \Mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
             }
 
         });
-
-
         return $form;
     }
 }

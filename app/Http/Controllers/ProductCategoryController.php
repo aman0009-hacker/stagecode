@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Admin\Controllers\AdminCommonValue;
+
 use App\Models\adminCommonValueChange;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -12,7 +12,6 @@ use App\Models\Entity;
 use App\Models\Order;
 use App\Models\AdminUser;
 use App\Models\OrderItem;
-use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use App\Models\UserPayment;
 use Encore\Admin\Layout\Content;
@@ -27,7 +26,7 @@ class ProductCategoryController extends Controller
     public function index(Request $request)
     {
         try {
-            //$categoryList = Category::pluck('name', 'id');
+
             $categoryList = Category::whereHas('product', function ($query) {
                 $query->where('name', 'Steel');
             })->pluck('name', 'id');
@@ -55,12 +54,11 @@ class ProductCategoryController extends Controller
                 if ($entityList->isNotEmpty()) {
                     return response()->json($entityList);
                 } else {
-                    // return view('components.category')->withInput();
+                    return view('components.category')->withInput();
                 }
             }
 
         } catch (\Exception $ex) {
-            //return view('components.category')->withInput();
             Log::info($ex->getMessage());
         }
 
@@ -87,7 +85,7 @@ class ProductCategoryController extends Controller
 
             }
         } catch (\Exception $ex) {
-            //return view('components.category')->withInput();
+
             Log::info($ex->getMessage());
         }
     }
@@ -100,7 +98,6 @@ class ProductCategoryController extends Controller
             $order = new Order();
             $order->status = "New";
             $order->user_id = Auth::user()->id;
-            //$order->save();
 
 
             //new code to generate invoice start
@@ -109,10 +106,10 @@ class ProductCategoryController extends Controller
                 $lastInvoice = Invoice::orderByDesc('invoice_id')->first();
                 $newInvoiceId = $lastInvoice ? $lastInvoice->invoice_id + 1 : 1;
                 $invoice = new Invoice();
-                //$invoice->id = \Ramsey\Uuid\Uuid::uuid4(); // Generate a new UUID for the 'id' column
+
                 $invoice->delivery_terms = 'This information has been provided as a resource to familiarize PSIEC rules';
                 $invoice->invoice_date = now();
-                //$invoice->order_id = Order::latest('id')->value('id'); // Replace $order with the actual Order model instance
+
                 $invoice->order_id = $order->id;
                 $invoice->invoice_id = $newInvoiceId;
                 $invoice->created_at = now();
@@ -123,7 +120,7 @@ class ProductCategoryController extends Controller
             if ($order->save()) {
 
                 $latestId = Order::latest()->first()->id;
-                 $oderId=order::find($latestId);
+                $oderId = order::find($latestId);
 
                 if (isset($latestId) && !empty($latestId)) {
                     $orderItem = new OrderItem();
@@ -134,21 +131,20 @@ class ProductCategoryController extends Controller
                     $orderItem->size = $request->input('size');
                     $orderItem->quantity = $request->input('quantity');
                     $orderItem->measurement = $request->input('measurement');
-                    $ordersave=$orderItem->save();
-                    if($ordersave)
-                    {
+                    $ordersave = $orderItem->save();
+                    if ($ordersave) {
 
                         $details = [
                             'email' => 'New Order',
-                            'body' => 'Dear administrator,<p> You have received a new order that requires your immediate attention. The details of the order are as follows:</p><p>Order Number : '.$oderId->order_no.'</p><p>Customer Name : '.Auth::user()->name.'</p><p>Order Date : '.$oderId->created_at.'</p>'
+                            'body' => 'Dear administrator,<p> You have received a new order that requires your immediate attention. The details of the order are as follows:</p><p>Order Number : ' . $oderId->order_no . '</p><p>Customer Name : ' . Auth::user()->name . '</p><p>Order Date : ' . $oderId->created_at . '</p>'
 
                         ];
 
                         $firstname = Auth::user()->name;
                         $lastname = Auth::user()->last_name;
 
-                        $admins = AdminUser::where('id',1)->get(); // You can modify this query to target specific admin users
-                        \Notification::send($admins, new orderPlaced($firstname,$lastname));
+                        $admins = AdminUser::where('id', 1)->get(); // You can modify this query to target specific admin users
+                        \Notification::send($admins, new orderPlaced($firstname, $lastname));
                         \Mail::to(Auth::user()->email)->send(new \App\Mail\PSIECMail($details));
 
 
@@ -161,7 +157,7 @@ class ProductCategoryController extends Controller
         } catch (\Exception $ex) {
             Log::info($ex->getMessage());
         }
-        // return response()->json(["msg"=>$name]);
+
     }
 
 
@@ -184,7 +180,7 @@ class ProductCategoryController extends Controller
     {
         try {
             if (Auth::check()) {
-                //$orders = Order::where('user_id', Auth::user()->id)->where('status', 'Dispatched')->orderBy('created_at', 'desc')->get();
+
                 $orders = Order::where('user_id', Auth::user()->id)
                     ->where(function ($query) {
                         $query->whereIn('status', ['Dispatched', 'Payment_Done', 'Rejected', 'Delivered']);
@@ -204,7 +200,7 @@ class ProductCategoryController extends Controller
     public function records(Request $request)
     {
         try {
-            //return response()->json(["msg" => "success"]);
+
             $product = $request->input('product');
             $quantity = $request->input('quantity');
             $description = $request->input('description');
@@ -228,7 +224,7 @@ class ProductCategoryController extends Controller
         try {
             $count = $request->hidden;
             $data = new Records;
-            //dd($count);
+
             for ($a = 0; $a < $count; $a++) {
 
                 $data->product = $request->input('product');
@@ -236,7 +232,7 @@ class ProductCategoryController extends Controller
                 $data->description = $request->input('notes');
             }
             $data->save();
-            //dd($data->save);
+
             return redirect('/admin/records');
         } catch (\Exception $ex) {
             Log::info($ex->getMessage());
@@ -255,7 +251,7 @@ class ProductCategoryController extends Controller
                 if (isset($adminStatus) && !empty($adminStatus) && isset($dataorderid) && !empty($dataorderid)) {
                     $id = Auth::user()->id;
                     if (isset($id)) {
-                        $status = Order::where('user_id', $id)->where('id',$dataorderid)->where('status', $adminStatus)->get();
+                        $status = Order::where('user_id', $id)->where('id', $dataorderid)->where('status', $adminStatus)->get();
                         return response()->json(["msg" => "success", "statusCode" => "200", "orderStatus" => $status]);
                     }
                 }
@@ -263,7 +259,7 @@ class ProductCategoryController extends Controller
         } catch (\Exception $ex) {
             Log::info($ex->getMessage());
         }
-        //return response()->json(["msg"=>"success"]);
+
     }
 
     public function verifyAdminStatus(Request $request)
@@ -276,8 +272,8 @@ class ProductCategoryController extends Controller
                 if (isset($adminStatus) && !empty($adminStatus) && isset($dataorderid) && !empty($dataorderid)) {
                     $id = Auth::user()->id;
                     if (isset($id)) {
-                        //$status = Order::where('user_id', $id)->where('status', $adminStatus)->value('status');
-                        $status = Order::where('user_id', $id)->where('id',$dataorderid)->where('status', $adminStatus)->get();
+
+                        $status = Order::where('user_id', $id)->where('id', $dataorderid)->where('status', $adminStatus)->get();
                         return response()->json(["msg" => "success", "statusCode" => "200", "orderStatus" => $status]);
                     }
                 }
@@ -285,7 +281,7 @@ class ProductCategoryController extends Controller
         } catch (\Exception $ex) {
             Log::info($ex->getMessage());
         }
-        //return response()->json(["msg"=>"success"]);
+
     }
 
     public function storing(Request $request)
@@ -332,17 +328,17 @@ class ProductCategoryController extends Controller
                     $order = new Order();
                     $order->status = "New";
                     $order->user_id = Auth::user()->id;
-                    //$order->save();
+
 
                     //new code to generate invoice start
                     if ($order->save()) {
                         $lastInvoice = Invoice::orderByDesc('invoice_id')->first();
                         $newInvoiceId = $lastInvoice ? $lastInvoice->invoice_id + 1 : 1;
                         $invoice = new Invoice();
-                        //$invoice->id = \Ramsey\Uuid\Uuid::uuid4(); // Generate a new UUID for the 'id' column
+
                         $invoice->delivery_terms = 'This information has been provided as a resource to familiarize PSIEC rules';
                         $invoice->invoice_date = now();
-                        //$invoice->order_id = Order::latest('id')->value('id'); // Replace $order with the actual Order model instance
+
                         $invoice->order_id = $order->id;
                         $invoice->invoice_id = $newInvoiceId;
                         $invoice->created_at = now();
@@ -354,7 +350,7 @@ class ProductCategoryController extends Controller
 
                     if ($order->save()) {
                         $latestId = Order::latest()->first()->id;
-                        $oderId=order::find($latestId);
+                        $oderId = order::find($latestId);
                         foreach ($rowsValues as $data) {
                             $orderItem = new OrderItem();
                             $orderItem->order_id = $latestId;
@@ -364,23 +360,22 @@ class ProductCategoryController extends Controller
                             $orderItem->size = $data['size'];
                             $orderItem->quantity = $data['quantity'];
                             $orderItem->measurement = $data['measurement'];
-                            $orderstoring=$orderItem->save();
+                            $orderstoring = $orderItem->save();
 
 
 
                         }
-                        if($orderstoring)
-                        {
+                        if ($orderstoring) {
                             $details = [
                                 'email' => 'New Order',
-                                'body' => 'Dear administrator,<p> You have received a new order that requires your immediate attention. The details of the order are as follows:</p><p>Order Number : '.$oderId->order_no.'</p><p>Customer Name : '.Auth::user()->name.'</p><p>Order Date : '.$oderId->created_at.'</p>'
+                                'body' => 'Dear administrator,<p> You have received a new order that requires your immediate attention. The details of the order are as follows:</p><p>Order Number : ' . $oderId->order_no . '</p><p>Customer Name : ' . Auth::user()->name . '</p><p>Order Date : ' . $oderId->created_at . '</p>'
 
                             ];
                             $firstname = Auth::user()->name;
                             $lastname = Auth::user()->last_name;
 
-                            $admins = AdminUser::where('id',1)->get(); // You can modify this query to target specific admin users
-                            \Notification::send($admins, new orderPlaced($firstname,$lastname));
+                            $admins = AdminUser::where('id', 1)->get(); // You can modify this query to target specific admin users
+                            \Notification::send($admins, new orderPlaced($firstname, $lastname));
                             \Mail::to(Auth::user()->email)->send(new \App\Mail\PSIECMail($details));
 
                         }
@@ -411,7 +406,7 @@ class ProductCategoryController extends Controller
                 $UserPayment->user_id = Auth::user()->id;
                 $UserPayment->orderno = $order_id;
                 $UserPayment->payment_status = "Success";
-                // $UserPayment->save();
+
                 if ($UserPayment->save()) {
                     return redirect()->route('congratulations');
                 }
@@ -424,11 +419,11 @@ class ProductCategoryController extends Controller
     public function supervisor(Content $content)
     {
         try {
-        $data = Entity::all();
-        $changes=  adminCommonValueChange::all();
+            $data = Entity::all();
+            $changes = adminCommonValueChange::all();
 
 
-            return $content->body(view('supervisor', compact('data','changes')));
+            return $content->body(view('supervisor', compact('data', 'changes')));
         } catch (\Exception $ex) {
             Log::info($ex->getMessage());
         }

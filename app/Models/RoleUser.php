@@ -16,7 +16,8 @@ class RoleUser extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'role_id', 'user_id',
+        'role_id',
+        'user_id',
     ];
 
     public function role()

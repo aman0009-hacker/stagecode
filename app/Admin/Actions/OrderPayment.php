@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 class OrderPayment extends RowAction
 {
     public $name = 'Payment Done';
-    public function handle(Model $model , Request $request)
+    public function handle(Model $model, Request $request)
     {
         try {
             $id = $model->id;
@@ -27,36 +27,33 @@ class OrderPayment extends RowAction
                 $data = Order::find($id);
 
                 $data->status = "Payment_Done";
-                $data->final_payment_status="verified";
-                $data->cheque_arrival_date= $cheque_arrival_date;
-                $data->cheque_final_amount= $cheque_final_amount;
+                $data->final_payment_status = "verified";
+                $data->cheque_arrival_date = $cheque_arrival_date;
+                $data->cheque_final_amount = $cheque_final_amount;
 
-                $main=$data->save();
+                $main = $data->save();
 
-                if($data->save()==true)
-                {
-                    $user_id=Order::find($model->id)->user_id;
+                if ($data->save() == true) {
+                    $user_id = Order::find($model->id)->user_id;
                     $emailData = User::join('orders', 'users.id', '=', 'orders.user_id')
-                    ->where('orders.user_id', $user_id)
-                    ->select('users.email')
-                    ->first();
-                    // $user_id=Order::find($model->id)->user_id;
-                if (isset($emailData)) {
-                    $emailDataName = $emailData->email;
-                    //het current user emailid end
-                    $details = [
-                        'email' => 'Final Booking Amount Payment Successful',
-                        // 'body' => 'Congratulations!!! Your order no '. $model->order_no . ' payment has successfully received. Orders has delivered soon.',
-                        'body' => 'We are pleased to inform you that final booking amount of your order with order number '.$model->order_no.' has been successfully processed and will be delivered to you soon.',
-                    ];
-                    \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
-                    //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
-                    //dd("Email is Sent.");
-                } else {
-                    return $this->response()->error('Oops! Kindly submit documents as required');
+                        ->where('orders.user_id', $user_id)
+                        ->select('users.email')
+                        ->first();
+
+                    if (isset($emailData)) {
+                        $emailDataName = $emailData->email;
+                        //het current user emailid end
+                        $details = [
+                            'email' => 'Final Booking Amount Payment Successful',
+                            'body' => 'We are pleased to inform you that final booking amount of your order with order number ' . $model->order_no . ' has been successfully processed and will be delivered to you soon.',
+                        ];
+                        \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
+
+                    } else {
+                        return $this->response()->error('Oops! Kindly submit documents as required');
+                    }
                 }
-                }
-                return $this->response()->success('Congratulations!!! Your order no '. $model->order_no . ' payment has successfully received. Orders has delivered soon.')->refresh();
+                return $this->response()->success('Congratulations!!! Your order no ' . $model->order_no . ' payment has successfully received. Orders has delivered soon.')->refresh();
             }
 
         } catch (\Throwable $ex) {
@@ -64,15 +61,12 @@ class OrderPayment extends RowAction
         }
     }
 
-    // public function dialog()
-    // {
-    //     $this->confirm('Are you sure for payment approval?');
-    // }
+
 
     public function form()
     {
         $this->date('cheque_arrival_date', 'Payment Completion Date');
-        $this->text('cheque_final_amount',' Final Amount');
+        $this->text('cheque_final_amount', ' Final Amount');
     }
 
 

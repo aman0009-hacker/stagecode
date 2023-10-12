@@ -19,10 +19,8 @@ class InvoiceController extends Controller
     {
         try {
             $orderId = Crypt::decrypt($request->input('orderIDInvoice'));
-            // dd($request);
-            //return $orderId;
             if (isset($orderId) && !empty($orderId)) {
-                //dd(Crypt::decrypt($orderIDInvoice));
+
                 $PaymentMode = Order::find($orderId)->payment_mode;
                 if ($PaymentMode == "online") {
                     $orderId = Crypt::decrypt($request->input('orderIDInvoice'));
@@ -48,7 +46,7 @@ class InvoiceController extends Controller
 
                     $totalAmount = $order->amount;
                     $bookingAmount = $order->payments->where('data', 'Booking_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->value('transaction_amount');
-                    $interest_amount=0;
+                    $interest_amount = 0;
                     // ii- Find tax amount
                     $cgstPercent = env('CGST', 9); // Set your CGST percentage here (e.g., 9%)
                     $sgstPercent = env('SGST', 9);
@@ -69,26 +67,23 @@ class InvoiceController extends Controller
                     $invoice->save();
 
                     /* $balance return for normal online payment case */
-                    $finalbalancepayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Booking_Final_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
-                    if($finalbalancepayment)
-                    {
-                        $balance=$balance." (Paid)";
+                    $finalbalancepayment = PaymentDataHandling::where('order_id', $orderId)->where('user_id', $userId)->where('data', 'Booking_Final_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
+                    if ($finalbalancepayment) {
+                        $balance = $balance . " (Paid)";
                     }
 
                     /* $balance return for invalid cheque online payment case */
-                    $finalInvalidChequeBalancePayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Invalid_Cheque_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
-                    if($finalInvalidChequeBalancePayment)
-                    {
-                        $interest_amount= Order::find($orderId)->interest_amount;
-                        $balance = $balance + round($interest_amount,2) ."(Paid)";
+                    $finalInvalidChequeBalancePayment = PaymentDataHandling::where('order_id', $orderId)->where('user_id', $userId)->where('data', 'Invalid_Cheque_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
+                    if ($finalInvalidChequeBalancePayment) {
+                        $interest_amount = Order::find($orderId)->interest_amount;
+                        $balance = $balance + round($interest_amount, 2) . "(Paid)";
                     }
 
 
                     /* $balance return for balance on booking online payment case */
-                    $balance_on_booking_amount= Order::find($orderId)->balance_on_booking;
-                    if($balance_on_booking_amount)
-                    {
-                        $balance = $completeAmount." (Paid)";
+                    $balance_on_booking_amount = Order::find($orderId)->balance_on_booking;
+                    if ($balance_on_booking_amount) {
+                        $balance = $completeAmount . " (Paid)";
                     }
 
                     //insert in invoice table
@@ -119,7 +114,6 @@ class InvoiceController extends Controller
                         'DeliveryNote' => env('DELIVERY_NOTE', ''),
                         'ModeTermsofPayment' => $order->payment_mode,
                         'OtherReferences' => env('OTHER_REFERENCES', ''),
-                        //'ReferenceNoDate' => $order->invoices->invoice_id . " " . $order->invoices->created_at,
                         'Buyers_Order_No' => $order->order_no,
                         'DatedOrderNo' => Carbon::parse($order->created_at)->format('d-m-Y'),
                         'DispatchDocNo' => env('DISPATCH_DOC_NO', ''),
@@ -135,8 +129,8 @@ class InvoiceController extends Controller
                                 'category_name' => $orderItem->category_name,
                                 'quantity' => $orderItem->quantity,
                                 'price' => $orderItem->measurement,
-                                'rate'=>$orderItem->price,
-                                'amount'=>$orderItem->quantity*$orderItem->price,
+                                'rate' => $orderItem->price,
+                                'amount' => $orderItem->quantity * $orderItem->price,
                             ];
                         }),
                         'id' => $order->id,
@@ -144,8 +138,8 @@ class InvoiceController extends Controller
 
                         'Per' => env('PER', ''),
                         'Balance' => $balance,
-                        'InterestAmount' => round($interest_amount,2),
-                        'BalanceOnBooking' => round($balance_on_booking_amount,2),
+                        'InterestAmount' => round($interest_amount, 2),
+                        'BalanceOnBooking' => round($balance_on_booking_amount, 2),
                         'Amount' => $totalAmount,
                         'CGST' => $centralTaxAmount,
                         'SGST' => $stateTaxAmount,
@@ -192,118 +186,10 @@ class InvoiceController extends Controller
                     ) {
                         return redirect()->route('order')->with('error', 'Order not found.');
                     }
-                    // $totalAmount = $order->check_amount;
-                    //new code to handle check amount start
 
-                    // $checkfinalamount = $order->cheque_final_amount;
-                    // if (isset($checkfinalamount) && !empty($checkfinalamount)) {
-                    //     $totalAmount = $checkfinalamount;
-                    // } else {
-                    //     $totalAmount = $order->check_amount;
-                    // }
-
-                    // if (isset($totalAmount)) {
-                    //     $chequeAmount = $this->check_amount;
-                    //     $chequePaymentDate = Carbon::parse($this->Cheque_Date);
-                    //     $interestWithinAllowedPeriod = 0;
-                    //     $allowedDays = 20;
-                    //     $interestRateWithin20Days = 13; // 13% interest
-                    //     $maxAllowedDays = 60;
-                    //     $additionalInterestRateBeyond20Days = 15; // 15% interest
-                    //     // Calculate the due date to the controller (20 days from payment date)
-                    //     $dueDate = $chequePaymentDate->copy()->addDays($allowedDays);
-                    //     // Calculate the number of days within the allowed period
-                    //     $daysWithinAllowedPeriod = min($dueDate->diffInDays(Carbon::now()), $allowedDays);
-                    //     if ($daysWithinAllowedPeriod === 0) {
-                    //         // Calculate interest amount within the allowed period (0% interest)
-                    //         $interestWithinAllowedPeriod = 0;
-                    //     } else {
-                    //         // Calculate interest amount within the allowed period
-                    //         $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod * $interestRateWithin20Days * 0.01);
-                    //     }
-                    //     // Calculate the number of days beyond the allowed period
-                    //     $daysBeyondAllowedPeriod = max($dueDate->diffInDays(Carbon::now()) - $allowedDays, 0);
-                    //     // Calculate interest amount beyond the allowed period, up to a maximum of 60 days
-                    //     $interestBeyondAllowedPeriod = ($daysBeyondAllowedPeriod <= $maxAllowedDays)
-                    //         ? ($daysBeyondAllowedPeriod * $additionalInterestRateBeyond20Days * 0.01)
-                    //         : ($maxAllowedDays * $additionalInterestRateBeyond20Days * 0.01);
-                    //     // Total interest amount
-                    //     $totalInterestAmount = $interestWithinAllowedPeriod + $interestBeyondAllowedPeriod;
-                    //     $totalAmount = $chequeAmount + $totalInterestAmount;
-                    //     // Check if the max allowed days (60 days) are over
-                    //     if ($daysBeyondAllowedPeriod > $maxAllowedDays) {
-                    //         // Return a specific message or value for the case when max allowed days are over
-                    //         return 0;
-                    //     }
-                    //     return $totalAmount;
-                    // } else {
-                    //     $totalAmount = 0;
-                    // }
-                    // if (isset($totalAmount)) {
-
-                    //     $chequeAmount = $order->check_amount;
-                    //     // dd($chequeAmount);
-                    //     $chequePaymentDate = Carbon::parse($order->Cheque_Date);
-                    //     $interestWithinAllowedPeriod = 0;
-                    //     $allowedDays = 20;
-                    //     $interestRateWithin20Days = 13; // 13% interest
-                    //     $maxAllowedDays = 60;
-                    //     $additionalInterestRateBeyond20Days = 15; // 15% interest
-
-                    //     $orderChequeArrivalDate = null;
-                    //     $chequeArrivalDateWithinAllowedPeriod = false;
-                    //     if ($order->cheque_arrival_date !== null && trim($order->cheque_arrival_date) !== '') {
-                    //         $orderChequeArrivalDate = Carbon::parse($order->cheque_arrival_date);
-                    //         $chequeArrivalDateWithinAllowedPeriod = $orderChequeArrivalDate->greaterThanOrEqualTo($chequePaymentDate) &&
-                    //         $orderChequeArrivalDate->diffInDays($chequePaymentDate) <= $maxAllowedDays;
-                    //     }
-
-                    //     // Calculate the due date to the controller (20 days from payment date)
-                    //     $dueDate = $chequePaymentDate->copy()->addDays($allowedDays);
-
-                    //     // Calculate the number of days within the allowed period
-                    //     $daysWithinAllowedPeriod = min($dueDate->diffInDays(Carbon::now()), $allowedDays);
-
-                    //     if ($daysWithinAllowedPeriod === 0) {
-                    //         // Calculate interest amount within the allowed period (0% interest)
-                    //         $interestWithinAllowedPeriod = 0;
-                    //     } else {
-                    //         // Calculate interest amount within the allowed period
-                    //         $interestWithinAllowedPeriod = ($daysWithinAllowedPeriod * $interestRateWithin20Days * 0.01);
-                    //     }
-
-                    //     // Calculate the number of days beyond the allowed period
-                    //     $daysBeyondAllowedPeriod = $chequeArrivalDateWithinAllowedPeriod
-                    //     ? max($orderChequeArrivalDate->diffInDays(Carbon::now()) - $allowedDays, 0)
-                    //     : 0;
-
-                    //     // Calculate interest amount beyond the allowed period, up to a maximum of 60 days
-                    //     $interestBeyondAllowedPeriod = ($daysBeyondAllowedPeriod <= $maxAllowedDays)
-                    //     ? ($daysBeyondAllowedPeriod * $additionalInterestRateBeyond20Days * 0.01)
-                    //     : ($maxAllowedDays * $additionalInterestRateBeyond20Days * 0.01);
-
-                    //     // Total interest amount
-                    //     $totalInterestAmount = $interestWithinAllowedPeriod + $interestBeyondAllowedPeriod;
-                    //     $totalAmount = $chequeAmount + $totalInterestAmount;
-
-                    //     // Check if the max allowed days (60 days) are over
-                    //     if ($daysBeyondAllowedPeriod > $maxAllowedDays) {
-                    //         // Return a specific message or value for the case when max allowed days are over
-                    //         return 0;
-                    //     }
-                    //     //return $totalAmount;
-                    // } else {
-                    //     $totalAmount = 0;
-                    // }
-
-                    //new code to handle check amount end
-                    // $totalAmount = $order->payments
-                    //     ->where('data', 'Booking_Final_Amount')
-                    //     ->where('payment_status', 'SUCCESS')
-                    //     ->value('transaction_amount') ?: ($order->payment_mode === 'cheque' ? $order->check_amount : 0);
                     $totalAmount = $order->amount;
                     $bookingAmount = $order->payments->where('data', 'Booking_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->value('transaction_amount');
-                    // dd($bookingAmount);
+
                     // ii- Find tax amount
                     $cgstPercent = env('CGST', 9); // Set your CGST percentage here (e.g., 9%)
                     $sgstPercent = env('SGST', 9);
@@ -324,17 +210,15 @@ class InvoiceController extends Controller
                     $invoice->initial_amount = $bookingAmount;
                     $invoice->balance = $balance;
                     $invoice->save();
-                    
-                    $finalbalancepayment=PaymentDataHandling::where('order_id',$orderId)->where('user_id',$userId)->where('data','Booking_Final_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
-                    if($finalbalancepayment)
-                    {
-                        $balance=$balance." (Paid)";
+
+                    $finalbalancepayment = PaymentDataHandling::where('order_id', $orderId)->where('user_id', $userId)->where('data', 'Booking_Final_Amount')->whereIn('payment_status', ['SUCCESS', 'RIP', 'SIP'])->first();
+                    if ($finalbalancepayment) {
+                        $balance = $balance . " (Paid)";
                     }
 
-                    $balance_on_booking_amount= Order::find($orderId)->balance_on_booking;
-                    if($balance_on_booking_amount)
-                    {
-                        $balance = $completeAmount." (Paid)";
+                    $balance_on_booking_amount = Order::find($orderId)->balance_on_booking;
+                    if ($balance_on_booking_amount) {
+                        $balance = $completeAmount . " (Paid)";
                     }
                     //insert in invoice table
                     $pdf = PDF::loadView('components.invoice', [
@@ -364,7 +248,6 @@ class InvoiceController extends Controller
                         'DeliveryNote' => env('DELIVERY_NOTE', ''),
                         'ModeTermsofPayment' => $order->payment_mode,
                         'OtherReferences' => env('OTHER_REFERENCES', ''),
-                        //'ReferenceNoDate' => $order->invoices->invoice_id . " " . $order->invoices->created_at,
                         'Buyers_Order_No' => $order->order_no,
                         'DatedOrderNo' => Carbon::parse($order->created_at)->format('d-m-Y'),
                         'DispatchDocNo' => env('DISPATCH_DOC_NO', ''),
@@ -380,8 +263,8 @@ class InvoiceController extends Controller
                                 'category_name' => $orderItem->category_name,
                                 'quantity' => $orderItem->quantity,
                                 'price' => $orderItem->measurement,
-                                'rate'=>$orderItem->price,
-                                'amount'=>$orderItem->quantity*$orderItem->price,
+                                'rate' => $orderItem->price,
+                                'amount' => $orderItem->quantity * $orderItem->price,
                             ];
                         }),
                         'id' => $order->id,
@@ -401,7 +284,7 @@ class InvoiceController extends Controller
                         'updated_at' => Carbon::parse($order->invoices->pluck('updated_at')[0])->format('d-m-Y'),
                         'invoice_id' => $order->invoices->pluck('invoice_id')[0],
                         'complete_amount' => $completeAmount,
-                        'BalanceOnBooking' => round($balance_on_booking_amount,2),
+                        'BalanceOnBooking' => round($balance_on_booking_amount, 2),
                         'CGSTTAX' => $cgstPercent,
                         'SGSTTAX' => $sgstPercent,
                         'order_items' => $order->orderItems->map(function ($orderItem) {

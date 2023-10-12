@@ -18,23 +18,10 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, string ...$guards): Response
     {
- 
-
-        // if(auth()->check() && auth()->user()->is_verified) {
-        //     //return redirect()->route('home');
-        //     dd(auth()->user());
-        // }
-        // else 
-        // {
-        //     dd(Auth::user());
-        // }
-
-
-
 
 
         $guards = empty($guards) ? [null] : $guards;
-       
+
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 return redirect(RouteServiceProvider::HOME);

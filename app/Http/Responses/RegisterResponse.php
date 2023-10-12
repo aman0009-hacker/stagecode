@@ -4,7 +4,6 @@ namespace App\Http\Responses;
 
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Laravel\Fortify\Http\Responses\RegisterResponse as FortifyRegisterResponse;
-use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,14 +23,12 @@ class RegisterResponse extends FortifyRegisterResponse
         $currentConatct="";
         if(isset($currentEmail) && $currentEmail!="")
         {
-        // $data=DB::table('users')->where('email',$currentEmail)->first();
-        $data = User::find(Auth::user()->id); 
+
+        $data = User::find(Auth::user()->id);
         $currentId=$data->id;$currentConatct=$data->contact_number;
-       
+
         }
-        // dd($currentId);
-        //$this->guard->logout();
-        //return parent::toResponse($request);
+
         if(isset($currentId) && !empty($currentId))
         {
         return redirect()->route('signUpSubmit')->with( ['data' => "success" , 'currentId'=> $currentId, 'contact_number'=>$currentConatct] );

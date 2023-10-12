@@ -16,12 +16,12 @@
         <img src="{{asset('images/home-page/homepage.webp')}}" class="d-block carousel-img img-fluid w-100"
           alt="no-image" />
         <div class="carousel-caption  d-md-block">
-          
+
           <a href="" class="btn btn-secondary welcome-btn mb-4">
             welcome to</a>
 
-         
-         
+
+
           <h2>
             Punjab Small Industries <span>& Export Corporation</span>
           </h2>
@@ -85,7 +85,7 @@ else if(Auth::user()->state==2)
 {
   header("Location: " . URL::to('/userDocument'), true, 302);
   exit();
- 
+
 }
 else if(Auth::user()->state==3  )
 {
@@ -93,8 +93,8 @@ else if(Auth::user()->state==3  )
   session(['state' => '3']);
   exit();
 }
-else 
-{ 
+else
+{
 ?>
 <script>
   $("#myid").show();
@@ -106,7 +106,7 @@ else
 }
 }
 ?>
-<!--  About Section --> 
+<!--  About Section -->
 <section class="about-us" id="about">
   <div class="container box-shadow">
     <div class="row h-100 align-items-center">
@@ -264,13 +264,21 @@ else
           <div class="pagination">
             <nav aria-label="Page navigation example">
               <ul class="pagination">
+
                 <li class="page-item">
+                  <div class="carousel-buttons">
+                    @foreach ($productsdata as $key => $item)
+                        <button class="carousel-button btn btn-primary" data-target="item{{ $key + 1 }}">{{ $key + 1 }}</button>
+                    @endforeach
+                  </div>
+                </li>
+                {{-- <li class="page-item">
                   <a class="page-link" href="#" aria-label="Previous">
                     <span aria-hidden="true"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
                   </a>
                 </li>
                 <li class="page-item">
-                  <a class="page-link" href="#">1</a>
+                 <button type="button" class="page-link">1</button>
                 </li>
                 <li class="page-item">
                   <a class="page-link" href="#">2</a>
@@ -282,7 +290,9 @@ else
                   <a class="page-link" href="#" aria-label="Next">
                     <span aria-hidden="true"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
                   </a>
-                </li>
+                </li> --}}
+
+
               </ul>
             </nav>
           </div>
@@ -300,13 +310,13 @@ else
                 <th style="width: 10%">SELECT</th>
                 <th style="width: 20%">CATERORY NAME</th>
                 <th style="width: 30%">DESCRIPTION</th>
-                <th style="width: 10%">Diameter</th>
-                <th style="width: 10%">Details</th>
+                {{-- <th style="width: 10%">Diameter</th>
+                <th style="width: 10%">Details</th> --}}
                 <th style="width: 20%">Book</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
+              {{-- <tr>
                 <td>
                   <input class="form-check-input" type="checkbox" />
                 </td>
@@ -365,6 +375,32 @@ else
                 <td>
                   <a href="" class="btn btn-secondary book-now">Book Now</a>
                 </td>
+              </tr> --}}
+@foreach ($productsdata as $singleproductdata)
+<tr>
+  <td>  <input class="form-check-input" type="checkbox" /></td>
+<td>{{$singleproductdata->name}}</td>
+<td>{{$singleproductdata->description}}</td>
+<td>
+  <a href="" class="btn btn-secondary book-now">Book Now</a>
+</td>
+</tr>
+@endforeach
+
+
+<div id="carousel">
+  @foreach ($productsdata as $key => $item)
+      <div class="item" id="item{{ $key + 1 }}" style="{{ $key === 0 ? '' : 'display:none;' }}">
+          <!-- Your item content goes here -->
+          <h3>{{ $item->title }}</h3>
+          <p>{{ $item->description }}</p>
+      </div>
+  @endforeach
+</div>
+
+
+              <tr>
+
               </tr>
             </tbody>
           </table>
@@ -407,3 +443,25 @@ else
   </div>
 </section>
 @endsection
+
+{{-- <script>
+  $.ajax({
+    url:'/data'
+
+  })
+</script> --}}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+      $('.carousel-button').on('click', function () {
+          let targetItem = $(this).data('target');
+
+          // Hide all items
+          $('.item').hide();
+
+          // Show the selected item
+          $('#' + targetItem).show();
+      });
+  });
+</script>

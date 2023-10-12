@@ -105,14 +105,12 @@ class PaymentController extends Controller
                 }
                 //code to send info to DB
                 $verification_key = $data['ID'] . '|' . $data['Response_Code'] . '|' . $data['Unique_Ref_Number'] . '|' .
-                $data['Service_Tax_Amount'] . '|' . $data['Processing_Fee_Amount'] . '|' . $data['Total_Amount'] . '|' .
-                $data['Transaction_Amount'] . '|' . $data['Transaction_Date'] . '|' . $data['Interchange_Value'] . '|' .
-                $data['TDR'] . '|' . $data['Payment_Mode'] . '|' . $data['SubMerchantId'] . '|' . $data['ReferenceNo'] . '|' .
-                $data['TPS'] . '|' . $this->encryption_key;
+                    $data['Service_Tax_Amount'] . '|' . $data['Processing_Fee_Amount'] . '|' . $data['Total_Amount'] . '|' .
+                    $data['Transaction_Amount'] . '|' . $data['Transaction_Date'] . '|' . $data['Interchange_Value'] . '|' .
+                    $data['TDR'] . '|' . $data['Payment_Mode'] . '|' . $data['SubMerchantId'] . '|' . $data['ReferenceNo'] . '|' .
+                    $data['TPS'] . '|' . $this->encryption_key;
                 $encrypted_message = hash('sha512', $verification_key);
                 if ($encrypted_message == $data['RS']) {
-                    //return Auth::user()->id;
-                    //return "success";
                     // new code to verify
                     $request = new Request([
                         'merchantId' => $request['ID'],
@@ -157,16 +155,13 @@ class PaymentController extends Controller
                             $order->save();
                             return redirect()->route('order', ['encryptedResponse' => $encryptedResponse]);
                         }
-                        //return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
-                        //return redirect()->back()->with('encryptedResponse', $encryptedResponse);
-                        // return redirect()->route('payment.process', ['paymentResponse' => 'SUCCESS', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
+
                     } else {
                         $encryptedResponse = Crypt::encrypt([
                             'paymentResponse' => 'FAILURE',
                             'reference_no' => $data['ReferenceNo'],
                             'transaction_id' => $data['Unique_Ref_Number'],
                         ]);
-                        //return redirect()->back()->with('encryptedResponse', $encryptedResponse);
                         $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
                             ->where('data', 'Registration_Amount')
                             ->first();
@@ -179,19 +174,13 @@ class PaymentController extends Controller
                         if ($paymentData) {
                             return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
                         } else if ($paymentDataOrder) {
-                            // $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
-                            // $order = Order::find($id);
-                            // $order->payment_status = "verified";
-                            // $order->save();
+
                             return redirect()->route('orderProcess', ['encryptedResponse' => $encryptedResponse]);
                         } else if ($paymentDataOrderFinal) {
-                            // $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
-                            // $order = Order::find($id);
-                            // $order->final_payment_status = "verified";
-                            // $order->save();
+
                             return redirect()->route('payment.complete.process', ['encryptedResponse' => $encryptedResponse]);
                         }
-                        // return redirect()->route('payment.process', ['paymentResponse' => 'FAILURE', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
+
                     }
                 } else {
                     //return "failure";
@@ -229,12 +218,8 @@ class PaymentController extends Controller
                 $paymentHandling->transaction_id = $request['Unique_Ref_Number'] ?? '';
                 $paymentHandling->transaction_amount = $request['Transaction_Amount'] ?? '';
                 $paymentHandling->transaction_date = Carbon::createFromFormat('d-m-Y H:i:s', $request['Transaction_Date'])->format('Y-m-d H:i:s');
-                // $paymentHandling->transaction_date = $request['Transaction_Date'] ?? '';
                 $paymentHandling->amount = $request['Total_Amount'] ?? '';
-                //$paymentHandling->user_id = Auth::user()->id ?? '';
-                //$paymentHandling->payment_status = $this->response_code($request['Response_Code']) ?? '';
                 $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
-                //$paymentHandling->data = 'Registration_Amount' ?? '';
                 $dbResponse = $paymentHandling->save();
                 if ($dbResponse) {
                     $request = new Request([
@@ -279,21 +264,13 @@ class PaymentController extends Controller
                             $order->save();
                             return redirect()->route('order', ['encryptedResponse' => $encryptedResponse]);
                         }
-                        // $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
-                        //     ->where('data', 'Registration_Amount')
-                        //     ->get();
-                        // if ($paymentData->count() > 0) {
-                        //     return redirect()->route('congratulations', ['encryptedResponse' => $encryptedResponse]);
-                        // }
-                        //return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
-                        // return redirect()->route('payment.process', ['paymentResponse' => 'SUCCESS', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
                     } else {
                         $encryptedResponse = Crypt::encrypt([
                             'paymentResponse' => 'FAILURE',
                             'reference_no' => $data['ReferenceNo'],
                             'transaction_id' => $data['Unique_Ref_Number'],
                         ]);
-                        //return redirect()->back()->with('encryptedResponse', $encryptedResponse);
+
                         $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
                             ->where('data', 'Registration_Amount')
                             ->first();
@@ -306,25 +283,13 @@ class PaymentController extends Controller
                         if ($paymentData) {
                             return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
                         } else if ($paymentDataOrder) {
-                            // $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
-                            // $order = Order::find($id);
-                            // $order->payment_status = "verified";
-                            // $order->save();
+
                             return redirect()->route('orderProcess', ['encryptedResponse' => $encryptedResponse]);
                         } else if ($paymentDataOrderFinal) {
-                            // $id = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])->value('order_id');
-                            // $order = Order::find($id);
-                            // $order->final_payment_status = "verified";
-                            // $order->save();
+
                             return redirect()->route('payment.complete.process', ['encryptedResponse' => $encryptedResponse]);
                         }
-                        // $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
-                        //     ->where('data', 'Registration_Amount')
-                        //     ->get();
-                        // if ($paymentData->count() > 0) {
-                        //     return redirect()->route('payment.process', ['encryptedResponse' => $encryptedResponse]);
-                        // }
-                        // return redirect()->route('payment.process', ['paymentResponse' => 'FAILURE', 'reference_no' => $data['ReferenceNo'], 'transaction_id' => $data['Unique_Ref_Number']]);
+
                     }
                 }
             }
@@ -540,8 +505,7 @@ class PaymentController extends Controller
                 } else {
                     $amount = $request->input('amountValue');
                 }
-                //$reference_no = rand(1111, 9999);
-                //$amount = 10000;
+
                 $reference_no = time() . Str::random(5);
                 $paymentDataHandling = new PaymentDataHandling();
                 $paymentDataHandling->reference_no = $reference_no;
@@ -552,9 +516,7 @@ class PaymentController extends Controller
                 $optionalField = null;
                 $base = new EazyPayController();
                 $url = $base->getPaymentUrl($amount, $reference_no, $optionalField);
-                //return $url;
-                // $decryptedUrl = openssl_decrypt($url, 'aes-128-ecb', "6000012704705020", OPENSSL_RAW_DATA);
-                // return $decryptedUrl;
+
                 return redirect()->to($url);
             }
         } catch (\Throwable $ex) {
@@ -576,8 +538,7 @@ class PaymentController extends Controller
             } else {
                 $amount = $request->input('amountOrder');
             }
-            // $amount = $request->input('amountOrder');
-            //$reference_no = rand(1111, 9999);
+
             $reference_no = time() . Str::random(5);
             $paymentDataHandling = new PaymentDataHandling();
             $paymentDataHandling->reference_no = $reference_no;
@@ -603,6 +564,8 @@ class PaymentController extends Controller
     public function paymentComplete(Request $request)
     {
         $address = Address::where('user_id', Auth::user()->id)->latest()->first();
+       
+
         $states = State::all();
         $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
         Session::forget('txtOrderGlobalModalCompleteID');
@@ -624,7 +587,7 @@ class PaymentController extends Controller
         /*-------logic for giving final payment amount in the input----starts---*/
         if ($amount && $bookingAmount) {
             $cgstPercent = env('CGST', 9); // Set your CGST percentage here (e.g., 9%)
-            $sgstPercent = env('SGST', 9);// Set your SGST percentage here (e.g., 9%)
+            $sgstPercent = env('SGST', 9); // Set your SGST percentage here (e.g., 9%)
 
 
             $totalTaxAmount = ($amount * ($cgstPercent + $sgstPercent) / 100) ?? 0;
@@ -669,7 +632,7 @@ class PaymentController extends Controller
             if ($validator1->fails()) {
                 // Validation failed, handle the error
                 return response()->json(['success' => false, 'message' => "error", 'data' => 'data'], 400);
-                // return redirect()->back()->withErrors($validator)->withInput();
+
             }
             if ((!$request->has('is_same'))) {
                 $validator2 = Validator::make(
@@ -685,11 +648,11 @@ class PaymentController extends Controller
                         'billing_gst_statecode' => 'required|min:2|max:2',
                     ]
                 );
-                // return response()->json(['success'=>true,'message'=>"king",'data'=>'data'],200);
+
                 if ($validator2->fails()) {
                     // Validation failed, handle the error
                     return response()->json(['success' => false, 'message' => "error", 'data' => 'data'], 400);
-                    // return redirect()->back()->withErrors($validator)->withInput();
+
                 }
             }
             $orderId = $request->input('txtOrderGlobalModalCompleteIDValue') ?? '';
@@ -697,7 +660,7 @@ class PaymentController extends Controller
             Session::forget('txtOrderGlobalModalCompleteIDAlternative');
             Session::put('txtOrderGlobalModalCompleteIDAlternative', $orderId ?? '');
             //save order id
-            // $orderId = 25;
+
             $shippingState = State::where('id', $request->shipping_state)->first();
             if (isset($orderId) && !empty($orderId)) {
                 $address = new Address();
@@ -740,15 +703,15 @@ class PaymentController extends Controller
                 $addressId = Address::where('user_id', Auth::user()->id)->get()->last();
                 if (isset($orderId) && !empty($orderId)) {
                     $addressToOrder = Order::where('user_id', Auth::user()->id)->where('id', $orderId)->update(['address_id' => $addressId->id]);
-                    //Alert::success('Address Save Successfully');
+
                     return redirect()->back();
                 } else {
                     return response()->json(['success' => false, 'message' => "no_order", 'data' => 'data'], 400);
                 }
             }
         } catch (\Throwable $ex) {
-            // Log::info($ex->getMessage());
-            dd($ex->getMessage());
+            Log::info($ex->getMessage());
+
         }
     }
 
@@ -806,7 +769,7 @@ class PaymentController extends Controller
                     $threeYearsAgo = Carbon::now()->subYears(3);
                     if ($customerStartDate <= $threeYearsAgo) {
                         $txtOrderGlobalModalCompleteID = Session::get('txtOrderGlobalModalCompleteIDAlternative');
-                        // dd( $txtOrderGlobalModalCompleteID);
+
                         if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
                             $value = Order::find($txtOrderGlobalModalCompleteID);
                             $value->payment_mode = "cheque";
@@ -829,18 +792,18 @@ class PaymentController extends Controller
                                 ->limit(1);
                         },
                     ])->find($userID);
-                    //return $user;
+
                     if ($user) {
                         if ($user->paymentDataHandling->isNotEmpty()) {
                             $updatedAt = $user->paymentDataHandling->first()->updated_at;
-                            //return $updatedAt;
+
                             $customerStartDate = Carbon::parse($updatedAt);
                             $threeYearsAgo = Carbon::now()->subYears(3);
-                            //return $customerStartDate . "  " . $threeYearsAgo;
+
                             if ($customerStartDate <= $threeYearsAgo) {
 
                                 $txtOrderGlobalModalCompleteID = Session::get('txtOrderGlobalModalCompleteID');
-                                // dd( $txtOrderGlobalModalCompleteID);
+
                                 if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
                                     $value = Order::find($txtOrderGlobalModalCompleteID);
                                     $value->payment_mode = "cheque";
@@ -925,7 +888,7 @@ class PaymentController extends Controller
                 if (!$orderdata) {
                     $orderdata = null;
                 }
-                    return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address', 'gstfile', 'orderdata', 'amountToPay'));
+                return view('components.order-complete-process', compact('txtOrderGlobalModalCompleteID', 'states', 'address', 'gstfile', 'orderdata', 'amountToPay'));
             } else {
 
                 return view('auth.login');
@@ -938,17 +901,13 @@ class PaymentController extends Controller
 
     public function paymentInvalidChequeCompletion(Request $request, $id)
     {
-        // $order_id = Crypt::decryptString($id);
+
         try {
 
             if (Auth::check()) {
                 $order_id = Crypt::decryptString($id);
-                // dd($order_id);
-                // $address = Address::where('user_id', Auth::user()->id)->latest()->first() ?? '';
-                // $states = State::all();
                 $txtOrderGlobalModalCompleteID = $order_id;
                 $amount = Order::where('id', $txtOrderGlobalModalCompleteID)->pluck('total_cheque_amount_with_tax');
-                // dd($amount);
                 Session::forget('txtOrderGlobalModalCompleteID');
                 if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
 
@@ -959,9 +918,9 @@ class PaymentController extends Controller
 
                 }
 
-                // if (isset($txtOrderGlobalModalCompleteID) && !empty($txtOrderGlobalModalCompleteID)) {
+
                 return view('components.order-process-invalid-cheque', compact('txtOrderGlobalModalCompleteID', 'amount'));
-                // }
+
             } else {
 
                 return view('auth.login');
@@ -974,17 +933,17 @@ class PaymentController extends Controller
 
     public function paymentProcessInvalidChequeCompletion(Request $request)
     {
-        // dd($request->all());
+
         try {
             Session::forget('GLOBALUSERID');
             Session::put('GLOBALUSERID', Auth::user()->id ?? '');
             $amount = "";
 
             $orderId = $request->maindatas;
-            // $validAmount = Order::find($orderId)->value('total_cheque_amount_with_tax');
+
             $validAmount = Order::find($orderId);
             $chequeAmount = $validAmount->total_cheque_amount_with_tax;
-            // dd($chequeAmount);
+
             if ($validAmount) {
                 // Update the payment_mode field
                 $validAmount->payment_mode = 'online';

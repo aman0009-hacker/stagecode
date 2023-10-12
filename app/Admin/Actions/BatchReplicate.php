@@ -5,15 +5,11 @@ namespace App\Admin\Actions;
 use Encore\Admin\Actions\BatchAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Encore\Admin\Actions\RowAction;
 use App\Models\Attachment;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use ZipArchive;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -76,6 +72,6 @@ class BatchReplicate extends BatchAction
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
         }
-        
+
     }
 }

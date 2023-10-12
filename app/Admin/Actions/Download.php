@@ -5,11 +5,8 @@ namespace App\Admin\Actions;
 use Encore\Admin\Actions\RowAction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 use ZipArchive;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +18,6 @@ class Download extends RowAction
     {
         try {
             $data = DB::table('attachments')->whereNotNull('fileno')->where('user_id', $model->user_id)->select('filename')->get();
-            //return $this->response()->success('Success!');
             $filePaths = [];
             foreach ($data as $filename) {
                 array_push($filePaths, $filename);

@@ -22,11 +22,10 @@ class Address extends Model
         return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 
-    protected static function boot(){
+    protected static function boot()
+    {
         parent::boot();
-        // static::creating(function ($model) {
-        //     $model->{$model->getKeyName()} = Uuid::generate()->string;
-        // });
+
 
         parent::boot();
 
@@ -46,6 +45,6 @@ class Address extends Model
             // Generate and set the UUID for the primary key
             $address->{$address->getKeyName()} = Uuid::generate()->string;
         });
-   
+
     }
 }

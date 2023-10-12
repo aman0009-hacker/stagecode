@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 class PSIECMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $details;    
+    public $details;
 
     /**
      * Create a new message instance.

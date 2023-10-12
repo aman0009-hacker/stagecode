@@ -22,33 +22,28 @@ class OrderRejected extends RowAction
                 $data->status = "Rejected";
                 $data->save();
 
-                if($data->save()==true)
-                {
-                    $user_id=Order::find($model->id)->user_id;
+                if ($data->save() == true) {
+                    $user_id = Order::find($model->id)->user_id;
                     $emailData = User::join('orders', 'users.id', '=', 'orders.user_id')
-                    ->where('orders.user_id', $user_id)
-                    ->select('users.email')
-                    ->first();
-                    // $user_id=Order::find($model->id)->user_id;
-                if (isset($emailData)) {
-                    $emailDataName = $emailData->email;
-                    //het current user emailid end
-                    $details = [
-                        'email' => 'Order Rejection ',
-                        // 'body' => 'Oops!!! Your order no '. $model->order_no . ' has rejected due to following cause '. $request->get('reason') ?? ''.'.'
-                        'body' => 'We regret to inform you that your order with order number '.$model->order_no .' has been rejected due to '. $request->get('reason') ?? ''.'.'
-                        //'encryptedID' => $encryptedID,
+                        ->where('orders.user_id', $user_id)
+                        ->select('users.email')
+                        ->first();
 
+                    if (isset($emailData)) {
+                        $emailDataName = $emailData->email;
+                        //het current user emailid end
+                        $details = [
+                            'email' => 'Order Rejection ',
+                            'body' => 'We regret to inform you that your order with order number ' . $model->order_no . ' has been rejected due to ' . $request->get('reason') ?? '' . '.'
 
-                    ];
-                    \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
-                    //\mail::to('csanwalit@gmail.com')->send(new \App\Mail\PSIECMail($details));
-                    //dd("Email is Sent.");
-                } else {
-                    return $this->response()->error('Oops! Kindly submit documents as required');
+                        ];
+                        \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
+
+                    } else {
+                        return $this->response()->error('Oops! Kindly submit documents as required');
+                    }
                 }
-                }
-                return $this->response()->success('Oops!!! Your order no '. $model->order_no . ' has rejected due to following cause '. $request->get('reason') ?? ''.'.')->refresh();
+                return $this->response()->success('Oops!!! Your order no ' . $model->order_no . ' has rejected due to following cause ' . $request->get('reason') ?? '' . '.')->refresh();
             }
         } catch (\Throwable $ex) {
             Log::info($ex->getMessage());
@@ -59,5 +54,5 @@ class OrderRejected extends RowAction
     {
         $this->textarea('reason', 'Reason')->rules('required');
     }
- 
+
 }

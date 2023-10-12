@@ -122,7 +122,7 @@ var dropzone = new Dropzone('#image-upload', {
     file.previewElement.remove();
 
     swal.fire({
-      title: "Your image is uploaded",
+      title: "Your file is successfully uploaded",
       icon: "success",
       timer: 3000,
     });

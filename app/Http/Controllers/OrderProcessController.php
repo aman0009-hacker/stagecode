@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\Order;
 use Illuminate\Support\Facades\Validator;
@@ -21,7 +20,6 @@ class OrderProcessController extends Controller
         Session::put('txtOrderGlobalModalID', $txtOrderGlobalModalID ?? '');
         if (isset($txtOrderGlobalModalID) && !empty($txtOrderGlobalModalID)) {
             return view('components.order-process', compact('txtOrderGlobalModalID'));
-            //dd($txtOrderGlobalModalID=$request->input('txtOrderGlobalModalID'));
         }
     }
 
@@ -29,8 +27,10 @@ class OrderProcessController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'files' => 'required|array', // Ensure that 'files' is an array and not empty
-                'files.*' => 'file|mimes:jpeg,png,pdf|max:5120', // Validate each file in the 'files' array
+                'files' => 'required|array',
+                // Ensure that 'files' is an array and not empty
+                'files.*' => 'file|mimes:jpeg,png,pdf|max:5120',
+                // Validate each file in the 'files' array
             ]);
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
@@ -42,7 +42,7 @@ class OrderProcessController extends Controller
                 $order = Order::findOrFail($modalIdInput);
                 $num = 0;
                 foreach ($allfiles as $image) {
-                    //$files = time() . "." . $image->getClientOriginalExtension();   
+
                     $files = time() . rand(11, 99) . '.' . $image->getClientOriginalName();
                     $image->move(public_path('uploads'), $files);
                     if ($num == 0) {

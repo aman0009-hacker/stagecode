@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 use App\Models\Attachment;
 use Carbon\Carbon;
 use App\Models\User;
@@ -22,9 +20,9 @@ class DocumentProcessController extends Controller
       $adharCardNumber = $request->input('adharCardNumber');
       $panCardNumber = $request->input('panCardNumber');
       $utilityCardNumber = $request->input('utilityCardNumber');
-      $extradoc1="";
-      $extradoc2="";
-      $extradoc3="";
+      $extradoc1 = "";
+      $extradoc2 = "";
+      $extradoc3 = "";
       $request->validate([
         'adharCardNumber' => "required",
         'panCardNumber' => "required"
@@ -98,7 +96,6 @@ class DocumentProcessController extends Controller
         $collectionCount = 0;
         foreach ($data as $entry) {
           $query = new Attachment;
-          // $query->fileno = $entry['fileno'] ?? null;
           $query->fileno = ($entry['fileno'] === '' || $entry['fileno'] === null) ? null : $entry['fileno'];
           $query->user_id = $entry['user_id'];
           $query->created_at = $entry['created_at'];
@@ -108,7 +105,6 @@ class DocumentProcessController extends Controller
           $collectionCount++;
         }
         if (isset($collectionCount) && $collectionCount > 0) {
-          // $stateUpdate = DB::table('users')->where('id', $currentId)->update(['state' => 3]);
           $user = User::where('id', $currentId)->first();
           $user->state = 3;
           $stateUpdate = $user->save();

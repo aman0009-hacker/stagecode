@@ -8,7 +8,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Entity;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
+
 
 class AddProducts extends Form
 {
@@ -35,13 +35,12 @@ class AddProducts extends Form
                 'category' => 'required',
                 'entity' => 'required',
                 'size' => 'required',
-                //'quantity' => 'required',
             ]);
             $productName = $validatedData['product'];
             $categoryName = $validatedData['category'];
             $entityName = $validatedData['entity'];
             $size = $validatedData['size'];
-            //$quantity = $validatedData['quantity'];
+
             // Begin the database transaction
             DB::beginTransaction();
             try {
@@ -58,7 +57,7 @@ class AddProducts extends Form
                 $entity = new Entity();
                 $entity->name = $entityName;
                 $entity->size = $size;
-                //$entity->quantity = $quantity;
+
                 $entity->entity_id = $category->id; // Assign the category ID
                 $entity->save();
                 // Commit the transaction
@@ -85,14 +84,11 @@ class AddProducts extends Form
     public function form()
     {
         $this->method('POST');
-        // $this->hidden('_token')->default(csrf_token());
-        // $this->csrf_field();
-        //$this->hidden('_token')->default(csrf_token());
         $this->text('product')->rules('required');
         $this->text('category')->rules('required');
         $this->text('entity')->rules('required');
         $this->text('size')->rules('required');
-        //$this->number('quantity')->rules('required|integer');
+
 
     }
 

@@ -14,7 +14,7 @@ use Spatie\Permisssion\Traits\HasRoles;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 
-// use Illuminate\Database\Eloquent\Concerns\HasUuids;
+
 
 class Order extends Model
 {
@@ -50,7 +50,7 @@ class Order extends Model
     {
         return "you have {$eventName} orders";
     }
-    //new code for logActivity start 
+    //new code for logActivity start
 
 
     public function orderItems()

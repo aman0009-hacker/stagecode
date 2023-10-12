@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\homePageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OTPHandleController;
 use App\Http\Controllers\DocumentProcessController;
@@ -30,9 +31,10 @@ use App\Http\Controllers\HomeController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/',[homePageController::class,'home'])->name('home');
+// Route::get('/', function () {
+//     return view('home');
+// })->name('home');
 Route::get('/home', function () {
     return view('home');
 })->name('/home');
@@ -187,7 +189,7 @@ Route::post('checkurlIndex', [App\Admin\Controllers\CustomPageController::class,
         Route::get('dashboard', [profileController::class, 'userdashboard'])->name('userdashboard');
         Route::get('order', [profileController::class, 'userorder'])->name('userorder');
         Route::get('address', [profileController::class, 'useraddress'])->name('useraddress');
-        
+
     });
 // });
 
@@ -211,7 +213,7 @@ Route::get("/chatcount", [App\Admin\Controllers\CustomPageController::class, 'ch
 Route::get('checkusersms/{sms}/{userid}',[OTPHandleController::class,'sms']);
 Route::get('checkuseremail/{email}/{userid}',[OTPHandleController::class,'email']);
 Route::get('resendsmsotp/{idofuser}',[OTPHandleController::class,'resendsms']);
-Route::get('resendemailotp/{idofuser}',[OTPHandleController::class,'resendemail']); 
+Route::get('resendemailotp/{idofuser}',[OTPHandleController::class,'resendemail']);
 
 Route::any("/process/invalid/cheque/{id}",[PaymentController::class, 'paymentInvalidChequeCompletion'])->name('process.invalid.cheque');
 
