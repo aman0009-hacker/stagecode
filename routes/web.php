@@ -32,12 +32,13 @@ use App\Http\Controllers\HomeController;
 |
 */
 Route::get('/',[homePageController::class,'home'])->name('home');
+Route::get('/home',[homePageController::class,'home'])->name('home');
 // Route::get('/', function () {
 //     return view('home');
 // })->name('home');
-Route::get('/home', function () {
-    return view('home');
-})->name('/home');
+// Route::get('/home', function () {
+//     return view('home');
+// })->name('/home');
 // Route::get('/', [FirstPageController::class,'home'])->name('home');
 // Route::get('/home', [FirstPageController::class,'home'])->name('/home');
 // Route::get('header',[HomeController::class,'home']);
@@ -232,3 +233,5 @@ Route::get('admin/checktheotp/{theotp}/{adminIds}',[LoginController::class,'veri
 
 
 Route::get('/get-products/{page}', [homePageController::class,'pagination']);
+
+Route::get('/authenticated',[homePageController::class,'loginornot']);

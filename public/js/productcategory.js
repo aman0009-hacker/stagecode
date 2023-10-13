@@ -444,7 +444,7 @@ function updateModalContent(rowData, callingFunction = 1) {
     modal.find('.modal-body h3').text(rowData.name);
     modal.find('.modal-body p').text(rowData.description);
 
-    modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" value="' + (entity.quantity==NaN ? '': 1) + '" min="1" required>');
+    modal.find('#number').empty().append('<input type="number" class="form-control quantity-input" value="" min="1" required>');
 
     modal.find('#measurement').empty().append('<select class="form-select measurement-input">' +
         '<option value="Ton"' + (rowData.measurement === "Ton" ? ' selected' : '') + '>Ton</option>' +

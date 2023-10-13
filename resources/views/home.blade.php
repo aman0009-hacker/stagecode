@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('content')
 <!--  Banner Section -->
+
 <section class="banner">
   <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
@@ -106,6 +107,111 @@ else
 }
 }
 ?>
+<script>
+  $(document).ready(function() {
+           $('.pagination a').on('click', function(e) {
+            $('.page-item').removeClass('active');
+            $('.pagination .page-item .page-link').removeClass('text-white')
+               e.preventDefault();
+
+               var page = $(this).attr('href').split('page=')[1];
+                          $(this).parent().addClass('active');
+                          $(this).addClass('text-white');
+
+
+               fetchItems(page);
+           });
+
+           function fetchItems(page) {
+               $.ajax({
+                   url: '/get-products/' + page,
+                   method: 'GET',
+                   success: function(data) {
+                       // Update the items in the carousel
+
+                       $('#carouselofitems').html('');
+
+                       if(page==1)
+                       {
+                        let number=1;
+                         data.data.forEach(function(product) {
+                             $('#carouselofitems').append('<tr><td>'+number+'</td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now "data-id="'+product.id+'" onclick="myFunction('+product.id+')">Book Now</a></td></tr>');
+                             number++;
+                         });
+                       }
+
+                       else if(page==2)
+                       {
+                        let number=5;
+                        data.data.forEach(function(product) {
+                             $('#carouselofitems').append('<tr><td>'+number+'</td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now " data-id="'+product.id+'" onclick="myFunction('+product.id+')">Book Now</a></td></tr>');
+                             number++;
+                         });
+                       }
+
+                       else if(page==3)
+
+                       {
+                        let number=9;
+                        data.data.forEach(function(product) {
+                             $('#carouselofitems').append('<tr><td>'+number+'</td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now "data-id="'+product.id+'" onclick="myFunction('+product.id+')">Book Now</a></td></tr>');
+                             number++;
+                         });
+                       }
+                       else
+                       {
+                        let number=13;
+                        data.data.forEach(function(product) {
+                             $('#carouselofitems').append('<tr><td>'+number+'</td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now " data-id="'+product.id+'" onclick="myFunction('+product.id+')">Book Now</a></td></tr>');
+                             number++;
+                         });
+                       }
+
+
+                   },
+                   error: function(error) {
+                       console.log(error);
+                   }
+               });
+              }
+$('.authenticatedornot').on('click',function()
+{
+var idofproduct=$(this);
+$.ajax({
+  url:'authenticated',
+  method:'GET',
+  success:function(response)
+{
+  console.log(response);
+  if(response=="notapproved")
+  {
+    swal.fire({
+                        title: 'Not Approved',
+                        text: 'You are not approved by admin yet!!',
+                        icon: 'warning',
+                    });
+  }
+else if(response=="paymentdone")
+{
+  window.location.href="/RawMaterial";
+}
+else if(response=="paymentnotdone")
+{
+  window.location.href="/payment/process";
+}
+else if(response=="notauthenticated")
+{
+  window.location.href="/login";
+}
+}
+
+})
+})
+
+
+          });
+
+</script>
 <!--  About Section -->
 <section class="about-us" id="about">
   <div class="container box-shadow">
@@ -287,8 +393,8 @@ else
                 </li> --}}
                 @if($productsdata->lastPage()>0)
                   @for ($i = 1; $i <= min(4, $productsdata->lastPage()); $i++)
-                  <li class="{{ ($productsdata->currentPage() == $i) ? 'active' : '' }}">
-                    <a href="{{ $productsdata->url($i)}}">{{ $i }}</a>
+                  <li class=" page-item {{ ($productsdata->currentPage() == $i) ? 'active' : '' }}">
+                    <a  class="page-link {{ ($productsdata->currentPage() == $i) ? 'text-white' : '' }}"href="{{ $productsdata->url($i)}}">{{ $i }}</a>
                   </li>
                       @endfor
                   @endif
@@ -319,7 +425,7 @@ else
                 <th style="width: 20%">Book</th>
               </tr>
             </thead>
-            <tbody id="carousel">
+            <tbody id="carouselofitems">
               {{-- <tr>
                 <td>
                   <input class="form-check-input" type="checkbox" />
@@ -380,13 +486,23 @@ else
                   <a href="" class="btn btn-secondary book-now">Book Now</a>
                 </td>
               </tr> --}}
+<?php
+$num=0
+?>
 @foreach ($productsdata as $singleproductdata)
+<?php
+$num++;
+?>
 <tr>
-  <td>  <input class="form-check-input" type="checkbox" /></td>
+  <td>{{$num}}</td>
 <td>{{$singleproductdata->name}}</td>
 <td>{{$singleproductdata->description}}</td>
 <td>
-  <a href="" class="btn btn-secondary book-now">Book Now</a>
+
+
+
+<a href="" class="btn btn-secondary book-now authenticatedornot "data-id="{{$singleproductdata->id}}">Book Now</a>
+
 </td>
 </tr>
 @endforeach
@@ -439,38 +555,47 @@ else
     </div>
   </div>
 </section>
-@endsection
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
 <script>
-   $(document).ready(function() {
-            $('.pagination a').on('click', function(e) {
-                e.preventDefault();
+ function myFunction(idofproduct)
+{
+  let productid=
+  console.log(productid);
+ $.ajax({
+ url:'authenticated',
+ method:'GET',
+ success:function(response)
+{
+ if(response=="notapproved")
+ {
+   swal.fire({
+                       title: 'Not Approved',
+                       text: 'You are not approved by admin yet!!',
+                       icon: 'warning',
+                   });
+ }
+else if(response=="paymentdone")
+{
+ window.location.href="/RawMaterial";
+}
+else if(response=="paymentnotdone")
+{
+ window.location.href="/payment/process";
+}
+else if(response=="notauthenticated")
+{
+ window.location.href="/login";
+}
+}
 
-                var page = $(this).attr('href').split('page=')[1];
-
-
-                fetchItems(page);
-            });
-
-            function fetchItems(page) {
-                $.ajax({
-                    url: '/get-products/' + page,
-                    method: 'GET',
-                    success: function(data) {
-                        // Update the items in the carousel
-                        $('#carousel').html('');
-                        data.data.forEach(function(product) {
-                            $('#carousel').append('<tr><td><input class="form-check-input" type="checkbox"></td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now">Book Now</a></td></tr>');
-                        });
-
-                        // Update the pagination links
-                        $('.pagination').html(data.links);
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
-            }
-        });
+})
+}
 </script>
+
+@endsection
+
+
+
 

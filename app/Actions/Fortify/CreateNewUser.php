@@ -71,46 +71,46 @@ class CreateNewUser implements CreatesNewUsers
 
         \Mail::to($user->email)->send(new optEmail($user->email_otp));
 
-        $twilioSid = env('ACCOUNT_SID');
-        $twilioToken = env('AUTH_TOKEN');
-        $twilioPhoneNumber = env('PHONE_NUMBER');
+        // $twilioSid = env('ACCOUNT_SID');
+        // $twilioToken = env('AUTH_TOKEN');
+        // $twilioPhoneNumber = env('PHONE_NUMBER');
 
-        try {
+        // try {
 
-            $client = new Client($twilioSid, $twilioToken);
+        //     $client = new Client($twilioSid, $twilioToken);
 
-            $data = $client->messages->create(
-                '+91' . $user->contact_number,
-                [
-                    'from' => $twilioPhoneNumber,
-                    'body' => $user->otp
-                ]
-            );
-        } catch (TwilioException $e) {
-            $code = $e->getCode();
+        //     $data = $client->messages->create(
+        //         '+91' . $user->contact_number,
+        //         [
+        //             'from' => $twilioPhoneNumber,
+        //             'body' => $user->otp
+        //         ]
+        //     );
+        // } catch (TwilioException $e) {
+        //     $code = $e->getCode();
 
-            if ($code === 20003) {
-                $errorMessage = "The limit of your Twilio Trial Account has been exceeded.";
-                throw ValidationException::withMessages([
-                    'contact_number' => [$errorMessage],
-                ]);
-            } elseif ($code === 21614) {
+        //     if ($code === 20003) {
+        //         $errorMessage = "The limit of your Twilio Trial Account has been exceeded.";
+        //         throw ValidationException::withMessages([
+        //             'contact_number' => [$errorMessage],
+        //         ]);
+        //     } elseif ($code === 21614) {
 
-                $errorMessage = "The number is not registered with Twilio Trial Account. Please use the Registered Number to send OTP";
-                throw ValidationException::withMessages([
-                    'contact_number' => [$errorMessage],
-                ]);
-            } else {
-                $errorMessage = "The number is not registered with Twilio Trial Account. Please use the Registered Number to send OTP";
-                throw ValidationException::withMessages([
-                    'contact_number' => [$errorMessage],
-                ]);
-            }
-
-
+        //         $errorMessage = "The number is not registered with Twilio Trial Account. Please use the Registered Number to send OTP";
+        //         throw ValidationException::withMessages([
+        //             'contact_number' => [$errorMessage],
+        //         ]);
+        //     } else {
+        //         $errorMessage = "The number is not registered with Twilio Trial Account. Please use the Registered Number to send OTP";
+        //         throw ValidationException::withMessages([
+        //             'contact_number' => [$errorMessage],
+        //         ]);
+        //     }
 
 
-        }
+
+
+        // }
 
         return $user;
     }
