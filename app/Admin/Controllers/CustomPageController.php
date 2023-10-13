@@ -11,10 +11,6 @@ use App\Models\User;
 use App\Models\notification;
 use App\Models\PaymentDataHandling;
 use Carbon\Carbon;
-<<<<<<< HEAD
-=======
-use Encore\Admin\Admin;
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Layout\Content;
 use Illuminate\Database\QueryException;
@@ -183,10 +179,6 @@ class CustomPageController extends AdminController
         return $content
             ->title('User Documents')
             ->description('List of your resource');
-<<<<<<< HEAD
-=======
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
     }
 
 
@@ -262,20 +254,12 @@ class CustomPageController extends AdminController
             $data->admin_id = $admin_id;
             $data->user_id = Auth::user()->id;
             $data->comment = $messageData;
-<<<<<<< HEAD
-=======
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
             $data->commented_by = "user";
             $data->username = Auth::user()->name;
             $data->save();
 
             if ($data->save()) {
                 $latestData = Comments::latest()->where('admin_id', $admin_id)->where('user_id', Auth::user()->id)->get();
-<<<<<<< HEAD
-=======
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                 return response()->json(["msg" => "success", 'latestData' => $latestData]);
             }
         }
@@ -291,10 +275,6 @@ class CustomPageController extends AdminController
         $query = User::find($userid);
         if ($query) {
             $approvedStatus = $query->approved;
-<<<<<<< HEAD
-=======
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
             if ($approvedStatus == 2 || $approvedStatus == 0 || $approvedStatus == 1) {
                 if (isset($textAreaMsg) && isset($adminid) && isset($userid)) {
                     $data = new Comments;
@@ -303,10 +283,6 @@ class CustomPageController extends AdminController
                     $data->comment = $textAreaMsg;
                     $data->username = $adminusername;
                     $data->commented_by = "admin";
-<<<<<<< HEAD
-=======
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                     if ($data->save()) {
                         $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->get();
 
@@ -326,10 +302,6 @@ class CustomPageController extends AdminController
         }
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 
     public function checkurlIndex(Request $request)
     {
@@ -339,26 +311,12 @@ class CustomPageController extends AdminController
         $userid = $request->input('userid');
         $textAreaMsg = $request->input('textAreaMsg');
         $query = User::find($userid);
-<<<<<<< HEAD
         if ($query) {
             $status = $query->approved;
-=======
-
-        $user_id = User::find($userid);
-        if ($query) {
-            $status = $query->approved;
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
             if ($status == 2 || $status == 0 || $status == 1) {
                 if (isset($adminid) && isset($userid)) { {
 
                         $latestData = Comments::latest()->where('admin_id', $adminid)->where('user_id', $userid)->get();
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                         return response()->json([
                             "msg" => "success",
                             "adminid" => $adminid,
@@ -573,20 +531,10 @@ class CustomPageController extends AdminController
                 $notificationRead->read_at = Carbon::now();
                 $notificationRead->save();
                 return redirect(env('APP_URL') . 'admin/orders');
-<<<<<<< HEAD
-
-=======
-                // return redirect(env('APP_URL').':8000/admin/orders');//for local testing
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
             } else {
                 $notificationRead->read_at = Carbon::now();
                 $notificationRead->save();
                 return redirect(env('APP_URL') . 'admin/auth/user');
-<<<<<<< HEAD
-
-=======
-                // return redirect(env('APP_URL').':8000/admin/auth/user');//for local testing
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
             }
         } catch (QueryException $e) {
             return response()->json(['msg' => "empty", 'data' => null], 200);
@@ -606,21 +554,12 @@ class CustomPageController extends AdminController
                 $notificationRead->save();
             }
             if ($notificationRead->type === "App\\Notifications\\orderPlaced") {
-<<<<<<< HEAD
 
                 return redirect(env('APP_URL') . 'admin/orders');
 
             } else {
                 return redirect(env('APP_URL') . 'admin/auth/user');
 
-=======
-
-                return redirect(env('APP_URL') . 'admin/orders');
-                // return redirect(env('APP_URL').':8000/admin/orders'); //for local testing
-            } else {
-                return redirect(env('APP_URL') . 'admin/auth/user');
-                // return redirect(env('APP_URL').':8000/admin/auth/user'); //for local testing
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 
             }
         } catch (QueryException $e) {
@@ -629,10 +568,6 @@ class CustomPageController extends AdminController
 
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 
     /*Notification in the dashboard function ends*/
 

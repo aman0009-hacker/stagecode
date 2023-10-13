@@ -227,3 +227,8 @@ Route::get('mark/as/read/multiple/{showAll}',[App\Admin\Controllers\CustomPageCo
 
 Route::get('admin/sendemailtoadmin/{email}/{adminId}',[LoginController::class,'sendemail']);
 Route::get('admin/checktheotp/{theotp}/{adminIds}',[LoginController::class,'verifyotp']);
+
+
+
+
+Route::get('/get-products/{page}', [homePageController::class,'pagination']);

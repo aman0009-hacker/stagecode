@@ -35,19 +35,11 @@ class UserController extends AdminController
         });
         $grid->column('email', __('Email'));
         $grid->column('contact_number', __('Contact number'));
-<<<<<<< HEAD
-=======
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         $grid->column('otp', __('Otp'));
 
 
         $grid->column('attachment', 'Documents Count')->display(function ($comments) {
             $count = count($comments);
-<<<<<<< HEAD
-=======
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
             return $count;
         })->expand(function ($model) {
 

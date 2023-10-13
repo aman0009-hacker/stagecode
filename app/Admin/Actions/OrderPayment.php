@@ -45,10 +45,6 @@ class OrderPayment extends RowAction
                         //het current user emailid end
                         $details = [
                             'email' => 'Final Booking Amount Payment Successful',
-<<<<<<< HEAD
-=======
-                            // 'body' => 'Congratulations!!! Your order no '. $model->order_no . ' payment has successfully received. Orders has delivered soon.',
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                             'body' => 'We are pleased to inform you that final booking amount of your order with order number ' . $model->order_no . ' has been successfully processed and will be delivered to you soon.',
                         ];
                         \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
@@ -65,10 +61,6 @@ class OrderPayment extends RowAction
         }
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 
     public function form()
     {

@@ -7,10 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Attachment;
 use App\Models\User;
-<<<<<<< HEAD
 use Carbon\Carbon;
-=======
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 use ZipArchive;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Config;

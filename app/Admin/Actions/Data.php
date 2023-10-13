@@ -3,10 +3,7 @@
 namespace App\Admin\Actions;
 
 use Encore\Admin\Actions\RowAction;
-<<<<<<< HEAD
 use App\Models\Attachment;
-=======
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
@@ -36,10 +33,6 @@ class Data extends RowAction
                 $resultQuery = $user->save();
                 // send values in model "documents" end
                 if (isset($resultQuery) && $resultQuery === true) {
-<<<<<<< HEAD
-=======
-                    //get current user emailid start
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                     $emailData = User::join('attachments', 'users.id', '=', 'attachments.user_id')
                         ->where('attachments.user_id', $model->id)
                         ->select('users.email')

@@ -14,4 +14,11 @@ class homePageController extends Controller
 
         return view('home',compact('productsdata'));
     }
+
+    public function pagination($page)
+    {
+        $products = Entity::paginate(4, ['*'], 'page', $page);
+        // dd($products);
+        return response()->json($products);
+    }
 }

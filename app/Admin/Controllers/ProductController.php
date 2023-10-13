@@ -30,7 +30,6 @@ class ProductController extends AdminController
   {
     try {
       $grid = new Grid(new Product());
-<<<<<<< HEAD
 
       $grid->column('name', __('Name'));
       $grid->column('created_at', __('Created At'))->display(function ($value) {
@@ -38,12 +37,6 @@ class ProductController extends AdminController
         return Carbon::parse($value)->format('Y-m-d H:i');
       });
 
-=======
-      $grid->column('name', __('Name'));
-      $grid->column('created_at', __('Created At'))->display(function ($value) {
-        return Carbon::parse($value)->format('Y-m-d H:i');
-      });
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
       $grid->filter(function ($filter) {
         $filter->disableIdFilter();
         $filter->column(1 / 2, function ($filter) {
@@ -77,15 +70,10 @@ class ProductController extends AdminController
   protected function detail($id)
   {
     $show = new Show(Product::findOrFail($id));
-<<<<<<< HEAD
 
     $show->field('name', __('Name'));
     $show->field('created_at', __('Created at'));
 
-=======
-    $show->field('name', __('Name'));
-    $show->field('created_at', __('Created at'));
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
     return $show;
   }
 

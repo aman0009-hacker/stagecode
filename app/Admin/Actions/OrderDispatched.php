@@ -73,10 +73,6 @@ class OrderDispatched extends RowAction
                     $encryptedID = Crypt::encryptString($data->id);
                     $data->status = "Dispatched";
                     $data->save();
-<<<<<<< HEAD
-
-=======
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                     //new code for update incoice table
                     $latestInvoice = Invoice::where('order_id', $id)
                         ->orderBy('updated_at', 'desc')

@@ -34,6 +34,7 @@
   integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="{{asset('js/dashboard.js')}}"></script>
+  
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
@@ -531,7 +532,7 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		]
 	},
 	{
-		type: "spline", 
+		type: "spline",
 		showInLegend: true,
 		visible: false,
 		yValueFormatString: "##.00mn",
@@ -588,7 +589,7 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		]
 	},
 	{
-		type: "spline", 
+		type: "spline",
 		showInLegend: true,
 		yValueFormatString: "##.00mn",
 		name: "Season 5",
@@ -606,7 +607,7 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		]
 	},
 	{
-		type: "spline", 
+		type: "spline",
 		showInLegend: true,
 		yValueFormatString: "##.00mn",
 		name: "Season 6",
@@ -624,7 +625,7 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		]
 	},
 	{
-		type: "spline", 
+		type: "spline",
 		showInLegend: true,
 		yValueFormatString: "##.00mn",
 		name: "Season 7",
@@ -639,7 +640,7 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		]
 	},
           {
-		type: "spline", 
+		type: "spline",
 		showInLegend: true,
 		yValueFormatString: "##.00mn",
 		name: "Season 8",
@@ -694,7 +695,7 @@ var chart = new CanvasJS.Chart("chartsaleContainer", {
 		]
 	},
 	{
-		type: "spline", 
+		type: "spline",
 		showInLegend: true,
 		visible: false,
 		yValueFormatString: "##.00mn",
@@ -751,7 +752,7 @@ var chart = new CanvasJS.Chart("chartsaleContainer", {
 		]
 	},
 	{
-		type: "spline", 
+		type: "spline",
 		showInLegend: true,
 		yValueFormatString: "##.00mn",
 		name: "Season 5",
@@ -769,7 +770,7 @@ var chart = new CanvasJS.Chart("chartsaleContainer", {
 		]
 	},
 	{
-		type: "spline", 
+		type: "spline",
 		showInLegend: true,
 		yValueFormatString: "##.00mn",
 		name: "Season 6",
@@ -787,7 +788,7 @@ var chart = new CanvasJS.Chart("chartsaleContainer", {
 		]
 	},
 	{
-		type: "spline", 
+		type: "spline",
 		showInLegend: true,
 		yValueFormatString: "##.00mn",
 		name: "Season 7",
@@ -802,7 +803,7 @@ var chart = new CanvasJS.Chart("chartsaleContainer", {
 		]
 	},
           {
-		type: "spline", 
+		type: "spline",
 		showInLegend: true,
 		yValueFormatString: "##.00mn",
 		name: "Season 8",
@@ -912,11 +913,11 @@ data = data.slice(0, 9);
 				};
 			}
 			function redrawChart() {
-				//Convert "fake" value to real value then animate updated chart 
+				//Convert "fake" value to real value then animate updated chart
 				that.swapRealData(data);
 				svg.selectAll("path").data(pie(data)).transition().duration(2000).attrTween("d", arcTween);
 				svg.selectAll(".arc").data(pie(data));
-				//Delay 
+				//Delay
 				window.setTimeout(function () {
 					g.append("text").attr("transform", function (d) {
 						return "translate(" + arc.centroid(d) + ")";

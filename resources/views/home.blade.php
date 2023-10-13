@@ -265,13 +265,7 @@ else
             <nav aria-label="Page navigation example">
               <ul class="pagination">
 
-                <li class="page-item">
-                  <div class="carousel-buttons">
-                    @foreach ($productsdata as $key => $item)
-                        <button class="carousel-button btn btn-primary" data-target="item{{ $key + 1 }}">{{ $key + 1 }}</button>
-                    @endforeach
-                  </div>
-                </li>
+
                 {{-- <li class="page-item">
                   <a class="page-link" href="#" aria-label="Previous">
                     <span aria-hidden="true"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
@@ -291,6 +285,16 @@ else
                     <span aria-hidden="true"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
                   </a>
                 </li> --}}
+                @if($productsdata->lastPage()>0)
+                  @for ($i = 1; $i <= min(4, $productsdata->lastPage()); $i++)
+                  <li class="{{ ($productsdata->currentPage() == $i) ? 'active' : '' }}">
+                    <a href="{{ $productsdata->url($i)}}">{{ $i }}</a>
+                  </li>
+                      @endfor
+                  @endif
+
+
+
 
 
               </ul>
@@ -315,7 +319,7 @@ else
                 <th style="width: 20%">Book</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="carousel">
               {{-- <tr>
                 <td>
                   <input class="form-check-input" type="checkbox" />
@@ -388,14 +392,7 @@ else
 @endforeach
 
 
-<div id="carousel">
-  @foreach ($productsdata as $key => $item)
-      <div class="item" id="item{{ $key + 1 }}" style="{{ $key === 0 ? '' : 'display:none;' }}">
-          <!-- Your item content goes here -->
-          <h3>{{ $item->title }}</h3>
-          <p>{{ $item->description }}</p>
-      </div>
-  @endforeach
+
 </div>
 
 
@@ -407,7 +404,7 @@ else
         </div>
       </div>
     </div>
-  </div>
+
 </section>
 <!-- Contact Us  -->
 <section class="contact-us"id="contact">
@@ -443,25 +440,37 @@ else
   </div>
 </section>
 @endsection
-
-{{-- <script>
-  $.ajax({
-    url:'/data'
-
-  })
-</script> --}}
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-  $(document).ready(function () {
-      $('.carousel-button').on('click', function () {
-          let targetItem = $(this).data('target');
+   $(document).ready(function() {
+            $('.pagination a').on('click', function(e) {
+                e.preventDefault();
 
-          // Hide all items
-          $('.item').hide();
+                var page = $(this).attr('href').split('page=')[1];
 
-          // Show the selected item
-          $('#' + targetItem).show();
-      });
-  });
+
+                fetchItems(page);
+            });
+
+            function fetchItems(page) {
+                $.ajax({
+                    url: '/get-products/' + page,
+                    method: 'GET',
+                    success: function(data) {
+                        // Update the items in the carousel
+                        $('#carousel').html('');
+                        data.data.forEach(function(product) {
+                            $('#carousel').append('<tr><td><input class="form-check-input" type="checkbox"></td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now">Book Now</a></td></tr>');
+                        });
+
+                        // Update the pagination links
+                        $('.pagination').html(data.links);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
 </script>
+

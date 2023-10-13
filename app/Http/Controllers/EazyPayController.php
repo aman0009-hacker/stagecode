@@ -32,7 +32,6 @@ class EazyPayController extends Controller
     public function getPaymentUrl($amount, $reference_no, $optionalField = null)
     {
         try {
-<<<<<<< HEAD
         $mandatoryField = $this->getMandatoryField($amount, $reference_no);
         $optionalField = $this->getOptionalField($optionalField);
         $amount = $this->getAmount($amount);
@@ -43,19 +42,6 @@ class EazyPayController extends Controller
         Log::info($ex->getMessage());
 
     }
-=======
-            $mandatoryField = $this->getMandatoryField($amount, $reference_no);
-            $optionalField = $this->getOptionalField($optionalField);
-            $amount = $this->getAmount($amount);
-            $reference_no = $this->getReferenceNo($reference_no);
-            $paymentUrl = $this->generatePaymentUrl($mandatoryField, $optionalField, $amount, $reference_no);
-            return $paymentUrl;
-
-        } catch (\Throwable $ex) {
-            Log::info($ex->getMessage());
-
-        }
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
     }
 
 

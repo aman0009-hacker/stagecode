@@ -28,16 +28,6 @@ class OrderRejected extends RowAction
                         ->where('orders.user_id', $user_id)
                         ->select('users.email')
                         ->first();
-<<<<<<< HEAD
-=======
-
-                    if (isset($emailData)) {
-                        $emailDataName = $emailData->email;
-                        //het current user emailid end
-                        $details = [
-                            'email' => 'Order Rejection ',
-                            'body' => 'We regret to inform you that your order with order number ' . $model->order_no . ' has been rejected due to ' . $request->get('reason') ?? '' . '.'
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 
                     if (isset($emailData)) {
                         $emailDataName = $emailData->email;
@@ -46,10 +36,6 @@ class OrderRejected extends RowAction
                             'email' => 'Order Rejection ',
                             'body' => 'We regret to inform you that your order with order number ' . $model->order_no . ' has been rejected due to ' . $request->get('reason') ?? '' . '.'
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                         ];
                         \Mail::to($emailDataName)->send(new \App\Mail\PSIECMail($details));
 

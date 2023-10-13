@@ -360,13 +360,6 @@ class FileUploadController extends Controller
         try {
 
             $userMsg = $request->input("userTxt");
-<<<<<<< HEAD
-
-=======
-            $userData = $request->input("admin-message");
-            $adminData = $request->input("user-message");
-            $supervisor = "user";
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 
             $query = User::find(1);
             $query->comment = $userMsg;

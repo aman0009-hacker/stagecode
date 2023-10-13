@@ -98,10 +98,6 @@ class YardController extends AdminController
         $form = new Form(new Yard());
 
         $form->text('yardstate', __('State'))->default('Punjab')->rules('required');
-<<<<<<< HEAD
-
-=======
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         $punjabCities = [
             'Ludhiana' => 'Ludhiana',
             'Amritsar' => 'Amritsar',
@@ -126,10 +122,6 @@ class YardController extends AdminController
         ];
         $form->select('yardcity', __('City'))->options($punjabCities)->default('Mohali')->rules('required');
         $form->text('yardplace', __('Place'))->rules('required');
-<<<<<<< HEAD
-
-=======
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         $supervisors = AdminUser::whereHas('roles', function ($query) {
             $query->where('name', 'YardCreator');
         })

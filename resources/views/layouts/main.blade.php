@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/category.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/raw-material.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/total-payment.css') }}" />
+    
 </head>
 
 <body>

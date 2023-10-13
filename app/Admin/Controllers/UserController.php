@@ -83,7 +83,6 @@ class UserController extends AdminController
 
 
         $actions->add(new ShowDocuments);
-<<<<<<< HEAD
         if($data->inRoles(['administrator']))
         {
 
@@ -98,17 +97,6 @@ class UserController extends AdminController
 
           }
           $actions->add(new RegisterWithPsiec);
-=======
-        if ($actions->row->approved == 0) {
-          $actions->add(new Data);
-          $actions->add(new Rejected);
-        } else if ($actions->row->approved == 1) {
-          //$actions->add(new Data);
-          $actions->add(new Rejected);
-        } else if ($actions->row->approved == 2) {
-          $actions->add(new Data);
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         }
       });
 

@@ -63,10 +63,6 @@ class CreateNewUser implements CreatesNewUsers
             'contact_number' => $input['contact_number'],
             'password' => Hash::make($input['password']),
             'state' => 1
-<<<<<<< HEAD
-
-=======
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         ]);
 
 
@@ -75,43 +71,6 @@ class CreateNewUser implements CreatesNewUsers
 
         \Mail::to($user->email)->send(new optEmail($user->email_otp));
 
-<<<<<<< HEAD
-        // $twilioSid = env('ACCOUNT_SID');
-        // $twilioToken = env('AUTH_TOKEN');
-        // $twilioPhoneNumber = env('PHONE_NUMBER');
-
-        // try {
-
-        //     $client = new Client($twilioSid, $twilioToken);
-
-        //     $data = $client->messages->create(
-        //         '+91' . $user->contact_number,
-        //         [
-        //             'from' => $twilioPhoneNumber,
-        //             'body' => $user->otp
-        //         ]
-        //     );
-        // } catch (TwilioException $e) {
-        //     $code = $e->getCode();
-
-        //     if ($code === 20003) {
-        //         $errorMessage = "The limit of your Twilio Trial Account has been exceeded.";
-        //         throw ValidationException::withMessages([
-        //             'contact_number' => [$errorMessage],
-        //         ]);
-        //     } elseif ($code === 21614) {
-
-        //         $errorMessage = "The number is not registered with Twilio Trial Account. Please use the Registered Number to send OTP";
-        //         throw ValidationException::withMessages([
-        //             'contact_number' => [$errorMessage],
-        //         ]);
-        //     } else {
-        //         $errorMessage = "The number is not registered with Twilio Trial Account. Please use the Registered Number to send OTP";
-        //         throw ValidationException::withMessages([
-        //             'contact_number' => [$errorMessage],
-        //         ]);
-        //     }
-=======
         $twilioSid = env('ACCOUNT_SID');
         $twilioToken = env('AUTH_TOKEN');
         $twilioPhoneNumber = env('PHONE_NUMBER');
@@ -147,16 +106,11 @@ class CreateNewUser implements CreatesNewUsers
                     'contact_number' => [$errorMessage],
                 ]);
             }
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 
 
 
 
-<<<<<<< HEAD
-        // }
-=======
         }
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
 
         return $user;
     }

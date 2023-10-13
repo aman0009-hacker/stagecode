@@ -14,15 +14,10 @@ class Category extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
-<<<<<<< HEAD
 
     public $timestamps = true;
 
     //protected $fillable = ['name'];
-=======
-
-    public $timestamps = true;
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
     protected $fillable = ['name', 'category_id'];
 
     public function product()

@@ -19,10 +19,6 @@ class InvoiceController extends Controller
     {
         try {
             $orderId = Crypt::decrypt($request->input('orderIDInvoice'));
-<<<<<<< HEAD
-=======
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
             if (isset($orderId) && !empty($orderId)) {
 
                 $PaymentMode = Order::find($orderId)->payment_mode;

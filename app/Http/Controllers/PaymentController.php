@@ -91,10 +91,6 @@ class PaymentController extends Controller
                     $data['TPS'] . '|' . $this->encryption_key;
                 $encrypted_message = hash('sha512', $verification_key);
                 if ($encrypted_message == $data['RS']) {
-<<<<<<< HEAD
-=======
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                     // new code to verify
                     $request = new Request([
                         'merchantId' => $request['ID'],
@@ -146,10 +142,6 @@ class PaymentController extends Controller
                             'reference_no' => $data['ReferenceNo'],
                             'transaction_id' => $data['Unique_Ref_Number'],
                         ]);
-<<<<<<< HEAD
-=======
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                         $paymentData = PaymentDataHandling::where('reference_no', $data['ReferenceNo'])
                             ->where('data', 'Registration_Amount')
                             ->first();
@@ -206,16 +198,8 @@ class PaymentController extends Controller
                 $paymentHandling->transaction_id = $request['Unique_Ref_Number'] ?? '';
                 $paymentHandling->transaction_amount = $request['Transaction_Amount'] ?? '';
                 $paymentHandling->transaction_date = Carbon::createFromFormat('d-m-Y H:i:s', $request['Transaction_Date'])->format('Y-m-d H:i:s');
-<<<<<<< HEAD
                 $paymentHandling->amount = $request['Total_Amount'] ?? '';
                 $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
-=======
-
-                $paymentHandling->amount = $request['Total_Amount'] ?? '';
-
-                $paymentHandling->payment_status_code = $request['Response_Code'] ?? '';
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                 $dbResponse = $paymentHandling->save();
                 if ($dbResponse) {
                     $request = new Request([
@@ -260,10 +244,6 @@ class PaymentController extends Controller
                             $order->save();
                             return redirect()->route('order', ['encryptedResponse' => $encryptedResponse]);
                         }
-<<<<<<< HEAD
-=======
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                     } else {
                         $encryptedResponse = Crypt::encrypt([
                             'paymentResponse' => 'FAILURE',
@@ -564,7 +544,7 @@ class PaymentController extends Controller
     public function paymentComplete(Request $request)
     {
         $address = Address::where('user_id', Auth::user()->id)->latest()->first();
-       
+
 
         $states = State::all();
         $txtOrderGlobalModalCompleteID = $request->input('txtOrderGlobalModalCompleteID');
@@ -710,13 +690,8 @@ class PaymentController extends Controller
                 }
             }
         } catch (\Throwable $ex) {
-<<<<<<< HEAD
             Log::info($ex->getMessage());
 
-=======
-
-            dd($ex->getMessage());
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
         }
     }
 
@@ -911,15 +886,8 @@ class PaymentController extends Controller
 
             if (Auth::check()) {
                 $order_id = Crypt::decryptString($id);
-<<<<<<< HEAD
                 $txtOrderGlobalModalCompleteID = $order_id;
                 $amount = Order::where('id', $txtOrderGlobalModalCompleteID)->pluck('total_cheque_amount_with_tax');
-=======
-
-                $txtOrderGlobalModalCompleteID = $order_id;
-                $amount = Order::where('id', $txtOrderGlobalModalCompleteID)->pluck('total_cheque_amount_with_tax');
-
->>>>>>> 49f5bd67f9bee1eeb58dc0cb88fbd6ce2df470ea
                 Session::forget('txtOrderGlobalModalCompleteID');
                 if (Session::has('txtOrderGlobalModalCompleteIDAlternative') && Session::get('txtOrderGlobalModalCompleteIDAlternative') != null && Session::get('txtOrderGlobalModalCompleteIDAlternative') != "") {
 
