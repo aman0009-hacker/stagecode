@@ -211,12 +211,76 @@ $('.order-bulk').on('click', function (e) {
 });
 
 function handleCategoryChange(categoryId) {
+
+    console.log(categoryId);
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
+    let getmergedata=categoryId;
+
+    let splitdata=getmergedata.split(" ");
+    let thearray=[];
+    if(splitdata.length>1)
+    {
+      categoryId=splitdata[0];
+for(let theloop=1;theloop<splitdata.length;theloop++)
+{
+thearray.push(splitdata[theloop]);
+}
+let thestring=  thearray.join(" ");
+
+      var csrfToken = $('meta[name="csrf-token"]').attr('content');
+      var form = document.getElementById("productCategoryInfo");
+      var formData = new FormData(form);
+
+      if (categoryId) {
+          $.ajax(
+              {
+                  url: '/entities/' + categoryId,
+                  method: 'POST',
+                  headers: {
+                      'X-CSRF-TOKEN': csrfToken // Include the CSRF token in the request headers
+                  },
+                  data: formData,
+                  dataType: 'JSON',
+                  processData: false,
+                  contentType: false,
+                  success: function (data) {
+                      $.each(data, function (key, value) {
+
+                          if (value !== null) {
+
+                            if(value==thestring)
+                            {
+
+                                console.log('data');
+                              return true;
+
+                            }
+                            else
+                            {
+
+                                var option = $('<option>').val(key).text(value);
+                                $("#entity").append(option);
+                            }
+
+                          }
+                      });
+                  },
+                  error: function (error) {
+                      console.error(error);
+                  }
+              }
+          );
+
+      }
+    }
+
+else
+{
     $("#entity").html('');
     $("#entity").append("<option value=''>Select</option>");
 
@@ -252,6 +316,8 @@ function handleCategoryChange(categoryId) {
         );
 
     }
+}
+
 }
 
 

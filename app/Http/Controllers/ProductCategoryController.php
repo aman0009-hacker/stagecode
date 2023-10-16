@@ -27,6 +27,22 @@ class ProductCategoryController extends Controller
     {
         try {
 
+                if($request->query('data'))
+                {
+                   $urlid=$request->query('data');
+                   $fetchentitydata=Entity::where('id',$urlid)->first();
+                   $fetchcategorydata=Category::where('id',$fetchentitydata->entity_id)->first();
+
+
+
+                }
+                else
+
+                {
+                    $urlid=null;
+                    $fetchentitydata=null;
+                    $fetchcategorydata=null;
+                }
             $categoryList = Category::whereHas('product', function ($query) {
                 $query->where('name', 'Steel');
             })->pluck('name', 'id');
@@ -34,7 +50,7 @@ class ProductCategoryController extends Controller
                 $query->where('name', 'Coal');
             })->pluck('name', 'id');
             if ($categoryList->isNotEmpty() && $categoryListCoal->isNotEmpty()) {
-                return view('components.category', compact('categoryList', 'categoryListCoal'));
+                return view('components.category', compact('categoryList', 'categoryListCoal','fetchentitydata','fetchcategorydata'));
             } else {
                 return view('components.category')->withInput();
             }

@@ -135,7 +135,7 @@ else
                        {
                         let number=1;
                          data.data.forEach(function(product) {
-                             $('#carouselofitems').append('<tr><td>'+number+'</td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now "data-id="'+product.id+'" onclick="myFunction('+product.id+')">Book Now</a></td></tr>');
+                             $('#carouselofitems').append('<tr><td>'+number+'</td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now "data-id="'+product.id+'" onclick="myFunction(event)">Book Now</a></td></tr>');
                              number++;
                          });
                        }
@@ -144,7 +144,7 @@ else
                        {
                         let number=5;
                         data.data.forEach(function(product) {
-                             $('#carouselofitems').append('<tr><td>'+number+'</td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now " data-id="'+product.id+'" onclick="myFunction('+product.id+')">Book Now</a></td></tr>');
+                             $('#carouselofitems').append('<tr><td>'+number+'</td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now " data-id="'+product.id+'" onclick="myFunction(event)">Book Now</a></td></tr>');
                              number++;
                          });
                        }
@@ -154,7 +154,7 @@ else
                        {
                         let number=9;
                         data.data.forEach(function(product) {
-                             $('#carouselofitems').append('<tr><td>'+number+'</td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now "data-id="'+product.id+'" onclick="myFunction('+product.id+')">Book Now</a></td></tr>');
+                             $('#carouselofitems').append('<tr><td>'+number+'</td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now "data-id="'+product.id+'" onclick="myFunction(event)">Book Now</a></td></tr>');
                              number++;
                          });
                        }
@@ -162,7 +162,7 @@ else
                        {
                         let number=13;
                         data.data.forEach(function(product) {
-                             $('#carouselofitems').append('<tr><td>'+number+'</td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now " data-id="'+product.id+'" onclick="myFunction('+product.id+')">Book Now</a></td></tr>');
+                             $('#carouselofitems').append('<tr><td>'+number+'</td><td>'+product.name+'</td><td>'+product.description+'</td><td><a href="" class="btn btn-secondary book-now " data-id="'+product.id+'" onclick="myFunction(event)">Book Now</a></td></tr>');
                              number++;
                          });
                        }
@@ -174,39 +174,39 @@ else
                    }
                });
               }
-$('.authenticatedornot').on('click',function()
-{
-var idofproduct=$(this);
-$.ajax({
-  url:'authenticated',
-  method:'GET',
-  success:function(response)
-{
-  console.log(response);
-  if(response=="notapproved")
-  {
-    swal.fire({
-                        title: 'Not Approved',
-                        text: 'You are not approved by admin yet!!',
-                        icon: 'warning',
-                    });
-  }
-else if(response=="paymentdone")
-{
-  window.location.href="/RawMaterial";
-}
-else if(response=="paymentnotdone")
-{
-  window.location.href="/payment/process";
-}
-else if(response=="notauthenticated")
-{
-  window.location.href="/login";
-}
-}
+// $('.authenticatedornot').on('click',function()
+// {
+// var idofproduct=$(this);
+// $.ajax({
+//   url:'authenticated',
+//   method:'GET',
+//   success:function(response)
+// {
+//   console.log(response);
+//   if(response=="notapproved")
+//   {
+//     swal.fire({
+//                         title: 'Not Approved',
+//                         text: 'You are not approved by admin yet!!',
+//                         icon: 'warning',
+//                     });
+//   }
+// else if(response=="paymentdone")
+// {
+//   window.location.href="/RawMaterial";
+// }
+// else if(response=="paymentnotdone")
+// {
+//   window.location.href="/payment/process";
+// }
+// else if(response=="notauthenticated")
+// {
+//   window.location.href="/login";
+// }
+// }
 
-})
-})
+// })
+// })
 
 
           });
@@ -501,7 +501,7 @@ $num++;
 
 
 
-<a href="" class="btn btn-secondary book-now authenticatedornot "data-id="{{$singleproductdata->id}}">Book Now</a>
+<a href="" class="btn btn-secondary book-now  "data-id="{{$singleproductdata->id}}"onclick="myFunction(event)">Book Now</a>
 
 </td>
 </tr>
@@ -559,15 +559,18 @@ $num++;
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
 <script>
- function myFunction(idofproduct)
+ function myFunction(event)
 {
-  let productid=
-  console.log(productid);
+  // event.preventDefault();
+
+ let productId= event.target.getAttribute('data-id');
+
  $.ajax({
  url:'authenticated',
  method:'GET',
  success:function(response)
 {
+  console.log(response);
  if(response=="notapproved")
  {
    swal.fire({
@@ -578,7 +581,7 @@ $num++;
  }
 else if(response=="paymentdone")
 {
- window.location.href="/RawMaterial";
+ window.location.href="/RawMaterial?data="+productId;
 }
 else if(response=="paymentnotdone")
 {

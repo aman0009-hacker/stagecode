@@ -32,7 +32,7 @@ use App\Http\Controllers\HomeController;
 |
 */
 Route::get('/',[homePageController::class,'home'])->name('home');
-Route::get('/home',[homePageController::class,'home'])->name('home');
+Route::get('/home',[homePageController::class,'home'])->name('/home');
 // Route::get('/', function () {
 //     return view('home');
 // })->name('home');

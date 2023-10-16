@@ -13,17 +13,20 @@
                 $("#myid").show();
                 $("#logoutid").show();
                 $("#myOrder").show();
-                
+
     </script>
     <?php
          }
      ?>
     {{-- custom logic --}}
+
+
     <div class="container">
         <div class="row">
             <div class="col-md-2">
             </div>
             <div class="col-md-8">
+
                 <form id="productCategoryInfo">
                     @csrf
                     <div class="row mb-3">
@@ -48,13 +51,59 @@
                                                 <select class="form-select form-select-lg mb-3" required
                                                     aria-label="form-select-lg" name="category" id="category"
                                                     onchange="handleCategoryChange(this.value)">
+
+                                                    @if($fetchcategorydata==null)
                                                     <option value="">Select</option>
-                                                    @if(isset($categoryList))
-                                                    @foreach ($categoryList as $id => $name)
-                                                    <option value="{{ $id }}" {{ old('category')==$id ? ' selected' : ''
+                                                    @endif
+
+
+
+
+
+                                                    @if($fetchcategorydata!=null)
+
+
+                                                    <option value="{{ $fetchcategorydata->id }}" {{ old('category')==$fetchcategorydata->id ? ' selected' : ''
                                                         }}>
-                                                        {{ $name }}
+                                                        {{ $fetchcategorydata->name }}
                                                     </option>
+                                                     <script>
+                                                         document.addEventListener('DOMContentLoaded', function () {
+                                                             // Call your function here
+                                                             let value = @json(optional($fetchcategorydata)->id);
+                                                             let data=@json(optional($fetchentitydata)->name);
+                                                             
+                                                             let mergedata=value+" "+data;
+                                                             handleCategoryChange(mergedata);
+                                                            });
+                                                    </script>
+                                                  @endif
+
+
+
+
+                                                  @if(isset($categoryList))
+                                                    @foreach ($categoryList as $id => $name)
+                                                    @if($fetchcategorydata!=null)
+                                                      @if($name === $fetchcategorydata->name)
+                                                         <?php
+                                                           continue;
+                                                         ?>
+                                                      @else
+                                                      <option value="{{ $id }}" {{ old('category')==$id ? ' selected' : ''
+                                                    }}>
+                                                    {{ $name }}
+                                                </option>
+                                                @endif
+
+                                                     @else
+                                                     <option value="{{ $id }}" {{ old('category')==$id ? ' selected' : ''
+                                                         }}>
+                                                         {{ $name }}
+                                                     </option>
+                                                    @endif
+
+
                                                     @endforeach
                                                     @endif
                                                 </select>
@@ -79,7 +128,23 @@
                                             </div> --}}
                                             <select class="form-select form-select-lg mb-3 category-selection"
                                                 aria-label="form-select-lg" name="entity" id="entity" >
-                                                <option value="">Select</option>
+                                                @if($fetchentitydata!=null)
+
+                                                <option value="{{$fetchentitydata->id}}">{{$fetchentitydata->name}}</option>
+
+
+
+
+
+
+                                                @else
+
+
+                                                    <option value="">Select</option>
+
+
+                                                @endif
+                                                {{-- <option value="">Select</option> --}}
                                             </select>
                                             <button type="button" value="Submit" class="btn btn-info mt-4"
                                                 id="showEntity">Submit</button>
@@ -114,7 +179,11 @@
                                             </div> --}}
                                             <select class="form-select form-select-lg mb-3 category-selection"
                                                 aria-label="form-select-lg" name="entityCoal" id="entityCoal" >
-                                                <option value="">Select</option>
+
+
+                                                    <option value="">Selected</option>
+
+
                                             </select>
                                             <button type="button" value="Submit" class="btn btn-info mt-4"
                                                 id="showEntityCoal">Submit</button>
